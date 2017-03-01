@@ -1,6 +1,6 @@
 # Редактор для контент-менеджеров (1С-Битрикс) #
 
-* [https://bitbucket.org/andrey_ryabin/sprint.editor/wiki/Home](https://bitbucket.org/andrey_ryabin/sprint.editor/wiki/Home)
+* Документация: [https://bitbucket.org/andrey_ryabin/sprint.editor/wiki/Home](https://bitbucket.org/andrey_ryabin/sprint.editor/wiki/Home)
 
 Подключение в шаблоне компонента bitrix:news.detail
 
