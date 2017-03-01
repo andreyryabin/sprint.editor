@@ -1,4 +1,4 @@
-# Редактор для контент-менеджеров для 1С-Битрикс #
+# Редактор для контент-менеджеров (1С-Битрикс) #
 
 * [https://bitbucket.org/andrey_ryabin/sprint.editor/wiki/Home](https://bitbucket.org/andrey_ryabin/sprint.editor/wiki/Home)
 
