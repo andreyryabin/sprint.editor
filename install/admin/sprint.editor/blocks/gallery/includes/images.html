@@ -1,0 +1,11 @@
+{{~it.images :image:index}}
+<div class="sp-image_item j-image_item">
+    {{?image.file && image.file.SRC}}<img src="{{!image.file.SRC}}"/>{{?}}
+    <div class="sp-image_item_panel j-image_item_panel">
+        <input placeholder="Описание" class="j-image_item-text" type="text" value="{{!image.desc}}">
+        <div class="sp-image_item-delete">
+            <input class="j-image_item-delete" type="button" value="x" title="Удалить картинку">
+        </div>
+    </div>
+</div>
+{{~}}

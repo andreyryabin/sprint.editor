@@ -1,0 +1,7 @@
+<input placeholder="Заголовок" type="text" value="{{!it.value}}"/>
+<select>
+    <option {{?it.type == 'h1' }} selected="selected"{{?}} value="h1">h1</option>
+    <option {{?it.type == 'h2' }} selected="selected"{{?}} value="h2">h2</option>
+    <option {{?it.type == 'h3' }} selected="selected"{{?}} value="h3">h3</option>
+    <option {{?it.type == 'h4' }} selected="selected"{{?}} value="h4">h4</option>
+</select>

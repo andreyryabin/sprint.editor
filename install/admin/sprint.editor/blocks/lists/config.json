@@ -1,0 +1,7 @@
+{
+  "title": "Список",
+  "sort": "130",
+  "templates": [
+    "includes/items.html"
+  ]
+}

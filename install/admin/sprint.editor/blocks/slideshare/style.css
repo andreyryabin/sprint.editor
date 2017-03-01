@@ -1,0 +1,11 @@
+.sp-block-slideshare input[type=text]{
+    width: 98%;
+}
+
+.sp-block-slideshare .sp-preview {
+    width: 320px;
+    height: 180px;
+    background: #ccc;
+    margin-top: 10px;
+    text-align: center;
+}

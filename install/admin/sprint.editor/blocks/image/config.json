@@ -1,0 +1,12 @@
+{
+  "title": "Картинка",
+  "sort": "140",
+  "js": [
+    "/bitrix/admin/sprint.editor/assets/jquery.file-upload-9/vendor/jquery.ui.widget.js",
+    "/bitrix/admin/sprint.editor/assets/jquery.file-upload-9/jquery.iframe-transport.js",
+    "/bitrix/admin/sprint.editor/assets/jquery.file-upload-9/jquery.fileupload.js"
+  ],
+  "templates": [
+    "includes/image.html"
+  ]
+}

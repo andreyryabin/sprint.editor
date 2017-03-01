@@ -1,0 +1,37 @@
+<div class="sp-table">
+    <div class="sp-row">
+        <div class="sp-col j-elements sp-col-elements">
+            {{~it.elements :item:index}}
+            <div data-id="{{!item.id}}" class="sp-iblock-item j-iblock-item">
+                {{!item.id}} - {{!item.title}}
+            </div>
+            {{~}}
+        </div>
+        <div class="sp-col sp-col-toggle j-toogle">
+            <span>&larr;</span><br/>
+            <span>&larr;</span><br/>
+            <span>&larr;</span><br/>
+        </div>
+        <div {{?it.hideSource}}style="display: none"{{?}} class="sp-col j-source sp-col-source">
+            <div class="sp-col-source_result">
+                {{~it.source :item:index}}
+                <div data-id="{{!item.id}}" class="sp-iblock-item j-iblock-item">
+                    {{!item.id}} - {{!item.title}}
+                </div>
+                {{~}}
+            </div>
+            <div class="sp-col-source_filter">
+                <select class="j-select-iblock" style="width: 120px;">
+                    <option value="">нет</option>
+                    {{~it.iblocks :item:index}}
+                    <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
+                    </option>
+                    {{~}}
+                </select>
+                <input class="j-nav-left" type="button" value="&larr;">
+                {{=it.page_num}}/{{=it.page_cnt}}
+                <input class="j-nav-right" type="button" value="&rarr;">
+            </div>
+        </div>
+    </div>
+</div>

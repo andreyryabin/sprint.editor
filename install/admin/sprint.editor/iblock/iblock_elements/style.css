@@ -1,0 +1,45 @@
+.sp-block-iblock_elements .sp-iblock-item {
+    padding: 6px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    background: #ddd;
+}
+
+.sp-block-iblock_elements .sp-iblock-item:last-child{
+    margin-bottom: 0;
+}
+.sp-block-iblock_elements .sp-col-elements {
+    background: #eee;
+}
+.sp-block-iblock_elements .sp-col-elements .sp-iblock-item {
+
+}
+
+.sp-block-iblock_elements .sp-col-source {
+    background: #eee;
+    width: 45%;
+}
+
+
+.sp-block-iblock_elements .sp-col-source_filter {
+    padding: 6px;
+    text-align: center;
+}
+
+.sp-block-iblock_elements .sp-col-source_result {
+    overflow: hidden;
+}
+
+.sp-block-iblock_elements .sp-col-toggle {
+    background: #FDBF3B;
+    cursor: pointer;
+    width: 26px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.sp-block-iblock_elements .sp-col-toggle:hover {
+    background: #fed800;
+}

@@ -1,0 +1,37 @@
+<div class="sp-table">
+    <div class="sp-row">
+        <div class="sp-col sp-col-elements j-elements sp-clear">
+            {{~it.elements :item:index}}
+            <div data-id="{{!item.id}}" class="sp-medialib-item j-medialib-item">
+                <img alt="{{!item.id}}" src="{{!item.src}}">
+            </div>
+            {{~}}
+        </div>
+        <div class="sp-col sp-col-toggle j-toogle">
+            <span>&larr;</span><br/>
+            <span>&larr;</span><br/>
+            <span>&larr;</span><br/>
+        </div>
+        <div {{?it.hideSource}}style="display: none"{{?}} class="sp-col sp-col-source j-col-source">
+            <div class="j-source sp-clear">
+                {{~it.source :item:index}}
+                <div data-id="{{!item.id}}" class="sp-medialib-item j-medialib-item">
+                    <img alt="{{!item.id}}" src="{{!item.src}}">
+                </div>
+                {{~}}
+            </div>
+            <div class="sp-col-source_filter">
+                <select class="j-select-collection" style="width: 120px;">
+                    <option value="">нет</option>
+                    {{~it.collections :item:index}}
+                    <option {{?item.id== it.collection_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
+                    </option>
+                    {{~}}
+                </select>
+                <input class="j-nav-left" type="button" value="&larr;">
+                {{=it.page_num}}/{{=it.page_cnt}}
+                <input class="j-nav-right" type="button" value="&rarr;">
+            </div>
+        </div>
+    </div>
+</div>

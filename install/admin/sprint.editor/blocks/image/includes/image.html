@@ -1,0 +1,9 @@
+<div class="sp-image_item j-image_item">
+    {{? it.file && it.file.SRC}}<img src="{{!it.file.SRC}}"/>{{?}}
+    <div class="sp-image_item_panel j-image_item_panel">
+        <input placeholder="Описание" class="j-image_item-text" type="text" value="{{!it.desc}}">
+        <div class="sp-image_item-delete">
+            <input class="j-image_item-delete" type="button" value="x" title="Удалить превью">
+        </div>
+    </div>
+</div>

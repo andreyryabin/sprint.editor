@@ -1,0 +1,9 @@
+.sp-block-twitter input[type=text]{
+    width: 98%;
+}
+
+.sp-block-twitter .sp-preview {
+    margin-top: 10px;
+    max-height: 180px;
+    overflow-y: scroll;
+}

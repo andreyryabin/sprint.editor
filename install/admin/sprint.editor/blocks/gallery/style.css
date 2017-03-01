@@ -1,0 +1,39 @@
+
+.sp-block-gallery .sp-image_item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    float: left;
+    background: #ccc;
+    margin: 0 5px 5px 0;
+    border: 2px solid #ccc;
+}
+
+.sp-block-gallery .sp-image_item_panel{
+    position: absolute;
+    top: 20px;
+    left: -100px;
+    height: 100px;
+    z-index: 2;
+    background: #eee;
+    border: 2px solid #ccc;
+    display: none;
+    padding: 0 10px;
+}
+
+.sp-block-gallery .sp-image_item-active{
+    border: 2px solid #ee3a80;
+}
+
+.sp-block-gallery .sp-image_item_panel input[type=text]{
+    width: 300px;
+    margin-top: 30px;
+}
+
+.sp-block-gallery .sp-image_item-delete{
+    text-align: center;margin-top: 5px;
+}
+
+.sp-block-gallery .sp-file{
+    margin-bottom: 10px;
+}

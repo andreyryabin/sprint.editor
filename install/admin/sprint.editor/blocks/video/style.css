@@ -1,0 +1,35 @@
+.sp-block-video input[type=text]{
+    width: 98%;
+
+}
+
+.sp-block-video .sp-preview{
+    /*float: left;*/
+    width: 320px;
+    height: 180px;
+    background: #ccc;
+    margin-top: 10px;
+}
+
+.sp-block-video .sp-col-preview {
+    width: 330px;
+    text-align: center;
+}
+.sp-block-video .sp-image_item {
+    width: 120px !important;
+    height: 120px !important;
+}
+
+.sp-block-video .sp-image_item img{
+    width: 120px !important;
+    height: 120px !important;
+}
+
+.sp-block-video .sp-image_item_panel{
+    top: 20px !important;
+    left: -100px !important;
+}
+
+.sp-block-video .sp-file{
+    margin-top: 10px;
+}

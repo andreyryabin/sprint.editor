@@ -1,0 +1,7 @@
+{
+  "title": "Изображения",
+  "sort": "110",
+  "templates": [
+    "select.html"
+  ]
+}

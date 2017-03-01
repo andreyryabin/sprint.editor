@@ -1,0 +1,22 @@
+.sp-block-complex_image_text .sp-block-image{
+  width: 140px;
+}
+
+.sp-block-complex_image_text .sp-block-text{
+  margin-top: 39px;
+}
+
+.sp-block-complex_image_text .sp-image_item{
+  width: 130px;
+  height: 130px;
+}
+
+.sp-block-complex_image_text .sp-image_item img{
+  width: 130px;
+  height: 130px;
+}
+
+.sp-block-complex_image_text .sp-image_item_panel{
+  top: 20px !important;
+  left: -100px !important;
+}

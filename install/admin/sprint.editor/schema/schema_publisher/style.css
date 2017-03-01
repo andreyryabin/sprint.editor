@@ -1,0 +1,22 @@
+.sp-block-schema_publisher .sp-block-image{
+  width: 140px;
+}
+
+.sp-block-schema_publisher .sp-block-textfield{
+  margin-top: 39px;
+}
+
+.sp-block-schema_publisher .sp-image_item{
+  width: 130px;
+  height: 130px;
+}
+
+.sp-block-schema_publisher .sp-image_item img{
+  width: 130px;
+  height: 130px;
+}
+
+.sp-block-schema_publisher .sp-image_item_panel{
+  top: 20px !important;
+  left: -100px !important;
+}

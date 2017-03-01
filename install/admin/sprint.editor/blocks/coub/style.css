@@ -1,0 +1,31 @@
+
+
+.sp-block-coub input[type=text]{
+    width: 98%;
+
+}
+
+.sp-block-coub .sp-table{
+    margin-top: 10px;
+}
+
+.sp-block-coub .sp-preview{
+    /*float: left;*/
+    width: 320px;
+    height: 180px;
+    background: #ccc;
+}
+
+.sp-block-coub .sp-col-preview{
+    width: 330px;
+    text-align: center;
+
+}
+.sp-block-coub .sp-col-size{
+    text-align: left;
+}
+
+.sp-block-coub .sp-col-size input{
+    margin-bottom: 5px;
+    width: 100px;
+}

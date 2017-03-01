@@ -1,0 +1,7 @@
+{
+  "title": "Коллекции",
+  "sort": "120",
+  "templates": [
+    "items.html"
+  ]
+}

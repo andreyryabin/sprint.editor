@@ -1,0 +1,105 @@
+.sp-clear:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.sp-table {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.sp-table .sp-row {
+    display: table-row;
+}
+
+.sp-table .sp-col {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.sp-table .sp-col-l {
+    padding: 10px;
+}
+
+.sp-table .sp-col-r {
+    padding: 10px;
+    text-align: right;
+    width: 60px;
+    vertical-align: middle;
+}
+
+.sp-box {
+    margin-bottom: 30px;
+    background: #f5f9f9;
+}
+
+.sp-box.ui-sortable-helper {
+    background: #e0e8ea;
+    padding: 10px 10px 20px 10px;
+}
+
+
+.sp-box_panel {
+    text-align: left;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.sp-box_panel:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.sp-box_panel a {
+    text-decoration: none;
+    color: #555;
+    margin-left: 10px;
+}
+
+.sp-box_panel a:hover {
+    text-decoration: underline;
+    color: #555;
+}
+
+.sp-box_panel-group_title{
+    color: #888 !important;
+    font-weight: normal;
+}
+.sp-box_panel-title{
+    font-weight: bold !important;
+}
+
+.sp-box_panel-buttons {
+    float: right;
+}
+
+.sp-file {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.sp-file input[type=file] {
+    cursor: pointer;
+    direction: ltr;
+    font-size: 200px !important;
+    margin: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: block;
+}
+
+.sp-note {
+    font-size: 12px !important;
+    color: #999 !important;
+}
+.sp-box-settings{
+    margin-bottom: 10px;
+}

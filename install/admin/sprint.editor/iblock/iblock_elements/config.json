@@ -1,0 +1,6 @@
+{
+  "title": "Элементы",
+  "templates": [
+    "select.html"
+  ]
+}
