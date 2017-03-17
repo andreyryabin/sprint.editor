@@ -47,7 +47,7 @@ Class sprint_editor extends CModule
         global $DB;
 
         DeleteDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
-        DeleteDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");
+        DeleteDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");
 
         $DB->Query('DELETE FROM b_module_to_module WHERE TO_MODULE_ID="sprint.editor"');
         UnRegisterModuleDependences('iblock', 'OnIBlockPropertyBuildList', 'sprint.editor');

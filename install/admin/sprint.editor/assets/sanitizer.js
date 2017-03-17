@@ -36,6 +36,7 @@ function HtmlWhitelistedSanitizer(tags, css, urls) {
                 'width': unconstrainted
             }),
             'p': globalAttributes,
+            'span': globalAttributes,
             'div': globalAttributes,
             'br': globalAttributes,
             'b': globalAttributes,

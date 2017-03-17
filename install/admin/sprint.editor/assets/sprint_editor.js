@@ -5,16 +5,6 @@ var sprint_editor = {
 
     _registered: {},
 
-    _options: {},
-
-    getOption: function (name){
-        return (this._options[name]) ? this._options[name] : false;
-    },
-
-    registerOptions: function(options){
-        this._options = options;
-    },
-
     registerBlock: function (name, method) {
         this._registered[name] = method;
     },
@@ -53,11 +43,10 @@ var sprint_editor = {
     },
 
     renderTemplate: function (name, data) {
-        if (!this._tplcache[name]) {
-            if (!this._templates[name]) {
-                this._templates[name] = '';
-            }
 
+        name = (this._templates[name]) ? name : 'dump';
+
+        if (!this._tplcache[name]) {
             this._tplcache[name] = doT.template(this._templates[name]);
         }
 
@@ -93,70 +82,9 @@ var sprint_editor = {
             }
         }
 
-        var startIndex = 0;
-        var stopIndex = 0;
-
-        $blocks.sortable({
-            cursor: "move",
-            items: ".j-box",
-            handle: ".j-box_handle",
-            axis: "y",
-            start: function (event, ui) {
-                startIndex = $blocks.find('.j-box').index(
-                    ui.item.get(0)
-                );
-            },
-            stop: function (event, ui) {
-                stopIndex = $blocks.find('.j-box').index(
-                    ui.item.get(0)
-                );
-
-                swapcollection(startIndex, stopIndex);
-            }
-        });
-
-        $container.on('click', '.j-upbox', function (e) {
-            e.preventDefault();
-            var index = $container.find('.j-upbox').index(this);
-            var block = $(this).closest('.j-box');
-
-            var nblock = block.prev();
-            if (nblock.length > 0) {
-                var nindex = nblock.index();
-
-                block.insertBefore(nblock);
-                swapcollection(index, nindex);
-            }
-        });
-
-        $container.on('click', '.j-dnbox', function (e) {
-            e.preventDefault();
-            var index = $container.find('.j-dnbox').index(this);
-            var block = $(this).closest('.j-box');
-
-            var nblock = block.next();
-            if (nblock.length > 0) {
-                var nindex = nblock.index();
-
-                block.insertAfter(nblock);
-                swapcollection(index, nindex);
-            }
-        });
-
-        $addblockinput.on('click', function (e) {
-            var name = $selectinput.val();
-            pushblock({name: name});
-        });
-
-        $container.on('click', '.j-delbox', function (e) {
-            e.preventDefault();
-
-            var index = $container.find('.j-delbox').index(this);
-            var block = $(this).closest('.j-box');
-
-            deletecollection(index);
-            block.remove();
-        });
+        if (params.enableChange){
+            changeEvents()
+        }
 
         $form.on('submit', function (e) {
             var post = [];
@@ -187,14 +115,84 @@ var sprint_editor = {
             $resultinput.val(resultString);
         });
 
+        function changeEvents() {
+            var startIndex = 0;
+            var stopIndex = 0;
+
+            $blocks.sortable({
+                cursor: "move",
+                items: ".j-box",
+                handle: ".j-box_handle",
+                axis: "y",
+                start: function (event, ui) {
+                    startIndex = $blocks.find('.j-box').index(
+                        ui.item.get(0)
+                    );
+                },
+                stop: function (event, ui) {
+                    stopIndex = $blocks.find('.j-box').index(
+                        ui.item.get(0)
+                    );
+
+                    swapcollection(startIndex, stopIndex);
+                }
+            });
+
+
+            $container.on('click', '.j-upbox', function (e) {
+                e.preventDefault();
+                var index = $container.find('.j-upbox').index(this);
+                var block = $(this).closest('.j-box');
+
+                var nblock = block.prev();
+                if (nblock.length > 0) {
+                    var nindex = nblock.index();
+
+                    block.insertBefore(nblock);
+                    swapcollection(index, nindex);
+                }
+            });
+
+            $container.on('click', '.j-dnbox', function (e) {
+                e.preventDefault();
+                var index = $container.find('.j-dnbox').index(this);
+                var block = $(this).closest('.j-box');
+
+                var nblock = block.next();
+                if (nblock.length > 0) {
+                    var nindex = nblock.index();
+
+                    block.insertAfter(nblock);
+                    swapcollection(index, nindex);
+                }
+            });
+
+            $addblockinput.on('click', function (e) {
+                var name = $selectinput.val();
+                pushblock({name: name});
+            });
+
+            $container.on('click', '.j-delbox', function (e) {
+                e.preventDefault();
+
+                var index = $container.find('.j-delbox').index(this);
+                var block = $(this).closest('.j-box');
+
+                deletecollection(index);
+                block.remove();
+            })
+        }
+
         function pushblock(data) {
             if (!data.name || !sprint_editor.hasBlockParams(data.name)) {
                 return false;
             }
 
-            var html = sprint_editor.renderTemplate('_block',
-                sprint_editor.getBlockParams(data.name)
-            );
+            var templateVars = sprint_editor.getBlockParams(data.name);
+            templateVars.showSortButtons = params.showSortButtons;
+            templateVars.enableChange = params.enableChange;
+
+            var html = sprint_editor.renderTemplate('box',templateVars);
 
             $blocks.append(html);
 

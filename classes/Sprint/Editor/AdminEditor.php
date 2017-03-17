@@ -13,11 +13,10 @@ class AdminEditor
 
     protected static $parameters = array();
     protected static $templates = array();
-    protected static $options = array();
 
     protected static $selectValues = array();
 
-    public static function init($uniqId, $value, $inputName) {
+    public static function init($params) {
         self::$initCounts++;
 
         if (self::$initCounts == 1) {
@@ -28,41 +27,69 @@ class AdminEditor
             self::registerAssets();
         }
 
-        $value = !empty($value) && is_string($value) ? $value : '[]';
-        $value = json_decode(Locale::convertToUtf8IfNeed($value), true);
-        $value = (json_last_error() == JSON_ERROR_NONE && is_array($value)) ? $value : array();
+        $params = array_merge(array(
+            'uniqId' => '',
+            'value' => '',
+            'inputName' => '',
+            'defaultValue' => '',
+            'userSettings' => ''
+        ),$params);
+
+        $rawValue = $params['value'];
+
+        $params['value'] = self::prepareValue($params['value']);
+        if (empty($params['value'])){
+            $params['value'] = self::prepareValue($params['defaultValue']);
+        }
 
         $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlock", true);
         foreach ($events as $aEvent) {
-            foreach ($value as &$block) {
+            foreach ($params['value'] as &$block) {
                 ExecuteModuleEventEx($aEvent, array(&$block));
             }
             unset($block);
         }
 
-        self::$templates['_block'] = self::renderFile(Module::getModuleDir() . '/templates/_block.php', array(
-            'showSortButtons' => Module::getDbOption('show_sort_buttons'),
-            'uniqId' => $uniqId,
-        ));
+        $enableChange = 0;
+        if (empty($params['userSettings']['DISABLE_CHANGE'])){
+            $enableChange = 1;
+        }
+
+        $showSortButtons = 1;
+        if (empty($params['userSettings']['ENABLE_SORT_BUTTONS'])){
+            $showSortButtons = 0;
+        }
 
         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
-            'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
+            'rawValue' => $rawValue,
+            'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($params['value'])),
             'selectValues' => Locale::convertToWin1251IfNeed(self::$selectValues),
             'jsonTemplates' => json_encode(Locale::convertToUtf8IfNeed(self::$templates)),
             'jsonParameters' => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
-            'jsonOptions' => json_encode(Locale::convertToUtf8IfNeed(self::$options)),
-            'inputName' => $inputName,
-            'uniqId' => $uniqId,
+            'showSortButtons' => $showSortButtons,
+            'enableChange' => $enableChange,
+            'inputName' => $params['inputName'],
+            'uniqId' => $params['uniqId'],
             'firstRun' => (self::$initCounts == 1) ? 1 : 0,
         ));
     }
 
+    public static function prepareValue($value){
+        $value = !empty($value) && is_string($value) ? $value : '[]';
+        $value = json_decode(Locale::convertToUtf8IfNeed($value), true);
+        $value = (json_last_error() == JSON_ERROR_NONE && is_array($value)) ? $value : array();
+        return $value;
+    }
+
     public static function getBlockGroups() {
-        $rootpath = Module::getDocRoot() . '/bitrix/admin/sprint.editor/';
-        $iterator = new \DirectoryIterator($rootpath);
-
         $groups = array();
+        $rootpath = Module::getDocRoot() . '/bitrix/admin/sprint.editor/';
 
+        if (!is_dir($rootpath)){
+            return $groups;
+        }
+
+        $iterator = new \DirectoryIterator($rootpath);
         foreach ($iterator as $item) {
             if (!$item->isDir() || $item->isDot()) {
                 continue;
@@ -91,12 +118,24 @@ class AdminEditor
         return $groups;
     }
 
+    public static function getSearchIndex($jsonValue){
+        $value = AdminEditor::prepareValue($jsonValue);
+        $search = '';
+        foreach ($value as $key => $val) {
+            if ($val['name'] == 'text' && !empty($val['value'])) {
+                $search .= ' ' . $val['value'];
+            }
+        }
+        return $search;
+    }
+
     protected static function registerAssets() {
         global $APPLICATION;
 
         if (Module::getDbOption('load_jquery') == 'yes') {
-            /*\CUtil::InitJSCore(Array("jquery"));*/
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js');
+        } else {
+            \CUtil::InitJSCore(Array("jquery"));
         }
 
         if (Module::getDbOption('load_jquery_ui') == 'yes') {
@@ -152,6 +191,7 @@ class AdminEditor
 
             $param['name'] = $blockName;
             $param['title'] = !empty($param['title']) ? $param['title'] : '';
+            $param['hint'] = !empty($param['hint']) ? $param['hint'] : '';
 
             $param['sort'] = !empty($param['sort']) ? intval($param['sort']) : 500;
             $param['sort'] = ($param['sort'] > 0) ? $param['sort'] : 500;
@@ -212,7 +252,7 @@ class AdminEditor
         return true;
     }
 
-    protected static function renderFile($file, $vars = array()) {
+    public static function renderFile($file, $vars = array()) {
         if (is_array($vars)) {
             extract($vars, EXTR_SKIP);
         }
@@ -232,7 +272,6 @@ class AdminEditor
             }
             return ($a['sort'] < $b['sort']) ? -1 : 1;
         });
-
     }
 
 }

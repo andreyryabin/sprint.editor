@@ -31,7 +31,7 @@
 }
 
 .sp-box {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     background: #f5f9f9;
 }
 
@@ -40,10 +40,12 @@
     padding: 10px 10px 20px 10px;
 }
 
-
 .sp-box_panel {
     text-align: left;
     margin-bottom: 10px;
+}
+
+.sp-box_panel.ui-sortable-handle{
     cursor: pointer;
 }
 
@@ -53,7 +55,8 @@
     clear: both;
 }
 
-.sp-box_panel a {
+.sp-box_panel a,
+.sp-box_panel a:link {
     text-decoration: none;
     color: #555;
     margin-left: 10px;
@@ -76,15 +79,17 @@
     float: right;
 }
 
-.sp-file {
+a.sp-file,
+a.sp-file:link {
     display: inline-block;
     overflow: hidden;
     position: relative;
     text-decoration: none;
     cursor: pointer;
+    color: #000;
 }
 
-.sp-file input[type=file] {
+a.sp-file input[type=file] {
     cursor: pointer;
     direction: ltr;
     font-size: 200px !important;

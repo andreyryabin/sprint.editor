@@ -1,5 +1,6 @@
 {
   "title": "Галерея",
+  "hint": "Загрузите несколько изображений с компьютера",
   "sort": "120",
   "js": [
     "/bitrix/admin/sprint.editor/assets/query.file-upload-9/vendor/jquery.ui.widget.js",
