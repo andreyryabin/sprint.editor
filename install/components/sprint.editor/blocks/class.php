@@ -77,6 +77,11 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $blocks = Sprint\Editor\Locale::convertToWin1251IfNeed($blocks);
         $blocks = (json_last_error() == JSON_ERROR_NONE) ? $blocks : array();
 
+        $events = GetModuleEvents("sprint.editor", "OnBeforeShowComponentBlocks", true);
+        foreach ($events as $aEvent) {
+            ExecuteModuleEventEx($aEvent, array(&$blocks));
+        }
+
         $cntblocks = 0;
         foreach ($blocks as $block) {
             if ($this->includeBlock($block, $this->arParams['TEMPLATE_NAME'])) {

@@ -1,2 +1,4 @@
-<?/** @var $block array */?><<?=$block['type']?>><?=$block['value']?></<?=$block['type']?>>
+<?/** @var $block array */?>
+<a name="<?=$block['anchor']?>"></a>
+<<?=$block['type']?>><?=$block['value']?></<?=$block['type']?>>
 

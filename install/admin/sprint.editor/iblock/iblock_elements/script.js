@@ -16,6 +16,9 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
     }
 
     var hideSource = 1;
+    if (data.element_ids.length <=0 ){
+        hideSource = 0;
+    }
 
     this.getData = function () {
         return data;
@@ -30,7 +33,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
 
     this.afterRender = function () {
         $el.on('click','.j-toogle', function(){
-            if (hideSource == 1){
+            if (hideSource){
                 $el.find('.j-source').show();
                 hideSource = 0
             } else {
@@ -141,7 +144,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
                         removeIntent = true;
                     },
                     beforeStop: function (event, ui) {
-                        if(removeIntent == true){
+                        if(removeIntent){
                             ui.item.remove();
                         } else {
                             ui.item.removeAttr('style');

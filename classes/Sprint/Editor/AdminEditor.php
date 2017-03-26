@@ -42,12 +42,9 @@ class AdminEditor
             $params['value'] = self::prepareValue($params['defaultValue']);
         }
 
-        $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlock", true);
+        $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
         foreach ($events as $aEvent) {
-            foreach ($params['value'] as &$block) {
-                ExecuteModuleEventEx($aEvent, array(&$block));
-            }
-            unset($block);
+            ExecuteModuleEventEx($aEvent, array(&$params['value']));
         }
 
         $enableChange = 0;
