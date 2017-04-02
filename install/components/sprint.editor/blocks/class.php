@@ -3,7 +3,8 @@
 class SprintEditorBlocksComponent extends CBitrixComponent
 {
 
-    public function executeComponent() {
+    public function executeComponent()
+    {
         if (!\CModule::IncludeModule('sprint.editor')) {
             return 0;
         }
@@ -25,7 +26,8 @@ class SprintEditorBlocksComponent extends CBitrixComponent
     }
 
 
-    protected function outIblockElement() {
+    protected function outIblockElement()
+    {
         \CModule::IncludeModule("iblock");
 
         $aPropertyCodes = array();
@@ -72,7 +74,8 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return $cntblocks;
     }
 
-    protected function outJson($blocks) {
+    protected function outJson($blocks)
+    {
         $blocks = json_decode(Sprint\Editor\Locale::convertToUtf8IfNeed($blocks), true);
         $blocks = Sprint\Editor\Locale::convertToWin1251IfNeed($blocks);
         $blocks = (json_last_error() == JSON_ERROR_NONE) ? $blocks : array();
@@ -82,19 +85,23 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             ExecuteModuleEventEx($aEvent, array(&$blocks));
         }
 
+        $this->includePartial('_header', $blocks);
+
         $cntblocks = 0;
         foreach ($blocks as $block) {
-            if ($this->includeBlock($block, $this->arParams['TEMPLATE_NAME'])) {
+            if ($this->includeBlock($block)) {
                 $cntblocks++;
             }
         }
 
+        $this->includePartial('_footer', $blocks);
         return $cntblocks;
 
     }
 
-    protected function includeBlock($block, $templateName) {
-        $path = $this->findBlockPath($block['name'], $templateName);
+    protected function includeBlock($block)
+    {
+        $path = $this->findBlockPath($block['name']);
         if ($path) {
             /** @noinspection PhpIncludeInspection */
             include($path);
@@ -103,7 +110,20 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return false;
     }
 
-    protected function findBlockPath($blockName, $templateName) {
+    protected function includePartial($partialName, &$blocks)
+    {
+        $path = $this->findBlockPath($partialName);
+        if ($path) {
+            /** @noinspection PhpIncludeInspection */
+            include($path);
+            return true;
+        }
+        return false;
+    }
+
+    protected function findBlockPath($blockName)
+    {
+        $templateName = $this->arParams['TEMPLATE_NAME'];
         $root = \Sprint\Editor\Module::getDocRoot();
 
         $paths = array(

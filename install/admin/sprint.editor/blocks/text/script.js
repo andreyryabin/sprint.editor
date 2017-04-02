@@ -24,6 +24,7 @@ sprint_editor.registerBlock('text', function($, $el, data) {
         var $textarea = $el.find('textarea');
         if ($.fn.trumbowyg){
           $textarea.trumbowyg({
+                svgPath : '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',
                 lang: 'ru',
                 resetCss: true,
                 removeformatPasted: true,
