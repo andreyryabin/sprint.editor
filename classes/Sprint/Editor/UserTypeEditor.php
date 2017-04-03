@@ -70,11 +70,9 @@ class UserTypeEditor
         global $DB;
         switch (strtolower($DB->type)) {
             case "mysql":
-                return "text";
-            case "oracle":
-                return "varchar2(2000 char)";
+                return "mediumtext";
             case "mssql":
-                return "varchar(2000)";
+                return "varchar(max)";
         }
     }
 }
