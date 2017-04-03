@@ -22,6 +22,10 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             return $this->outIblockElement();
         }
 
+        if (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['SECTION_ID'])) {
+            return $this->outIblockSection();
+        }
+
         return 0;
     }
 
@@ -61,13 +65,52 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $aItem = \CIBlockElement::GetList(array('SORT' => 'ASC'), array(
             'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
             'ID' => $this->arParams['ELEMENT_ID'],
-
         ), false, array('nTopCount' => 1), $aSelect)->Fetch();
 
         $cntblocks = 0;
         foreach ($aPropertyCodes as $propertyCode) {
             if (!empty($aItem[$propertyCode . '_VALUE'])) {
                 $cntblocks += $this->outJson($aItem[$propertyCode . '_VALUE']);
+            }
+        }
+
+        return $cntblocks;
+    }
+
+    protected function outIblockSection()
+    {
+        \CModule::IncludeModule("iblock");
+
+        $aPropertyCodes = array();
+        if (empty($this->arParams['PROPERTY_CODE'])) {
+            //todo: получить все пользовательские поля с редактором если явно не указано
+            return 0;
+        } else {
+            $aPropertyCodes[] = $this->arParams['PROPERTY_CODE'];
+        }
+
+        if (empty($aPropertyCodes)) {
+            return 0;
+        }
+
+        $aSelect = array_merge(array(
+            'ID',
+            'IBLOCK_ID',
+            'NAME',
+            'CODE',
+            'SORT',
+        ), $aPropertyCodes);
+
+        /** @noinspection PhpDynamicAsStaticMethodCallInspection */
+        $aItem = \CIBlockSection::GetList(array('SORT' => 'ASC'), array(
+            'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
+            'ID' => $this->arParams['SECTION_ID'],
+        ), false, $aSelect, array('nTopCount' => 1))->Fetch();
+
+        $cntblocks = 0;
+        foreach ($aPropertyCodes as $propertyCode) {
+            if (!empty($aItem[$propertyCode])) {
+                $cntblocks += $this->outJson($aItem[$propertyCode]);
             }
         }
 
