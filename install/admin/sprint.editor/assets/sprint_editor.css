@@ -56,13 +56,16 @@
 }
 
 .sp-box_panel a,
-.sp-box_panel a:link {
+.sp-box_panel a:link,
+.bx-core-adm-dialog .sp-box_panel a,
+.bx-core-adm-dialog .sp-box_panel a:link {
     text-decoration: none;
     color: #555;
     margin-left: 10px;
 }
 
-.sp-box_panel a:hover {
+.sp-box_panel a:hover,
+.bx-core-adm-dialog .sp-box_panel a:hover {
     text-decoration: underline;
     color: #555;
 }
