@@ -79,17 +79,49 @@
     float: right;
 }
 
-a.sp-file,
-a.sp-file:link {
+.sp-box .sp-file {
     display: inline-block;
     overflow: hidden;
     position: relative;
     text-decoration: none;
     cursor: pointer;
     color: #000;
+    padding: 6px 15px 5px;
+    line-height: 16px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: 0;
+    -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .11), 0 1px 1px rgba(0, 0, 0, .3), inset 0 1px #fff, inset 0 0 1px rgba(255, 255, 255, .5);
+    box-shadow: 0 0 1px rgba(0, 0, 0, .3), 0 1px 1px rgba(0, 0, 0, .3), inset 0 1px 0 #fff, inset 0 0 1px rgba(255, 255, 255, .5);
+    background-color: #e0e9ec;
+    background-image: -webkit-linear-gradient(bottom, #d7e3e7, #fff) !important;
+    background-image: -moz-linear-gradient(bottom, #d7e3e7, #fff) !important;
+    background-image: -ms-linear-gradient(bottom, #d7e3e7, #fff) !important;
+    background-image: -o-linear-gradient(bottom, #d7e3e7, #fff) !important;
+    background-image: linear-gradient(bottom, #d7e3e7, #fff) !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    height: 18px;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.7);
+    vertical-align: middle;
+    -webkit-font-smoothing: antialiased
 }
 
-a.sp-file input[type=file] {
+.sp-box .sp-file:hover{
+    text-decoration: none;
+    background: #f3f6f7 !important;
+    background-image: -webkit-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
+    background-image: -moz-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
+    background-image: -ms-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
+    background-image: -o-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
+    background-image: linear-gradient(top, #f8f8f9, #f2f6f8) !important
+}
+.sp-box .sp-file strong {
+
+}
+
+.sp-box .sp-file input[type=file] {
     cursor: pointer;
     direction: ltr;
     font-size: 200px !important;

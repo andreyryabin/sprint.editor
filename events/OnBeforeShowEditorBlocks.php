@@ -1,6 +1,10 @@
 <?php
 
 AddEventHandler('sprint.editor', 'OnBeforeShowEditorBlocks', function (&$blocks) {
+    /**
+     * Обработчик восстанавливает превьюшки в админке для блоков "Галерея" и "Картинка",
+     * если они удалились из /upload/iblock/resize_cache/
+     */
     foreach ($blocks as $block) {
         if ($block['name'] == 'gallery') {
             foreach ($block['images'] as &$aItem) {

@@ -5,7 +5,6 @@ AddEventHandler('sprint.editor', 'OnBeforeShowComponentBlocks', function (&$bloc
      * Обработчик блока "Содержание", проставляет блокам "Заголовок" дополнительное поле якорь (anchor),
      * строит содержание (elements) ссылающееся на эти якоря
      */
-
     $contentsBlockFound = false;
     foreach ($blocks as $index => $block) {
         if ($block['name'] == 'contents') {
