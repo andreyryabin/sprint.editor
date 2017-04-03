@@ -85,7 +85,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             ExecuteModuleEventEx($aEvent, array(&$blocks));
         }
 
-        $this->includePartial('_header', $blocks);
+        $this->includePartial('_header', $blocks, $this->arParams);
 
         $cntblocks = 0;
         foreach ($blocks as $block) {
@@ -94,7 +94,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             }
         }
 
-        $this->includePartial('_footer', $blocks);
+        $this->includePartial('_footer', $blocks, $this->arParams);
         return $cntblocks;
 
     }
@@ -110,7 +110,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return false;
     }
 
-    protected function includePartial($partialName, &$blocks)
+    protected function includePartial($partialName, &$blocks, $arParams)
     {
         $path = $this->findBlockPath($partialName);
         if ($path) {

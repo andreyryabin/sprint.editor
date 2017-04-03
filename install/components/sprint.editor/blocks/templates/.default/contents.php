@@ -1,4 +1,5 @@
 <?/** @var $block array */?>
+<?/* Пример с нумерацией с помощью css-стилей */?>
 <style>
     .c-contents_elements{ list-style-type:none; counter-reset:list; }
     /* цвет чисел */
