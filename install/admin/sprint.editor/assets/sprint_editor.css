@@ -85,7 +85,7 @@
     position: relative;
     text-decoration: none;
     cursor: pointer;
-    color: #000;
+    color: #3f4b54;
     padding: 6px 15px 5px;
     line-height: 16px;
     -webkit-border-radius: 4px;
@@ -117,6 +117,22 @@
     background-image: -o-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
     background-image: linear-gradient(top, #f8f8f9, #f2f6f8) !important
 }
+
+.sp-box .sp-file:active{
+    background-color: #b7c4c9 !important;
+    -webkit-box-shadow: inset 0 1px 1px 1px rgba(103, 109, 123, .78);
+    box-shadow: inset 0 1px 1px 1px rgba(103, 109, 123, .78);
+    background-image: -webkit-linear-gradient(top, rgba(179, 194, 200, .96), rgba(202, 215, 219, .96)) !important;
+    background-image: -moz-linear-gradient(top, rgba(179, 194, 200, .96), rgba(202, 215, 219, .96)) !important;
+    background-image: -ms-linear-gradient(top, rgba(179, 194, 200, .96), rgba(202, 215, 219, .96)) !important;
+    background-image: -o-linear-gradient(top, rgba(179, 194, 200, .96), rgba(202, 215, 219, .96)) !important;
+    background-image: linear-gradient(top, rgba(179, 194, 200, .96), rgba(202, 215, 219, .96)) !important;
+    border-top: transparent;
+}
+
+
+
+
 .sp-box .sp-file strong {
 
 }
