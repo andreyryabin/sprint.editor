@@ -1,7 +1,15 @@
-<select style="width: 200px;">
+<select class="j-select-component" style="width: 200px;">
     <option value="">нет</option>
-    {{~it.items :item:index}}
-    <option {{?item.name== it.component_name}}selected="selected" {{?}} value="{{!item.name}}">{{!item.title}}
+    {{~it.components :item:index}}
+    <option {{?item.name== it.component_name}}selected="selected" {{?}} value="{{!item.name}}">{{=item.title}}
+    </option>
+    {{~}}
+</select>
+
+<select class="j-select-site_template" style="width: 120px;margin-left: 10px;">
+    <option value="">нет</option>
+    {{~it.sitetemplates :item:index}}
+    <option {{?item.value== it.site_template}}selected="selected" {{?}} value="{{!item.value}}">{{=item.name}}
     </option>
     {{~}}
 </select>

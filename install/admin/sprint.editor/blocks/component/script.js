@@ -3,7 +3,8 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
     data = $.extend({
         component_name: '',
         component_template: '',
-        component_params: {}
+        component_params: {},
+        site_template: ''
     }, data);
 
     var pmanager = new BXComponentParamsManager({
@@ -24,32 +25,29 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
 
     this.afterRender = function () {
 
-        var $select = $el.find('.j-select');
+        var $elFilter = $el.find('.j-filter');
+        var $elParams = $el.find('.j-result');
         var boxWidth = $el.width();
-        var pParamsContainer = $el.find('.j-result').get(0);
 
         renderComponentParams();
 
         $.ajax({
             url: sprint_editor.getBlockWebPath('component') + '/ajax.php',
             type: 'post',
-            data: {},
+            data: {show_components: 1},
             dataType: 'json',
             success: function (result) {
                 result['component_name'] = data.component_name;
-                $select.html(
+                result['site_template'] = data.site_template;
+                $elFilter.html(
                     sprint_editor.renderTemplate('component-select', result)
                 );
-            },
-            error: function () {
-
             }
         });
 
-
-        $select.on('change', 'select', function () {
+        $elFilter.on('change', '.j-select-component', function () {
             var selectedName = $(this).val();
-            if (selectedName != data.component_name){
+            if (selectedName != data.component_name) {
                 data.component_name = selectedName;
                 data.component_template = '';
                 data.component_params = {};
@@ -57,27 +55,36 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
             }
         });
 
-
-        function renderComponentParams(){
-            if (!data.component_name){
-                $(pParamsContainer).empty();
-            } else {
-                BX.onCustomEvent(pmanager, 'OnComponentParamsDisplay', [{
-                    name: data.component_name,
-                    template: data.component_template,
-                    currentValues: data.component_params,
-                    parent: false,
-                    container: pParamsContainer,
-                    siteTemplate: '',
-                    relPath: '/',
-                    callback: function (params, container) {
-                        BX.onCustomEvent(pmanager, 'OnComponentParamsResize', [
-                            boxWidth,
-                            400
-                        ]);
-                    }
-                }]);
+        $elFilter.on('change', '.j-select-site_template', function () {
+            var selectedName = $(this).val();
+            if (selectedName != data.site_template) {
+                data.site_template = selectedName;
+                renderComponentParams();
             }
+        });
+
+        function renderComponentParams() {
+            if (!data.component_name) {
+                $elParams.removeClass('bxcompprop-wrap').removeAttr('style').empty();
+                return;
+            }
+
+            BX.onCustomEvent(pmanager, 'OnComponentParamsDisplay', [{
+                name: data.component_name,
+                template: data.component_template,
+                currentValues: data.component_params,
+                siteTemplate: data.site_template,
+                container: $elParams.get(0),
+                parent: false,
+                relPath: '/',
+                callback: function (params, container) {
+                    BX.onCustomEvent(pmanager, 'OnComponentParamsResize', [
+                        boxWidth,
+                        400
+                    ]);
+                }
+            }]);
+
         }
     };
 
