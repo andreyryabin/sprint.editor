@@ -38,8 +38,13 @@
     <? endif; ?>
     <textarea style="display: none;" class="j-result<?= $uniqId ?>" name="<?= $inputName ?>"></textarea>
 </div>
-<? if ($firstRun): ?>
+<? if ($firstRun): ?><?php
+    \CModule::IncludeModule('fileman');
+    $compParamsLangMess = CComponentParamsManager::GetLangMessages();
+    $compParamsLangMess = CUtil::PhpToJSObject($compParamsLangMess, false);
+?>
 <script type="text/javascript">
+    BX.message(<?=$compParamsLangMess?>);
     sprint_editor.registerTemplates(<?=$jsonTemplates?>);
     sprint_editor.registerParameters(<?=$jsonParameters?>);
 </script>

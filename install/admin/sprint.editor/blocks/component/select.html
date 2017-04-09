@@ -1,0 +1,7 @@
+<select style="width: 200px;">
+    <option value="">нет</option>
+    {{~it.items :item:index}}
+    <option {{?item.name== it.component_name}}selected="selected" {{?}} value="{{!item.name}}">{{!item.title}}
+    </option>
+    {{~}}
+</select>

@@ -54,17 +54,6 @@ var sprint_editor = {
         return tempfn(data);
     },
 
-    escapeHtml: function(text) {
-        var map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-
-        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-    },
     createInstance: function ($, params) {
         var $container = $('.j-container' + params.uniqid);
         var $resultinput = $('.j-result' + params.uniqid);
@@ -99,7 +88,17 @@ var sprint_editor = {
                     })
                 }
 
+                var $boxBlock = $blocks.find('.j-box-block').eq(index);
+
+                $boxBlock.css({
+                    height: $boxBlock.height(),
+                    width: $boxBlock.width(),
+                    background: '#e0e8ea'
+                }).empty().html('');
+
+
                 post.push(data);
+
             });
 
             var resultString = JSON.stringify(post);
