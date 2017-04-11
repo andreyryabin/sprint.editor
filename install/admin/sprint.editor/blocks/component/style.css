@@ -1,0 +1,24 @@
+.sp-block-component .sp-component{
+    display: inline-block;
+    background-color: #edf2f3 ;
+    border: 2px solid #9a9fa8 ;
+    border-radius: 3px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.sp-block-component .bxcompprop-wrap{
+    margin-top: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+
+.sp-block-component .bxcompprop-wrap .bxcompprop-left{
+    /*margin: 10px 0 0 0;*/
+    border:none;
+    box-shadow: none;
+}
+
+.sp-block-component .bxcompprop-wrap .bxcompprop-right{
+    /*top: 0;*/
+}

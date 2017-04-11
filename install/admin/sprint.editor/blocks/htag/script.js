@@ -2,7 +2,8 @@ sprint_editor.registerBlock('htag', function($, $el, data) {
 
     data = $.extend({
         type: 'h1',
-        value: ''
+        value: '',
+        anchor: ''
     }, data);
 
     this.getData = function () {
@@ -12,10 +13,31 @@ sprint_editor.registerBlock('htag', function($, $el, data) {
     this.collectData = function () {
         data.value = $el.find('input[type=text]').val();
         data.type = $el.find('select').val();
+        data.anchor = translite(data.value);
         return data;
     };
 
     this.afterRender = function () {
+        var $input = $el.find('input[type=text]');
+        var $anchor = $el.find('.j-anchor');
+
+        $input.bindWithDelay('input', function () {
+            $anchor.text(translite(
+                $(this).val()
+            ));
+        }, 500);
+
     };
+
+    function translite(val) {
+        return BX.translit(val, {
+            max_len : 100,
+            change_case : 'L',
+            replace_space : '-',
+            replace_other : '-',
+            delete_repeat_replace : true,
+            use_google : false
+        });
+    }
 
 });

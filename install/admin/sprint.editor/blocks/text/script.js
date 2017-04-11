@@ -1,4 +1,4 @@
-sprint_editor.registerBlock('text', function($, $el, data) {
+sprint_editor.registerBlock('text', function ($, $el, data) {
 
     data = $.extend({
         value: ''
@@ -8,7 +8,7 @@ sprint_editor.registerBlock('text', function($, $el, data) {
 
     this.getData = function () {
         data.value = parser.sanitizeString(
-            sprint_editor.escapeHtml(data.value)
+            escapeHtml(data.value)
         );
         return data;
     };
@@ -22,9 +22,9 @@ sprint_editor.registerBlock('text', function($, $el, data) {
 
     this.afterRender = function () {
         var $textarea = $el.find('textarea');
-        if ($.fn.trumbowyg){
-          $textarea.trumbowyg({
-                svgPath : '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',
+        if ($.fn.trumbowyg) {
+            $textarea.trumbowyg({
+                svgPath: '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',
                 lang: 'ru',
                 resetCss: true,
                 removeformatPasted: true,
@@ -38,14 +38,27 @@ sprint_editor.registerBlock('text', function($, $el, data) {
                 autogrow: true
             });
         } else {
-            $textarea.css({overflow:'hidden'});
+            $textarea.css({overflow: 'hidden'});
             $textarea.height(70); // min-height
             $textarea.height($textarea.prop('scrollHeight'));
-            $textarea.keyup(function(e) {
+            $textarea.keyup(function (e) {
                 $(this).height(70); // min-height
                 $(this).height(this.scrollHeight);
             });
         }
     };
 
+    function escapeHtml(text) {
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+
+        return text.replace(/[&<>"']/g, function (m) {
+            return map[m];
+        });
+    }
 });

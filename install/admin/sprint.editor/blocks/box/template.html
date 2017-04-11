@@ -1,9 +1,9 @@
 <div class="sp-box sp-box-{{=it.group.name}} j-box">
-    <div class="sp-box_panel {{?it.enableChange}}j-box_handle ui-sortable-handle{{?}}">
+    <div class="sp-box_panel">
         {{?it.group.show_title == "yes"}}
         <span class="sp-box_panel-group_title">{{=it.group.title}}.</span>
         {{?}}
-        <span title="{{=it.hint}}" class="sp-box_panel-title">{{=it.title}}</span>
+        <span title="{{=it.hint}}" class="sp-box_panel-title {{?it.enableChange}}j-box_handle ui-sortable-handle{{?}}">{{=it.title}}</span>
         <div class="sp-box_panel-buttons">
             {{?it.enableChange}}
             {{?it.showSortButtons}}
