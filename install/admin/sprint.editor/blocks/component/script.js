@@ -71,10 +71,19 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
                 parent: false,
                 relPath: '/',
                 callback: function (params, container) {
+
                     BX.onCustomEvent(pmanager, 'OnComponentParamsResize', [
                         boxWidth,
                         400
                     ]);
+
+                    $elParams.find('.bxcompprop-left').hide();
+
+                    $elParams.find('.bxcompprop-right').css({
+                        width: boxWidth - 40,
+                        top: 0,
+                        left: 0
+                    });
                 }
             }]);
         }
