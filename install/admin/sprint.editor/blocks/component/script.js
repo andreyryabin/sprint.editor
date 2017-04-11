@@ -4,7 +4,8 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
         component_name: '',
         component_template: '',
         component_params: {},
-        site_template: ''
+        filter_site: '',
+        filter_mask: ''
     }, data);
 
     var pmanager = new BXComponentParamsManager({
@@ -30,22 +31,10 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
         var boxWidth = $el.width();
 
         renderComponentParams();
+        renderFilters();
 
-        $.ajax({
-            url: sprint_editor.getBlockWebPath('component') + '/ajax.php',
-            type: 'post',
-            data: {show_components: 1},
-            dataType: 'json',
-            success: function (result) {
-                result['component_name'] = data.component_name;
-                result['site_template'] = data.site_template;
-                $elFilter.html(
-                    sprint_editor.renderTemplate('component-select', result)
-                );
-            }
-        });
-
-        $elFilter.on('change', '.j-select-component', function () {
+        $elFilter.on('change', '.j-component', function (e) {
+            e.preventDefault();
             var selectedName = $(this).val();
             if (selectedName != data.component_name) {
                 data.component_name = selectedName;
@@ -55,15 +44,18 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
             }
         });
 
-        $elFilter.on('change', '.j-select-site_template', function () {
+        $elFilter.on('change', '.j-filter-site', function (e) {
+            e.preventDefault();
             var selectedName = $(this).val();
-            if (selectedName != data.site_template) {
-                data.site_template = selectedName;
+            if (selectedName != data.filter_site) {
+                data.filter_site = selectedName;
                 renderComponentParams();
             }
         });
 
         function renderComponentParams() {
+            showSiteFilter();
+
             if (!data.component_name) {
                 $elParams.removeClass('bxcompprop-wrap').removeAttr('style').empty();
                 return;
@@ -73,7 +65,7 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
                 name: data.component_name,
                 template: data.component_template,
                 currentValues: data.component_params,
-                siteTemplate: data.site_template,
+                siteTemplate: data.filter_site,
                 container: $elParams.get(0),
                 parent: false,
                 relPath: '/',
@@ -84,9 +76,38 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
                     ]);
                 }
             }]);
+        }
 
+        function renderFilters() {
+            $.ajax({
+                url: sprint_editor.getBlockWebPath('component') + '/ajax.php',
+                type: 'post',
+                dataType: 'json',
+                data: {filter_mask: data.filter_mask},
+                success: function (result) {
+                    result['component_name'] = data.component_name;
+                    result['filter_site'] = data.filter_site;
+                    result['filter_mask'] = data.filter_mask;
+                    $elFilter.html(
+                        sprint_editor.renderTemplate('component-select', result)
+                    );
+
+                    showSiteFilter();
+                }
+            });
+        }
+
+        function showSiteFilter() {
+            if (data.component_name) {
+                $elFilter.find('.j-label-site').show();
+            } else {
+                $elFilter.find('.j-label-site').hide();
+                $elFilter.find('.j-filter-site').val('');
+            }
         }
     };
+
+
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;

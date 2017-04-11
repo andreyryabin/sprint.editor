@@ -1,15 +1,25 @@
-<select class="j-select-component" style="width: 200px;">
+<select class="j-component" style="width: 200px;">
     <option value="">нет</option>
-    {{~it.components :item:index}}
-    <option {{?item.name== it.component_name}}selected="selected" {{?}} value="{{!item.name}}">{{=item.title}}
-    </option>
+    {{~it.components :group}}
+    <optgroup label="{{!group.name}}">
+        {{~group.items :item}}
+        <option {{?item.name== it.component_name}}selected="selected" {{?}} value="{{!item.name}}">
+            {{=item.name}} - {{=item.title}}
+        </option>
+        {{~}}
+    </optgroup>
     {{~}}
 </select>
 
-<select class="j-select-site_template" style="width: 120px;margin-left: 10px;">
+
+<label class="j-label-site" style="margin-left: 20px;">
+    Шаблон сайта
+<select class="j-filter-site" style="width: 120px;margin-left: 5px;">
     <option value="">нет</option>
     {{~it.sitetemplates :item:index}}
-    <option {{?item.value== it.site_template}}selected="selected" {{?}} value="{{!item.value}}">{{=item.name}}
+    <option {{?item.value== it.filter_site}}selected="selected" {{?}} value="{{!item.value}}">
+        {{=item.name}}
     </option>
     {{~}}
 </select>
+</label>
