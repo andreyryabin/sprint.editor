@@ -1,7 +1,8 @@
 sprint_editor.registerBlock('contents', function($, $el, data) {
 
     data = $.extend({
-        selectors: []
+        selectors: [],
+        elements: [] /* */
     }, data);
 
     var all = ['h1', 'h2', 'h3', 'h4', 'h5'];

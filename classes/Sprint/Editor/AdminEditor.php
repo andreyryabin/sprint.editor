@@ -135,6 +135,8 @@ class AdminEditor
             \CUtil::InitJSCore(Array("jquery"));
         }
 
+        \CUtil::InitJSCore(array('translit'));
+
         if (Module::getDbOption('load_jquery_ui') == 'yes') {
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-ui-1.12.1.custom/jquery-ui.min.js');
         }

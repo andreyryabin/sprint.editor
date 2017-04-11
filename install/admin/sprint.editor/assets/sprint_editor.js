@@ -88,7 +88,7 @@ var sprint_editor = {
                     })
                 }
 
-                var $boxBlock = $blocks.find('.j-box-block').eq(index);
+                var $boxBlock = $blocks.find('.j-box').eq(index);
 
                 $boxBlock.css({
                     height: $boxBlock.height(),
