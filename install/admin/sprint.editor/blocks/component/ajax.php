@@ -21,24 +21,32 @@ if (\CModule::IncludeModule('sprint.editor')) {
     \CModule::IncludeModule('fileman');
 
     $sitetemplates = \CHTMLEditor::GetSiteTemplates();
-    $components = \CHTMLEditor::GetComponents(array(), false, array());
+    $allcomponents = \CHTMLEditor::GetComponents(array(), false, array());
 
-    $groups = array();
+    $filtered = array();
     $nslist = array();
 
-    $mask = !empty($_REQUEST['filter_mask']) ? trim($_REQUEST['filter_mask'])  : '';
+    $maskInc = !empty($_REQUEST['filter_include']) ? trim($_REQUEST['filter_include'])  : '';
+    $maskExc = !empty($_REQUEST['filter_exclude']) ? trim($_REQUEST['filter_exclude'])  : '';
 
-    foreach ($components['items'] as $item){
+    $curComp = !empty($_REQUEST['component_name']) ? trim($_REQUEST['component_name']) : '';
+    $curSite = !empty($_REQUEST['filter_site']) ? trim($_REQUEST['filter_site']) : '';
+    
+    foreach ($allcomponents['items'] as $item){
         if ($item['complex'] == 'Y'){
             continue;
         }
 
-        if ($mask && 0 !== strpos($item['name'],$mask)){
+        if ($maskInc && 0 !== strpos($item['name'],$maskInc)){
             continue;
         }
 
-        $p = explode(':',$item['name']);
-        $ns = $p[0];
+        if ($maskExc  && 0 === strpos($item['name'],$maskExc)){
+            continue;
+        }
+        
+        $nparts = explode(':',$item['name']);
+        $ns = $nparts[0];
 
         if (!in_array($ns, $nslist)){
             $nslist[] = $ns;
@@ -46,20 +54,24 @@ if (\CModule::IncludeModule('sprint.editor')) {
 
         $index = array_search($ns, $nslist);
 
-        if (!isset($groups[$index])){
-            $groups[$index] = array(
+        if (!isset($filtered[$index])){
+            $filtered[$index] = array(
                 'name' => $ns,
                 'items' => array()
             );
         }
 
-        $groups[$index]['items'][] = $item;
+        $filtered[$index]['items'][] = $item;
     }
 
     $result = array(
-        'components' => $groups,
+        'components' => $filtered,
         'sitetemplates' => $sitetemplates,
-    );
+        'component_name' => $curComp,
+        'filter_site' => $curSite,
+        'filter_include' => $maskInc,
+        'filter_exclude' => $maskExc,
+);
 
     echo json_encode(\Sprint\Editor\Locale::convertToUtf8IfNeed($result));
 }

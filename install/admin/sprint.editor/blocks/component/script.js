@@ -5,7 +5,8 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
         component_template: '',
         component_params: {},
         filter_site: '',
-        filter_mask: ''
+        filter_include: '',
+        filter_exclude: ''
     }, data);
 
     var pmanager = new BXComponentParamsManager({
@@ -83,11 +84,13 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
                 url: sprint_editor.getBlockWebPath('component') + '/ajax.php',
                 type: 'post',
                 dataType: 'json',
-                data: {filter_mask: data.filter_mask},
+                data: {
+                    component_name: data.component_name,
+                    filter_site: data.filter_site,
+                    filter_include: data.filter_include,
+                    filter_exclude: data.filter_exclude
+                },
                 success: function (result) {
-                    result['component_name'] = data.component_name;
-                    result['filter_site'] = data.filter_site;
-                    result['filter_mask'] = data.filter_mask;
                     $elFilter.html(
                         sprint_editor.renderTemplate('component-select', result)
                     );
