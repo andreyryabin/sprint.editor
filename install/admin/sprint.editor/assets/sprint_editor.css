@@ -45,7 +45,7 @@
     margin-bottom: 10px;
 }
 
-.sp-box_panel-title.ui-sortable-handle{
+.sp-box_panel .ui-sortable-handle{
     cursor: pointer;
 }
 

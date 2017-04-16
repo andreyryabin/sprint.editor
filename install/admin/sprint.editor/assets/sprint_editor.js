@@ -78,27 +78,14 @@ var sprint_editor = {
         $form.on('submit', function (e) {
             var post = [];
             $.each(collection, function (index, entry) {
-
                 var data = entry.collectData();
-
                 if (typeof entry.getAreas == 'function') {
                     var areas = entry.getAreas();
                     $.each(areas, function (areaIndex, area) {
                         data[area.dataKey] = area.block.collectData()
                     })
                 }
-
-                var $boxBlock = $blocks.find('.j-box').eq(index);
-
-                $boxBlock.css({
-                    height: $boxBlock.height(),
-                    width: $boxBlock.width(),
-                    background: '#e0e8ea'
-                }).empty().html('');
-
-
                 post.push(data);
-
             });
 
             var resultString = JSON.stringify(post);
@@ -111,6 +98,7 @@ var sprint_editor = {
                 .replace(/\\b/g, "\\b")
                 .replace(/\\f/g, "\\f");
 
+            $blocks.find('input,textarea,select').removeAttr('name');
             $resultinput.val(resultString);
         });
 
@@ -175,10 +163,20 @@ var sprint_editor = {
                 e.preventDefault();
 
                 var index = $container.find('.j-delbox').index(this);
-                var block = $(this).closest('.j-box');
+                var $box = $(this).closest('.j-box');
 
                 deletecollection(index);
-                block.remove();
+                $box.remove();
+            });
+
+            $container.on('click', '.j-minbox', function (e) {
+                e.preventDefault();
+
+                var $box = $(this).closest('.j-box');
+                var $boxBlock = $box.find('.j-box-block');
+
+                $boxBlock.toggle();
+
             })
         }
 
