@@ -1,37 +1,32 @@
-<div class="sp-table">
-    <div class="sp-row">
-        <div class="sp-col j-elements sp-col-elements">
-            {{~it.elements :item:index}}
-            <div data-id="{{!item.id}}" class="sp-iblock-item j-iblock-item">
-                {{!item.id}} - {{!item.title}}
-            </div>
+<div class="sp-filter">
+    <input type="button" class="j-toggle" value="Выбрать">
+    <span {{?it.hideSource}}style="display: none"{{?}} class="j-filter">
+        <select class="j-select-iblock" style="width: 180px;">
+            <option value="">нет</option>
+            {{~it.iblocks :item:index}}
+            <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
+            </option>
             {{~}}
-        </div>
-        <div class="sp-col sp-col-toggle j-toogle">
-            <span>&larr;</span><br/>
-            <span>&larr;</span><br/>
-            <span>&larr;</span><br/>
-        </div>
-        <div {{?it.hideSource}}style="display: none"{{?}} class="sp-col j-source sp-col-source">
-            <div class="sp-col-source_result">
-                {{~it.source :item:index}}
-                <div data-id="{{!item.id}}" class="sp-iblock-item j-iblock-item">
-                    {{!item.id}} - {{!item.title}}
-                </div>
-                {{~}}
-            </div>
-            <div class="sp-col-source_filter">
-                <select class="j-select-iblock" style="width: 120px;">
-                    <option value="">нет</option>
-                    {{~it.iblocks :item:index}}
-                    <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
-                    </option>
-                    {{~}}
-                </select>
-                <input class="j-nav-left" type="button" value="&larr;">
-                {{=it.page_num}}/{{=it.page_cnt}}
-                <input class="j-nav-right" type="button" value="&rarr;">
-            </div>
-        </div>
+        </select>
+        <input class="j-nav-left" type="button" value="&larr;">
+        <input class="j-nav-right" type="button" value="&rarr;">
+        {{=it.page_num}}/{{=it.page_cnt}}
+    </span>
+</div>
+
+<div {{?it.hideSource}}style="display: none"{{?}} class="j-source sp-source">
+    {{~it.source :item:index}}
+    <div data-id="{{!item.id}}" class="sp-item j-item">
+        {{!item.id}} - {{!item.title}}
     </div>
+    {{~}}
+    <div title="Перетащите элементы вниз для их выбора" class="sp-arrows">&darr;&darr;&darr;</div>
+</div>
+
+<div class="j-elements sp-elements">
+    {{~it.elements :item:index}}
+    <div data-id="{{!item.id}}" class="sp-item j-item">
+        {{!item.id}} - {{!item.title}}
+    </div>
+    {{~}}
 </div>

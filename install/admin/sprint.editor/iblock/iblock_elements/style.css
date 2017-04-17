@@ -1,45 +1,47 @@
-.sp-block-iblock_elements .sp-iblock-item {
+.sp-block-iblock_elements .sp-container{
+    position: relative;
+}
+
+.sp-block-iblock_elements .sp-item {
     padding: 6px;
-    margin-bottom: 5px;
+    margin: 0 0 5px 0;
     cursor: pointer;
     white-space: nowrap;
+    width: 95%;
     overflow: hidden;
-    background: #ddd;
-}
-
-.sp-block-iblock_elements .sp-iblock-item:last-child{
-    margin-bottom: 0;
-}
-.sp-block-iblock_elements .sp-col-elements {
-    background: #eee;
-}
-.sp-block-iblock_elements .sp-col-elements .sp-iblock-item {
-
-}
-
-.sp-block-iblock_elements .sp-col-source {
-    background: #eee;
-    width: 45%;
 }
 
 
-.sp-block-iblock_elements .sp-col-source_filter {
-    padding: 6px;
+.sp-block-iblock_elements .sp-filter {
+    margin-bottom: 10px;
+}
+
+.sp-block-iblock_elements .sp-source {
+    background: #FFEBC1;
+    padding: 5px 5px 10px;
+}
+
+.sp-block-iblock_elements .sp-arrows{
+    margin: 10px 0 0;
     text-align: center;
 }
 
-.sp-block-iblock_elements .sp-col-source_result {
-    overflow: hidden;
+.sp-block-iblock_elements .sp-elements {
+    background: #eee;
+    min-height: 100px;
+    padding: 5px 5px 10px;
 }
 
-.sp-block-iblock_elements .sp-col-toggle {
+.sp-block-iblock_elements .sp-source .sp-item{
+    border-bottom: 1px solid #FDBF3B;
+}
+
+.sp-block-iblock_elements .sp-elements .sp-item{
+    border-bottom: 1px solid #ccc;
+}
+.sp-block-iblock_elements .sp-item.ui-draggable-dragging{
     background: #FDBF3B;
-    cursor: pointer;
-    width: 26px;
-    vertical-align: middle;
-    text-align: center;
 }
-
-.sp-block-iblock_elements .sp-col-toggle:hover {
-    background: #fed800;
+.sp-block-iblock_elements .sp-item.ui-sortable-helper {
+    background: #ccc;
 }

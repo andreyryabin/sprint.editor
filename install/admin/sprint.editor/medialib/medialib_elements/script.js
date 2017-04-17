@@ -32,12 +32,12 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
     };
 
     this.afterRender = function () {
-        $el.on('click','.j-toogle', function(){
+        $el.on('click','.j-toggle', function(){
             if (hideSource){
-                $el.find('.j-col-source').show();
+                $el.find('.j-source,.j-filter').show();
                 hideSource = 0
             } else {
-                $el.find('.j-col-source').hide();
+                $el.find('.j-source,.j-filter').hide();
                 hideSource = 1;
             }
         });
@@ -84,7 +84,7 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
         var $obj = $el.find('.j-elements');
 
         var values = [];
-        $obj.find('.j-medialib-item').each(function () {
+        $obj.find('.j-item').each(function () {
             var val = intval(
                 $(this).data('id')
             );
@@ -111,7 +111,6 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
             dataType: 'json',
             success: function (result) {
                 result.hideSource = hideSource;
-                
                 result.page_num = intval(result.page_num);
                 result.page_cnt = intval(result.page_cnt);
 
@@ -136,7 +135,7 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
 
                 var removeIntent = false;
                 $elem.sortable({
-                    items: ".j-medialib-item",
+                    items: ".j-item",
                     over: function () {
                         removeIntent = false;
                     },
@@ -160,7 +159,7 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
                     }
                 });
 
-                $sour.find('.j-medialib-item').draggable({
+                $sour.find('.j-item').draggable({
                     connectToSortable: $elem,
                     helper: "clone",
                     revert: "invalid"

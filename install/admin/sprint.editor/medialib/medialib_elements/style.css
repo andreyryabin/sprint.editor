@@ -1,48 +1,47 @@
-.sp-block-medialib_elements .sp-medialib-item {
+.sp-block-medialib_elements .sp-container{
+    position: relative;
+}
+
+.sp-block-medialib_elements .sp-item {
     cursor: pointer;
     overflow: hidden;
     text-align: center;
     width: 90px;
     height: 90px;
     float: left;
-    vertical-align: middle;
+    margin: 0 5px 5px 0;
 }
 
-.sp-block-medialib_elements .sp-medialib-item img{
+.sp-block-medialib_elements .sp-item img{
     min-width: 90px;
     min-height: 90px;
 }
 
-.sp-block-medialib_elements .sp-col-elements {
-    background: #eee;
+.sp-block-medialib_elements .sp-filter {
+    margin-bottom: 10px;
 }
 
-.sp-block-medialib_elements .sp-col-source {
-    width: 45%;
-    background: #eee;
+.sp-block-medialib_elements .sp-source {
+    background: #FFEBC1;
+    padding: 5px 5px 10px
 }
 
-.sp-block-medialib_elements .sp-col-source_filter {
-    text-align: center;
-    padding: 6px;
-}
-
-.sp-block-medialib_elements .sp-col-elements .sp-medialib-item{
-    margin: 0 5px 5px 0;
-}
-
-.sp-block-medialib_elements .sp-col-source .sp-medialib-item{
-    margin: 0 0 5px 5px;
-}
-
-.sp-block-medialib_elements .sp-col-toggle {
-    background: #FDBF3B;
-    cursor: pointer;
-    width: 26px;
-    vertical-align: middle;
+.sp-block-medialib_elements .sp-arrows{
+    margin: 5px 0 0;
     text-align: center;
 }
 
-.sp-block-medialib_elements .sp-col-toggle:hover {
-    background: #fed800;
+.sp-block-medialib_elements .sp-elements {
+    background: #eee;
+    min-height: 100px;
+    padding: 5px 5px 10px;
 }
+
+.sp-block-medialib_elements .sp-source .sp-item{
+    /*border: 2px solid #FDBF3B;*/
+}
+
+.sp-block-medialib_elements .sp-elements .sp-item{
+    /*border: 2px solid #ccc;*/
+}
+
