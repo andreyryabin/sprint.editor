@@ -134,11 +134,6 @@ foreach ($upgradeList as $aItem):?>
     https://bitbucket.org/andrey_ryabin/sprint.editor/wiki/Home
 </a></p>
 
-<p><?=GetMessage('SPRINT_EDITOR_HELP_TRACKER')?> <br/>
-<a target="_blank" href="https://bitbucket.org/andrey_ryabin/sprint.editor/issues/new">
-    https://bitbucket.org/andrey_ryabin/sprint.editor/issues/new
-</a></p>
-
 <p><?=GetMessage('SPRINT_EDITOR_HELP_MARKETPLACE')?> <br/>
 <a target="_blank" href="http://marketplace.1c-bitrix.ru/solutions/sprint.editor/">
     http://marketplace.1c-bitrix.ru/solutions/sprint.editor/
