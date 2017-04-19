@@ -31,6 +31,8 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
         var $elParams = $el.find('.j-result');
         var boxWidth = $el.width();
 
+        boxWidth = boxWidth ? boxWidth : 650;
+
         renderComponentParams();
         renderFilters();
 
