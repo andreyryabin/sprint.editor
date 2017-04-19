@@ -13,6 +13,12 @@ if ($updater && $updater instanceof \CUpdater) {
 
     //тут нельзя использовать классы модуля, так как их может не быть в обновлении
 
-    //1.0.16
+    //отключаем показ блоков микроразметки по умолчанию
+    if (\COption::GetOptionString('sprint.editor','enable_blocks_schema', '') != 'yes'){
+        \COption::SetOptionString('sprint.editor','enable_blocks_schema','no');
+    }
+
+
+    //1.0.17
 
 }

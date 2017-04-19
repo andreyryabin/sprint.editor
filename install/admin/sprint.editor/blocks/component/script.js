@@ -12,7 +12,7 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
     var pmanager = new BXComponentParamsManager({
         'requestUrl': '/bitrix/admin/fileman_component_params.php',
         'relPath': '/',
-        'id': getRandomInt()
+        'id': getRandomInt(100,9999)
     });
 
     this.getData = function () {
