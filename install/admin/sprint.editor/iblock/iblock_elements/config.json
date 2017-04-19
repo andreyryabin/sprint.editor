@@ -1,5 +1,5 @@
 {
-  "title": "Элементы",
+  "title": "Привязка к элементам",
   "templates": [
     "select.html"
   ]
