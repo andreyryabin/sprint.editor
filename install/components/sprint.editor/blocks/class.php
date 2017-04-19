@@ -128,6 +128,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             ExecuteModuleEventEx($aEvent, array(&$blocks));
         }
 
+        $this->includeAssets();
         $this->includePartial('_header', $blocks, $this->arParams);
 
         $cntblocks = 0;
@@ -142,56 +143,80 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
     }
 
+    protected function includeAssets()
+    {
+        global $APPLICATION;
+
+        $path = $this->findResource('_style.css');
+        if ($path) {
+            $APPLICATION->SetAdditionalCSS($path);
+        }
+
+        $path = $this->findResource('_script.js');
+        if ($path) {
+            $APPLICATION->AddHeadScript($path);
+        }
+
+    }
+
     protected function includeBlock($block)
     {
-        $path = $this->findBlockPath($block['name']);
-        if ($path) {
-            /** @noinspection PhpIncludeInspection */
-            include($path);
-            return true;
+        $root = \Sprint\Editor\Module::getDocRoot();
+
+        $path = $this->findResource($block['name'] . '.php');
+
+        if (!$path) {
+            $path = $this->findResource('dump.php');
         }
-        return false;
+
+        if (!$path) {
+            return false;
+        }
+
+        /** @noinspection PhpIncludeInspection */
+        include($root . $path);
+        return true;
+
     }
 
     protected function includePartial($partialName, &$blocks, $arParams)
     {
-        $path = $this->findBlockPath($partialName);
-        if ($path) {
-            /** @noinspection PhpIncludeInspection */
-            include($path);
-            return true;
+        $root = \Sprint\Editor\Module::getDocRoot();
+        $path = $this->findResource($partialName . '.php');
+        if (!$path) {
+            return false;
         }
-        return false;
+
+        /** @noinspection PhpIncludeInspection */
+        include($root . $path);
+        return true;
     }
 
-    protected function findBlockPath($blockName)
+    protected function findResource($resName)
     {
         $templateName = $this->arParams['TEMPLATE_NAME'];
         $root = \Sprint\Editor\Module::getDocRoot();
 
         $paths = array(
 
-            $root . SITE_TEMPLATE_PATH . '/components/sprint.editor/blocks/' . $templateName . '/' . $blockName . '.php',
-            $root . SITE_TEMPLATE_PATH . '/components/sprint.editor/blocks/.default/' . $blockName . '.php',
+            SITE_TEMPLATE_PATH . '/components/sprint.editor/blocks/' . $templateName . '/' . $resName,
+            SITE_TEMPLATE_PATH . '/components/sprint.editor/blocks/.default/' . $resName,
 
-            $root . '/local/templates/.default/components/sprint.editor/blocks/' . $templateName . '/' . $blockName . '.php',
-            $root . '/bitrix/templates/.default/components/sprint.editor/blocks/' . $templateName . '/' . $blockName . '.php',
+            '/local/templates/.default/components/sprint.editor/blocks/' . $templateName . '/' . $resName,
+            '/bitrix/templates/.default/components/sprint.editor/blocks/' . $templateName . '/' . $resName,
 
-            $root . '/local/templates/.default/components/sprint.editor/blocks/.default/' . $blockName . '.php',
-            $root . '/bitrix/templates/.default/components/sprint.editor/blocks/.default/' . $blockName . '.php',
+            '/local/templates/.default/components/sprint.editor/blocks/.default/' . $resName,
+            '/bitrix/templates/.default/components/sprint.editor/blocks/.default/' . $resName,
 
-            $root . '/local/components/sprint.editor/blocks/templates/' . $templateName . '/' . $blockName . '.php',
-            $root . '/bitrix/components/sprint.editor/blocks/templates/' . $templateName . '/' . $blockName . '.php',
+            '/local/components/sprint.editor/blocks/templates/' . $templateName . '/' . $resName,
+            '/bitrix/components/sprint.editor/blocks/templates/' . $templateName . '/' . $resName,
 
-            $root . '/local/components/sprint.editor/blocks/templates/.default/' . $blockName . '.php',
-            $root . '/bitrix/components/sprint.editor/blocks/templates/.default/' . $blockName . '.php',
-
-            $root . '/local/components/sprint.editor/blocks/templates/.default/dump.php',
-            $root . '/bitrix/components/sprint.editor/blocks/templates/.default/dump.php',
+            '/local/components/sprint.editor/blocks/templates/.default/' . $resName,
+            '/bitrix/components/sprint.editor/blocks/templates/.default/' . $resName,
         );
 
         foreach ($paths as $path) {
-            if (is_file($path)) {
+            if (is_file($root . $path)) {
                 return $path;
             }
         }

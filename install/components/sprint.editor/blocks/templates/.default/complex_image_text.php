@@ -8,9 +8,9 @@ $image = Sprint\Editor\Blocks\Image::getImage($block['image'], array(
 ));
 ?>
 
-<div class="c-image-text" style="background: #eee;margin: 10px 0 10px; min-height: 250px;">
+<div class="c-image-text">
     <?if ($image):?>
-        <img style="float: left;width: 320px; margin: 0 10px 10px 0;" alt="<?=$image['DESCRIPTION']?>" src="<?=$image['SRC']?>">
+        <img alt="<?=$image['DESCRIPTION']?>" src="<?=$image['SRC']?>">
     <?endif;?>
     <?=$text?>
 </div>

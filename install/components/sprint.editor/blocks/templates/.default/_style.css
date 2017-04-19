@@ -1,0 +1,74 @@
+/* Общие стили для блоков */
+
+.c-image-text {
+    background: #eee;
+    margin: 10px 0 10px;
+    min-height: 250px;
+}
+
+.c-image-text img {
+    float: left;
+    width: 320px;
+    margin: 0 10px 10px 0;
+}
+
+.c-iblock-elements {
+    width: 350px;
+    background: #ddd;
+    padding: 10px;
+}
+
+.c-properties {
+    width: 400px;
+    border-collapse: collapse;
+}
+
+.c-properties_title {
+    border: 1px solid #ccc;
+    padding: 0 5px;
+    font-weight: bold;
+}
+
+.c-properties_text {
+    border: 1px solid #ccc;
+    padding: 0 5px;
+}
+
+.c-contents_elements {
+    list-style-type: none;
+    counter-reset: list;
+}
+
+/* цвет чисел */
+.c-contents_elements li:before {
+    color: #555;
+}
+
+/* уровень 0 */
+.c-contents_elements li.level1 {
+    counter-increment: list;
+    counter-reset: list1;
+}
+
+.c-contents_elements li.level1:before {
+    content: counter(list) '. ';
+}
+
+/* уровень 1 */
+.c-contents_elements li.level2 {
+    counter-increment: list1;
+    counter-reset: list2;
+}
+
+.c-contents_elements li.level2:before {
+    content: counter(list) '.' counter(list1) '. ';
+}
+
+/* уровень 2 */
+.c-contents_elements li.level3 {
+    counter-increment: list2;
+}
+
+.c-contents_elements li.level3:before {
+    content: counter(list) '.' counter(list1) '.' counter(list2) '. ';
+}
