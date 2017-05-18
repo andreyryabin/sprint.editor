@@ -15,6 +15,8 @@
  */
 namespace Sprint\Editor;
 
+use Sprint\Editor\Tools\Image;
+
 class UploadHandler
 {
 
@@ -619,32 +621,10 @@ class UploadHandler
             $bitrixId = \CFile::SaveFile($aFile, 'sprint.editor');
             if ($bitrixId){
                 unlink($file->path);
-                $res[] = $this->bitrixResizeImageById(
-                    $bitrixId,
-                    $this->options['bitrix_resize']['width'],
-                    $this->options['bitrix_resize']['height'],
-                    $this->options['bitrix_resize']['exact']
-
-                );
+                $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
             }
         }
         return $res;
     }
 
-
-    protected function bitrixResizeImageById($imageId, $width = 0, $height = 0, $exact = 0) {
-        if ($aImage = \CFile::GetFileArray($imageId)) {
-            $aImage["ORIGINAL_SRC"] = $aImage["SRC"];
-            if ($width > 0 && $height > 0) {
-                $mode = ($exact) ? BX_RESIZE_IMAGE_EXACT : BX_RESIZE_IMAGE_PROPORTIONAL;
-                $aResised = \CFile::ResizeImageGet($aImage, array("width" => $width, "height" => $height), $mode, true);
-                return array_merge($aImage, array(
-                    "SRC" => $aResised["src"],
-                    "WIDTH" => $aResised["width"],
-                    "HEIGHT" => $aResised["height"]
-                ));
-            }
-        }
-        return $aImage;
-    }
 }

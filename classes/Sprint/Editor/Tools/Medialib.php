@@ -133,12 +133,7 @@ class Medialib
         $dbResult = $DB->Query($q);
 
         while ($aItem = $dbResult->Fetch()) {
-            $arResult['items'][] = Image::resizeImage(
-                $aItem,
-                $resizeParams['width'],
-                $resizeParams['height'],
-                $resizeParams['exact']
-            );
+            $arResult['items'][] = Image::resizeImage2($aItem,$resizeParams);
         }
 
         return $arResult;

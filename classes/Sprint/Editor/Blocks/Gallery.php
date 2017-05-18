@@ -22,12 +22,7 @@ class Gallery
                 continue;
             }
 
-            $aItem = ImageTools::resizeImageById(
-                $image['file']['ID'],
-                $resizeParams['width'],
-                $resizeParams['height'],
-                $resizeParams['exact']
-            );
+            $aItem = ImageTools::resizeImage2($image['file']['ID'],$resizeParams);
 
             $aItem['DESCRIPTION'] = htmlspecialchars($image['desc']);
 

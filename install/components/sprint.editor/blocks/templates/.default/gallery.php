@@ -2,7 +2,8 @@
 $images = Sprint\Editor\Blocks\Gallery::getImages($block, array(
     'width' => 200,
     'height' => 200,
-    'exact' => 0
+    'exact' => 0,
+    //'jpg_quality' => 75
 ));
 ?><div class="c-gallery">
 <?foreach ($images as $image):?>

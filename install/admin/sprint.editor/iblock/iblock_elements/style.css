@@ -5,7 +5,7 @@
 .sp-block-iblock_elements .sp-item {
     padding: 6px;
     margin: 0 0 5px 0;
-    cursor: pointer;
+    cursor: move;
     white-space: nowrap;
     width: 95%;
     overflow: hidden;

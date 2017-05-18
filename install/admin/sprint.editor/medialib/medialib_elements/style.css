@@ -3,7 +3,7 @@
 }
 
 .sp-block-medialib_elements .sp-item {
-    cursor: pointer;
+    cursor: move;
     overflow: hidden;
     text-align: center;
     width: 90px;

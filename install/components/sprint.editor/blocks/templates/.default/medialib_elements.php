@@ -3,7 +3,8 @@
 $images = Sprint\Editor\Blocks\MedialibElements::getImages($block, array(
     'width' => 200,
     'height' => 200,
-    'exact' => 0
+    'exact' => 0,
+    //'jpg_quality' => 75
 ));
 
 ?><div class="c-gallery">

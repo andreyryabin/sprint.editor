@@ -16,7 +16,7 @@ var sprint_editor = {
     registerParameters: function (parameters) {
         this._parameters = parameters
     },
-    
+
     registerTemplate: function (name, html) {
         this._templates[name] = html;
     },
@@ -37,7 +37,7 @@ var sprint_editor = {
         return (this._parameters[name]) ? this._parameters[name] : false;
     },
 
-    getBlockWebPath: function(blockName){
+    getBlockWebPath: function (blockName) {
         var params = this.getBlockParams(blockName);
         return '/bitrix/admin/sprint.editor/' + params.group.name + '/' + params.name;
     },
@@ -71,7 +71,7 @@ var sprint_editor = {
             }
         }
 
-        if (params.enableChange){
+        if (params.enableChange) {
             changeEvents()
         }
 
@@ -88,15 +88,19 @@ var sprint_editor = {
                 post.push(data);
             });
 
-            var resultString = JSON.stringify(post);
-            resultString = resultString.replace(/\\n/g, "\\n")
-                .replace(/\\'/g, "\\'")
-                .replace(/\\"/g, '\\"')
-                .replace(/\\&/g, "\\&")
-                .replace(/\\r/g, "\\r")
-                .replace(/\\t/g, "\\t")
-                .replace(/\\b/g, "\\b")
-                .replace(/\\f/g, "\\f");
+
+            var resultString = '';
+            if (post.length > 0) {
+                resultString = JSON.stringify(post);
+                resultString = resultString.replace(/\\n/g, "\\n")
+                    .replace(/\\'/g, "\\'")
+                    .replace(/\\"/g, '\\"')
+                    .replace(/\\&/g, "\\&")
+                    .replace(/\\r/g, "\\r")
+                    .replace(/\\t/g, "\\t")
+                    .replace(/\\b/g, "\\b")
+                    .replace(/\\f/g, "\\f");
+            }
 
             $blocks.find('input,textarea,select').removeAttr('name');
             $resultinput.val(resultString);
@@ -189,7 +193,7 @@ var sprint_editor = {
             templateVars.showSortButtons = params.showSortButtons;
             templateVars.enableChange = params.enableChange;
 
-            var html = sprint_editor.renderTemplate('box',templateVars);
+            var html = sprint_editor.renderTemplate('box', templateVars);
 
             $blocks.append(html);
 
@@ -227,7 +231,7 @@ var sprint_editor = {
         }
 
         function swapcollection(indexA, indexB) {
-            if (indexA !== indexB){
+            if (indexA !== indexB) {
                 var tempA = collection[indexA];
                 collection.splice(indexA, 1);
                 collection.splice(indexB, 0, tempA);

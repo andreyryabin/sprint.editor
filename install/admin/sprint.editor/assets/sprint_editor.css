@@ -46,7 +46,7 @@
 }
 
 .sp-box_panel .ui-sortable-handle{
-    cursor: pointer;
+    cursor: move;
 }
 
 .sp-box_panel:after{

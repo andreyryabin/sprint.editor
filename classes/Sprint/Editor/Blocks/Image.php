@@ -15,12 +15,7 @@ class Image
             'exact' => 0,
         ), $resizeParams);
 
-        $aItem = ImageTools::resizeImageById(
-            $block['file']['ID'],
-            $resizeParams['width'],
-            $resizeParams['height'],
-            $resizeParams['exact']
-        );
+        $aItem = ImageTools::resizeImage2($block['file']['ID'],$resizeParams);
 
         $aItem['DESCRIPTION'] = htmlspecialchars($block['desc']);
         return $aItem;
