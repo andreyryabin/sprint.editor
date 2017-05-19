@@ -64,18 +64,33 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             }
         });
 
-        $el.on('click', '.j-url-tab input[type=button]', function () {
-            var button = $(this);
-            var buttonText = $(this).val();
+        $el.on("mouseenter", '.j-image_item', function () {
+            $(this).addClass('sp-image_item-active');
+            $(this).find('.j-image_item_panel').show()
+        });
 
-            var $urlinput = $el.find('.j-url-tab input[type=text]');
-            var urlvalue = $urlinput.val();
+        $el.on("mouseleave", '.j-image_item', function () {
+            $(this).removeClass('sp-image_item-active');
+            $(this).find('.j-image_item_panel').hide()
+        });
+
+        var $urltext = $el.find('.j-url-tab input[type=text]');
+        var $urlsubmit = $el.find('.j-url-tab input[type=button]');
+
+        $urlsubmit.on('click', function () {
+            submitImageUrl();
+        });
+
+        function submitImageUrl() {
+            var buttonText = $urlsubmit.val();
+
+            var urlvalue = $urltext.val();
 
             if (urlvalue.length <= 0) {
                 return false;
             }
 
-            button.val('...');
+            $urlsubmit.val('...');
 
             $.ajax({
                 url: sprint_editor.getBlockWebPath('gallery') + '/download.php',
@@ -93,21 +108,11 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
                         renderfiles();
                     }
 
-                    $urlinput.val('');
-                    button.val(buttonText);
+                    $urltext.val('');
+                    $urlsubmit.val(buttonText);
                 }
             });
-        });
-
-        $el.on("mouseenter", '.j-image_item', function () {
-            $(this).addClass('sp-image_item-active');
-            $(this).find('.j-image_item_panel').show()
-        });
-
-        $el.on("mouseleave", '.j-image_item', function () {
-            $(this).removeClass('sp-image_item-active');
-            $(this).find('.j-image_item_panel').hide()
-        });
+        }
     };
 
     var renderfiles = function () {
