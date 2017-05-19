@@ -13,6 +13,7 @@
  * Добавлены методы для сохранения в бд битрикса
  *
  */
+
 namespace Sprint\Editor;
 
 use Sprint\Editor\Tools\Image;
@@ -22,8 +23,6 @@ class UploadHandler
 
     protected $options;
 
-    // PHP File Upload error message codes:
-    // http://php.net/manual/en/features.file-upload.errors.php
     protected $error_messages = array(
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
         2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
@@ -44,7 +43,7 @@ class UploadHandler
 
     function __construct($options = null, $initialize = true, $error_messages = null) {
         $dir = '/upload/sprint.editor/temp/';
-        if (is_dir($_SERVER['DOCUMENT_ROOT'] . $dir)){
+        if (is_dir($_SERVER['DOCUMENT_ROOT'] . $dir)) {
             mkdir($_SERVER['DOCUMENT_ROOT'] . $dir, BX_DIR_PERMISSIONS, true);
         }
 
@@ -93,13 +92,7 @@ class UploadHandler
                     . '/', // Trailing slash to not match subdomains by mistake
                     '/' // preg_quote delimiter param
                 ) . '/',
-            // Enable to provide file downloads via GET requests to the PHP script:
-            //     1. Set to 1 to download files via readfile method through PHP
-            //     2. Set to 2 to send a X-Sendfile header for lighttpd/Apache
-            //     3. Set to 3 to send a X-Accel-Redirect header for nginx
-            // If set to 2 or 3, adjust the upload_url option to the base path of
-            // the redirect parameter, e.g. '/files/'.
-            'download_via_php' => false,
+
             // Read files in chunks to avoid memory limits when download_via_php
             // is enabled, set to 0 to disable chunked reading of files:
             'readfile_chunk_size' => 10 * 1024 * 1024, // 10 MiB
@@ -164,35 +157,15 @@ class UploadHandler
 
     protected function get_upload_path($file_name = null) {
         $file_name = $file_name ? $file_name : '';
-        return $this->options['upload_dir'] . $this->get_user_path(). $file_name;
+        return $this->options['upload_dir'] . $this->get_user_path() . $file_name;
     }
 
     protected function get_query_separator($url) {
         return strpos($url, '?') === false ? '?' : '&';
     }
 
-    protected function get_download_url($file_name, $version = null, $direct = false) {
-        if (!$direct && $this->options['download_via_php']) {
-            $url = $this->options['script_url']
-                . $this->get_query_separator($this->options['script_url'])
-                . $this->get_singular_param_name()
-                . '=' . rawurlencode($file_name);
-            if ($version) {
-                $url .= '&version=' . rawurlencode($version);
-            }
-            return $url . '&download=1';
-        }
-        if (empty($version)) {
-            $version_path = '';
-        } else {
-            $version_url = @$this->options['image_versions'][$version]['upload_url'];
-            if ($version_url) {
-                return $version_url . $this->get_user_path() . rawurlencode($file_name);
-            }
-            $version_path = rawurlencode($version) . '/';
-        }
-        return $this->options['upload_url'] . $this->get_user_path()
-        . $version_path . rawurlencode($file_name);
+    protected function get_download_url($file_name) {
+        return $this->options['upload_url'] . $this->get_user_path() . rawurlencode($file_name);
     }
 
     // Fix for overflowing signed 32 bit integers,
@@ -340,12 +313,7 @@ class UploadHandler
             $name = str_replace('.', '-', microtime(true));
         }
 
-        $name = 'img-' . time() . '-'. mt_rand(99,999) . '-' . $name;
-
-        //uniq filename
-//        while (is_dir($this->get_upload_path($name))) {
-//            $name = $this->upcount_name($name);
-//        }
+        $name = 'img-' . time() . '-' . mt_rand(99, 999) . '-' . $name;
 
         // Keep an existing filename if this is part of a chunked upload:
         $uploaded_bytes = $this->fix_integer_overflow((int)$content_range[1]);
@@ -355,17 +323,25 @@ class UploadHandler
             ) {
                 break;
             }
-            //$name = $this->upcount_name($name);
+
         }
         return $name;
     }
 
 
-    protected function handle_file_upload($uploaded_file, $name, $size, $type, $error, $index = null, $content_range = null) {
+    protected function handle_file_upload(
+        $uploaded_file,
+        $name,
+        $size,
+        $type,
+        $error,
+        $index = null,
+        $content_range = null
+    ) {
         $file = new \stdClass();
-        
+
         $file->name = $this->get_file_name($name, $content_range);
-        
+
         $file->size = $this->fix_integer_overflow((int)$size);
         $file->type = $type;
         if ($this->validate($uploaded_file, $file, $error, $index)) {
@@ -600,10 +576,9 @@ class UploadHandler
     }
 
 
-
     //bitrix section
 
-    protected function bitrixTranslite($str){
+    protected function bitrixTranslite($str) {
         return \CUtil::translit($str, 'ru', array(
             "max_len" => 100,
             "change_case" => 'L', // 'L' - toLower, 'U' - toUpper, false - do not change
@@ -614,17 +589,34 @@ class UploadHandler
         ));
     }
 
-    protected function bitrixSave($files){
+    protected function bitrixSave($files) {
         $res = array();
-        foreach ($files as $k => $file){
+        foreach ($files as $k => $file) {
             $aFile = \CFile::MakeFileArray($file->path);
-            $bitrixId = \CFile::SaveFile($aFile, 'sprint.editor');
-            if ($bitrixId){
-                unlink($file->path);
-                $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+            $checkErr = \CFile::CheckImageFile($aFile, 0, 0, 0);
+            if (empty($checkErr)) {
+                $bitrixId = \CFile::SaveFile($aFile, 'sprint.editor');
+                if ($bitrixId) {
+                    $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+                }
             }
+
+            unlink($file->path);
         }
         return $res;
     }
 
+
+    public function saveImage($url) {
+        $aFile = \CFile::MakeFileArray($url);
+        $checkErr = \CFile::CheckImageFile($aFile, 0, 0, 0);
+        $image = false;
+        if (empty($checkErr)) {
+            $bitrixId = \CFile::SaveFile($aFile, 'sprint.editor');
+            if ($bitrixId) {
+                $image = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+            }
+        }
+        return $this->generate_response(array('image' => $image), true);
+    }
 }

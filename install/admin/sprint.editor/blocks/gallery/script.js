@@ -1,4 +1,4 @@
-sprint_editor.registerBlock('gallery', function($, $el, data) {
+sprint_editor.registerBlock('gallery', function ($, $el, data) {
     data = $.extend({
         images: []
 
@@ -24,7 +24,7 @@ sprint_editor.registerBlock('gallery', function($, $el, data) {
             url: sprint_editor.getBlockWebPath('gallery') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
-                $.each(result.result.file, function(index,file){
+                $.each(result.result.file, function (index, file) {
                     data.images.push({
                         file: file,
                         desc: ''
@@ -36,23 +36,68 @@ sprint_editor.registerBlock('gallery', function($, $el, data) {
             progressall: function (e, result) {
                 var progress = parseInt(result.loaded / result.total * 100, 10);
                 label.text('Загрузка: ' + progress + '%');
-                if (progress>=100){
+                if (progress >= 100) {
                     label.text(labeltext);
                 }
             }
         }).prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
-        $el.on('click', '.j-image_item-delete', function(){
+        $el.on('click', '.j-image_item-delete', function () {
             var index = $el.find('.j-image_item-delete').index(this);
             var item = $(this).closest('.j-image_item');
 
-            if (data.images[index]){
+            if (data.images[index]) {
                 data.images.splice(index, 1);
                 item.remove();
             }
         });
 
+        $el.on('click', '.j-url-toggle', function () {
+            var $obj = $el.find('.j-url-tab');
+            if ($obj.is(':hidden')) {
+                $(this).addClass('active');
+                $obj.show();
+            } else {
+                $(this).removeClass('active');
+                $obj.hide();
+            }
+        });
+
+        $el.on('click', '.j-url-tab input[type=button]', function () {
+            var button = $(this);
+            var buttonText = $(this).val();
+
+            var $urlinput = $el.find('.j-url-tab input[type=text]');
+            var urlvalue = $urlinput.val();
+
+            if (urlvalue.length <= 0) {
+                return false;
+            }
+
+            button.val('...');
+
+            $.ajax({
+                url: sprint_editor.getBlockWebPath('gallery') + '/download.php',
+                type: 'post',
+                data: {
+                    url: urlvalue
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.image) {
+                        data.images.push({
+                            file: result.image,
+                            desc: ''
+                        });
+                        renderfiles();
+                    }
+
+                    $urlinput.val('');
+                    button.val(buttonText);
+                }
+            });
+        });
 
         $el.on("mouseenter", '.j-image_item', function () {
             $(this).addClass('sp-image_item-active');
@@ -69,11 +114,11 @@ sprint_editor.registerBlock('gallery', function($, $el, data) {
         $el.find('.j-fileupload-result').html(
             sprint_editor.renderTemplate('gallery-images', data)
         );
-        $el.find('.j-image_item-text').each(function(){
+        $el.find('.j-image_item-text').each(function () {
             var index = $el.find('.j-image_item-text').index(this);
 
             $(this).bindWithDelay('input', function () {
-                if (data.images[index]){
+                if (data.images[index]) {
                     data.images[index].desc = $(this).val();
                 }
             }, 500);
@@ -81,7 +126,6 @@ sprint_editor.registerBlock('gallery', function($, $el, data) {
             //$(this).mouseenter( handlerIn ).mouseleave( handlerOut );
 
         });
-
 
 
     }

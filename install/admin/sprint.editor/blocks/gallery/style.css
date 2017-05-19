@@ -6,7 +6,8 @@
     float: left;
     background: #ccc;
     margin: 0 5px 5px 0;
-    border: 2px solid #ccc;
+    text-align: center;
+    border: 2px solid #eee;
 }
 
 .sp-block-gallery .sp-image_item_panel{
@@ -35,5 +36,29 @@
 }
 
 .sp-block-gallery .sp-file{
-    margin-bottom: 10px;
+
+}
+
+.sp-block-gallery .j-fileupload-result {
+    background: #eee;
+    min-height: 100px;
+    padding: 3px 3px 8px;
+}
+
+.sp-block-gallery .j-fileupload-btn{
+
+}
+
+.sp-block-gallery .sp-url-toggle{
+    cursor:pointer;padding: 0 10px;
+}
+
+.sp-block-gallery .sp-url-toggle.active{
+    text-decoration: underline;
+}
+
+.sp-block-gallery .sp-url-tab{
+    background: #FFEBC1;
+    padding: 10px;
+    display: none;
 }
