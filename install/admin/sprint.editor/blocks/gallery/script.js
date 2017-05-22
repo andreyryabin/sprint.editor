@@ -73,8 +73,8 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             $(this).find('.j-image_item_panel').hide()
         });
 
-        var $urltext = $el.find('.j-source input[type=text]');
-        var $urlsubmit = $el.find('.j-source input[type=button]');
+        var $urltext = $el.find('.j-download-url');
+        var $urlsubmit = $el.find('.j-download-btn');
 
         $urlsubmit.on('click', function () {
             submitImageUrl();
