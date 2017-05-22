@@ -4,6 +4,11 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
 
     }, data);
 
+    var hideSource = 1;
+    if (data.images.length <=0 ){
+        hideSource = 0;
+    }
+
     this.getData = function () {
         return data;
     };
@@ -13,6 +18,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
     };
 
     this.afterRender = function () {
+        renderSource();
         renderfiles();
 
         var btn = $el.find('.j-fileupload-btn');
@@ -53,15 +59,8 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             }
         });
 
-        $el.on('click', '.j-url-toggle', function () {
-            var $obj = $el.find('.j-url-tab');
-            if ($obj.is(':hidden')) {
-                $(this).addClass('active');
-                $obj.show();
-            } else {
-                $(this).removeClass('active');
-                $obj.hide();
-            }
+        $el.on('click', '.j-toggle-source', function () {
+            toggleSource();
         });
 
         $el.on("mouseenter", '.j-image_item', function () {
@@ -74,8 +73,8 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             $(this).find('.j-image_item_panel').hide()
         });
 
-        var $urltext = $el.find('.j-url-tab input[type=text]');
-        var $urlsubmit = $el.find('.j-url-tab input[type=button]');
+        var $urltext = $el.find('.j-source input[type=text]');
+        var $urlsubmit = $el.find('.j-source input[type=button]');
 
         $urlsubmit.on('click', function () {
             submitImageUrl();
@@ -85,6 +84,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             var buttonText = $urlsubmit.val();
 
             var urlvalue = $urltext.val();
+            urlvalue = $.trim(urlvalue);
 
             if (urlvalue.length <= 0) {
                 return false;
@@ -112,6 +112,26 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
                     $urlsubmit.val(buttonText);
                 }
             });
+        }
+    };
+
+    var renderSource = function(){
+        var $obj = $el.find('.j-source');
+        if (hideSource){
+            $obj.hide();
+        } else {
+            $obj.show();
+        }
+    };
+
+    var toggleSource = function(){
+        if (hideSource){
+            hideSource = 0;
+            renderSource();
+
+        } else {
+            hideSource = 1;
+            renderSource();
         }
     };
 

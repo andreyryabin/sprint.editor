@@ -35,38 +35,14 @@
     text-align: center;margin-top: 5px;
 }
 
-.sp-block-gallery .sp-file{
-
-}
-
 .sp-block-gallery .j-fileupload-result {
     background: #eee;
     min-height: 100px;
-    padding: 3px 3px 8px;
+    padding: 5px 5px 10px;
 }
 
-.sp-block-gallery .j-fileupload-btn{
-
-}
-
-.sp-block-gallery .sp-url-toggle{
-    cursor:pointer;
-    height: 40px;
-    margin-left: 10px;
-}
-
-.sp-block-gallery .sp-url-toggle span{
-    padding: 8px 16px;
-    display: block;
-}
-
-.sp-block-gallery .sp-url-toggle.active{
+.sp-block-gallery .sp-source{
     background: #FFEBC1;
-    border-radius: 5px 5px 0 0;
-}
-
-.sp-block-gallery .sp-url-tab{
-    background: #FFEBC1;
-    padding: 8px 8px 16px;
+    padding: 5px 5px 10px;
     display: none;
 }
