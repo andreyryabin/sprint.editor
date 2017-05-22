@@ -19,6 +19,6 @@ if ($updater && $updater instanceof \CUpdater) {
     }
 
 
-    //1.1.1
+    //1.0.18
 
 }
