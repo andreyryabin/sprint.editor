@@ -18,7 +18,8 @@
  */
 ?>
 <div class="j-container<?= $uniqId ?>">
-    <div class="j-blocks<?= $uniqId ?> sp-layout-mode"></div>
+    <div class="j-blocks<?= $uniqId ?>"></div>
+
     <? if ($enableChange): ?>
         <? if (!empty($selectValues)): ?>
             <select class="j-selectblock<?= $uniqId ?>" style="width: 250px;">
@@ -35,23 +36,27 @@
         <? else: ?>
             <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
         <? endif; ?>
-        <a class="sp-options-link" title="<?= GetMessage('SPRINT_EDITOR_OPTIONS_LINK') ?>"
-           target="_blank" href="/bitrix/admin/settings.php?lang=ru&mid=sprint.editor&mid_menu=1">(?)</a>
+        <a href="/bitrix/admin/settings.php?lang=ru&mid=sprint.editor&mid_menu=1"
+           class="sp-options-link"
+           title="<?= GetMessage('SPRINT_EDITOR_OPTIONS_LINK') ?>"
+           target="_blank">(?)</a>
+    <? endif; ?>
+
+    <? if ($enableChange): ?>
         <input type="button" class="j-layout-toggle<?= $uniqId ?>" value="#">
-        &nbsp;
 
         <div class="j-layout-panel<?= $uniqId ?> sp-layout-panel">
             <input type="button" class="j-layout-add<?= $uniqId ?>" value="1">
             <input type="button" class="j-layout-add<?= $uniqId ?>" value="2">
             <input type="button" class="j-layout-add<?= $uniqId ?>" value="3">
             <input type="button" class="j-layout-add<?= $uniqId ?>" value="4">
-            &nbsp;
             <input type="button" class="j-layout-remove<?= $uniqId ?>" value="x">
         </div>
-
     <? endif; ?>
+
     <textarea style="display: none;" class="j-result<?= $uniqId ?>" name="<?= $inputName ?>"></textarea>
 </div>
+
 <? if ($firstRun): ?><?php
     \CModule::IncludeModule('fileman');
     $compParamsLangMess = CComponentParamsManager::GetLangMessages();
@@ -65,7 +70,7 @@
 <? endif ?>
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
-        sprint_editor.createInstance($, {
+        sprint_editor_create($, {
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
             showSortButtons: <?=$showSortButtons?>,

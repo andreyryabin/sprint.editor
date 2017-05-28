@@ -58,7 +58,7 @@ class AdminEditor
         }
 
         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
-            'rawValue' => $rawValue,
+            'rawValue' => $params['value'],
             'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($params['value'])),
             'selectValues' => Locale::convertToWin1251IfNeed(self::$selectValues),
             'jsonTemplates' => json_encode(Locale::convertToUtf8IfNeed(self::$templates)),
