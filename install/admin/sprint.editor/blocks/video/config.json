@@ -3,5 +3,8 @@
   "sort": "154",
   "js": [
     "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
+  ],
+  "templates": [
+    "iframe.html"
   ]
 }

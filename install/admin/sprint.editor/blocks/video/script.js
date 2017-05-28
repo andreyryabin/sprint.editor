@@ -27,25 +27,25 @@ sprint_editor.registerBlock('video', function($, $el, data) {
     };
 
     this.afterRender = function () {
-        var input = $el.find('.j-url');
+        var $input = $el.find('.j-url');
 
-        getVideo(input);
-        input.bindWithDelay('input', function () {
-            getVideo(input);
+        getVideo($input.val());
+        $input.bindWithDelay('input', function () {
+            getVideo($(this).val());
         }, 500);
     };
 
-    function getVideo(input){
-        var inputUrl = input.val();
-
-        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-        var match = inputUrl.match(regExp);
-        var youtubeCode = (match && match[2].length == 11) ? match[2] : false;
-
+    function getVideo(youtubeUrl){
+        var youtubeCode = '';
+        if (youtubeUrl){
+            var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            var match = youtubeUrl.match(regExp);
+            youtubeCode = (match && match[2].length == 11) ? match[2] : false;
+        }
 
         if (youtubeCode){
             $el.find('.j-preview').html(
-                '<iframe width="320" height="180" src="http://www.youtube.com/embed/' + youtubeCode + '?rel=0" frameborder="0" allowfullscreen></iframe>'
+                sprint_editor.renderTemplate('video-iframe', {youtubeCode: youtubeCode})
             );
         } else {
             $el.find('.j-preview').html('');

@@ -65,6 +65,47 @@ var sprint_editor = {
 
         var collection = [];
 
+        $('.j-layout-add' + params.uniqid).on('click', function () {
+            addLayout($(this).val());
+        });
+
+        $('.j-layout-remove' + params.uniqid).on('click', function () {
+            var layCnt = $blocks.find('.sp-x-table').length;
+
+            if (layCnt > 1) {
+                $blocks.find('.sp-x-table').each(function () {
+
+                    var colCnt = $(this).find('.sp-y-col').length;
+                    var colEmp = 0;
+
+                    $(this).find('.sp-y-col').each(function () {
+                        if ($(this).is(':empty')) {
+                            colEmp++;
+                        }
+                    });
+
+                    if (colCnt == colEmp && layCnt > 1) {
+                        $(this).remove();
+                        layCnt--;
+                    }
+                });
+            }
+
+
+        });
+
+        $('.j-layout-toggle' + params.uniqid).on('click', function () {
+            if ($blocks.hasClass('sp-layout-mode')) {
+                $blocks.removeClass('sp-layout-mode');
+                $('.j-layout-panel' + params.uniqid).removeClass('sp-layout-mode');
+            } else {
+                $blocks.addClass('sp-layout-mode');
+                $('.j-layout-panel' + params.uniqid).addClass('sp-layout-mode');
+            }
+        });
+
+        addLayout(1);
+
         for (var prop in params.jsonValue) {
             if (params.jsonValue.hasOwnProperty(prop)) {
                 pushblock(params.jsonValue[prop]);
@@ -106,15 +147,43 @@ var sprint_editor = {
             $resultinput.val(resultString);
         });
 
-        function changeEvents() {
+        function addLayout(columnCnt) {
+            columnCnt = (columnCnt >= 1) ? columnCnt : 1;
+            var columns = [];
+            for (var index = 1; index <= columnCnt; index++) {
+                columns.push({
+                    name: index
+                })
+            }
+
+            var html = sprint_editor.renderTemplate('box-layout', {
+                columnCnt: columnCnt,
+                columns: columns
+            });
+
+            $blocks.append(html);
+
+            var $lastCol = $blocks.find('.sp-x-table').last().find('.sp-y-col');
+
+
             var startIndex = 0;
             var stopIndex = 0;
 
-            $blocks.sortable({
-                cursor: "move",
-                items: ".j-box",
+
+            // $blocks.sortable({
+            //     cursor: "move",
+            //     items: ".j-box",
+            //     handle: ".j-box_handle",
+            //     axis: "y",
+
+            // });
+
+            $lastCol.sortable({
+                connectWith: ".sp-y-col",
+                // axis: "y",
                 handle: ".j-box_handle",
-                axis: "y",
+                //cancel: ".portlet-toggle",
+                placeholder: "sp-placeholder",
                 start: function (event, ui) {
                     startIndex = $blocks.find('.j-box').index(
                         ui.item.get(0)
@@ -128,8 +197,9 @@ var sprint_editor = {
                     swapcollection(startIndex, stopIndex);
                 }
             });
+        }
 
-
+        function changeEvents() {
             $container.on('click', '.j-upbox', function (e) {
                 e.preventDefault();
                 var index = $container.find('.j-upbox').index(this);
@@ -195,7 +265,7 @@ var sprint_editor = {
 
             var html = sprint_editor.renderTemplate('box', templateVars);
 
-            $blocks.append(html);
+            $blocks.find('.sp-y-col').last().append(html);
 
             var $el = $blocks.find('.j-box-block').last();
             var entry = initblock($el, data.name, data);
