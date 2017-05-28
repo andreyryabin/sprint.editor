@@ -40,7 +40,7 @@
         <input type="button" class="j-layout-toggle<?= $uniqId ?>" value="#">
         &nbsp;
 
-        <div class="j-layout-panel<?= $uniqId ?> sp-layout-panel sp-layout-mode">
+        <div class="j-layout-panel<?= $uniqId ?> sp-layout-panel">
             <input type="button" class="j-layout-add<?= $uniqId ?>" value="1">
             <input type="button" class="j-layout-add<?= $uniqId ?>" value="2">
             <input type="button" class="j-layout-add<?= $uniqId ?>" value="3">

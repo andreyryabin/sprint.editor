@@ -1,18 +1,16 @@
 <div class="sp-box sp-box-{{=it.group.name}} j-box">
     <div class="sp-box_panel {{?it.enableChange}}j-box_handle ui-sortable-handle{{?}}">
-        <span class="" title="{{=it.hint}}">
         {{?it.group.show_title == "yes"}}
         <span class="sp-box_panel-group_title">{{=it.group.title}}.</span>
         {{?}}
-        <span class="sp-box_panel-title">{{=it.title}}</span>
-        </span>
+        <span title="{{=it.hint}}" class="sp-box_panel-title">{{=it.title}}</span>
         <div class="sp-box_panel-buttons">
             {{?it.enableChange}}
             {{?it.showSortButtons}}
-            <a title="Поднять вверх" class="j-upbox" href="#">Вверх</a>
-            <a title="Опустить вниз" class="j-dnbox" href="#">Вниз</a>
+            <a title="Поднять вверх" class="j-upbox" href="#">&uarr;</a>
+            <a title="Опустить вниз" class="j-dnbox" href="#">&darr;</a>
             {{?}}
-            <a title="Удалить блок" class="j-delbox" href="#">Удалить</a>
+            <a title="Удалить блок" class="j-delbox" href="#">x</a>
             {{?}}
         </div>
     </div>
