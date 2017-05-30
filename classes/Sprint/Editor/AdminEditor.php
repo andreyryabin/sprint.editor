@@ -20,10 +20,14 @@ class AdminEditor
         self::$initCounts++;
 
         if (self::$initCounts == 1) {
+
             $blockGroups = self::getBlockGroups();
             foreach ($blockGroups as $aGroup) {
                 self::registerBlocks($aGroup);
             }
+
+            self::registerLayouts();
+
             self::registerAssets();
         }
 
@@ -34,8 +38,6 @@ class AdminEditor
             'defaultValue' => '',
             'userSettings' => ''
         ),$params);
-
-        $rawValue = $params['value'];
 
         $params['value'] = self::prepareValue($params['value']);
         if (empty($params['value'])){
@@ -58,7 +60,6 @@ class AdminEditor
         }
 
         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
-            'rawValue' => $params['value'],
             'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($params['value'])),
             'selectValues' => Locale::convertToWin1251IfNeed(self::$selectValues),
             'jsonTemplates' => json_encode(Locale::convertToUtf8IfNeed(self::$templates)),
@@ -249,6 +250,21 @@ class AdminEditor
         }
 
         return true;
+    }
+
+    protected static function registerLayouts(){
+        $layouts = array();
+        for ($num = 1;$num <=4 ;$num++){
+            $layouts[] = array(
+                'title' => GetMessage('SPRINT_EDITOR_layout_type'.$num),
+                'name' => 'layout_'.$num,
+            );
+        }
+
+        self::$selectValues[] = array(
+            'title' => GetMessage('SPRINT_EDITOR_layout_group'),
+            'blocks' => $layouts
+        );
     }
 
     public static function renderFile($file, $vars = array()) {

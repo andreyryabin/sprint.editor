@@ -24,4 +24,11 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_SETTINGS_DISABLE_CHANGE" => "Отключить добавление блоков",
     "SPRINT_EDITOR_SETTINGS_ENABLE_SORT_BUTTONS" => "Включить кнопки сортировки",
     "SPRINT_EDITOR_SETTINGS_DEFAULT_VALUE" => "Значение по умолчанию",
+    "SPRINT_EDITOR_layout_group" => "Модульные сетки",
+    "SPRINT_EDITOR_layout_type1" => "Сетка из 1 колонки",
+    "SPRINT_EDITOR_layout_type2" => "Сетка из 2 колонок",
+    "SPRINT_EDITOR_layout_type3" => "Сетка из 3 колонок",
+    "SPRINT_EDITOR_layout_type4" => "Сетка из 4 колонок",
+    "SPRINT_EDITOR_layout_toggle" => "Переключить отображение сеток",
+    "SPRINT_EDITOR_layout_remove" => "Удалить пустые сетки",
 ));

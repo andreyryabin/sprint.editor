@@ -43,15 +43,8 @@
     <? endif; ?>
 
     <? if ($enableChange): ?>
-        <input type="button" class="j-layout-toggle<?= $uniqId ?>" value="#">
-
-        <div class="j-layout-panel<?= $uniqId ?> sp-layout-panel">
-            <input type="button" class="j-layout-add<?= $uniqId ?>" value="1">
-            <input type="button" class="j-layout-add<?= $uniqId ?>" value="2">
-            <input type="button" class="j-layout-add<?= $uniqId ?>" value="3">
-            <input type="button" class="j-layout-add<?= $uniqId ?>" value="4">
-            <input type="button" class="j-layout-remove<?= $uniqId ?>" value="x">
-        </div>
+        <input title="<?=GetMessage('SPRINT_EDITOR_layout_toggle')?>" style="margin-left: 20px;" type="button" class="j-layout-toggle<?= $uniqId ?>" value="#">
+        <input title="<?=GetMessage('SPRINT_EDITOR_layout_remove')?>" type="button" class="j-layout-remove<?= $uniqId ?>" value="x">
     <? endif; ?>
 
     <textarea style="display: none;" class="j-result<?= $uniqId ?>" name="<?= $inputName ?>"></textarea>

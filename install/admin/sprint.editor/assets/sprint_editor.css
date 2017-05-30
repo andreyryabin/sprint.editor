@@ -246,10 +246,3 @@
 .sp-layout-mode .sp-placeholder {
     height: 20px;
 }
-
-.sp-layout-panel{
-    /*display: none;*/
-}
-.sp-layout-panel{
-    display: inline;
-}

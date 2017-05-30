@@ -3,6 +3,10 @@
 class SprintEditorBlocksComponent extends CBitrixComponent
 {
 
+    protected $layouts = array();
+    protected $layoutIndex = 0;
+    protected $blocksIncluded = 0;
+
     public function executeComponent()
     {
         if (!\CModule::IncludeModule('sprint.editor')) {
@@ -15,18 +19,16 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
 
         if (!empty($this->arParams['JSON'])) {
-            return $this->outJson($this->arParams['~JSON']);
+            $this->outJson($this->arParams['~JSON']);
+
+        }elseif (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['ELEMENT_ID'])) {
+            $this->outIblockElement();
+
+        }elseif (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['SECTION_ID'])) {
+            $this->outIblockSection();
         }
 
-        if (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['ELEMENT_ID'])) {
-            return $this->outIblockElement();
-        }
-
-        if (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['SECTION_ID'])) {
-            return $this->outIblockSection();
-        }
-
-        return 0;
+        return $this->blocksIncluded;
     }
 
 
@@ -50,7 +52,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
 
         if (empty($aPropertyCodes)) {
-            return 0;
+            return false;
         }
 
         $aSelect = array_merge(array(
@@ -67,14 +69,14 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             'ID' => $this->arParams['ELEMENT_ID'],
         ), false, array('nTopCount' => 1), $aSelect)->Fetch();
 
-        $cntblocks = 0;
+
         foreach ($aPropertyCodes as $propertyCode) {
             if (!empty($aItem[$propertyCode . '_VALUE'])) {
-                $cntblocks += $this->outJson($aItem[$propertyCode . '_VALUE']);
+                $this->outJson($aItem[$propertyCode . '_VALUE']);
             }
         }
 
-        return $cntblocks;
+        return true;
     }
 
     protected function outIblockSection()
@@ -84,13 +86,13 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $aPropertyCodes = array();
         if (empty($this->arParams['PROPERTY_CODE'])) {
             //todo: получить все пользовательские поля с редактором если явно не указано
-            return 0;
+            return false;
         } else {
             $aPropertyCodes[] = $this->arParams['PROPERTY_CODE'];
         }
 
         if (empty($aPropertyCodes)) {
-            return 0;
+            return false;
         }
 
         $aSelect = array_merge(array(
@@ -107,14 +109,13 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             'ID' => $this->arParams['SECTION_ID'],
         ), false, $aSelect, array('nTopCount' => 1))->Fetch();
 
-        $cntblocks = 0;
         foreach ($aPropertyCodes as $propertyCode) {
             if (!empty($aItem[$propertyCode])) {
-                $cntblocks += $this->outJson($aItem[$propertyCode]);
+                $this->outJson($aItem[$propertyCode]);
             }
         }
 
-        return $cntblocks;
+        return true;
     }
 
     protected function outJson($blocks)
@@ -131,15 +132,63 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $this->includeAssets();
         $this->includePartial('_header', $blocks, $this->arParams);
 
-        $cntblocks = 0;
+        $prevType = 0;
+
+        $this->layouts = array();
+
+        $lindex = -1;
+
         foreach ($blocks as $block) {
-            if ($this->includeBlock($block)) {
-                $cntblocks++;
+            if (empty($block['lt_type'])){
+                $block['lt_type'] = 1;
+            }
+
+            if (empty($block['lt_col'])){
+                $block['lt_col'] = 1;
+            }
+
+            $curType = $block['lt_type']; 
+            
+            if ($prevType != $curType){
+                $this->layouts[] = array();
+                $lindex++;
+                $prevType = $curType;
+            }
+        
+            $colName = 'col'.$block['lt_col'];
+
+            if (empty($this->layouts[$lindex][$colName])){
+                $this->layouts[$lindex][$colName] = array();
+            }
+
+            $this->layouts[$lindex][$colName][] = $block;
+        }
+
+        foreach ($this->layouts as $columns){
+            $layoutName = 'layout'.count($columns);
+            if ($this->includeLayout($layoutName)){
+                $this->layoutIndex++;
             }
         }
 
         $this->includePartial('_footer', $blocks, $this->arParams);
-        return $cntblocks;
+
+    }
+
+    public function includeLayoutBlocks($type){
+        $blocks = array();
+
+        if (isset($this->layouts[$this->layoutIndex])){
+            if (isset($this->layouts[$this->layoutIndex][$type])){
+                $blocks = $this->layouts[$this->layoutIndex][$type];
+            }
+        }
+
+        foreach ($blocks as $block) {
+            if ($this->includeBlock($block)) {
+                $this->blocksIncluded++;
+            }
+        }
 
     }
 
@@ -177,6 +226,21 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         include($root . $path);
         return true;
 
+    }
+
+    protected function includeLayout($layoutName)
+    {
+        $component = $this;
+
+        $root = \Sprint\Editor\Module::getDocRoot();
+        $path = $this->findResource($layoutName . '.php');
+        if (!$path) {
+            return false;
+        }
+
+        /** @noinspection PhpIncludeInspection */
+        include($root . $path);
+        return true;
     }
 
     protected function includePartial($partialName, &$blocks, $arParams)
