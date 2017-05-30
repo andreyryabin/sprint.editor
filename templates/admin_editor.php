@@ -49,7 +49,6 @@
 
     <textarea style="display: none;" class="j-result<?= $uniqId ?>" name="<?= $inputName ?>"></textarea>
 </div>
-
 <? if ($firstRun): ?><?php
     \CModule::IncludeModule('fileman');
     $compParamsLangMess = CComponentParamsManager::GetLangMessages();

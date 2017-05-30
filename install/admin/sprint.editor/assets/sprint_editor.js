@@ -68,7 +68,9 @@ function sprint_editor_create($, params) {
     var $form = $container.closest('form').first();
 
     var collection = [];
-    var lastLayoutType = 0;
+    var layoutLastName = '';
+    var layoutLastType = 0;
+    var layoutLastNumber = 0;
 
     $('.j-layout-remove' + params.uniqid).on('click', function () {
         layoutRemoveEmpty();
@@ -99,16 +101,17 @@ function sprint_editor_create($, params) {
             }
 
             var $block = $blocks.find('.j-box').eq(index);
-            var coldata = $block.closest('.sp-y-col').data();
+            var col = $block.closest('.sp-y-col').data();
 
-            data.lt_type = coldata.type;
-            data.lt_col = coldata.index;
+            data.layout = {
+                name: col.name,
+                type: col.type,
+                index: col.index
+            };
 
             post.push(data);
+
         });
-
-
-        // e.preventDefault();
 
         var resultString = '';
         if (post.length > 0) {
@@ -146,32 +149,32 @@ function sprint_editor_create($, params) {
                 $(this).remove();
             }
         });
-        
+
         var $lastCol = $blocks.find('.sp-y-col').last();
-        if ($lastCol.length){
-            lastLayoutType = $lastCol.data('type');
+        if ($lastCol.length) {
+            layoutLastName = $lastCol.data('name');
         } else {
-            lastLayoutType = 0;
+            layoutLastName = '';
         }
-        
+
     }
 
-    function layoutAdd(layoutType, newLayout) {
+    function layoutAdd(type, name) {
+        layoutLastNumber++;
+        layoutLastType = type;
 
-        if (!newLayout){
-            if (lastLayoutType == layoutType){
-                return false;
-            }
+        if (!name) {
+            layoutLastName = 'A' + layoutLastType +'B' + layoutLastNumber;
+        } else {
+            layoutLastName = name;
         }
 
-        lastLayoutType = layoutType;
-
-        layoutType = (layoutType >= 1) ? layoutType : 1;
         var columns = [];
-        for (var index = 1; index <= layoutType; index++) {
+        for (var index = 1; index <= type; index++) {
             columns.push({
-                index: index,
-                type: layoutType
+                name: layoutLastName,
+                type: layoutLastType,
+                index: index
             });
         }
 
@@ -240,9 +243,9 @@ function sprint_editor_create($, params) {
 
         $addblockinput.on('click', function (e) {
             var name = $selectinput.val();
-            if (name.indexOf('layout_') === 0){
+            if (name.indexOf('layout_') === 0) {
                 name = name.substr(7);
-                layoutAdd(name, 1);
+                layoutAdd(name, '');
             } else {
                 blockPush({name: name});
             }
@@ -261,7 +264,6 @@ function sprint_editor_create($, params) {
     }
 
 
-
     function blockPush(data) {
         if (!data.name || !sprint_editor.hasBlockParams(data.name)) {
             return false;
@@ -273,27 +275,41 @@ function sprint_editor_create($, params) {
 
         var html = sprint_editor.renderTemplate('box', templateVars);
 
-        if (!data.lt_type ){
-            if (lastLayoutType > 0){
-                data.lt_type = lastLayoutType;
-            } else {
-                data.lt_type = 1;
-            }
-
-        }
-
-        if (!data.lt_col){
-            if (lastLayoutType > 0){
-                data.lt_col = lastLayoutType;
-            } else {
-                data.lt_col = 1;
+        if (!data.layout) {
+            data.layout = {
+                name: '',
+                type: 1,
+                index: 1
             }
         }
 
-        layoutAdd(data.lt_type, 0);
+        if (data.layout.index < 1) {
+            data.layout.index = 1;
+        }
+
+        if (data.layout.type < 1) {
+            data.layout.type = 1;
+        }
+
+        if (data.layout.name && layoutLastName) {
+            if (data.layout.name != layoutLastName) {
+                layoutAdd(data.layout.type, data.layout.name);
+            }
+
+        } else if (data.layout.name && !layoutLastName) {
+            layoutAdd(data.layout.type, data.layout.name);
+
+        } else if (!data.layout.name && layoutLastName) {
+            data.layout.name = layoutLastName;
+            data.layout.index = layoutLastType;
+
+        } else {
+            layoutAdd(data.layout.type);
+            data.layout.name = layoutLastName;
+        }
 
         var $layout = $blocks.find('.sp-x-table').last();
-        var $column = $layout.find('.sp-y-col').eq(data.lt_col - 1);
+        var $column = $layout.find('.sp-y-col').eq(data.layout.index - 1);
 
         $column.append(html);
 
