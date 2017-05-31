@@ -165,11 +165,14 @@
 
 }
 
+.sp-x-table:last-child {
+    margin-bottom: 30px;
+}
+
 .sp-layout-mode .sp-x-table{
     display: table;
     border-collapse: collapse;
     width: 100%;
-    margin-bottom: 20px;
 }
 
 .sp-layout-mode .sp-x-row{
@@ -258,5 +261,5 @@
 }
 
 .sp-layout-mode .sp-placeholder {
-    height: 20px;
+    height: 30px;
 }

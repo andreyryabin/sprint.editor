@@ -43,10 +43,10 @@
            type="button"
            class="j-layout-toggle<?= $uniqId ?>"
            value="#"/>
-    <input title="<?= GetMessage('SPRINT_EDITOR_layout_remove') ?>"
+    <?/*<input title="<?= GetMessage('SPRINT_EDITOR_layout_remove') ?>"
            type="button"
            class="j-layout-remove<?= $uniqId ?>"
-           value="x"/>
+           value="x"/>*/?>
 <? endif; ?>
 
 <textarea style="display: none;" class="j-result<?= $uniqId ?>" name="<?= $inputName ?>"></textarea>
