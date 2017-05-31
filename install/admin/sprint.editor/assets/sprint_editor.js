@@ -59,22 +59,16 @@ var sprint_editor = {
 
 
 function sprint_editor_create($, params) {
-    var $container = $('.j-container' + params.uniqid);
-    var $resultinput = $('.j-result' + params.uniqid);
-    var $selectinput = $('.j-selectblock' + params.uniqid);
     var $addblockinput = $('.j-addblock' + params.uniqid);
     var $blocks = $('.j-blocks' + params.uniqid);
 
-    var $form = $container.closest('form').first();
+    var $form = $blocks.closest('form').first();
 
-    var collection = [];
+    var collectionList = [];
+
     var layoutLastName = '';
     var layoutLastType = 0;
-    var layoutLastNumber = 0;
-
-    $('.j-layout-remove' + params.uniqid).on('click', function () {
-        layoutRemoveEmpty();
-    });
+    var layoutLastIndex = 0;
 
     $('.j-layout-toggle' + params.uniqid).on('click', function () {
         if ($blocks.hasClass('sp-layout-mode')) {
@@ -84,14 +78,17 @@ function sprint_editor_create($, params) {
         }
     });
 
+    $('.j-layout-remove' + params.uniqid).on('click', function () {
+        layoutRemoveEmpty();
+    });
+
     if (params.enableChange) {
         changeEvents();
     }
 
-
     $form.on('submit', function (e) {
         var post = [];
-        $.each(collection, function (index, entry) {
+        $.each(collectionList, function (index, entry) {
             var data = entry.collectData();
             if (typeof entry.getAreas == 'function') {
                 var areas = entry.getAreas();
@@ -127,7 +124,7 @@ function sprint_editor_create($, params) {
         }
 
         $blocks.find('input,textarea,select').removeAttr('name');
-        $resultinput.val(resultString);
+        $('.j-result' + params.uniqid).val(resultString);
     });
 
     for (var prop in params.jsonValue) {
@@ -160,11 +157,11 @@ function sprint_editor_create($, params) {
     }
 
     function layoutAdd(type, name) {
-        layoutLastNumber++;
+        layoutLastIndex++;
         layoutLastType = type;
 
         if (!name) {
-            layoutLastName = 'A' + layoutLastType +'B' + layoutLastNumber;
+            layoutLastName = 'A' + layoutLastType + 'B' + layoutLastIndex;
         } else {
             layoutLastName = name;
         }
@@ -213,9 +210,19 @@ function sprint_editor_create($, params) {
     }
 
     function changeEvents() {
-        $container.on('click', '.j-upbox', function (e) {
+        $addblockinput.on('click', function (e) {
+            var name = $('.j-selectblock' + params.uniqid).val();
+            if (name.indexOf('layout_') === 0) {
+                name = name.substr(7);
+                layoutAdd(name, '');
+            } else {
+                blockPush({name: name});
+            }
+        });
+
+        $blocks.on('click', '.j-upbox', function (e) {
             e.preventDefault();
-            var index = $container.find('.j-upbox').index(this);
+            var index = $blocks.find('.j-upbox').index(this);
             var block = $(this).closest('.j-box');
 
             var nblock = block.prev();
@@ -227,9 +234,9 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $container.on('click', '.j-dnbox', function (e) {
+        $blocks.on('click', '.j-dnbox', function (e) {
             e.preventDefault();
-            var index = $container.find('.j-dnbox').index(this);
+            var index = $blocks.find('.j-dnbox').index(this);
             var block = $(this).closest('.j-box');
 
             var nblock = block.next();
@@ -241,75 +248,52 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $addblockinput.on('click', function (e) {
-            var name = $selectinput.val();
-            if (name.indexOf('layout_') === 0) {
-                name = name.substr(7);
-                layoutAdd(name, '');
-            } else {
-                blockPush({name: name});
-            }
-        });
-
-        $container.on('click', '.j-delbox', function (e) {
+        $blocks.on('click', '.j-delbox', function (e) {
             e.preventDefault();
 
-            var index = $container.find('.j-delbox').index(this);
+            var index = $blocks.find('.j-delbox').index(this);
             var $box = $(this).closest('.j-box');
 
             collectionRemove(index);
             $box.remove();
         });
-
     }
-
 
     function blockPush(data) {
         if (!data.name || !sprint_editor.hasBlockParams(data.name)) {
             return false;
         }
 
+        if (data.layout && !layoutLastName) {
+            layoutAdd(data.layout.type, data.layout.name);
+
+        } else if (!data.layout && layoutLastName) {
+            data.layout = {
+                name: layoutLastName,
+                type: layoutLastType,
+                index: layoutLastType
+            }
+        } else if (data.layout && layoutLastName) {
+            if (data.layout.name != layoutLastName) {
+                layoutAdd(data.layout.type, data.layout.name);
+            }
+        } else if (!data.layout && !layoutLastName) {
+            layoutAdd(1);
+            data.layout = {
+                name: layoutLastName,
+                type: 1,
+                index: 1
+            };
+        }
+
+        var $layout = $blocks.find('.sp-x-table').last();
+        var $column = $layout.find('.sp-y-col').eq(data.layout.index - 1);
+
         var templateVars = sprint_editor.getBlockParams(data.name);
         templateVars.showSortButtons = params.showSortButtons;
         templateVars.enableChange = params.enableChange;
 
         var html = sprint_editor.renderTemplate('box', templateVars);
-
-        if (!data.layout) {
-            data.layout = {
-                name: '',
-                type: 1,
-                index: 1
-            }
-        }
-
-        if (data.layout.index < 1) {
-            data.layout.index = 1;
-        }
-
-        if (data.layout.type < 1) {
-            data.layout.type = 1;
-        }
-
-        if (data.layout.name && layoutLastName) {
-            if (data.layout.name != layoutLastName) {
-                layoutAdd(data.layout.type, data.layout.name);
-            }
-
-        } else if (data.layout.name && !layoutLastName) {
-            layoutAdd(data.layout.type, data.layout.name);
-
-        } else if (!data.layout.name && layoutLastName) {
-            data.layout.name = layoutLastName;
-            data.layout.index = layoutLastType;
-
-        } else {
-            layoutAdd(data.layout.type);
-            data.layout.name = layoutLastName;
-        }
-
-        var $layout = $blocks.find('.sp-x-table').last();
-        var $column = $layout.find('.sp-y-col').eq(data.layout.index - 1);
 
         $column.append(html);
 
@@ -327,7 +311,7 @@ function sprint_editor_create($, params) {
             });
         }
 
-        collection.push(entry);
+        collectionList.push(entry);
     }
 
     function blockInit($el, name, data) {
@@ -348,14 +332,14 @@ function sprint_editor_create($, params) {
 
     function collectionSwap(indexA, indexB) {
         if (indexA !== indexB) {
-            var tempA = collection[indexA];
-            collection.splice(indexA, 1);
-            collection.splice(indexB, 0, tempA);
+            var tempA = collectionList[indexA];
+            collectionList.splice(indexA, 1);
+            collectionList.splice(indexB, 0, tempA);
         }
     }
 
     function collectionRemove(index) {
-        collection.splice(index, 1);
+        collectionList.splice(index, 1);
     }
 
 }

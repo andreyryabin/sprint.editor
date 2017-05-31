@@ -132,30 +132,35 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $this->includeAssets();
         $this->includePartial('_header', $blocks, $this->arParams);
 
-        $prevType = 0;
+        
 
         $this->layouts = array();
-
         $lindex = -1;
+        $lname = '';
 
         foreach ($blocks as $block) {
-            if (empty($block['lt_type'])){
-                $block['lt_type'] = 1;
+
+            $layout = !empty($block['layout']) ? $block['layout'] : array();
+
+            if (empty($layout['name'])){
+                $layout['name'] = 'A0B0';
             }
 
-            if (empty($block['lt_col'])){
-                $block['lt_col'] = 1;
+            if (empty($layout['type'])){
+                $layout['type'] = 1;
             }
 
-            $curType = $block['lt_type']; 
-            
-            if ($prevType != $curType){
+            if (empty($layout['index'])){
+                $layout['index'] = 1;
+            }
+
+            if ($lname != $layout['name']){
                 $this->layouts[] = array();
                 $lindex++;
-                $prevType = $curType;
+                $lname = $layout['name'];
             }
         
-            $colName = 'col'.$block['lt_col'];
+            $colName = 'col'.$layout['index'];
 
             if (empty($this->layouts[$lindex][$colName])){
                 $this->layouts[$lindex][$colName] = array();
