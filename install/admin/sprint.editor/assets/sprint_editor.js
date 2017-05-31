@@ -78,10 +78,6 @@ function sprint_editor_create($, params) {
         }
     });
 
-    $('.j-layout-remove' + params.uniqid).on('click', function () {
-        layoutRemoveEmpty();
-    });
-
     if (params.enableChange) {
         changeEvents();
     }
@@ -153,7 +149,6 @@ function sprint_editor_create($, params) {
         } else {
             layoutLastName = '';
         }
-
     }
 
     function layoutAdd(type, name) {
@@ -256,6 +251,8 @@ function sprint_editor_create($, params) {
 
             collectionRemove(index);
             $box.remove();
+
+            layoutRemoveEmpty();
         });
     }
 
