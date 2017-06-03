@@ -62,23 +62,13 @@
     float: right;
 }
 
-.sp-box_panel-buttons a,
-.sp-box_panel-buttons a:link,
-.bx-core-adm-dialog .sp-box_panel-buttons a,
-.bx-core-adm-dialog .sp-box_panel-buttons a:link {
+.sp-box_panel-buttons span {
     text-decoration: none;
-    color: #555;
+    border: 1px solid #ccc;
     margin-left: 5px;
     display: inline-block;
-    border: 1px solid #ccc;
     text-align: center;
     width: 18px;
-}
-
-.sp-box_panel-buttons a:hover,
-.bx-core-adm-dialog .sp-box_panel-buttons a:hover {
-    text-decoration: none;
-    color: #555;
 }
 
 .sp-box .sp-file {
@@ -150,7 +140,7 @@
 
 .sp-note {
     font-size: 12px !important;
-    color: #999 !important;
+    color: #888 !important;
 }
 .sp-box-settings{
     margin-bottom: 10px;
@@ -188,19 +178,21 @@
 }
 
 
-.sp-y-caption{
+.sp-x-col_caption{
     text-align: center;
     /*padding: 5px 10px;*/
     padding: 0;
     /*padding: 0;*/
     margin-bottom:10px;
 
+    /*position: relative;*/
+
     /*background: #E2EAEC;*/
     border-bottom: 1px dashed #ccc;
     /*border-bottom: 1px solid #A4B9CC;*/
 }
 
-.sp-layout-mode .sp-y-caption{
+.sp-layout-mode .sp-x-col_caption{
     text-align: center;
     padding: 5px 10px;
     background: #ddd;
@@ -225,6 +217,8 @@
 .sp-x-row {
     /*border-bottom: 1px solid #20A8DC;*/
     /*margin-bottom: 20px;*/
+
+    position: relative;
 }
 
 .sp-layout-mode .sp-box {
@@ -262,4 +256,67 @@
 
 .sp-layout-mode .sp-placeholder {
     height: 30px;
+}
+
+
+.sp-y-cursize {
+    margin-left: 5px;
+    color: #888;
+}
+
+.sp-y-sizes {
+    display: none;
+    position: absolute;
+
+    /*top:15px;*/
+    left: 0;
+    /*padding: 10px;*/
+    background: #eee;
+    color: #888;
+    border: 1px solid #ccc;
+    text-align: left;
+    z-index: 2;
+    /*min-width: 100px;*/
+    width: 100%;
+}
+
+.sp-y-caption {
+    display: inline-block;
+}
+
+.sp-y-caption:hover .sp-y-title{
+    color: #d00;
+}
+
+.sp-y-caption:hover .sp-y-sizes{
+    display: block;
+}
+
+.sp-y-sizes span {
+    /*float: left;*/
+    display: inline-block;
+    padding: 5px;
+    /*padding: 0;*/
+
+    cursor: pointer;
+    /*border: 1px solid #ccc;*/
+
+}
+
+.sp-y-sizes span:hover,
+.sp-y-sizes span.active{
+    color: #d00;
+}
+
+.sp-y-sizes .sp-col {
+    padding: 5px 5px 20px;
+
+}
+
+.sp-y-sizes .sp-col-sep{
+    border-right: 1px solid #ccc;
+}
+
+.sp-y-title {
+    cursor: pointer;
 }

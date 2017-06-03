@@ -78,6 +78,10 @@ function sprint_editor_create($, params) {
         }
     });
 
+    $('.j-layout-remove' + params.uniqid).on('click', function () {
+        layoutRemoveEmpty();
+    });
+
     if (params.enableChange) {
         changeEvents();
     }
@@ -252,8 +256,46 @@ function sprint_editor_create($, params) {
             collectionRemove(index);
             $box.remove();
 
-            layoutRemoveEmpty();
         });
+
+        $blocks.on('click', '.sp-y-sizes span', function(e){
+            //
+            // colSize = $.trim(colSize);
+
+            var $xcol = $(this).closest('.sp-x-col');
+            var $cursize = $xcol.find('.sp-y-cursize');
+            var $sizes = $xcol.find('.sp-y-sizes');
+
+
+            $(this).siblings('span').removeClass('active');
+            $(this).addClass('active');
+
+
+            var result = [];
+            $sizes.find('.active').each(function(){
+                var tmp = $(this).text();
+                tmp = $.trim(tmp);
+                if (tmp.indexOf('col-') === 0) {
+                    result.push(tmp);
+                }
+            });
+
+            $cursize.text(
+                result.join(', ')
+            );
+
+        });
+
+        // $blocks.on('click', '.sp-y-title', function(e){
+        //     var $sizes = $(this).closest('.sp-x-col').find('.sp-y-sizes');
+        //
+        //     $blocks.find('.sp-y-sizes').not($sizes).hide();
+        //
+        //     $sizes.toggle();
+        //
+        // });
+
+
     }
 
     function blockPush(data) {

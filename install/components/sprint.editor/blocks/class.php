@@ -135,6 +135,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         
 
         $this->layouts = array();
+        $this->layoutIndex = 0;
         $lindex = -1;
         $lname = '';
 
