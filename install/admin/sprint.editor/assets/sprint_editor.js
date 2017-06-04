@@ -286,14 +286,21 @@ function sprint_editor_create($, params) {
 
         });
 
-        // $blocks.on('click', '.sp-y-title', function(e){
-        //     var $sizes = $(this).closest('.sp-x-col').find('.sp-y-sizes');
-        //
-        //     $blocks.find('.sp-y-sizes').not($sizes).hide();
-        //
-        //     $sizes.toggle();
-        //
-        // });
+        $blocks.on('click', '.sp-y-title', function(e){
+            var $sizes = $(this).closest('.sp-x-col').find('.sp-y-sizes');
+
+            $blocks.find('.sp-y-sizes').not($sizes).hide();
+            $blocks.find('.sp-y-title').not($(this)).removeClass('active');
+
+            if ($sizes.is(':hidden')){
+                $sizes.show();
+                $(this).addClass('active');
+            } else {
+                $sizes.hide();
+                $(this).removeClass('active');
+            }
+
+        });
 
 
     }
