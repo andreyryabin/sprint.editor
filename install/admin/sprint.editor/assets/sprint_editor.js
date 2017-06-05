@@ -38,8 +38,8 @@ var sprint_editor = {
     },
 
     getBlockWebPath: function (blockName) {
-        var params = this.getBlockParams(blockName);
-        return '/bitrix/admin/sprint.editor/' + params.group.name + '/' + params.name;
+        var values = this.getBlockParams(blockName);
+        return '/bitrix/admin/sprint.editor/' + values.group.name + '/' + values.name;
     },
 
     renderTemplate: function (name, data) {
@@ -67,8 +67,26 @@ function sprint_editor_create($, params) {
     var collectionList = [];
 
     var layoutLastName = '';
-    var layoutLastType = 0;
-    var layoutLastIndex = 0;
+    var layoutLastColCnt = 0;
+
+    var layoutsCounter = 0;
+
+    if (!params.jsonBlocks) {
+        params.jsonBlocks = [];
+    }
+
+    if (!params.jsonLayouts) {
+        params.jsonLayouts = {};
+    }
+
+    $.each(params.jsonLayouts, function(name, columns){
+        layoutAdd(name, columns);
+    });
+
+    $.each(params.jsonBlocks, function(index, data){
+        blockPush(data);
+    });
+
 
     $('.j-layout-toggle' + params.uniqid).on('click', function () {
         if ($blocks.hasClass('sp-layout-mode')) {
@@ -84,12 +102,8 @@ function sprint_editor_create($, params) {
         layoutRemoveEmpty();
     });
 
-    if (params.enableChange) {
-        changeEvents();
-    }
-
     $form.on('submit', function (e) {
-        var post = [];
+        var blocks = [];
         $.each(collectionList, function (index, entry) {
             var data = entry.collectData();
             if (typeof entry.getAreas == 'function') {
@@ -104,16 +118,21 @@ function sprint_editor_create($, params) {
 
             data.layout = {
                 name: col.name,
-                type: col.type,
-                index: col.index
+                column: col.column
             };
 
-            post.push(data);
+            blocks.push(data);
 
         });
 
         var resultString = '';
-        if (post.length > 0) {
+        if (blocks.length > 0) {
+
+            var post = {
+                blocks: blocks,
+                layouts: params.jsonLayouts
+            };
+
             resultString = JSON.stringify(post);
             resultString = resultString.replace(/\\n/g, "\\n")
                 .replace(/\\'/g, "\\'")
@@ -129,95 +148,15 @@ function sprint_editor_create($, params) {
         $('.j-result' + params.uniqid).val(resultString);
     });
 
-    for (var prop in params.jsonValue) {
-        if (params.jsonValue.hasOwnProperty(prop)) {
-            blockPush(params.jsonValue[prop]);
-        }
-    }
+    if (params.enableChange) {
 
-    function layoutRemoveEmpty() {
-        $blocks.find('.sp-x-table').each(function () {
-            var colCnt = $(this).find('.sp-y-col').length;
-            var colEmp = 0;
-            $(this).find('.sp-y-col').each(function () {
-                if ($(this).is(':empty')) {
-                    colEmp++;
-                }
-            });
-            if (colCnt == colEmp) {
-                $(this).remove();
-            }
-        });
-
-        var $lastCol = $blocks.find('.sp-y-col').last();
-        if ($lastCol.length) {
-            layoutLastName = $lastCol.data('name');
-        } else {
-            layoutLastName = '';
-        }
-    }
-
-    function layoutAdd(type, name) {
-        layoutLastIndex++;
-        layoutLastType = type;
-
-        if (!name) {
-            layoutLastName = 'A' + layoutLastType + 'B' + layoutLastIndex;
-        } else {
-            layoutLastName = name;
-        }
-
-        var columns = [];
-        for (var index = 1; index <= type; index++) {
-            columns.push({
-                name: layoutLastName,
-                type: layoutLastType,
-                index: index
-            });
-        }
-
-        var html = sprint_editor.renderTemplate('box-layout', {
-            columns: columns
-        });
-
-        $blocks.append(html);
-
-        if (params.enableChange) {
-
-            var $lastCols = $blocks.find('.sp-x-table').last().find('.sp-y-col');
-            var startIndex = 0;
-            var stopIndex = 0;
-
-            $lastCols.sortable({
-                connectWith: ".sp-y-col",
-                handle: ".j-box_handle",
-                placeholder: "sp-placeholder",
-                start: function (event, ui) {
-                    startIndex = $blocks.find('.j-box').index(
-                        ui.item.get(0)
-                    );
-                },
-                stop: function (event, ui) {
-                    stopIndex = $blocks.find('.j-box').index(
-                        ui.item.get(0)
-                    );
-
-                    collectionSwap(startIndex, stopIndex);
-                }
-            });
-
-        }
-
-    }
-
-    function changeEvents() {
         $addblockinput.on('click', function (e) {
             var name = $('.j-selectblock' + params.uniqid).val();
             if (name.indexOf('layout_') === 0) {
                 name = name.substr(7);
-                layoutAdd(name, '');
+                layoutEmptyAdd(name);
             } else {
-                blockPush({name: name});
+                blockEmptyPush(name);
             }
         });
 
@@ -260,13 +199,13 @@ function sprint_editor_create($, params) {
 
         });
 
-        $blocks.on('click', '.sp-y-sizes span', function(e){
+        $blocks.on('click', '.sp-y-sizes span', function (e) {
             //
             // colSize = $.trim(colSize);
 
-            var $span =  $(this);
+            var $span = $(this);
 
-            if ($span.hasClass('active')){
+            if ($span.hasClass('active')) {
                 toggleSizes();
                 return;
             }
@@ -281,7 +220,7 @@ function sprint_editor_create($, params) {
 
 
             var result = [];
-            $sizes.find('.active').each(function(){
+            $sizes.find('.active').each(function () {
                 var tmp = $(this).text();
                 tmp = $.trim(tmp);
                 if (tmp.indexOf('col-') === 0) {
@@ -295,31 +234,87 @@ function sprint_editor_create($, params) {
 
         });
 
-        $blocks.on('click', '.sp-y-title', function(e){
-
+        $blocks.on('click', '.sp-y-title', function (e) {
             toggleSizes($(this));
         });
+    }
+
+    function layoutEmptyAdd(colCnt) {
+        layoutsCounter++;
+        var name = 'A' + layoutsCounter;
+
+        var columns = [];
+        for (var index = 0; index < colCnt; index++) {
+            columns.push('');
+        }
+
+
+        params.jsonLayouts[name] = columns;
+        layoutAdd(name);
+    }
+
+    function layoutAdd(name, columns) {
+
+        var sizes = [];
+        for (var index = 1; index <= 12; index++) {
+            sizes.push({
+                size: index,
+                active: 0
+            });
+        }
+
+        console.log(columns);
+
+        var html = sprint_editor.renderTemplate('box-layout', {
+            columns: columns,
+            sizes: sizes,
+            name: name
+        });
+
+        $blocks.append(html);
+
+        if (params.enableChange) {
+
+            var $lastCols = $blocks.find('.sp-x-table').last().find('.sp-y-col');
+            var startIndex = 0;
+            var stopIndex = 0;
+
+            $lastCols.sortable({
+                connectWith: ".sp-y-col",
+                handle: ".j-box_handle",
+                placeholder: "sp-placeholder",
+                start: function (event, ui) {
+                    startIndex = $blocks.find('.j-box').index(
+                        ui.item.get(0)
+                    );
+                },
+                stop: function (event, ui) {
+                    stopIndex = $blocks.find('.j-box').index(
+                        ui.item.get(0)
+                    );
+
+                    collectionSwap(startIndex, stopIndex);
+                }
+            });
+
+        }
 
     }
 
-    function toggleSizes($title) {
-        if ($title){
-            var $sizes = $title.closest('.sp-x-col').find('.sp-y-sizes');
-            $blocks.find('.sp-y-sizes').not($sizes).hide();
-            $blocks.find('.sp-y-title').not($title).removeClass('active');
+    function blockEmptyPush(name) {
 
-            if ($sizes.is(':hidden')){
-                $sizes.show();
-                $title.addClass('active');
-            } else {
-                $sizes.hide();
-                $title.removeClass('active');
+        if (!layoutLastName) {
+            layoutEmptyAdd(1);
+        }
+
+        blockPush({
+            name: name,
+            layout: {
+                name: layoutLastName,
+                column: layoutLastColCnt
             }
 
-        } else {
-            $blocks.find('.sp-y-sizes').hide();
-            $blocks.find('.sp-y-title').removeClass('active');
-        }
+        });
     }
 
     function blockPush(data) {
@@ -327,30 +322,8 @@ function sprint_editor_create($, params) {
             return false;
         }
 
-        if (data.layout && !layoutLastName) {
-            layoutAdd(data.layout.type, data.layout.name);
-
-        } else if (!data.layout && layoutLastName) {
-            data.layout = {
-                name: layoutLastName,
-                type: layoutLastType,
-                index: layoutLastType
-            }
-        } else if (data.layout && layoutLastName) {
-            if (data.layout.name != layoutLastName) {
-                layoutAdd(data.layout.type, data.layout.name);
-            }
-        } else if (!data.layout && !layoutLastName) {
-            layoutAdd(1);
-            data.layout = {
-                name: layoutLastName,
-                type: 1,
-                index: 1
-            };
-        }
-
         var $layout = $blocks.find('.sp-x-table').last();
-        var $column = $layout.find('.sp-y-col').eq(data.layout.index - 1);
+        var $column = $layout.find('.sp-y-col').eq(data.layout.column - 1);
 
         var templateVars = sprint_editor.getBlockParams(data.name);
         templateVars.showSortButtons = params.showSortButtons;
@@ -375,6 +348,26 @@ function sprint_editor_create($, params) {
         }
 
         collectionList.push(entry);
+    }
+
+    function toggleSizes($title) {
+        if ($title) {
+            var $sizes = $title.closest('.sp-x-col').find('.sp-y-sizes');
+            $blocks.find('.sp-y-sizes').not($sizes).hide();
+            $blocks.find('.sp-y-title').not($title).removeClass('active');
+
+            if ($sizes.is(':hidden')) {
+                $sizes.show();
+                $title.addClass('active');
+            } else {
+                $sizes.hide();
+                $title.removeClass('active');
+            }
+
+        } else {
+            $blocks.find('.sp-y-sizes').hide();
+            $blocks.find('.sp-y-title').removeClass('active');
+        }
     }
 
     function blockInit($el, name, data) {
@@ -405,4 +398,25 @@ function sprint_editor_create($, params) {
         collectionList.splice(index, 1);
     }
 
+    function layoutRemoveEmpty() {
+        $blocks.find('.sp-x-table').each(function () {
+            var colCnt = $(this).find('.sp-y-col').length;
+            var colEmp = 0;
+            $(this).find('.sp-y-col').each(function () {
+                if ($(this).is(':empty')) {
+                    colEmp++;
+                }
+            });
+            if (colCnt == colEmp) {
+                $(this).remove();
+            }
+        });
+
+        var $lastCol = $blocks.find('.sp-y-col').last();
+        if ($lastCol.length) {
+            layoutLastName = $lastCol.data('name');
+        } else {
+            layoutLastName = '';
+        }
+    }
 }

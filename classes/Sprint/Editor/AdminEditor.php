@@ -37,30 +37,31 @@ class AdminEditor
             'inputName' => '',
             'defaultValue' => '',
             'userSettings' => ''
-        ),$params);
+        ), $params);
 
-        $params['value'] = self::prepareValue($params['value']);
-        if (empty($params['value'])){
-            $params['value'] = self::prepareValue($params['defaultValue']);
+        $value = self::prepareValue($params['value']);
+        if (empty($value)) {
+            $value = self::prepareValue($params['defaultValue']);
         }
 
         $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
         foreach ($events as $aEvent) {
-            ExecuteModuleEventEx($aEvent, array(&$params['value']));
+            ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
         }
 
         $enableChange = 0;
-        if (empty($params['userSettings']['DISABLE_CHANGE'])){
+        if (empty($params['userSettings']['DISABLE_CHANGE'])) {
             $enableChange = 1;
         }
 
         $showSortButtons = 1;
-        if (empty($params['userSettings']['ENABLE_SORT_BUTTONS'])){
+        if (empty($params['userSettings']['ENABLE_SORT_BUTTONS'])) {
             $showSortButtons = 0;
         }
 
         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
-            'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($params['value'])),
+            'jsonBlocks' => json_encode(Locale::convertToUtf8IfNeed($value['blocks'])),
+            'jsonLayouts' => json_encode(Locale::convertToUtf8IfNeed($value['layouts'])),
             'selectValues' => Locale::convertToWin1251IfNeed(self::$selectValues),
             'jsonTemplates' => json_encode(Locale::convertToUtf8IfNeed(self::$templates)),
             'jsonParameters' => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
@@ -72,10 +73,27 @@ class AdminEditor
         ));
     }
 
-    public static function prepareValue($value){
+    public static function prepareValue($value) {
         $value = !empty($value) && is_string($value) ? $value : '[]';
         $value = json_decode(Locale::convertToUtf8IfNeed($value), true);
         $value = (json_last_error() == JSON_ERROR_NONE && is_array($value)) ? $value : array();
+
+        if (!empty($value) && !isset($value['blocks'])) {
+
+            foreach ($value as $index => $block) {
+                $block['layout'] = 'a1:b1';
+                $value[$index] = $block;
+            }
+
+            $value = array(
+                'blocks' => $value,
+                'layouts' => array(
+                    'a1' => array('b1' => '', 'b2' => ''),
+                    'a2' => array('b1' => '', 'b2' => ''),
+                )
+            );
+        }
+
         return $value;
     }
 
@@ -83,7 +101,7 @@ class AdminEditor
         $groups = array();
         $rootpath = Module::getDocRoot() . '/bitrix/admin/sprint.editor/';
 
-        if (!is_dir($rootpath)){
+        if (!is_dir($rootpath)) {
             return $groups;
         }
 
@@ -116,10 +134,10 @@ class AdminEditor
         return $groups;
     }
 
-    public static function getSearchIndex($jsonValue){
+    public static function getSearchIndex($jsonValue) {
         $value = AdminEditor::prepareValue($jsonValue);
         $search = '';
-        foreach ($value as $key => $val) {
+        foreach ($value['blocks'] as $key => $val) {
             if ($val['name'] == 'text' && !empty($val['value'])) {
                 $search .= ' ' . $val['value'];
             }
@@ -151,7 +169,7 @@ class AdminEditor
 
         $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.min.css');
         $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/trumbowyg.min.js');
-        if (Locale::isWin1251()){
+        if (Locale::isWin1251()) {
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/langs/ru.windows-1251.js');
         } else {
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/langs/ru.min.js');
@@ -235,7 +253,7 @@ class AdminEditor
             unset($param['css']);
             unset($param['js']);
 
-            if (!empty($param['title'])){
+            if (!empty($param['title'])) {
                 $selectBlocks[] = $param;
             }
 
@@ -255,12 +273,12 @@ class AdminEditor
         return true;
     }
 
-    protected static function registerLayouts(){
+    protected static function registerLayouts() {
         $layouts = array();
-        for ($num = 1;$num <=4 ;$num++){
+        for ($num = 1; $num <= 4; $num++) {
             $layouts[] = array(
-                'title' => GetMessage('SPRINT_EDITOR_layout_type'.$num),
-                'name' => 'layout_'.$num,
+                'title' => GetMessage('SPRINT_EDITOR_layout_type' . $num),
+                'name' => 'layout_' . $num,
             );
         }
 

@@ -2,7 +2,9 @@
 /**
  * @var $rawValue
  *
- * @var $jsonValue
+ * @var $jsonBlocks
+ * @var $jsonLayouts
+ *
  * @var $jsonParameters
  * @var $jsonTemplates
  *
@@ -43,14 +45,12 @@
            type="button"
            class="j-layout-toggle<?= $uniqId ?>"
            value="#"/>
-    <?/*<input title="<?= GetMessage('SPRINT_EDITOR_layout_remove') ?>"
+    <input title="<?= GetMessage('SPRINT_EDITOR_layout_remove') ?>"
            type="button"
            class="j-layout-remove<?= $uniqId ?>"
-           value="x"/>*/?>
+           value="x"/>
 <? endif; ?>
-
 <textarea style="display: none;" class="j-result<?= $uniqId ?>" name="<?= $inputName ?>"></textarea>
-
 <? if ($firstRun): ?><?php
     \CModule::IncludeModule('fileman');
     $compParamsLangMess = CComponentParamsManager::GetLangMessages();
@@ -61,14 +61,15 @@
         sprint_editor.registerTemplates(<?=$jsonTemplates?>);
         sprint_editor.registerParameters(<?=$jsonParameters?>);
     </script>
-<? endif ?>
+<? endif;?>
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
         sprint_editor_create($, {
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
             showSortButtons: <?=$showSortButtons?>,
-            jsonValue: <?=$jsonValue?>
+            jsonBlocks: <?=$jsonBlocks?>,
+            jsonLayouts: <?=$jsonLayouts?>
         });
     });
 </script>

@@ -1,63 +1,36 @@
-<div class="sp-x-table">
+<div class="sp-x-table" data-name="{{=it.name}}">
     <div class="sp-x-row">
-        {{~it.columns :col}}
+        {{~it.columns :col:index}}
         <div class="sp-x-col">
             <div class="sp-y-caption">
-                <span class="sp-y-title">Колонка {{=col.index}}/{{=col.type}}</span>
-                <span class="sp-y-cursize">col-md-6</span>
+                <span class="sp-y-title">Колонка {{=index+1}}/{{=it.columns.length}}</span>
+                <span class="sp-y-cursize">{{=col}}</span>
                 <div class="sp-y-sizes">
                     <div class="sp-table">
                         <div class="sp-row">
                             <div class="sp-col sp-col-sep">
                                 <span>нет</span><br/>
-                                <span>col-md-1</span>
-                                <span>col-md-2</span>
-                                <span>col-md-3</span>
-                                <span>col-md-4</span>
-                                <span>col-md-5</span>
-                                <span>col-md-6</span>
-                                <span>col-md-7</span>
-                                <span>col-md-8</span>
-                                <span>col-md-9</span>
-                                <span>col-md-10</span>
-                                <span>col-md-11</span>
-                                <span>col-md-12</span>
+                                {{~it.sizes :size}}
+                                <span>md-{{=size.size}}</span>
+                                {{~}}
                             </div>
                             <div class="sp-col sp-col-sep">
                                 <span>нет</span><br/>
-                                <span>col-xs-1</span>
-                                <span>col-xs-2</span>
-                                <span>col-xs-3</span>
-                                <span>col-xs-4</span>
-                                <span>col-xs-5</span>
-                                <span>col-xs-6</span>
-                                <span>col-xs-7</span>
-                                <span>col-xs-8</span>
-                                <span>col-xs-9</span>
-                                <span>col-xs-10</span>
-                                <span>col-xs-11</span>
-                                <span>col-xs-12</span>
+                                {{~it.sizes :size}}
+                                <span>xs-{{=size.size}}</span>
+                                {{~}}
                             </div>
                             <div class="sp-col">
                                 <span>нет</span><br/>
-                                <span>col-sm-1</span>
-                                <span>col-sm-2</span>
-                                <span>col-sm-3</span>
-                                <span>col-sm-4</span>
-                                <span>col-sm-5</span>
-                                <span>col-sm-6</span>
-                                <span>col-sm-7</span>
-                                <span>col-sm-8</span>
-                                <span>col-sm-9</span>
-                                <span>col-sm-10</span>
-                                <span>col-sm-11</span>
-                                <span>col-sm-12</span>
+                                {{~it.sizes :size}}
+                                <span>sm-{{=size.size}}</span>
+                                {{~}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="sp-y-col" data-name="{{=col.name}}" data-type="{{=col.type}}" data-index="{{=col.index}}"></div>
+            <div class="sp-y-col" data-pos="{{=it.name}}:{{=col.name}}"></div>
         </div>
         {{~}}
     </div>
