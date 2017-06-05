@@ -88,7 +88,7 @@ class AdminEditor
 
             $value = array(
                 'blocks' => $value,
-                'counter' => 1,
+                'next' => 2,
                 'layouts' => array(
                     'a1' => array('b1' => ''),
                 )

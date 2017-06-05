@@ -67,8 +67,8 @@ function sprint_editor_create($, params) {
     var collectionList = [];
     var layoutsList = {};
 
-    if (!params.jsonValue.counter){
-        params.jsonValue.counter = 1;
+    if (!params.jsonValue.next){
+        params.jsonValue.next = 1;
     }
 
     if (!params.jsonValue){
@@ -129,7 +129,7 @@ function sprint_editor_create($, params) {
 
             var post = {
                 blocks: blocks,
-                counter: params.jsonValue.counter,
+                next: params.jsonValue.next,
                 layouts: layoutsList
             };
 
@@ -246,8 +246,8 @@ function sprint_editor_create($, params) {
     }
 
     function layoutEmptyAdd(colCnt) {
-        var name = 'a' + params.jsonValue.counter;
-        params.jsonValue.counter++;
+        var name = 'a' + params.jsonValue.next;
+        params.jsonValue.next++;
         
         var columns = {};
         for (var index = 1; index <= colCnt; index++) {
