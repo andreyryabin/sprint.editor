@@ -76,6 +76,8 @@ function sprint_editor_create($, params) {
         } else {
             $blocks.addClass('sp-layout-mode');
         }
+
+        toggleSizes();
     });
 
     $('.j-layout-remove' + params.uniqid).on('click', function () {
@@ -262,13 +264,20 @@ function sprint_editor_create($, params) {
             //
             // colSize = $.trim(colSize);
 
-            var $xcol = $(this).closest('.sp-x-col');
+            var $span =  $(this);
+
+            if ($span.hasClass('active')){
+                toggleSizes();
+                return;
+            }
+
+            var $xcol = $span.closest('.sp-x-col');
             var $cursize = $xcol.find('.sp-y-cursize');
             var $sizes = $xcol.find('.sp-y-sizes');
 
 
-            $(this).siblings('span').removeClass('active');
-            $(this).addClass('active');
+            $span.siblings('span').removeClass('active');
+            $span.addClass('active');
 
 
             var result = [];
@@ -287,22 +296,30 @@ function sprint_editor_create($, params) {
         });
 
         $blocks.on('click', '.sp-y-title', function(e){
-            var $sizes = $(this).closest('.sp-x-col').find('.sp-y-sizes');
 
+            toggleSizes($(this));
+        });
+
+    }
+
+    function toggleSizes($title) {
+        if ($title){
+            var $sizes = $title.closest('.sp-x-col').find('.sp-y-sizes');
             $blocks.find('.sp-y-sizes').not($sizes).hide();
-            $blocks.find('.sp-y-title').not($(this)).removeClass('active');
+            $blocks.find('.sp-y-title').not($title).removeClass('active');
 
             if ($sizes.is(':hidden')){
                 $sizes.show();
-                $(this).addClass('active');
+                $title.addClass('active');
             } else {
                 $sizes.hide();
-                $(this).removeClass('active');
+                $title.removeClass('active');
             }
 
-        });
-
-
+        } else {
+            $blocks.find('.sp-y-sizes').hide();
+            $blocks.find('.sp-y-title').removeClass('active');
+        }
     }
 
     function blockPush(data) {
