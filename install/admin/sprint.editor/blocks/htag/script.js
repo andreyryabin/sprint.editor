@@ -13,7 +13,12 @@ sprint_editor.registerBlock('htag', function($, $el, data) {
     this.collectData = function () {
         data.value = $el.find('input[type=text]').val();
         data.type = $el.find('select').val();
-        data.anchor = translite(data.value);
+        if (data.value){
+            data.anchor = translite(data.value);
+        } else {
+            data.anchor = '';
+        }
+
         return data;
     };
 

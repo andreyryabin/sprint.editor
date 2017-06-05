@@ -262,12 +262,12 @@
 }
 
 
-.sp-y-cursize {
+.sp-y-ctype {
     margin-left: 5px;
     color: #888;
 }
 
-.sp-y-sizes {
+.sp-y-types {
     display: none;
     position: absolute;
 
@@ -289,7 +289,7 @@
 }
 
 
-.sp-y-sizes span {
+.sp-y-types span {
     /*float: left;*/
     display: inline-block;
     padding: 5px;
@@ -300,17 +300,17 @@
 
 }
 
-.sp-y-sizes span:hover,
-.sp-y-sizes span.active{
+.sp-y-types span:hover,
+.sp-y-types span.active{
     color: #d00;
 }
 
-.sp-y-sizes .sp-col {
+.sp-y-types .sp-col {
     padding: 5px 5px 20px;
 
 }
 
-.sp-y-sizes .sp-col-sep{
+.sp-y-types .sp-col-sep{
     border-right: 1px solid #ccc;
 }
 

@@ -65,25 +65,29 @@ function sprint_editor_create($, params) {
     var $form = $blocks.closest('form').first();
 
     var collectionList = [];
+    var layoutsList = {};
 
-    var layoutLastName = '';
-    var layoutLastColCnt = 0;
-
-    var layoutsCounter = 0;
-
-    if (!params.jsonBlocks) {
-        params.jsonBlocks = [];
+    if (!params.jsonValue.counter){
+        params.jsonValue.counter = 1;
     }
 
-    if (!params.jsonLayouts) {
-        params.jsonLayouts = {};
+    if (!params.jsonValue){
+        params.jsonValue = {};
     }
 
-    $.each(params.jsonLayouts, function(name, columns){
+    if (!params.jsonValue.blocks) {
+        params.jsonValue.blocks = [];
+    }
+
+    if (!params.jsonValue.layouts) {
+        params.jsonValue.layouts = {};
+    }
+
+    $.each(params.jsonValue.layouts, function (name, columns) {
         layoutAdd(name, columns);
     });
 
-    $.each(params.jsonBlocks, function(index, data){
+    $.each(params.jsonValue.blocks, function (index, data) {
         blockPush(data);
     });
 
@@ -114,12 +118,7 @@ function sprint_editor_create($, params) {
             }
 
             var $block = $blocks.find('.j-box').eq(index);
-            var col = $block.closest('.sp-y-col').data();
-
-            data.layout = {
-                name: col.name,
-                column: col.column
-            };
+            data.layout = $block.closest('.sp-y-col').data('layout');
 
             blocks.push(data);
 
@@ -130,7 +129,8 @@ function sprint_editor_create($, params) {
 
             var post = {
                 blocks: blocks,
-                layouts: params.jsonLayouts
+                counter: params.jsonValue.counter,
+                layouts: layoutsList
             };
 
             resultString = JSON.stringify(post);
@@ -199,7 +199,7 @@ function sprint_editor_create($, params) {
 
         });
 
-        $blocks.on('click', '.sp-y-sizes span', function (e) {
+        $blocks.on('click', '.sp-y-types span', function (e) {
             //
             // colSize = $.trim(colSize);
 
@@ -211,8 +211,10 @@ function sprint_editor_create($, params) {
             }
 
             var $xcol = $span.closest('.sp-x-col');
-            var $cursize = $xcol.find('.sp-y-cursize');
-            var $sizes = $xcol.find('.sp-y-sizes');
+            var $xrow = $span.closest('.sp-x-table');
+
+            var $cursize = $xcol.find('.sp-y-ctype');
+            var $sizes = $xcol.find('.sp-y-types');
 
 
             $span.siblings('span').removeClass('active');
@@ -221,9 +223,9 @@ function sprint_editor_create($, params) {
 
             var result = [];
             $sizes.find('.active').each(function () {
-                var tmp = $(this).text();
-                tmp = $.trim(tmp);
-                if (tmp.indexOf('col-') === 0) {
+                if (!$(this).hasClass('.sp-y-notype')){
+                    var tmp = $(this).text();
+                    tmp = $.trim(tmp);
                     result.push(tmp);
                 }
             });
@@ -232,6 +234,10 @@ function sprint_editor_create($, params) {
                 result.join(', ')
             );
 
+            var apos = $xrow.data('name');
+            var bpos = $xcol.data('name');
+
+            layoutsList[apos][bpos] = result.join(', ');
         });
 
         $blocks.on('click', '.sp-y-title', function (e) {
@@ -240,20 +246,21 @@ function sprint_editor_create($, params) {
     }
 
     function layoutEmptyAdd(colCnt) {
-        layoutsCounter++;
-        var name = 'A' + layoutsCounter;
-
-        var columns = [];
-        for (var index = 0; index < colCnt; index++) {
-            columns.push('');
+        var name = 'a' + params.jsonValue.counter;
+        params.jsonValue.counter++;
+        
+        var columns = {};
+        for (var index = 1; index <= colCnt; index++) {
+            var key = 'b' + index;
+            columns[ key ] = '';
         }
 
 
-        params.jsonLayouts[name] = columns;
-        layoutAdd(name);
+        layoutAdd(name, columns);
     }
 
     function layoutAdd(name, columns) {
+        layoutsList[name] = columns;
 
         var sizes = [];
         for (var index = 1; index <= 12; index++) {
@@ -263,10 +270,16 @@ function sprint_editor_create($, params) {
             });
         }
 
-        console.log(columns);
+        var tplcols = [];
+        $.each(columns, function (index, value) {
+            tplcols.push({
+                name: index,
+                type: value
+            });
+        });
 
         var html = sprint_editor.renderTemplate('box-layout', {
-            columns: columns,
+            columns: tplcols,
             sizes: sizes,
             name: name
         });
@@ -302,18 +315,15 @@ function sprint_editor_create($, params) {
     }
 
     function blockEmptyPush(name) {
-
-        if (!layoutLastName) {
+        if ($blocks.find('.sp-y-col').length <= 0){
             layoutEmptyAdd(1);
         }
 
+        var lastpos = $blocks.find('.sp-y-col').last().data('layout');
+
         blockPush({
             name: name,
-            layout: {
-                name: layoutLastName,
-                column: layoutLastColCnt
-            }
-
+            layout: lastpos
         });
     }
 
@@ -322,15 +332,13 @@ function sprint_editor_create($, params) {
             return false;
         }
 
-        var $layout = $blocks.find('.sp-x-table').last();
-        var $column = $layout.find('.sp-y-col').eq(data.layout.column - 1);
-
         var templateVars = sprint_editor.getBlockParams(data.name);
         templateVars.showSortButtons = params.showSortButtons;
         templateVars.enableChange = params.enableChange;
 
         var html = sprint_editor.renderTemplate('box', templateVars);
 
+        var $column = $blocks.find('[data-layout="'+data.layout+'"]');
         $column.append(html);
 
         var $el = $column.find('.j-box-block').last();
@@ -352,8 +360,8 @@ function sprint_editor_create($, params) {
 
     function toggleSizes($title) {
         if ($title) {
-            var $sizes = $title.closest('.sp-x-col').find('.sp-y-sizes');
-            $blocks.find('.sp-y-sizes').not($sizes).hide();
+            var $sizes = $title.closest('.sp-x-col').find('.sp-y-types');
+            $blocks.find('.sp-y-types').not($sizes).hide();
             $blocks.find('.sp-y-title').not($title).removeClass('active');
 
             if ($sizes.is(':hidden')) {
@@ -365,7 +373,7 @@ function sprint_editor_create($, params) {
             }
 
         } else {
-            $blocks.find('.sp-y-sizes').hide();
+            $blocks.find('.sp-y-types').hide();
             $blocks.find('.sp-y-title').removeClass('active');
         }
     }
@@ -400,23 +408,20 @@ function sprint_editor_create($, params) {
 
     function layoutRemoveEmpty() {
         $blocks.find('.sp-x-table').each(function () {
-            var colCnt = $(this).find('.sp-y-col').length;
+            var colCnt = 0;
             var colEmp = 0;
             $(this).find('.sp-y-col').each(function () {
+                colCnt++;
                 if ($(this).is(':empty')) {
                     colEmp++;
                 }
             });
-            if (colCnt == colEmp) {
+            if (colCnt === colEmp) {
+                var name = $(this).data('name');
+                delete layoutsList[name];
+
                 $(this).remove();
             }
         });
-
-        var $lastCol = $blocks.find('.sp-y-col').last();
-        if ($lastCol.length) {
-            layoutLastName = $lastCol.data('name');
-        } else {
-            layoutLastName = '';
-        }
     }
 }

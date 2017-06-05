@@ -44,6 +44,8 @@ class AdminEditor
             $value = self::prepareValue($params['defaultValue']);
         }
 
+        echo '<pre>'; print_r($value); echo '</pre>';
+
         $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
         foreach ($events as $aEvent) {
             ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
@@ -60,8 +62,7 @@ class AdminEditor
         }
 
         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
-            'jsonBlocks' => json_encode(Locale::convertToUtf8IfNeed($value['blocks'])),
-            'jsonLayouts' => json_encode(Locale::convertToUtf8IfNeed($value['layouts'])),
+            'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
             'selectValues' => Locale::convertToWin1251IfNeed(self::$selectValues),
             'jsonTemplates' => json_encode(Locale::convertToUtf8IfNeed(self::$templates)),
             'jsonParameters' => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
@@ -78,7 +79,7 @@ class AdminEditor
         $value = json_decode(Locale::convertToUtf8IfNeed($value), true);
         $value = (json_last_error() == JSON_ERROR_NONE && is_array($value)) ? $value : array();
 
-        if (!empty($value) && !isset($value['blocks'])) {
+        if (!empty($value) && !isset($value['layouts'])) {
 
             foreach ($value as $index => $block) {
                 $block['layout'] = 'a1:b1';
@@ -87,9 +88,9 @@ class AdminEditor
 
             $value = array(
                 'blocks' => $value,
+                'counter' => 1,
                 'layouts' => array(
-                    'a1' => array('b1' => '', 'b2' => ''),
-                    'a2' => array('b1' => '', 'b2' => ''),
+                    'a1' => array('b1' => ''),
                 )
             );
         }

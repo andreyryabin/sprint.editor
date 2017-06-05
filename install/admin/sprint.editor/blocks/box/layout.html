@@ -1,27 +1,27 @@
 <div class="sp-x-table" data-name="{{=it.name}}">
     <div class="sp-x-row">
         {{~it.columns :col:index}}
-        <div class="sp-x-col">
+        <div class="sp-x-col" data-name="{{=col.name}}">
             <div class="sp-y-caption">
                 <span class="sp-y-title">Колонка {{=index+1}}/{{=it.columns.length}}</span>
-                <span class="sp-y-cursize">{{=col}}</span>
-                <div class="sp-y-sizes">
+                <span class="sp-y-ctype">{{=col.type}}</span>
+                <div class="sp-y-types">
                     <div class="sp-table">
                         <div class="sp-row">
                             <div class="sp-col sp-col-sep">
-                                <span>нет</span><br/>
+                                <span class="sp-y-notype">нет</span><br/>
                                 {{~it.sizes :size}}
                                 <span>md-{{=size.size}}</span>
                                 {{~}}
                             </div>
                             <div class="sp-col sp-col-sep">
-                                <span>нет</span><br/>
+                                <span class="sp-y-notype">нет</span><br/>
                                 {{~it.sizes :size}}
                                 <span>xs-{{=size.size}}</span>
                                 {{~}}
                             </div>
                             <div class="sp-col">
-                                <span>нет</span><br/>
+                                <span class="sp-y-notype">нет</span><br/>
                                 {{~it.sizes :size}}
                                 <span>sm-{{=size.size}}</span>
                                 {{~}}
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sp-y-col" data-pos="{{=it.name}}:{{=col.name}}"></div>
+            <div class="sp-y-col" data-layout="{{=it.name}}:{{=col.name}}"></div>
         </div>
         {{~}}
     </div>

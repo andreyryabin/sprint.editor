@@ -2,8 +2,7 @@
 /**
  * @var $rawValue
  *
- * @var $jsonBlocks
- * @var $jsonLayouts
+ * @var $jsonValue
  *
  * @var $jsonParameters
  * @var $jsonTemplates
@@ -68,8 +67,7 @@
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
             showSortButtons: <?=$showSortButtons?>,
-            jsonBlocks: <?=$jsonBlocks?>,
-            jsonLayouts: <?=$jsonLayouts?>
+            jsonValue: <?=$jsonValue?>
         });
     });
 </script>
