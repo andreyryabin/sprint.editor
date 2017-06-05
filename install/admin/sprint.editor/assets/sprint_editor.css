@@ -65,6 +65,7 @@
 .sp-box_panel-buttons span {
     text-decoration: none;
     border: 1px solid #ccc;
+    color: #888;
     margin-left: 5px;
     display: inline-block;
     text-align: center;

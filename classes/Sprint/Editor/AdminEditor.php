@@ -123,6 +123,9 @@ class AdminEditor
             if ($val['name'] == 'text' && !empty($val['value'])) {
                 $search .= ' ' . $val['value'];
             }
+            if ($val['name'] == 'htag' && !empty($val['value'])) {
+                $search .= ' ' . $val['value'];
+            }
         }
         return $search;
     }
