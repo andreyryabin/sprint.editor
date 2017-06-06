@@ -46,6 +46,7 @@ class AdminEditor
 
         echo '<pre>'; print_r($value); echo '</pre>';
 
+
         $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
         foreach ($events as $aEvent) {
             ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
@@ -82,15 +83,14 @@ class AdminEditor
         if (!empty($value) && !isset($value['layouts'])) {
 
             foreach ($value as $index => $block) {
-                $block['layout'] = 'a1:b1';
+                $block['layout'] = '0,0';
                 $value[$index] = $block;
             }
 
             $value = array(
                 'blocks' => $value,
-                'next' => 2,
                 'layouts' => array(
-                    'a1' => array('b1' => ''),
+                    array(''),
                 )
             );
         }

@@ -1,10 +1,10 @@
-<div class="sp-x-table" data-name="{{=it.name}}">
+<div class="sp-x-table">
     <div class="sp-x-row">
         {{~it.columns :col:index}}
-        <div class="sp-x-col" data-name="{{=col.name}}">
+        <div class="sp-x-col">
             <div class="sp-y-caption">
                 <span class="sp-y-title">Колонка {{=index+1}}/{{=it.columns.length}}</span>
-                <span class="sp-y-ctype">{{=col.type}}</span>
+                <span class="sp-y-ctype">{{=col}}</span>
                 <div class="sp-y-types">
                     <div class="sp-table">
                         <div class="sp-row">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sp-y-col" data-layout="{{=it.name}}:{{=col.name}}"></div>
+            <div class="sp-y-col"></div>
         </div>
         {{~}}
     </div>
