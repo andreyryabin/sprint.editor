@@ -58,11 +58,13 @@
     font-weight: bold !important;
 }
 
+
 .sp-box_panel-buttons {
     float: right;
 }
 
 .sp-box_panel-buttons span {
+    cursor: pointer;
     text-decoration: none;
     border: 1px solid #ccc;
     color: #888;
@@ -152,8 +154,16 @@
     text-decoration: none;
 }
 
+.sp-layout-remove{
+    visibility: hidden;
+}
+
 .sp-layout-mode {
 
+}
+
+.sp-layout-mode .sp-layout-remove{
+    visibility: visible;
 }
 
 .sp-x-table{

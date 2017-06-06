@@ -18,6 +18,7 @@
  * @var $showSortButtons
  */
 ?>
+<div class="j-editor<?= $uniqId ?>">
 <div class="j-blocks<?= $uniqId ?>"></div>
 <? if ($enableChange): ?>
     <? if (!empty($selectValues)): ?>
@@ -36,19 +37,19 @@
     <? else: ?>
         <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
     <? endif; ?>
-    <a href="/bitrix/admin/settings.php?lang=ru&mid=sprint.editor&mid_menu=1"
-       class="sp-options-link"
-       title="<?= GetMessage('SPRINT_EDITOR_OPTIONS_LINK') ?>"
-       target="_blank">(?)</a>
     <input title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
            type="button"
-           class="j-layout-toggle<?= $uniqId ?>"
+           class="sp-layout-toggle j-layout-toggle<?= $uniqId ?>"
+
            value="#"/>
     <input title="<?= GetMessage('SPRINT_EDITOR_layout_remove') ?>"
            type="button"
-           class="j-layout-remove<?= $uniqId ?>"
+           style="float: right"
+           class="sp-layout-remove j-layout-remove<?= $uniqId ?>"
            value="x"/>
+
 <? endif; ?>
+</div>
 <textarea style="display: none;" class="j-result<?= $uniqId ?>" name="<?= $inputName ?>"></textarea>
 <? if ($firstRun): ?><?php
     \CModule::IncludeModule('fileman');

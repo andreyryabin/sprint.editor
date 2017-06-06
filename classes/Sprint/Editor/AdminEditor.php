@@ -44,9 +44,6 @@ class AdminEditor
             $value = self::prepareValue($params['defaultValue']);
         }
 
-        echo '<pre>'; print_r($value); echo '</pre>';
-
-
         $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
         foreach ($events as $aEvent) {
             ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
@@ -81,7 +78,6 @@ class AdminEditor
         $value = (json_last_error() == JSON_ERROR_NONE && is_array($value)) ? $value : array();
 
         if (!empty($value) && !isset($value['layouts'])) {
-
             foreach ($value as $index => $block) {
                 $block['layout'] = '0,0';
                 $value[$index] = $block;
