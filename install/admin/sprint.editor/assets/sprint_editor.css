@@ -154,16 +154,17 @@
     text-decoration: none;
 }
 
-.sp-layout-remove{
-    visibility: hidden;
-}
-
 .sp-layout-mode {
 
 }
 
+.sp-layout-mode .j-upbox,
+.sp-layout-mode .j-dnbox{
+    display: none;
+}
+
 .sp-layout-mode .sp-layout-remove{
-    visibility: visible;
+    /*display: block;*/
 }
 
 .sp-x-table{

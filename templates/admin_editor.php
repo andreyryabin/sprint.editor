@@ -37,17 +37,16 @@
     <? else: ?>
         <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
     <? endif; ?>
+    <div style="float: right">
     <input title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
            type="button"
            class="sp-layout-toggle j-layout-toggle<?= $uniqId ?>"
-
            value="#"/>
     <input title="<?= GetMessage('SPRINT_EDITOR_layout_remove') ?>"
            type="button"
-           style="float: right"
            class="sp-layout-remove j-layout-remove<?= $uniqId ?>"
            value="x"/>
-
+    </div>
 <? endif; ?>
 </div>
 <textarea style="display: none;" class="j-result<?= $uniqId ?>" name="<?= $inputName ?>"></textarea>
