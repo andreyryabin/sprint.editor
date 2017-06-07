@@ -75,6 +75,7 @@ function sprint_editor_create($, params) {
     var $addblockinput = $('.j-addblock' + params.uniqid);
     var $editor = $('.j-editor' + params.uniqid);
     var $blocks = $('.j-blocks' + params.uniqid);
+    var $buttons = $('.j-buttons' + params.uniqid);
 
     var $form = $blocks.closest('form').first();
 
@@ -99,6 +100,10 @@ function sprint_editor_create($, params) {
     $.each(params.jsonValue.blocks, function (index, block) {
         blockPush(block);
     });
+
+
+    toggleLayoutButtons();
+
 
     $form.on('submit', function (e) {
 
@@ -183,6 +188,7 @@ function sprint_editor_create($, params) {
             } else {
                 blockPush({name: name});
             }
+            toggleLayoutButtons();
         });
 
         $blocks.on('click', '.j-upbox', function (e) {
@@ -221,7 +227,6 @@ function sprint_editor_create($, params) {
 
             collectionRemove(index);
             $box.remove();
-
         });
 
         $blocks.on('click', '.sp-x-types span', function (e) {
@@ -355,6 +360,14 @@ function sprint_editor_create($, params) {
 
     }
 
+    function toggleLayoutButtons() {
+        if ($blocks.find('.sp-x-col').length <= 0) {
+            $buttons.hide();
+        } else {
+            $buttons.show();
+        }
+    }
+
     function blockPush(data) {
         if (!data.name || !sprint_editor.hasBlockParams(data.name)) {
             return false;
@@ -458,6 +471,8 @@ function sprint_editor_create($, params) {
                 $(this).remove();
             }
         });
+
+        toggleLayoutButtons();
     }
 
     function setLocal(key, val) {

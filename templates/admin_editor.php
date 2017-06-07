@@ -19,7 +19,7 @@
  */
 ?>
 <div class="j-editor<?= $uniqId ?>">
-<div class="j-blocks<?= $uniqId ?>"></div>
+    <div class="j-blocks<?= $uniqId ?>"></div>
 <? if ($enableChange): ?>
     <? if (!empty($selectValues)): ?>
         <select class="j-selectblock<?= $uniqId ?>" style="width: 250px;">
@@ -37,7 +37,7 @@
     <? else: ?>
         <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
     <? endif; ?>
-    <div style="float: right">
+    <div class="j-buttons<?= $uniqId ?>" style="float:right;display: none">
     <input title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
            type="button"
            class="sp-layout-toggle j-layout-toggle<?= $uniqId ?>"
