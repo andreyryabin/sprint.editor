@@ -5,30 +5,7 @@
             <div class="sp-x-caption">
                 <span class="sp-x-title">Колонка {{=index+1}}/{{=it.columns.length}}</span>
                 <span class="sp-x-ctype">{{=col}}</span>
-                <div class="sp-x-types">
-                    <div class="sp-table">
-                        <div class="sp-row">
-                            <div class="sp-col sp-col-sep">
-                                <span class="sp-x-notype">нет</span><br/>
-                                {{~it.sizes :size}}
-                                <span>md-{{=size.size}}</span>
-                                {{~}}
-                            </div>
-                            <div class="sp-col sp-col-sep">
-                                <span class="sp-x-notype">нет</span><br/>
-                                {{~it.sizes :size}}
-                                <span>xs-{{=size.size}}</span>
-                                {{~}}
-                            </div>
-                            <div class="sp-col">
-                                <span class="sp-x-notype">нет</span><br/>
-                                {{~it.sizes :size}}
-                                <span>sm-{{=size.size}}</span>
-                                {{~}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="sp-x-types">{{=it.sizeshtml}}</div>
             </div>
         </div>
         {{~}}

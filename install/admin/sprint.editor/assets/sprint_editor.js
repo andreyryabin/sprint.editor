@@ -2,6 +2,7 @@ var sprint_editor = {
     _templates: {},
     _parameters: {},
     _tplcache: {},
+    _varscahe: {},
 
     _registered: {},
 
@@ -54,6 +55,18 @@ var sprint_editor = {
         } else {
             return '';
         }
+    },
+
+    setCacheVar: function (name, value) {
+        this._varscahe[name] = value;
+    },
+
+    getCacheVar: function (name) {
+        var value = '';
+        if (this._varscahe[name]) {
+            value = this._varscahe[name];
+        }
+        return value;
     }
 };
 
@@ -150,8 +163,7 @@ function sprint_editor_create($, params) {
 
     if (params.enableChange) {
 
-        var layoutMode = getLocal('mode');
-        if (layoutMode == '1'){
+        if (getLocal('mode') === '1') {
             $editor.addClass('sp-layout-mode');
         } else {
             $editor.removeClass('sp-layout-mode');
@@ -220,17 +232,6 @@ function sprint_editor_create($, params) {
 
         });
 
-        var sizesInterval;
-        $blocks.on('mouseenter', '.sp-x-types', function () {
-            clearInterval(sizesInterval);
-        });
-
-        $blocks.on('mouseleave', '.sp-x-types', function () {
-            sizesInterval = setTimeout(function () {
-                toggleSizes();
-            }, 1000);
-        });
-
         $blocks.on('click', '.sp-x-types span', function (e) {
             var $span = $(this);
 
@@ -239,25 +240,50 @@ function sprint_editor_create($, params) {
             var $sizes = $xcol.find('.sp-x-types');
 
             $span.siblings('span').removeClass('active');
-            $span.addClass('active');
+
+            if ($span.hasClass('active')) {
+                $span.removeClass('active');
+            } else {
+                $span.addClass('active');
+            }
 
             var result = [];
             $sizes.find('.active').each(function () {
-                if (!$(this).hasClass('sp-x-notype')) {
-                    var tmp = $(this).text();
-                    tmp = $.trim(tmp);
-                    result.push(tmp);
-                }
+                var tmp = $(this).text();
+                tmp = $.trim(tmp);
+                result.push(tmp);
             });
 
             $cursize.text(
-                result.join(', ')
+                result.join(',')
             );
 
         });
 
         $blocks.on('click', '.sp-x-title', function (e) {
-            toggleSizes($(this));
+            var $title = $(this);
+            var $xcol = $title.closest('.sp-x-col');
+            var $sizes = $xcol.find('.sp-x-types');
+            if ($title.hasClass('active')){
+                $sizes.hide();
+                $title.removeClass('active');
+            } else {
+                $blocks.find('.sp-x-types').not($sizes).hide();
+                $blocks.find('.sp-x-title').not($title).removeClass('active');
+
+                var cursizes = $xcol.find('.sp-x-ctype').text();
+                cursizes = cursizes.split(',');
+                $sizes.find('span').each(function () {
+                    var stext = $(this).text();
+                    if ($.inArray(stext, cursizes) >= 0) {
+                        $(this).addClass('active');
+                    }
+                });
+
+                $sizes.show();
+                $title.addClass('active');
+            }
+
         });
     }
 
@@ -271,21 +297,32 @@ function sprint_editor_create($, params) {
     }
 
     function layoutAdd(columns) {
-        var sizes = [];
-        for (var index = 1; index <= 12; index++) {
-            sizes.push({
-                size: index,
-                active: 0
+
+        if (!sprint_editor.getCacheVar('layout-sizes')) {
+            var types = ['md-', 'sm-', 'xs-', 'lg-'];
+            var groups = [];
+            for (var type in types) {
+                var sizes = [];
+                for (var index = 1; index <= 12; index++) {
+                    sizes.push(types[type] + index);
+                }
+                groups.push(sizes);
+            }
+            var sizesHtml = sprint_editor.renderTemplate('box-sizes', {
+                groups: groups
             });
+
+            sprint_editor.setCacheVar('layout-sizes', sizesHtml);
         }
 
-        var html = sprint_editor.renderTemplate('box-layout', {
+        var layoutHtml = sprint_editor.renderTemplate('box-layout', {
+            sizeshtml: sprint_editor.getCacheVar('layout-sizes'),
             columns: columns,
-            sizes: sizes,
             name: name
         });
 
-        $blocks.append(html);
+
+        $blocks.append(layoutHtml);
 
         if (params.enableChange) {
 
@@ -361,28 +398,6 @@ function sprint_editor_create($, params) {
         collectionList.push(entry);
     }
 
-    function toggleSizes($title) {
-        if ($title) {
-            clearInterval(sizesInterval);
-
-            var $sizes = $title.closest('.sp-x-col').find('.sp-x-types');
-            $blocks.find('.sp-x-types').not($sizes).hide();
-            $blocks.find('.sp-x-title').not($title).removeClass('active');
-
-            if ($sizes.is(':hidden')) {
-                $sizes.show();
-                $title.addClass('active');
-            } else {
-                $sizes.hide();
-                $title.removeClass('active');
-            }
-
-        } else {
-            $blocks.find('.sp-x-types').hide();
-            $blocks.find('.sp-x-title').removeClass('active');
-        }
-    }
-
     function blockInit($el, name, data) {
         name = sprint_editor.hasBlockMethod(name) ? name : 'dump';
 
@@ -418,7 +433,7 @@ function sprint_editor_create($, params) {
             $(this).find('.sp-x-col').each(function () {
                 colCnt++;
 
-                if ($(this).find('.j-box').length <=0){
+                if ($(this).find('.j-box').length <= 0) {
                     colEmp++;
                 }
 
@@ -429,17 +444,17 @@ function sprint_editor_create($, params) {
         });
     }
 
-    function setLocal(key, val){
-        if (window.localStorage){
-            key = key + params.uniqid;
+    function setLocal(key, val) {
+        if (window.localStorage) {
+            key = 'sp' + params.uniqid + key;
             localStorage.setItem(key, val);
         }
     }
 
-    function getLocal(key){
+    function getLocal(key) {
         var val = '';
-        if (window.localStorage){
-            key = key + params.uniqid;
+        if (window.localStorage) {
+            key = 'sp' + params.uniqid + key;
             val = localStorage.getItem(key);
         }
         return val;

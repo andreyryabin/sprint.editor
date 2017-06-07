@@ -83,12 +83,12 @@
 }
 
 .sp-box {
-    margin: 10px 0 10px;
+    margin: 10px 0 0;
 }
 
 .sp-layout-mode .sp-box {
     background: #e0e8ea;
-    margin: 10px 5px;
+    margin: 10px 5px 10px ;
 }
 
 .sp-placeholder {
@@ -104,13 +104,14 @@
 
 .sp-x-col {
     min-height: 84px;
+    margin-bottom: 10px;
 }
 
 .sp-layout-mode .sp-x-col{
     height: 74px;
     min-height: 74px;
+    margin-bottom: 0;
 }
-
 
 .sp-box_panel {
     position: relative;
@@ -133,6 +134,19 @@
     border: none;
     padding: 5px 0;
     margin: 0 5px;
+}
+
+
+.sp-x-types {
+    display: none;
+    position: absolute;
+    left: 0;
+    background: #eee;
+    color: #888;
+    border: 1px solid #ccc;
+    text-align: left;
+    z-index: 2;
+    width: 100%;
 }
 
 .sp-box .ui-sortable-handle{
@@ -232,36 +246,33 @@
     color: #888;
 }
 
-.sp-x-types {
-    display: none;
-    position: absolute;
-    left: 0;
-    background: #eee;
-    color: #888;
-    border: 1px solid #ccc;
-    text-align: left;
-    z-index: 2;
-    width: 100%;
-}
-
 .sp-x-title:hover,
 .sp-x-title.active{
     color: #d00;
 }
 
+.sp-x-types .sp-col {
+    padding: 10px;
+    border-right: 1px solid #ccc;
+}
+
+.sp-x-types .sp-col:last-child{
+    border: none;
+}
 
 .sp-x-types span {
     display: inline-block;
     cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 2px;
+    margin: 2px;
+    min-width: 40px;
+    text-align: center;
 }
 
 .sp-x-types span:hover,
 .sp-x-types span.active{
     color: #d00;
-}
-
-.sp-x-types .sp-col-sep{
-    border-right: 1px solid #ccc;
 }
 
 .sp-x-title {
