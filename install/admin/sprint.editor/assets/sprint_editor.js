@@ -219,8 +219,7 @@ function sprint_editor_create($, params) {
         $blocks.on('mouseleave', '.sp-y-types', function () {
             sizesInterval = setTimeout(function () {
                 toggleSizes();
-            }, 2000);
-
+            }, 1000);
         });
 
         $blocks.on('click', '.sp-y-types span', function (e) {
