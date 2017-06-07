@@ -101,39 +101,31 @@ function sprint_editor_create($, params) {
     });
 
     $form.on('submit', function (e) {
+
         var blocks = [];
         var layouts = [];
 
-        $.each(collectionList, function (index, entry) {
-            var data = entry.collectData();
-            if (typeof entry.getAreas == 'function') {
-                var areas = entry.getAreas();
-                $.each(areas, function (areaIndex, area) {
-                    data[area.dataKey] = area.block.collectData()
-                })
-            }
+        var index = 0;
 
-            var $box = $blocks.find('.j-box').eq(index);
-
-            var $layout = $box.closest('.sp-x-table');
-            var $column = $box.closest('.sp-x-col');
-
-            var pos1 = $blocks.find('.sp-x-table').index($layout);
-            var pos2 = $layout.find('.sp-x-col').index($column);
-
-            data.layout = pos1 + ',' + pos2;
-
-            blocks.push(data);
-
-        });
-
-
-        $blocks.find('.sp-x-table').each(function (lindex) {
+        $blocks.find('.sp-x-table').each(function (pos1) {
             var columns = [];
-            $(this).find('.sp-x-ctype').each(function (cindex) {
-                var text = $(this).text();
+
+            $(this).find('.sp-x-col').each(function(pos2){
+
+                var text = $(this).find('.sp-x-ctype').text();
                 columns.push(text);
+
+                $(this).find('.j-box').each(function(){
+
+                    var bdata = collectionCollect(index);
+                    bdata.layout = pos1 + ',' + pos2;
+
+                    blocks.push(bdata);
+                    index++;
+                });
+
             });
+
             layouts.push(columns);
         });
 
@@ -179,7 +171,7 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $('.j-layout-remove' + params.uniqid).on('click', function () {
+        $('.j-layout-remove' + params.uniqid).on('click', function (e) {
             layoutRemoveEmpty();
         });
 
@@ -198,7 +190,7 @@ function sprint_editor_create($, params) {
             var index = $blocks.find('.j-upbox').index(this);
             var block = $(this).closest('.j-box');
 
-            var nblock = block.prev();
+            var nblock = block.prev('.j-box');
             if (nblock.length > 0) {
                 var nindex = nblock.index();
 
@@ -212,7 +204,7 @@ function sprint_editor_create($, params) {
             var index = $blocks.find('.j-dnbox').index(this);
             var block = $(this).closest('.j-box');
 
-            var nblock = block.next();
+            var nblock = block.next('.j-box');
             if (nblock.length > 0) {
                 var nindex = nblock.index();
 
@@ -424,6 +416,20 @@ function sprint_editor_create($, params) {
 
     function collectionRemove(index) {
         collectionList.splice(index, 1);
+    }
+
+    function collectionCollect(index) {
+        var entry = collectionList[index];
+
+        var data = entry.collectData();
+        if (typeof entry.getAreas === 'function') {
+            var areas = entry.getAreas();
+            $.each(areas, function (areaIndex, area) {
+                data[area.dataKey] = area.block.collectData()
+            })
+        }
+
+        return data;
     }
 
     function layoutRemoveEmpty() {

@@ -27,7 +27,7 @@
     -webkit-font-smoothing: antialiased
 }
 
-.sp-file:hover{
+.sp-file:hover {
     text-decoration: none;
     background: #f3f6f7 !important;
     background-image: -webkit-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
@@ -37,7 +37,7 @@
     background-image: linear-gradient(top, #f8f8f9, #f2f6f8) !important
 }
 
-.sp-file:active{
+.sp-file:active {
     background-color: #b7c4c9 !important;
     -webkit-box-shadow: inset 0 1px 1px 1px rgba(103, 109, 123, .78);
     box-shadow: inset 0 1px 1px 1px rgba(103, 109, 123, .78);
@@ -88,7 +88,7 @@
 
 .sp-layout-mode .sp-box {
     background: #e0e8ea;
-    margin: 10px 5px 10px ;
+    margin: 10px 5px 10px;
 }
 
 .sp-placeholder {
@@ -107,7 +107,7 @@
     margin-bottom: 10px;
 }
 
-.sp-layout-mode .sp-x-col{
+.sp-layout-mode .sp-x-col {
     height: 74px;
     min-height: 74px;
     margin-bottom: 0;
@@ -115,20 +115,20 @@
 
 .sp-box_panel {
     position: relative;
-    text-align: center;
+    text-align: left;
     padding: 5px 0;
 }
 
 .sp-layout-mode .sp-box_panel {
-
+    text-align: center;
 }
 
-.sp-x-caption{
+.sp-x-caption {
     text-align: center;
     border-bottom: 1px dashed #ccc;
 }
 
-.sp-layout-mode .sp-x-caption{
+.sp-layout-mode .sp-x-caption {
     text-align: center;
     background: #ddd;
     border: none;
@@ -136,42 +136,40 @@
     margin: 0 5px;
 }
 
-
 .sp-x-types {
     display: none;
     position: absolute;
     left: 0;
     background: #eee;
-    color: #888;
-    border: 1px solid #ccc;
+    color: #aaa;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
     text-align: left;
     z-index: 2;
     width: 100%;
     padding: 5px;
 }
 
-.sp-box .ui-sortable-handle{
-    cursor: move;
-}
-
-.sp-box_panel-group_title{
-    color: #888 !important;
+.sp-box_panel-group_title {
+    color: #aaa !important;
     font-weight: normal;
 }
-.sp-box_panel-title{
+
+.sp-box_panel-title {
     font-weight: bold !important;
 }
 
-
 .sp-box_panel-buttons {
-    position: absolute;right: 0;top:4px;
+    position: absolute;
+    right: 0;
+    top: 4px;
 }
 
-.sp-box_panel-buttons span {
+.sp-box_panel-buttons span{
     cursor: pointer;
     text-decoration: none;
     border: 1px solid #ccc;
-    color: #888;
+    color: #aaa;
     margin-left: 5px;
     display: inline-block;
     text-align: center;
@@ -180,11 +178,11 @@
 
 .sp-note {
     font-size: 12px !important;
-    color: #888 !important;
+    color: #aaa !important;
 }
 
-.sp-options-link{
-    float:right;
+.sp-options-link {
+    float: right;
     text-decoration: none;
 }
 
@@ -193,65 +191,64 @@
 }
 
 .sp-layout-mode .j-upbox,
-.sp-layout-mode .j-dnbox{
+.sp-layout-mode .j-dnbox {
     display: none;
 }
 
-.sp-layout-mode .sp-layout-remove{
-    /*display: block;*/
-}
-
-.sp-x-table{
+.sp-x-table {
     position: relative;
 }
-
 
 .sp-x-table:last-child {
     margin-bottom: 20px;
 }
 
-.sp-layout-mode .sp-x-table:last-child{
+.sp-layout-mode .sp-x-table:last-child {
     margin-bottom: 10px;
 }
 
-.sp-layout-mode .sp-x-table{
+.sp-layout-mode .sp-x-table {
     display: table;
     border-collapse: collapse;
     width: 100%;
 }
 
-.sp-layout-mode .sp-x-row{
+.sp-layout-mode .sp-x-row {
     display: table-row;
 }
 
-.sp-layout-mode .sp-x-col{
+.sp-layout-mode .sp-x-col {
     display: table-cell;
     vertical-align: top;
 }
 
-
-.sp-layout-mode .sp-box.ui-sortable-helper {
-    background: #ddd;
+.sp-box .ui-sortable-handle {
+    cursor: move;
 }
 
 .sp-box.ui-sortable-helper {
     background: #e0e8ea;
+    padding: 10px 10px 20px;
 }
 
-.sp-layout-mode .j-box-block{
+.sp-layout-mode .sp-box.ui-sortable-helper {
+    background: #ddd;
+    padding: 0;
+}
+
+.sp-layout-mode .j-box-block {
     display: none;
 }
 
 .sp-x-ctype {
     margin-left: 5px;
-    color: #888;
+    color: #aaa;
 }
 
 .sp-x-title:hover,
-.sp-x-title.active{
+.sp-x-title.active {
     color: #d00;
 }
-
 
 .sp-x-types span {
     display: inline-block;
@@ -264,7 +261,7 @@
 }
 
 .sp-x-types span:hover,
-.sp-x-types span.active{
+.sp-x-types span.active {
     color: #d00;
 }
 
