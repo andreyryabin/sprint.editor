@@ -142,8 +142,7 @@
     left: 0;
     background: #eee;
     color: #aaa;
-    border-bottom: 1px solid #ccc;
-    border-right: 1px solid #ccc;
+    border: 1px solid #ccc;
     text-align: left;
     z-index: 2;
     width: 100%;

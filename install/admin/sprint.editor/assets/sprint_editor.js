@@ -281,8 +281,18 @@ function sprint_editor_create($, params) {
 
     function layoutEmptyAdd(colCnt) {
         var columns = [];
+        var size = '';
+
+        if (colCnt == 2){
+            size = 'md-6';
+        } else if (colCnt == 3){
+            size = 'md-4';
+        } else if (colCnt == 4){
+            size = 'md-3';
+        }
+
         for (var index = 1; index <= colCnt; index++) {
-            columns.push('')
+            columns.push(size)
         }
 
         layoutAdd(columns);
