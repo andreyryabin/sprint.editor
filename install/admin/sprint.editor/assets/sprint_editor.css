@@ -1,80 +1,4 @@
-.sp-clear:after {
-    content: '';
-    display: block;
-    clear: both;
-}
-
-.sp-table {
-    display: table;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.sp-table .sp-row {
-    display: table-row;
-}
-
-.sp-table .sp-col {
-    display: table-cell;
-    vertical-align: top;
-}
-
-.sp-table .sp-col-l {
-    padding: 10px;
-}
-
-.sp-table .sp-col-r {
-    padding: 10px;
-    text-align: right;
-    width: 60px;
-    vertical-align: middle;
-}
-
-.sp-box {
-    margin-bottom: 20px;
-    background: #f5f9f9;
-}
-
-.sp-box_panel {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.sp-box .ui-sortable-handle{
-    cursor: move;
-}
-
-.sp-box_panel:after{
-    content: '';
-    display: block;
-    clear: both;
-}
-
-.sp-box_panel-group_title{
-    color: #888 !important;
-    font-weight: normal;
-}
-.sp-box_panel-title{
-    font-weight: bold !important;
-}
-
-
-.sp-box_panel-buttons {
-    float: right;
-}
-
-.sp-box_panel-buttons span {
-    cursor: pointer;
-    text-decoration: none;
-    border: 1px solid #ccc;
-    color: #888;
-    margin-left: 5px;
-    display: inline-block;
-    text-align: center;
-    width: 18px;
-}
-
-.sp-box .sp-file {
+.sp-file {
     display: inline-block;
     overflow: hidden;
     position: relative;
@@ -103,7 +27,7 @@
     -webkit-font-smoothing: antialiased
 }
 
-.sp-box .sp-file:hover{
+.sp-file:hover{
     text-decoration: none;
     background: #f3f6f7 !important;
     background-image: -webkit-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
@@ -113,7 +37,7 @@
     background-image: linear-gradient(top, #f8f8f9, #f2f6f8) !important
 }
 
-.sp-box .sp-file:active{
+.sp-file:active{
     background-color: #b7c4c9 !important;
     -webkit-box-shadow: inset 0 1px 1px 1px rgba(103, 109, 123, .78);
     box-shadow: inset 0 1px 1px 1px rgba(103, 109, 123, .78);
@@ -125,11 +49,7 @@
     border-top: transparent;
 }
 
-.sp-box .sp-file strong {
-
-}
-
-.sp-box .sp-file input[type=file] {
+.sp-file input[type=file] {
     cursor: pointer;
     direction: ltr;
     font-size: 200px !important;
@@ -141,12 +61,111 @@
     display: block;
 }
 
+.sp-clear:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.sp-table {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.sp-table .sp-row {
+    display: table-row;
+}
+
+.sp-table .sp-col {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.sp-box {
+    margin: 10px 0 10px;
+}
+
+.sp-layout-mode .sp-box {
+    background: #e0e8ea;
+    margin: 10px 5px;
+}
+
+.sp-placeholder {
+    border: 1px dotted black;
+    height: 100px;
+    margin: 10px 0 10px;
+}
+
+.sp-layout-mode .sp-placeholder {
+    margin: 10px 5px;
+    height: 20px;
+}
+
+.sp-x-col {
+    min-height: 84px;
+}
+
+.sp-layout-mode .sp-x-col{
+    height: 74px;
+    min-height: 74px;
+}
+
+
+.sp-box_panel {
+    position: relative;
+    text-align: center;
+    padding: 5px 0;
+}
+
+.sp-layout-mode .sp-box_panel {
+
+}
+
+.sp-x-caption{
+    text-align: center;
+    border-bottom: 1px dashed #ccc;
+}
+
+.sp-layout-mode .sp-x-caption{
+    text-align: center;
+    background: #ddd;
+    border: none;
+    padding: 5px 0;
+    margin: 0 5px;
+}
+
+.sp-box .ui-sortable-handle{
+    cursor: move;
+}
+
+.sp-box_panel-group_title{
+    color: #888 !important;
+    font-weight: normal;
+}
+.sp-box_panel-title{
+    font-weight: bold !important;
+}
+
+
+.sp-box_panel-buttons {
+    position: absolute;right: 0;top:4px;
+}
+
+.sp-box_panel-buttons span {
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    color: #888;
+    margin-left: 5px;
+    display: inline-block;
+    text-align: center;
+    width: 18px;
+}
+
 .sp-note {
     font-size: 12px !important;
     color: #888 !important;
-}
-.sp-box-settings{
-    margin-bottom: 10px;
 }
 
 .sp-options-link{
@@ -171,8 +190,13 @@
     position: relative;
 }
 
+
 .sp-x-table:last-child {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+}
+
+.sp-layout-mode .sp-x-table:last-child{
+    margin-bottom: 10px;
 }
 
 .sp-layout-mode .sp-x-table{
@@ -183,148 +207,63 @@
 
 .sp-layout-mode .sp-x-row{
     display: table-row;
-    /*margin: 0;*/
-    /*border: none;*/
 }
 
 .sp-layout-mode .sp-x-col{
     display: table-cell;
     vertical-align: top;
-    padding: 0 5px;
 }
 
 
-.sp-y-caption{
-    text-align: center;
-    /*padding: 5px 10px;*/
-    padding: 0;
-    /*padding: 0;*/
-    margin-bottom:10px;
-
-    /*position: relative;*/
-
-    /*background: #E2EAEC;*/
-    border-bottom: 1px dashed #ccc;
-    /*border-bottom: 1px solid #A4B9CC;*/
-}
-
-.sp-layout-mode .sp-y-caption{
-    text-align: center;
-    padding: 5px 10px;
-    background: #ddd;
-    border: none;
-}
-
-.sp-y-col {
-    min-height: 65px;
-}
-
-.sp-layout-mode .sp-y-col{
-    /*min-width: 250px;*/
-    min-height: 65px;
-}
-
-.sp-x-col {
-    /*border-bottom: 1px solid #20A8DC;*/
-    /*margin-bottom: 20px;*/
-    /*min-height: 100px;*/
-}
-
-.sp-x-row {
-    /*border-bottom: 1px solid #20A8DC;*/
-    /*margin-bottom: 20px;*/
-}
-
-.sp-layout-mode .sp-box {
-    background: #e0e8ea;
-    margin: 0 0 10px 0;
-}
 .sp-layout-mode .sp-box.ui-sortable-helper {
     background: #ddd;
-    padding: 0;
 }
 
 .sp-box.ui-sortable-helper {
     background: #e0e8ea;
-    padding: 10px 10px 20px;
 }
 
 .sp-layout-mode .j-box-block{
     display: none;
 }
 
-.sp-layout-mode .sp-box_panel {
-    padding: 5px 10px;
-    margin: 0;
-}
-
-.sp-layout-mode .sp-box_panel-buttons {
-    /*display: none;*/
-}
-
-.sp-placeholder {
-    border: 1px dotted black;
-    margin: 5px 0 10px;
-    height: 100px;
-}
-
-.sp-layout-mode .sp-placeholder {
-    height: 30px;
-}
-
-
-.sp-y-ctype {
+.sp-x-ctype {
     margin-left: 5px;
     color: #888;
 }
 
-.sp-y-types {
+.sp-x-types {
     display: none;
     position: absolute;
-
-    /*top:15px;*/
     left: 0;
-    /*padding: 10px;*/
     background: #eee;
     color: #888;
     border: 1px solid #ccc;
     text-align: left;
     z-index: 2;
-    /*min-width: 100px;*/
     width: 100%;
 }
 
-.sp-y-title:hover,
-.sp-y-title.active{
+.sp-x-title:hover,
+.sp-x-title.active{
     color: #d00;
 }
 
 
-.sp-y-types span {
-    /*float: left;*/
+.sp-x-types span {
     display: inline-block;
-    padding: 5px;
-    /*padding: 0;*/
-
     cursor: pointer;
-    /*border: 1px solid #ccc;*/
-
 }
 
-.sp-y-types span:hover,
-.sp-y-types span.active{
+.sp-x-types span:hover,
+.sp-x-types span.active{
     color: #d00;
 }
 
-.sp-y-types .sp-col {
-    padding: 5px 5px 20px;
-
-}
-
-.sp-y-types .sp-col-sep{
+.sp-x-types .sp-col-sep{
     border-right: 1px solid #ccc;
 }
 
-.sp-y-title {
+.sp-x-title {
     cursor: pointer;
 }

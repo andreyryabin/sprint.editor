@@ -117,7 +117,7 @@ function sprint_editor_create($, params) {
 
         $blocks.find('.sp-x-table').each(function (lindex) {
             var columns = [];
-            $(this).find('.sp-y-ctype').each(function (cindex) {
+            $(this).find('.sp-x-ctype').each(function (cindex) {
                 var text = $(this).text();
                 columns.push(text);
             });
@@ -150,11 +150,20 @@ function sprint_editor_create($, params) {
 
     if (params.enableChange) {
 
+        var layoutMode = getLocal('mode');
+        if (layoutMode == '1'){
+            $editor.addClass('sp-layout-mode');
+        } else {
+            $editor.removeClass('sp-layout-mode');
+        }
+
         $('.j-layout-toggle' + params.uniqid).on('click', function () {
             if ($editor.hasClass('sp-layout-mode')) {
                 $editor.removeClass('sp-layout-mode');
+                setLocal('mode', '');
             } else {
                 $editor.addClass('sp-layout-mode');
+                setLocal('mode', '1');
             }
         });
 
@@ -212,29 +221,29 @@ function sprint_editor_create($, params) {
         });
 
         var sizesInterval;
-        $blocks.on('mouseenter', '.sp-y-types', function () {
+        $blocks.on('mouseenter', '.sp-x-types', function () {
             clearInterval(sizesInterval);
         });
 
-        $blocks.on('mouseleave', '.sp-y-types', function () {
+        $blocks.on('mouseleave', '.sp-x-types', function () {
             sizesInterval = setTimeout(function () {
                 toggleSizes();
             }, 1000);
         });
 
-        $blocks.on('click', '.sp-y-types span', function (e) {
+        $blocks.on('click', '.sp-x-types span', function (e) {
             var $span = $(this);
 
             var $xcol = $span.closest('.sp-x-col');
-            var $cursize = $xcol.find('.sp-y-ctype');
-            var $sizes = $xcol.find('.sp-y-types');
+            var $cursize = $xcol.find('.sp-x-ctype');
+            var $sizes = $xcol.find('.sp-x-types');
 
             $span.siblings('span').removeClass('active');
             $span.addClass('active');
 
             var result = [];
             $sizes.find('.active').each(function () {
-                if (!$(this).hasClass('sp-y-notype')) {
+                if (!$(this).hasClass('sp-x-notype')) {
                     var tmp = $(this).text();
                     tmp = $.trim(tmp);
                     result.push(tmp);
@@ -247,7 +256,7 @@ function sprint_editor_create($, params) {
 
         });
 
-        $blocks.on('click', '.sp-y-title', function (e) {
+        $blocks.on('click', '.sp-x-title', function (e) {
             toggleSizes($(this));
         });
     }
@@ -280,12 +289,13 @@ function sprint_editor_create($, params) {
 
         if (params.enableChange) {
 
-            var $lastCols = $blocks.find('.sp-x-table').last().find('.sp-y-col');
+            var $lastCols = $blocks.find('.sp-x-table').last().find('.sp-x-col');
             var startIndex = 0;
             var stopIndex = 0;
 
             $lastCols.sortable({
-                connectWith: ".sp-y-col",
+                items: ".j-box",
+                connectWith: ".sp-x-col",
                 handle: ".j-box_handle",
                 placeholder: "sp-placeholder",
                 start: function (event, ui) {
@@ -300,7 +310,7 @@ function sprint_editor_create($, params) {
 
                     collectionSwap(startIndex, stopIndex);
                 }
-            });
+            }).disableSelection();
 
         }
 
@@ -316,7 +326,7 @@ function sprint_editor_create($, params) {
         templateVars.enableChange = params.enableChange;
         var html = sprint_editor.renderTemplate('box', templateVars);
 
-        if ($blocks.find('.sp-y-col').length <= 0) {
+        if ($blocks.find('.sp-x-col').length <= 0) {
             layoutEmptyAdd(1);
         }
 
@@ -326,10 +336,10 @@ function sprint_editor_create($, params) {
             var pos = data.layout.split(',');
 
             var $layout = $blocks.find('.sp-x-table').eq(pos[0]);
-            $column = $layout.find('.sp-y-col').eq(pos[1]);
+            $column = $layout.find('.sp-x-col').eq(pos[1]);
 
         } else {
-            $column = $blocks.find('.sp-y-col').last();
+            $column = $blocks.find('.sp-x-col').last();
         }
 
         $column.append(html);
@@ -355,9 +365,9 @@ function sprint_editor_create($, params) {
         if ($title) {
             clearInterval(sizesInterval);
 
-            var $sizes = $title.closest('.sp-x-col').find('.sp-y-types');
-            $blocks.find('.sp-y-types').not($sizes).hide();
-            $blocks.find('.sp-y-title').not($title).removeClass('active');
+            var $sizes = $title.closest('.sp-x-col').find('.sp-x-types');
+            $blocks.find('.sp-x-types').not($sizes).hide();
+            $blocks.find('.sp-x-title').not($title).removeClass('active');
 
             if ($sizes.is(':hidden')) {
                 $sizes.show();
@@ -368,8 +378,8 @@ function sprint_editor_create($, params) {
             }
 
         } else {
-            $blocks.find('.sp-y-types').hide();
-            $blocks.find('.sp-y-title').removeClass('active');
+            $blocks.find('.sp-x-types').hide();
+            $blocks.find('.sp-x-title').removeClass('active');
         }
     }
 
@@ -405,15 +415,34 @@ function sprint_editor_create($, params) {
         $blocks.find('.sp-x-table').each(function (index) {
             var colCnt = 0;
             var colEmp = 0;
-            $(this).find('.sp-y-col').each(function () {
+            $(this).find('.sp-x-col').each(function () {
                 colCnt++;
-                if ($(this).is(':empty')) {
+
+                if ($(this).find('.j-box').length <=0){
                     colEmp++;
                 }
+
             });
             if (colCnt === colEmp) {
                 $(this).remove();
             }
         });
     }
+
+    function setLocal(key, val){
+        if (window.localStorage){
+            key = key + params.uniqid;
+            localStorage.setItem(key, val);
+        }
+    }
+
+    function getLocal(key){
+        var val = '';
+        if (window.localStorage){
+            key = key + params.uniqid;
+            val = localStorage.getItem(key);
+        }
+        return val;
+    }
+
 }
