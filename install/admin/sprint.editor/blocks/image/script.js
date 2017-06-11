@@ -46,7 +46,7 @@ sprint_editor.registerBlock('image', function($, $el, data) {
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
 
-        $el.on('click', '.sp-image_item-delete', function(){
+        $el.on('click', '.sp-image_item-del', function(){
             data['file'] = {};
             data['desc'] = '';
             renderfiles();

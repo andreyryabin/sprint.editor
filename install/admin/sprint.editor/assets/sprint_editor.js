@@ -72,14 +72,14 @@ var sprint_editor = {
 
 
 function sprint_editor_create($, params) {
-    var $addblockinput = $('.sp-addblock' + params.uniqid);
-    var $editor = $('.sp-editor' + params.uniqid);
-    var $blocks = $('.sp-blocks' + params.uniqid);
-    var $buttons = $('.sp-buttons' + params.uniqid);
+    var $editor = $('.sp-x-editor' + params.uniqid);
 
-    var $form = $blocks.closest('form').first();
+    var $buttons = $editor.find('.sp-x-buttons');
+    var $boxes = $editor.find('.sp-x-boxes');
 
-    var collectionList = [];
+    var $form = $editor.closest('form').first();
+
+    var collections = [];
 
     if (!params.jsonValue) {
         params.jsonValue = {};
@@ -112,7 +112,7 @@ function sprint_editor_create($, params) {
 
         var index = 0;
 
-        $blocks.find('.sp-x-table').each(function (pos1) {
+        $boxes.find('.sp-x-table').each(function (pos1) {
             var columns = [];
 
             $(this).find('.sp-x-col').each(function(pos2){
@@ -120,7 +120,7 @@ function sprint_editor_create($, params) {
                 var text = $(this).find('.sp-x-ctype').text();
                 columns.push(text);
 
-                $(this).find('.sp-box').each(function(){
+                $(this).find('.sp-x-box').each(function(){
 
                     var bdata = collectionCollect(index);
                     bdata.layout = pos1 + ',' + pos2;
@@ -154,34 +154,34 @@ function sprint_editor_create($, params) {
         }
 
 
-        $blocks.find('input,textarea,select').removeAttr('name');
-        $('.sp-result' + params.uniqid).val(resultString);
+        $boxes.find('input,textarea,select').removeAttr('name');
+        $editor.find('.sp-x-result').val(resultString);
     });
 
     if (params.enableChange) {
 
         if (getLocal('mode') === '1') {
-            $editor.addClass('sp-layout-mode');
+            $editor.addClass('sp-x-layout-mode');
         } else {
-            $editor.removeClass('sp-layout-mode');
+            $editor.removeClass('sp-x-layout-mode');
         }
 
-        $('.sp-layout-toggle' + params.uniqid).on('click', function () {
-            if ($editor.hasClass('sp-layout-mode')) {
-                $editor.removeClass('sp-layout-mode');
+        $editor.find('.sp-x-layout-toggle').on('click', function () {
+            if ($editor.hasClass('sp-x-layout-mode')) {
+                $editor.removeClass('sp-x-layout-mode');
                 setLocal('mode', '');
             } else {
-                $editor.addClass('sp-layout-mode');
+                $editor.addClass('sp-x-layout-mode');
                 setLocal('mode', '1');
             }
         });
 
-        $('.sp-layout-remove' + params.uniqid).on('click', function (e) {
+        $editor.find('.sp-x-layout-remove').on('click', function (e) {
             layoutRemoveEmpty();
         });
 
-        $addblockinput.on('click', function (e) {
-            var name = $('.sp-selectblock' + params.uniqid).val();
+        $editor.find('.sp-x-addblock').on('click', function (e) {
+            var name = $editor.find('.sp-x-selectblock').val();
             if (name.indexOf('layout_') === 0) {
                 name = name.substr(7);
                 layoutEmptyAdd(name);
@@ -191,12 +191,12 @@ function sprint_editor_create($, params) {
             toggleLayoutButtons();
         });
 
-        $blocks.on('click', '.sp-upbox', function (e) {
+        $boxes.on('click', '.sp-x-box-up', function (e) {
             e.preventDefault();
-            var index = $blocks.find('.sp-upbox').index(this);
-            var block = $(this).closest('.sp-box');
+            var index = $boxes.find('.sp-x-box-up').index(this);
+            var block = $(this).closest('.sp-x-box');
 
-            var nblock = block.prev('.sp-box');
+            var nblock = block.prev('.sp-x-box');
             if (nblock.length > 0) {
                 var nindex = nblock.index();
 
@@ -205,12 +205,12 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $blocks.on('click', '.sp-dnbox', function (e) {
+        $boxes.on('click', '.sp-x-box-dn', function (e) {
             e.preventDefault();
-            var index = $blocks.find('.sp-dnbox').index(this);
-            var block = $(this).closest('.sp-box');
+            var index = $boxes.find('.sp-x-box-dn').index(this);
+            var block = $(this).closest('.sp-x-box');
 
-            var nblock = block.next('.sp-box');
+            var nblock = block.next('.sp-x-box');
             if (nblock.length > 0) {
                 var nindex = nblock.index();
 
@@ -219,17 +219,17 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $blocks.on('click', '.sp-delbox', function (e) {
+        $boxes.on('click', '.sp-x-box-del', function (e) {
             e.preventDefault();
 
-            var index = $blocks.find('.sp-delbox').index(this);
-            var $box = $(this).closest('.sp-box');
+            var index = $boxes.find('.sp-x-box-del').index(this);
+            var $box = $(this).closest('.sp-x-box');
 
             collectionRemove(index);
             $box.remove();
         });
 
-        $blocks.on('click', '.sp-x-types span', function (e) {
+        $boxes.on('click', '.sp-x-types span', function (e) {
             var $span = $(this);
 
             var $xcol = $span.closest('.sp-x-col');
@@ -257,7 +257,7 @@ function sprint_editor_create($, params) {
 
         });
 
-        $blocks.on('click', '.sp-x-title', function (e) {
+        $boxes.on('click', '.sp-x-title', function (e) {
             var $title = $(this);
             var $xcol = $title.closest('.sp-x-col');
             var $sizes = $xcol.find('.sp-x-types');
@@ -265,8 +265,8 @@ function sprint_editor_create($, params) {
                 $sizes.hide();
                 $title.removeClass('active');
             } else {
-                $blocks.find('.sp-x-types').not($sizes).hide();
-                $blocks.find('.sp-x-title').not($title).removeClass('active');
+                $boxes.find('.sp-x-types').not($sizes).hide();
+                $boxes.find('.sp-x-title').not($title).removeClass('active');
 
                 var cursizes = $xcol.find('.sp-x-ctype').text();
                 cursizes = cursizes.split(',');
@@ -329,26 +329,26 @@ function sprint_editor_create($, params) {
         });
 
 
-        $blocks.append(layoutHtml);
+        $boxes.append(layoutHtml);
 
         if (params.enableChange) {
 
-            var $lastCols = $blocks.find('.sp-x-table').last().find('.sp-x-col');
+            var $lastCols = $boxes.find('.sp-x-table').last().find('.sp-x-col');
             var startIndex = 0;
             var stopIndex = 0;
 
             $lastCols.sortable({
-                items: ".sp-box",
+                items: ".sp-x-box",
                 connectWith: ".sp-x-col",
-                handle: ".sp-box-handle",
-                placeholder: "sp-box-placeholder",
+                handle: ".sp-x-box-handle",
+                placeholder: "sp-x-box-placeholder",
                 start: function (event, ui) {
-                    startIndex = $blocks.find('.sp-box').index(
+                    startIndex = $boxes.find('.sp-x-box').index(
                         ui.item.get(0)
                     );
                 },
                 stop: function (event, ui) {
-                    stopIndex = $blocks.find('.sp-box').index(
+                    stopIndex = $boxes.find('.sp-x-box').index(
                         ui.item.get(0)
                     );
 
@@ -361,7 +361,7 @@ function sprint_editor_create($, params) {
     }
 
     function toggleLayoutButtons() {
-        if ($blocks.find('.sp-x-col').length <= 0) {
+        if ($boxes.find('.sp-x-col').length <= 0) {
             $buttons.hide();
         } else {
             $buttons.show();
@@ -378,7 +378,7 @@ function sprint_editor_create($, params) {
         templateVars.enableChange = params.enableChange;
         var html = sprint_editor.renderTemplate('box', templateVars);
 
-        if ($blocks.find('.sp-x-col').length <= 0) {
+        if ($boxes.find('.sp-x-col').length <= 0) {
             layoutEmptyAdd(1);
         }
 
@@ -387,16 +387,16 @@ function sprint_editor_create($, params) {
         if (data.layout) {
             var pos = data.layout.split(',');
 
-            var $layout = $blocks.find('.sp-x-table').eq(pos[0]);
+            var $layout = $boxes.find('.sp-x-table').eq(pos[0]);
             $column = $layout.find('.sp-x-col').eq(pos[1]);
 
         } else {
-            $column = $blocks.find('.sp-x-col').last();
+            $column = $boxes.find('.sp-x-col').last();
         }
 
         $column.append(html);
 
-        var $el = $column.find('.sp-box-block').last();
+        var $el = $column.find('.sp-x-box-block').last();
         var entry = blockInit($el, data.name, data);
 
         if (typeof entry.getAreas == 'function') {
@@ -410,7 +410,7 @@ function sprint_editor_create($, params) {
             });
         }
 
-        collectionList.push(entry);
+        collections.push(entry);
     }
 
     function blockInit($el, name, data) {
@@ -431,18 +431,18 @@ function sprint_editor_create($, params) {
 
     function collectionSwap(indexA, indexB) {
         if (indexA !== indexB) {
-            var tempA = collectionList[indexA];
-            collectionList.splice(indexA, 1);
-            collectionList.splice(indexB, 0, tempA);
+            var tempA = collections[indexA];
+            collections.splice(indexA, 1);
+            collections.splice(indexB, 0, tempA);
         }
     }
 
     function collectionRemove(index) {
-        collectionList.splice(index, 1);
+        collections.splice(index, 1);
     }
 
     function collectionCollect(index) {
-        var entry = collectionList[index];
+        var entry = collections[index];
 
         var data = entry.collectData();
         if (typeof entry.getAreas === 'function') {
@@ -456,13 +456,13 @@ function sprint_editor_create($, params) {
     }
 
     function layoutRemoveEmpty() {
-        $blocks.find('.sp-x-table').each(function (index) {
+        $boxes.find('.sp-x-table').each(function (index) {
             var colCnt = 0;
             var colEmp = 0;
             $(this).find('.sp-x-col').each(function () {
                 colCnt++;
 
-                if ($(this).find('.sp-box').length <= 0) {
+                if ($(this).find('.sp-x-box').length <= 0) {
                     colEmp++;
                 }
 

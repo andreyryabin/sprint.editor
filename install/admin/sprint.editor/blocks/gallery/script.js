@@ -49,8 +49,8 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         }).prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
-        $el.on('click', '.sp-image_item-delete', function () {
-            var index = $el.find('.sp-image_item-delete').index(this);
+        $el.on('click', '.sp-image_item-del', function () {
+            var index = $el.find('.sp-image_item-del').index(this);
             var item = $(this).closest('.sp-image_item');
 
             if (data.images[index]) {
