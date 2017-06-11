@@ -35,7 +35,7 @@
             <? endforeach; ?>
         </select>
         <input value="<?= GetMessage('SPRINT_EDITOR_BTN_ADD') ?>"
-               class="sp-x-addblock adm-btn-green"
+               class="sp-x-box-add adm-btn-green"
                type="button"/>
     <? else: ?>
         <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
@@ -47,7 +47,7 @@
            value="#"/>
     <input title="<?= GetMessage('SPRINT_EDITOR_layout_remove') ?>"
            type="button"
-           class="sp-x-layout-remove"
+           class="sp-x-layout-del"
            value="x"/>
     </div>
 <? endif; ?>

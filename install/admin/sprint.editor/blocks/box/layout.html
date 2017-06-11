@@ -1,11 +1,11 @@
-<div class="sp-x-table">
-    <div class="sp-x-row">
+<div class="sp-x-lt">
+    <div class="sp-x-lt-row">
         {{~it.columns :col:index}}
-        <div class="sp-x-col">
-            <div class="sp-x-caption">
-                <span class="sp-x-title">Колонка {{=index+1}}/{{=it.columns.length}}</span>
-                <span class="sp-x-ctype">{{=col}}</span>
-                <div class="sp-x-types">{{=it.sizeshtml}}</div>
+        <div class="sp-x-lt-col">
+            <div class="sp-x-lt-head">
+                <span class="sp-x-lt-title">Колонка {{=index+1}}/{{=it.columns.length}}</span>
+                <span class="sp-x-lt-curtype">{{=col}}</span>
+                <div class="sp-x-lt-types">{{=it.sizeshtml}}</div>
             </div>
         </div>
         {{~}}

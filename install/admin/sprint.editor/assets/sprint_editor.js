@@ -112,12 +112,12 @@ function sprint_editor_create($, params) {
 
         var index = 0;
 
-        $boxes.find('.sp-x-table').each(function (pos1) {
+        $boxes.find('.sp-x-lt').each(function (pos1) {
             var columns = [];
 
-            $(this).find('.sp-x-col').each(function(pos2){
+            $(this).find('.sp-x-lt-col').each(function(pos2){
 
-                var text = $(this).find('.sp-x-ctype').text();
+                var text = $(this).find('.sp-x-lt-curtype').text();
                 columns.push(text);
 
                 $(this).find('.sp-x-box').each(function(){
@@ -176,11 +176,11 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $editor.find('.sp-x-layout-remove').on('click', function (e) {
+        $editor.find('.sp-x-layout-del').on('click', function (e) {
             layoutRemoveEmpty();
         });
 
-        $editor.find('.sp-x-addblock').on('click', function (e) {
+        $editor.find('.sp-x-box-add').on('click', function (e) {
             var name = $editor.find('.sp-x-selectblock').val();
             if (name.indexOf('layout_') === 0) {
                 name = name.substr(7);
@@ -229,12 +229,12 @@ function sprint_editor_create($, params) {
             $box.remove();
         });
 
-        $boxes.on('click', '.sp-x-types span', function (e) {
+        $boxes.on('click', '.sp-x-lt-types span', function (e) {
             var $span = $(this);
 
-            var $xcol = $span.closest('.sp-x-col');
-            var $cursize = $xcol.find('.sp-x-ctype');
-            var $sizes = $xcol.find('.sp-x-types');
+            var $xcol = $span.closest('.sp-x-lt-col');
+            var $cursize = $xcol.find('.sp-x-lt-curtype');
+            var $sizes = $xcol.find('.sp-x-lt-types');
 
             $span.siblings('span').removeClass('active');
 
@@ -257,18 +257,18 @@ function sprint_editor_create($, params) {
 
         });
 
-        $boxes.on('click', '.sp-x-title', function (e) {
+        $boxes.on('click', '.sp-x-lt-title', function (e) {
             var $title = $(this);
-            var $xcol = $title.closest('.sp-x-col');
-            var $sizes = $xcol.find('.sp-x-types');
+            var $xcol = $title.closest('.sp-x-lt-col');
+            var $sizes = $xcol.find('.sp-x-lt-types');
             if ($title.hasClass('active')){
                 $sizes.hide();
                 $title.removeClass('active');
             } else {
-                $boxes.find('.sp-x-types').not($sizes).hide();
-                $boxes.find('.sp-x-title').not($title).removeClass('active');
+                $boxes.find('.sp-x-lt-types').not($sizes).hide();
+                $boxes.find('.sp-x-lt-title').not($title).removeClass('active');
 
-                var cursizes = $xcol.find('.sp-x-ctype').text();
+                var cursizes = $xcol.find('.sp-x-lt-curtype').text();
                 cursizes = cursizes.split(',');
                 $sizes.find('span').each(function () {
                     var stext = $(this).text();
@@ -333,13 +333,13 @@ function sprint_editor_create($, params) {
 
         if (params.enableChange) {
 
-            var $lastCols = $boxes.find('.sp-x-table').last().find('.sp-x-col');
+            var $lastCols = $boxes.find('.sp-x-lt').last().find('.sp-x-lt-col');
             var startIndex = 0;
             var stopIndex = 0;
 
             $lastCols.sortable({
                 items: ".sp-x-box",
-                connectWith: ".sp-x-col",
+                connectWith: ".sp-x-lt-col",
                 handle: ".sp-x-box-handle",
                 placeholder: "sp-x-box-placeholder",
                 start: function (event, ui) {
@@ -361,7 +361,7 @@ function sprint_editor_create($, params) {
     }
 
     function toggleLayoutButtons() {
-        if ($boxes.find('.sp-x-col').length <= 0) {
+        if ($boxes.find('.sp-x-lt-col').length <= 0) {
             $buttons.hide();
         } else {
             $buttons.show();
@@ -378,7 +378,7 @@ function sprint_editor_create($, params) {
         templateVars.enableChange = params.enableChange;
         var html = sprint_editor.renderTemplate('box', templateVars);
 
-        if ($boxes.find('.sp-x-col').length <= 0) {
+        if ($boxes.find('.sp-x-lt-col').length <= 0) {
             layoutEmptyAdd(1);
         }
 
@@ -387,11 +387,11 @@ function sprint_editor_create($, params) {
         if (data.layout) {
             var pos = data.layout.split(',');
 
-            var $layout = $boxes.find('.sp-x-table').eq(pos[0]);
-            $column = $layout.find('.sp-x-col').eq(pos[1]);
+            var $layout = $boxes.find('.sp-x-lt').eq(pos[0]);
+            $column = $layout.find('.sp-x-lt-col').eq(pos[1]);
 
         } else {
-            $column = $boxes.find('.sp-x-col').last();
+            $column = $boxes.find('.sp-x-lt-col').last();
         }
 
         $column.append(html);
@@ -456,10 +456,10 @@ function sprint_editor_create($, params) {
     }
 
     function layoutRemoveEmpty() {
-        $boxes.find('.sp-x-table').each(function (index) {
+        $boxes.find('.sp-x-lt').each(function (index) {
             var colCnt = 0;
             var colEmp = 0;
-            $(this).find('.sp-x-col').each(function () {
+            $(this).find('.sp-x-lt-col').each(function () {
                 colCnt++;
 
                 if ($(this).find('.sp-x-box').length <= 0) {
