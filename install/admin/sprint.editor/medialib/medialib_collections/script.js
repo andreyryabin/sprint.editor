@@ -33,7 +33,7 @@ sprint_editor.registerBlock('medialib_collections', function ($, $el, data) {
             },
             dataType: 'json',
             success: function (result) {
-                $el.find('.j-medialib-result').html(
+                $el.find('.sp-medialib-result').html(
                     sprint_editor.renderTemplate('medialib_collections-items', result)
                 );
             },

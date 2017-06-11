@@ -3,17 +3,17 @@ sprint_editor.registerBlock('complex_video_text', function ($, $el, data) {
         {
             dataKey : 'video',
             blockName: 'video',
-            container : '.j-area1'
+            container : '.sp-area1'
         },
         {
             dataKey : 'preview',
             blockName: 'image',
-            container : '.j-image'
+            container : '.sp-image'
         },
         {
             dataKey : 'text',
             blockName: 'text',
-            container : '.j-area2'
+            container : '.sp-area2'
         }
     ];
 

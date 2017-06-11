@@ -27,8 +27,8 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
 
     this.afterRender = function () {
 
-        var $elFilter = $el.find('.j-filter');
-        var $elParams = $el.find('.j-result');
+        var $elFilter = $el.find('.sp-filter');
+        var $elParams = $el.find('.sp-result');
         var boxWidth = $el.width();
 
         boxWidth = boxWidth ? boxWidth : 650;
@@ -36,7 +36,7 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
         renderComponentParams();
         renderFilters();
 
-        $elFilter.on('change', '.j-component', function (e) {
+        $elFilter.on('change', '.sp-component', function (e) {
             e.preventDefault();
             var selectedName = $(this).val();
             if (selectedName != data.component_name) {
@@ -47,7 +47,7 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
             }
         });
 
-        $elFilter.on('change', '.j-filter-site', function (e) {
+        $elFilter.on('change', '.sp-filter-site', function (e) {
             e.preventDefault();
             var selectedName = $(this).val();
             if (selectedName != data.filter_site) {
@@ -113,10 +113,10 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
 
         function showSiteFilter() {
             if (data.component_name) {
-                $elFilter.find('.j-label-site').show();
+                $elFilter.find('.sp-label-site').show();
             } else {
-                $elFilter.find('.j-label-site').hide();
-                $elFilter.find('.j-filter-site').val('');
+                $elFilter.find('.sp-label-site').hide();
+                $elFilter.find('.sp-filter-site').val('');
             }
         }
     };

@@ -3,7 +3,7 @@ sprint_editor.registerBlock('schema_text', function ($, $el, data) {
         {
             dataKey : 'article',
             blockName: 'text',
-            container : '.j-area1'
+            container : '.sp-area1'
         }
     ];
 

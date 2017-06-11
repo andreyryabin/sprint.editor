@@ -3,12 +3,12 @@ sprint_editor.registerBlock('schema_publisher', function ($, $el, data) {
         {
             dataKey : 'publisher',
             blockName: 'textfield',
-            container : '.j-area1'
+            container : '.sp-area1'
         },
         {
             dataKey : 'image',
             blockName: 'image',
-            container : '.j-area2'
+            container : '.sp-area2'
         }
     ];
 

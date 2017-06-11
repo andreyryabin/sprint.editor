@@ -1,22 +1,22 @@
 <div class="sp-filter">
-    <input type="button" class="j-toggle" value="Выбрать">
-    <span {{?it.hideSource}}style="display: none"{{?}} class="j-filter">
-        <select class="j-select-collection" style="width: 180px;">
+    <input type="button" class="sp-toggle" value="Выбрать">
+    <span {{?it.hideSource}}style="display: none"{{?}} class="sp-filter">
+        <select class="sp-select-collection" style="width: 180px;">
             <option value="">нет</option>
             {{~it.collections :item:index}}
             <option {{?item.id== it.collection_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}</option>
             {{~}}
         </select>
-        <input class="j-nav-left" type="button" value="&larr;">
-        <input class="j-nav-right" type="button" value="&rarr;">
+        <input class="sp-nav-left" type="button" value="&larr;">
+        <input class="sp-nav-right" type="button" value="&rarr;">
         {{=it.page_num}}/{{=it.page_cnt}}
     </span>
 </div>
 
-<div {{?it.hideSource}}style="display: none"{{?}} class="j-source sp-source">
+<div {{?it.hideSource}}style="display: none"{{?}} class="sp-source">
     <div class="sp-clear">
     {{~it.source :item:index}}
-    <div data-id="{{!item.id}}" class="sp-item j-item">
+    <div data-id="{{!item.id}}" class="sp-item">
         <img alt="{{!item.id}}" src="{{!item.src}}">
     </div>
     {{~}}
@@ -24,9 +24,9 @@
     <div title="Перетащите элементы вниз для их выбора" class="sp-arrows">&darr;&darr;&darr;</div>
 </div>
 
-<div class="j-elements sp-elements sp-clear">
+<div class="sp-elements sp-clear">
     {{~it.elements :item:index}}
-    <div data-id="{{!item.id}}" class="sp-item j-item">
+    <div data-id="{{!item.id}}" class="sp-item">
         <img alt="{{!item.id}}" src="{{!item.src}}">
     </div>
     {{~}}

@@ -21,11 +21,11 @@
     text-align: center;
 
 }
-.sp-block-coub .sp-col-size{
+.sp-block-coub .sp-col-sizes{
     text-align: left;
 }
 
-.sp-block-coub .sp-col-size input{
+.sp-block-coub .sp-col-sizes input{
     margin-bottom: 5px;
     width: 100px;
 }

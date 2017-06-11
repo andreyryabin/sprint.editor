@@ -5,9 +5,9 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
     }, data);
 
     var hideSource = 1;
-    if (data.images.length <=0 ){
+    /*if (data.images.length <=0 ){
         hideSource = 0;
-    }
+    }*/
 
     this.getData = function () {
         return data;
@@ -21,7 +21,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         renderSource();
         renderfiles();
 
-        var btn = $el.find('.j-fileupload-btn');
+        var btn = $el.find('.sp-file');
         var btninput = btn.find('input[type=file]');
         var label = btn.find('span');
         var labeltext = label.text();
@@ -49,9 +49,9 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         }).prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
-        $el.on('click', '.j-image_item-delete', function () {
-            var index = $el.find('.j-image_item-delete').index(this);
-            var item = $(this).closest('.j-image_item');
+        $el.on('click', '.sp-image_item-delete', function () {
+            var index = $el.find('.sp-image_item-delete').index(this);
+            var item = $(this).closest('.sp-image_item');
 
             if (data.images[index]) {
                 data.images.splice(index, 1);
@@ -59,22 +59,12 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             }
         });
 
-        $el.on('click', '.j-toggle-source', function () {
+        $el.on('click', '.sp-toggle-source', function () {
             toggleSource();
         });
 
-        $el.on("mouseenter", '.j-image_item', function () {
-            $(this).addClass('sp-image_item-active');
-            $(this).find('.j-image_item_panel').show()
-        });
-
-        $el.on("mouseleave", '.j-image_item', function () {
-            $(this).removeClass('sp-image_item-active');
-            $(this).find('.j-image_item_panel').hide()
-        });
-
-        var $urltext = $el.find('.j-download-url');
-        var $urlsubmit = $el.find('.j-download-btn');
+        var $urltext = $el.find('.sp-download-url');
+        var $urlsubmit = $el.find('.sp-download-btn');
 
         $urlsubmit.on('click', function () {
             submitImageUrl();
@@ -116,7 +106,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
     };
 
     var renderSource = function(){
-        var $obj = $el.find('.j-source');
+        var $obj = $el.find('.sp-source');
         if (hideSource){
             $obj.hide();
         } else {
@@ -136,11 +126,11 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
     };
 
     var renderfiles = function () {
-        $el.find('.j-fileupload-result').html(
+        $el.find('.sp-result').html(
             sprint_editor.renderTemplate('gallery-images', data)
         );
-        $el.find('.j-image_item-text').each(function () {
-            var index = $el.find('.j-image_item-text').index(this);
+        $el.find('.sp-image_item-text').each(function () {
+            var index = $el.find('.sp-image_item-text').index(this);
 
             $(this).bindWithDelay('input', function () {
                 if (data.images[index]) {

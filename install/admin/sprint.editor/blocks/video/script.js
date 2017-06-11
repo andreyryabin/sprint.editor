@@ -8,7 +8,7 @@ sprint_editor.registerBlock('video', function($, $el, data) {
         {
             dataKey : 'preview',
             blockName: 'image',
-            container : '.j-image'
+            container : '.sp-image'
         }
 
     ];
@@ -22,12 +22,12 @@ sprint_editor.registerBlock('video', function($, $el, data) {
     };
 
     this.collectData = function () {
-        data.url = $el.find('.j-url').val();
+        data.url = $el.find('.sp-url').val();
         return data;
     };
 
     this.afterRender = function () {
-        var $input = $el.find('.j-url');
+        var $input = $el.find('.sp-url');
 
         getVideo($input.val());
         $input.bindWithDelay('input', function () {
@@ -44,11 +44,11 @@ sprint_editor.registerBlock('video', function($, $el, data) {
         }
 
         if (youtubeCode){
-            $el.find('.j-preview').html(
+            $el.find('.sp-preview').html(
                 sprint_editor.renderTemplate('video-iframe', {youtubeCode: youtubeCode})
             );
         } else {
-            $el.find('.j-preview').html('');
+            $el.find('.sp-preview').html('');
         }
     }
 

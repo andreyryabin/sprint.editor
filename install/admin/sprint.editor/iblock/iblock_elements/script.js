@@ -16,9 +16,9 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
     }
 
     var hideSource = 1;
-    if (data.element_ids.length <=0 ){
+    /*if (data.element_ids.length <=0 ){
         hideSource = 0;
-    }
+    }*/
 
     this.getData = function () {
         return data;
@@ -32,17 +32,17 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
     };
 
     this.afterRender = function () {
-        $el.on('click','.j-toggle', function(){
+        $el.on('click','.sp-toggle', function(){
             if (hideSource){
-                $el.find('.j-source,.j-filter').show();
+                $el.find('.sp-source,.sp-filter').show();
                 hideSource = 0
             } else {
-                $el.find('.j-source,.j-filter').hide();
+                $el.find('.sp-source,.sp-filter').hide();
                 hideSource = 1;
             }
         });
 
-        $el.on('change', '.j-select-iblock', function () {
+        $el.on('change', '.sp-select-iblock', function () {
             sendrequest({
                 iblock_id: findIblockId(),
                 element_ids: findElementIds(),
@@ -50,7 +50,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
             });
         });
 
-        $el.on('click', '.j-nav-left', function () {
+        $el.on('click', '.sp-nav-left', function () {
             sendrequest({
                 iblock_id: findIblockId(),
                 element_ids: findElementIds(),
@@ -58,7 +58,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
             });
         });
 
-        $el.on('click', '.j-nav-right', function () {
+        $el.on('click', '.sp-nav-right', function () {
             sendrequest({
                 iblock_id: findIblockId(),
                 element_ids: findElementIds(),
@@ -76,15 +76,15 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
 
     var findIblockId = function () {
         return intval(
-            $el.find('.j-select-iblock').val()
+            $el.find('.sp-select-iblock').val()
         );
     };
 
     var findElementIds = function () {
-        var $obj = $el.find('.j-elements');
+        var $obj = $el.find('.sp-elements');
 
         var values = [];
-        $obj.find('.j-item').each(function () {
+        $obj.find('.sp-item').each(function () {
             var val = intval(
                 $(this).data('id')
             );
@@ -102,7 +102,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
     };
 
     var sendrequest = function (requestParams) {
-        var $jresult = $el.find('.j-iblock-result');
+        var $jresult = $el.find('.sp-iblock-result');
 
         $.ajax({
             url: sprint_editor.getBlockWebPath('iblock_elements') + '/ajax.php',
@@ -130,12 +130,13 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
                     sprint_editor.renderTemplate('iblock_elements-select', result)
                 );
 
-                var $elem = $jresult.find('.j-elements');
-                var $sour = $jresult.find('.j-source');
+                var $elem = $jresult.find('.sp-elements');
+                var $sour = $jresult.find('.sp-source');
 
                 var removeIntent = false;
                 $elem.sortable({
-                    items: ".j-item",
+                    items: ".sp-item",
+                    placeholder:"sp-placeholder",
                     over: function () {
                         removeIntent = false;
                     },
@@ -159,7 +160,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
                     }
                 });
 
-                $sour.find('.j-item').draggable({
+                $sour.find('.sp-item').draggable({
                     connectToSortable: $elem,
                     helper: "clone",
                     revert: "invalid"

@@ -72,10 +72,10 @@ var sprint_editor = {
 
 
 function sprint_editor_create($, params) {
-    var $addblockinput = $('.j-addblock' + params.uniqid);
-    var $editor = $('.j-editor' + params.uniqid);
-    var $blocks = $('.j-blocks' + params.uniqid);
-    var $buttons = $('.j-buttons' + params.uniqid);
+    var $addblockinput = $('.sp-addblock' + params.uniqid);
+    var $editor = $('.sp-editor' + params.uniqid);
+    var $blocks = $('.sp-blocks' + params.uniqid);
+    var $buttons = $('.sp-buttons' + params.uniqid);
 
     var $form = $blocks.closest('form').first();
 
@@ -90,7 +90,7 @@ function sprint_editor_create($, params) {
     }
 
     if (!params.jsonValue.layouts) {
-        params.jsonValue.layouts = {};
+        params.jsonValue.layouts = [];
     }
 
     $.each(params.jsonValue.layouts, function (index, columns) {
@@ -120,7 +120,7 @@ function sprint_editor_create($, params) {
                 var text = $(this).find('.sp-x-ctype').text();
                 columns.push(text);
 
-                $(this).find('.j-box').each(function(){
+                $(this).find('.sp-box').each(function(){
 
                     var bdata = collectionCollect(index);
                     bdata.layout = pos1 + ',' + pos2;
@@ -155,7 +155,7 @@ function sprint_editor_create($, params) {
 
 
         $blocks.find('input,textarea,select').removeAttr('name');
-        $('.j-result' + params.uniqid).val(resultString);
+        $('.sp-result' + params.uniqid).val(resultString);
     });
 
     if (params.enableChange) {
@@ -166,7 +166,7 @@ function sprint_editor_create($, params) {
             $editor.removeClass('sp-layout-mode');
         }
 
-        $('.j-layout-toggle' + params.uniqid).on('click', function () {
+        $('.sp-layout-toggle' + params.uniqid).on('click', function () {
             if ($editor.hasClass('sp-layout-mode')) {
                 $editor.removeClass('sp-layout-mode');
                 setLocal('mode', '');
@@ -176,12 +176,12 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $('.j-layout-remove' + params.uniqid).on('click', function (e) {
+        $('.sp-layout-remove' + params.uniqid).on('click', function (e) {
             layoutRemoveEmpty();
         });
 
         $addblockinput.on('click', function (e) {
-            var name = $('.j-selectblock' + params.uniqid).val();
+            var name = $('.sp-selectblock' + params.uniqid).val();
             if (name.indexOf('layout_') === 0) {
                 name = name.substr(7);
                 layoutEmptyAdd(name);
@@ -191,12 +191,12 @@ function sprint_editor_create($, params) {
             toggleLayoutButtons();
         });
 
-        $blocks.on('click', '.j-upbox', function (e) {
+        $blocks.on('click', '.sp-upbox', function (e) {
             e.preventDefault();
-            var index = $blocks.find('.j-upbox').index(this);
-            var block = $(this).closest('.j-box');
+            var index = $blocks.find('.sp-upbox').index(this);
+            var block = $(this).closest('.sp-box');
 
-            var nblock = block.prev('.j-box');
+            var nblock = block.prev('.sp-box');
             if (nblock.length > 0) {
                 var nindex = nblock.index();
 
@@ -205,12 +205,12 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $blocks.on('click', '.j-dnbox', function (e) {
+        $blocks.on('click', '.sp-dnbox', function (e) {
             e.preventDefault();
-            var index = $blocks.find('.j-dnbox').index(this);
-            var block = $(this).closest('.j-box');
+            var index = $blocks.find('.sp-dnbox').index(this);
+            var block = $(this).closest('.sp-box');
 
-            var nblock = block.next('.j-box');
+            var nblock = block.next('.sp-box');
             if (nblock.length > 0) {
                 var nindex = nblock.index();
 
@@ -219,11 +219,11 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $blocks.on('click', '.j-delbox', function (e) {
+        $blocks.on('click', '.sp-delbox', function (e) {
             e.preventDefault();
 
-            var index = $blocks.find('.j-delbox').index(this);
-            var $box = $(this).closest('.j-box');
+            var index = $blocks.find('.sp-delbox').index(this);
+            var $box = $(this).closest('.sp-box');
 
             collectionRemove(index);
             $box.remove();
@@ -338,17 +338,17 @@ function sprint_editor_create($, params) {
             var stopIndex = 0;
 
             $lastCols.sortable({
-                items: ".j-box",
+                items: ".sp-box",
                 connectWith: ".sp-x-col",
-                handle: ".j-box_handle",
-                placeholder: "sp-placeholder",
+                handle: ".sp-box-handle",
+                placeholder: "sp-box-placeholder",
                 start: function (event, ui) {
-                    startIndex = $blocks.find('.j-box').index(
+                    startIndex = $blocks.find('.sp-box').index(
                         ui.item.get(0)
                     );
                 },
                 stop: function (event, ui) {
-                    stopIndex = $blocks.find('.j-box').index(
+                    stopIndex = $blocks.find('.sp-box').index(
                         ui.item.get(0)
                     );
 
@@ -396,7 +396,7 @@ function sprint_editor_create($, params) {
 
         $column.append(html);
 
-        var $el = $column.find('.j-box-block').last();
+        var $el = $column.find('.sp-box-block').last();
         var entry = blockInit($el, data.name, data);
 
         if (typeof entry.getAreas == 'function') {
@@ -462,7 +462,7 @@ function sprint_editor_create($, params) {
             $(this).find('.sp-x-col').each(function () {
                 colCnt++;
 
-                if ($(this).find('.j-box').length <= 0) {
+                if ($(this).find('.sp-box').length <= 0) {
                     colEmp++;
                 }
 

@@ -1,4 +1,4 @@
-.sp-block-iblock_elements .sp-container{
+.sp-block-iblock_elements .sp-iblock-result{
     position: relative;
 }
 
@@ -11,6 +11,12 @@
     overflow: hidden;
 }
 
+.sp-block-iblock_elements .sp-placeholder{
+    border: 1px dotted black;
+    padding: 6px;
+    margin: 0 0 5px 0;
+    height: 18px;
+}
 
 .sp-block-iblock_elements .sp-filter {
     margin-bottom: 10px;

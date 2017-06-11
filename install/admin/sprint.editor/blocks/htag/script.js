@@ -24,7 +24,7 @@ sprint_editor.registerBlock('htag', function($, $el, data) {
 
     this.afterRender = function () {
         var $input = $el.find('input[type=text]');
-        var $anchor = $el.find('.j-anchor');
+        var $anchor = $el.find('.sp-anchor');
 
         $input.bindWithDelay('input', function () {
             $anchor.text(translite(

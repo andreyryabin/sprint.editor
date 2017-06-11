@@ -132,7 +132,7 @@ sprint_editor.registerBlock('yandex_map', function ($, $el, data) {
             });
 
 
-            $el.on('click', '.j-placemark-delete', function (e) {
+            $el.on('click', '.sp-placemark-delete', function (e) {
                 e.preventDefault();
 
                 if (myPlacemark) {
@@ -141,7 +141,7 @@ sprint_editor.registerBlock('yandex_map', function ($, $el, data) {
                 }
             });
 
-            $el.on('change', '.j-placemark-text', function () {
+            $el.on('change', '.sp-placemark-text', function () {
                 if (myPlacemark) {
                     setBalloonContent(myPlacemark, $(this).val());
                 }

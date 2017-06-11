@@ -11,15 +11,15 @@ sprint_editor.registerBlock('coub', function($, $el, data) {
     };
 
     this.collectData = function () {
-        data.url = $el.find('.j-url').val();
-        data.width = $el.find('.j-width').val();
-        data.height = $el.find('.j-height').val();
+        data.url = $el.find('.sp-url').val();
+        data.width = $el.find('.sp-width').val();
+        data.height = $el.find('.sp-height').val();
         return data;
     };
 
     this.afterRender = function () {
-        var $input = $el.find('.j-url');
-        var $preview = $el.find('.j-preview');
+        var $input = $el.find('.sp-url');
+        var $preview = $el.find('.sp-preview');
 
         getPreview($preview, $input);
 

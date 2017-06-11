@@ -1,4 +1,4 @@
-<select class="j-component" style="width: 220px;">
+<select class="sp-component" style="width: 220px;">
     <option value="">нет</option>
     {{~it.components :group}}
     <optgroup label="{{!group.name}}">
@@ -12,9 +12,9 @@
 </select>
 
 
-<label class="j-label-site" style="margin-left: 20px;">
+<label class="sp-label-site" style="margin-left: 20px;">
     Шаблон сайта
-<select class="j-filter-site" style="width: 120px;margin-left: 5px;">
+<select class="sp-filter-site" style="width: 120px;margin-left: 5px;">
     <option value="">нет</option>
     {{~it.sitetemplates :item:index}}
     <option {{?item.value== it.filter_site}}selected="selected" {{?}} value="{{!item.value}}">

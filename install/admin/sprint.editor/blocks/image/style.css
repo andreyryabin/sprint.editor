@@ -13,7 +13,7 @@
     height: 200px;
 }
 
-.sp-block-image .sp-image_item_panel{
+.sp-block-image .sp-image_item-panel{
     position: absolute;
     top: 20px;
     left: -75px;
@@ -25,16 +25,21 @@
     padding: 8px;
 }
 
-.sp-block-image .sp-image_item-active{
+
+.sp-block-image .sp-image_item:hover{
     border: 2px solid #d00;
 }
 
-.sp-block-image .sp-image_item_panel input[type=text]{
+.sp-block-image .sp-image_item:hover .sp-image_item-panel{
+    display: block;
+}
+
+.sp-block-image .sp-image_item-panel input[type=text]{
     width: 300px;
     margin-top: 30px;
 }
 
-.sp-block-image .sp-image_item-delete{
+.sp-block-image .sp-image_item-buttons{
     text-align: center;margin-top: 5px;
 }
 

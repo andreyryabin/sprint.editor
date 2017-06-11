@@ -18,11 +18,11 @@
  * @var $showSortButtons
  */
 ?>
-<div class="j-editor<?= $uniqId ?>">
-    <div class="j-blocks<?= $uniqId ?>"></div>
+<div class="sp-editor<?= $uniqId ?>">
+    <div class="sp-blocks<?= $uniqId ?>"></div>
 <? if ($enableChange): ?>
     <? if (!empty($selectValues)): ?>
-        <select class="j-selectblock<?= $uniqId ?>" style="width: 250px;">
+        <select class="sp-selectblock<?= $uniqId ?>" style="width: 250px;">
             <? foreach ($selectValues as $aGroup): ?>
                 <optgroup label="<?= $aGroup['title'] ?>">
                     <? foreach ($aGroup['blocks'] as $aBlock): ?>
@@ -32,24 +32,24 @@
             <? endforeach; ?>
         </select>
         <input value="<?= GetMessage('SPRINT_EDITOR_BTN_ADD') ?>"
-               class="j-addblock<?= $uniqId ?> adm-btn-green"
+               class="sp-addblock<?= $uniqId ?> adm-btn-green"
                type="button"/>
     <? else: ?>
         <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
     <? endif; ?>
-    <div class="j-buttons<?= $uniqId ?>" style="float:right;display: none">
+    <div class="sp-buttons<?= $uniqId ?>" style="float:right;display: none">
     <input title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
            type="button"
-           class="sp-layout-toggle j-layout-toggle<?= $uniqId ?>"
+           class="sp-layout-toggle sp-layout-toggle<?= $uniqId ?>"
            value="#"/>
     <input title="<?= GetMessage('SPRINT_EDITOR_layout_remove') ?>"
            type="button"
-           class="sp-layout-remove j-layout-remove<?= $uniqId ?>"
+           class="sp-layout-remove sp-layout-remove<?= $uniqId ?>"
            value="x"/>
     </div>
 <? endif; ?>
 </div>
-<textarea style="display: none;" class="j-result<?= $uniqId ?>" name="<?= $inputName ?>"></textarea>
+<textarea style="display: none;" class="sp-result<?= $uniqId ?>" name="<?= $inputName ?>"></textarea>
 <? if ($firstRun): ?><?php
     \CModule::IncludeModule('fileman');
     $compParamsLangMess = CComponentParamsManager::GetLangMessages();

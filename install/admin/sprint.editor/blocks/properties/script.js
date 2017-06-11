@@ -10,13 +10,13 @@ sprint_editor.registerBlock('properties', function($, $el, data) {
 
     this.collectData = function () {
         var trimed = [];
-        $el.find('.j-item').each(function(){
+        $el.find('.sp-item').each(function(){
 
             var title = $.trim(
-                $(this).find('.j-item-title').val()
+                $(this).find('.sp-item-title').val()
             );
             var text = $.trim(
-                $(this).find('.j-item-text').val()
+                $(this).find('.sp-item-text').val()
             );
 
             if (title) {
@@ -32,14 +32,14 @@ sprint_editor.registerBlock('properties', function($, $el, data) {
     };
 
     this.afterRender = function () {
-        var $res = $el.find('.j-properties-result');
+        var $res = $el.find('.sp-properties-result');
 
 
         $res.html(
             sprint_editor.renderTemplate('properties-items', data)
         );
 
-        $el.on('click', '.j-properties-add', function(){
+        $el.on('click', '.sp-properties-add', function(){
             $res.append(
                 sprint_editor.renderTemplate('properties-items', {
                     elements: [

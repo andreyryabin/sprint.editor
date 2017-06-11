@@ -91,13 +91,13 @@
     margin: 10px 5px 10px;
 }
 
-.sp-placeholder {
+.sp-box-placeholder {
     border: 1px dotted black;
     height: 100px;
     margin: 10px 0 10px;
 }
 
-.sp-layout-mode .sp-placeholder {
+.sp-layout-mode .sp-box-placeholder {
     margin: 10px 5px;
     height: 20px;
 }
@@ -113,13 +113,13 @@
     margin-bottom: 0;
 }
 
-.sp-box_panel {
+.sp-box-panel {
     position: relative;
     text-align: left;
     padding: 5px 0;
 }
 
-.sp-layout-mode .sp-box_panel {
+.sp-layout-mode .sp-box-panel {
     text-align: center;
 }
 
@@ -149,22 +149,22 @@
     padding: 5px;
 }
 
-.sp-box_panel-group_title {
+.sp-box-panel-gtitle {
     color: #aaa !important;
     font-weight: normal;
 }
 
-.sp-box_panel-title {
+.sp-box-panel-btitle {
     font-weight: bold !important;
 }
 
-.sp-box_panel-buttons {
+.sp-box-panel-buttons {
     position: absolute;
     right: 0;
     top: 4px;
 }
 
-.sp-box_panel-buttons span{
+.sp-box-panel-buttons span{
     cursor: pointer;
     text-decoration: none;
     border: 1px solid #ccc;
@@ -189,8 +189,8 @@
 
 }
 
-.sp-layout-mode .j-upbox,
-.sp-layout-mode .j-dnbox {
+.sp-layout-mode .sp-upbox,
+.sp-layout-mode .sp-dnbox {
     display: none;
 }
 
@@ -235,7 +235,7 @@
     padding: 0;
 }
 
-.sp-layout-mode .j-box-block {
+.sp-layout-mode .sp-box-block {
     display: none;
 }
 

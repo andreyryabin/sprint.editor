@@ -7,7 +7,7 @@ sprint_editor.registerBlock('schema_pubdate', function ($, $el, data) {
         {
             dataKey : 'pubdate',
             blockName: 'textfield',
-            container : '.j-area1'
+            container : '.sp-area1'
         }
     ];
 

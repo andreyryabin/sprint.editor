@@ -3,7 +3,7 @@ sprint_editor.registerBlock('schema_author', function ($, $el, data) {
         {
             dataKey : 'author',
             blockName: 'textfield',
-            container : '.j-area1'
+            container : '.sp-area1'
         }
     ];
 

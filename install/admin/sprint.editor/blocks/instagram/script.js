@@ -9,13 +9,13 @@ sprint_editor.registerBlock('instagram', function ($, $el, data) {
     };
 
     this.collectData = function () {
-        data['url'] = $el.find('.j-url').val();
+        data['url'] = $el.find('.sp-url').val();
         return data;
     };
 
     this.afterRender = function () {
-        var $preview = $el.find('.j-preview');
-        var $input = $el.find('.j-url');
+        var $preview = $el.find('.sp-preview');
+        var $input = $el.find('.sp-url');
 
         getPost($input, $preview);
 

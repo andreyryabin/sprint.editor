@@ -3,14 +3,14 @@
     position: relative;
     width: 100px;
     height: 100px;
-    float: left;
+    display: inline-block;
     background: #ccc;
     margin: 0 5px 5px 0;
     text-align: center;
     border: 2px solid #eee;
 }
 
-.sp-block-gallery .sp-image_item_panel{
+.sp-block-gallery .sp-image_item-panel{
     position: absolute;
     top: 20px;
     left: -115px;
@@ -22,20 +22,24 @@
     padding: 0 10px;
 }
 
-.sp-block-gallery .sp-image_item-active{
+.sp-block-gallery .sp-image_item:hover{
     border: 2px solid #d00;
 }
 
-.sp-block-gallery .sp-image_item_panel input[type=text]{
+.sp-block-gallery .sp-image_item:hover .sp-image_item-panel{
+    display: block;
+}
+
+.sp-block-gallery .sp-image_item-panel input[type=text]{
     width: 300px;
     margin-top: 30px;
 }
 
-.sp-block-gallery .sp-image_item-delete{
+.sp-block-gallery .sp-image_item-buttons{
     text-align: center;margin-top: 5px;
 }
 
-.sp-block-gallery .j-fileupload-result {
+.sp-block-gallery .sp-fileupload-result {
     background: #eee;
     min-height: 100px;
     padding: 5px 5px 10px;

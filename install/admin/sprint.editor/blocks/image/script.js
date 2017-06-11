@@ -10,7 +10,7 @@ sprint_editor.registerBlock('image', function($, $el, data) {
     };
 
     this.collectData = function () {
-        data.desc = $el.find('.j-image_item-text').val();
+        data.desc = $el.find('.sp-image_item-text').val();
         return data;
     };
 
@@ -18,7 +18,7 @@ sprint_editor.registerBlock('image', function($, $el, data) {
 
         renderfiles();
 
-        var btn = $el.find('.j-fileupload-btn');
+        var btn = $el.find('.sp-file');
         var btninput = btn.find('input[type=file]');
         var label = btn.find('span');
         var labeltext = label.text();
@@ -46,17 +46,7 @@ sprint_editor.registerBlock('image', function($, $el, data) {
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
 
-        $el.on("mouseenter", '.j-image_item', function () {
-            $(this).addClass('sp-image_item-active');
-            $(this).find('.j-image_item_panel').show()
-        });
-
-        $el.on("mouseleave", '.j-image_item', function () {
-            $(this).removeClass('sp-image_item-active');
-            $(this).find('.j-image_item_panel').hide()
-        });
-
-        $el.on('click', '.j-image_item-delete', function(){
+        $el.on('click', '.sp-image_item-delete', function(){
             data['file'] = {};
             data['desc'] = '';
             renderfiles();
@@ -64,7 +54,7 @@ sprint_editor.registerBlock('image', function($, $el, data) {
     };
 
     var renderfiles = function() {
-        $el.find('.j-fileupload-result').html(
+        $el.find('.sp-result').html(
             sprint_editor.renderTemplate('image-image', data)
         );
     }

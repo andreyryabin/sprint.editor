@@ -3,7 +3,7 @@ sprint_editor.registerBlock('schema_image', function ($, $el, data) {
         {
             dataKey : 'image',
             blockName: 'image',
-            container : '.j-area1'
+            container : '.sp-area1'
         }
 
     ];
