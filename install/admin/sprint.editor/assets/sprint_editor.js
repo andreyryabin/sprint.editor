@@ -181,7 +181,7 @@ function sprint_editor_create($, params) {
         });
 
         $editor.find('.sp-x-box-add').on('click', function (e) {
-            var name = $editor.find('.sp-x-selectblock').val();
+            var name = $editor.find('.sp-x-box-select').val();
             if (name.indexOf('layout_') === 0) {
                 name = name.substr(7);
                 layoutEmptyAdd(name);

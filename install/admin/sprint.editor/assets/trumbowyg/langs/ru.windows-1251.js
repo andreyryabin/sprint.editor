@@ -1,14 +1,5 @@
-/* ===========================================================
- * ru.js
- * Russion translation for Trumbowyg
- * http://alex-d.github.com/Trumbowyg
- * ===========================================================
- * Author : Yuri Lya
- */
 jQuery.trumbowyg.langs.ru = {
     viewHTML: "Посмотреть HTML",
-    undo: "Отменить",
-    redo: "Повторить",
     formatting: "Форматирование",
     p: "Обычный",
     blockquote: "Цитата",
@@ -21,8 +12,6 @@ jQuery.trumbowyg.langs.ru = {
     strong: "Полужирный",
     em: "Курсив",
     del: "Зачеркнутый",
-    superscript: "Надстрочный",
-    subscript: "Подстрочный",
     unorderedList: "Обычный список",
     orderedList: "Нумерованный список",
     insertImage: "Вставить изображение",
@@ -35,7 +24,6 @@ jQuery.trumbowyg.langs.ru = {
     justifyRight: "По правому краю",
     justifyFull: "По ширине",
     horizontalRule: "Горизонтальная линия",
-    removeformat: "Очистить форматирование",
     fullscreen: "Во весь экран",
     close: "Закрыть",
     submit: "Вставить",
