@@ -18,8 +18,6 @@
  * @var $showSortButtons
  */
 ?>
-
-
 <div class="sp-x-editor<?= $uniqId ?>">
     <textarea style="display: none;" class="sp-x-result" name="<?= $inputName ?>"></textarea>
     <div class="sp-x-boxes"></div>

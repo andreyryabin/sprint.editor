@@ -14,38 +14,38 @@ sprint_editor.registerBlock('text', function ($, $el, data) {
     };
 
     this.collectData = function () {
+        if (!$.fn.trumbowyg) {
+            return data;
+        }
+
         data.value = parser.sanitizeString(
-            $el.find('textarea').val()
+            $el.find('.sp-text').val()
         );
         return data;
     };
 
     this.afterRender = function () {
-        var $textarea = $el.find('textarea');
-        if ($.fn.trumbowyg) {
-            $textarea.trumbowyg({
-                svgPath: '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',
-                lang: 'ru',
-                resetCss: true,
-                removeformatPasted: true,
-                btns: [
-                    ['viewHTML'],
-                    ['bold', 'italic', 'underline', 'strikethrough'],
-                    ['link'],
-                    ['removeformat']
-                ],
 
-                autogrow: true
-            });
-        } else {
-            $textarea.css({overflow: 'hidden'});
-            $textarea.height(70); // min-height
-            $textarea.height($textarea.prop('scrollHeight'));
-            $textarea.keyup(function (e) {
-                $(this).height(70); // min-height
-                $(this).height(this.scrollHeight);
-            });
+        if (!$.fn.trumbowyg) {
+            return false;
         }
+
+        $el.find('.sp-text').trumbowyg({
+            svgPath: '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',
+            lang: 'ru',
+            resetCss: true,
+            removeformatPasted: true,
+            btns: [
+                ['viewHTML'],
+                ['bold', 'italic', 'underline', 'strikethrough'],
+                ['link'],
+                ['removeformat']
+            ],
+
+            autogrow: true
+
+        });
+
     };
 
     function escapeHtml(text) {

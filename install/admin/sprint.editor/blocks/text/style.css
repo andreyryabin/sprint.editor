@@ -1,9 +1,13 @@
-.sp-block-text textarea{
-    width: 100%;
+.sp-block-text .trumbowyg-textarea {
     min-height:70px;
     padding: 5px;
 }
 
-.sp-block-text .trumbowyg-editor {
+.sp-block-text .trumbowyg-editor{
+    min-height: 70px;
+    padding: 5px;
+}
+
+.sp-block-text .trumbowyg-box {
     min-height: 70px;
 }
