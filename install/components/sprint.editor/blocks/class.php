@@ -19,23 +19,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             return 0;
         }
 
-        if ($this->arParams['USE_JQUERY'] == 'Y') {
-            if ($this->getParent()) {
-                $this->getParent()->addChildJS('/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js');
-            } else {
-                Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js');
-            }
-        }
-        if ($this->arParams['USE_FANCYBOX'] == 'Y') {
-            if ($this->getParent()) {
-                $this->getParent()->addChildCSS('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.css');
-                $this->getParent()->addChildJS('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.js');
-            } else {
-                Asset::getInstance()->addCss('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.css');
-                Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.js');
-            }
-        }
-
         $this->arParams['TEMPLATE_NAME'] = $this->getTemplateName();
         if (empty($this->arParams['TEMPLATE_NAME'])) {
             $this->arParams['TEMPLATE_NAME'] = '.default';
@@ -207,8 +190,10 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
         }
 
-        $this->registerAssets();
         $this->includeHeader($value['blocks'], $this->arParams);
+
+        $this->registerCss($this->findResource('_style.css'));
+        $this->registerJs($this->findResource('_script.js'));
 
         $this->prepareBlocks($value['blocks']);
 
@@ -230,24 +215,25 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
     }
 
-    protected function registerAssets() {
-        $path = $this->findResource('_style.css');
-        if ($path) {
-            if ($this->getParent()) {
-                $this->getParent()->addChildCSS($path);
-            } else {
-                Asset::getInstance()->addCss($path);
-            }
+    protected function registerJs($path){
+        if (empty($path)){
+            return false;
         }
 
-        $path = $this->findResource('_script.js');
-        if ($path) {
-            if ($this->getParent()) {
-                $this->getParent()->addChildJS($path);
-            } else {
-                Asset::getInstance()->addJs($path);
-            }
+        Asset::getInstance()->addJs($path);
+        if ($this->getParent()) {
+            $this->getParent()->addChildJS($path);
+        }
+    }
 
+    protected function registerCss($path){
+        if (empty($path)){
+            return false;
+        }
+
+        Asset::getInstance()->addCss($path);
+        if ($this->getParent()) {
+            $this->getParent()->addChildCSS($path);
         }
     }
 
