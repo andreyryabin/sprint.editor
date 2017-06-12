@@ -225,7 +225,7 @@
     vertical-align: top;
 }
 
-.sp-x-box .ui-sortable-handle {
+.sp-x-box .sp-x-box-handle {
     cursor: move;
 }
 

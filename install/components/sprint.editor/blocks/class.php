@@ -1,16 +1,39 @@
 <?php
 
+use Bitrix\Main\Page\Asset;
+
 class SprintEditorBlocksComponent extends CBitrixComponent
 {
-
-
-    protected $preparedBlocks= array();
+    protected $preparedBlocks = array();
     protected $includedBlocks = 0;
     protected $layoutIndex = 0;
+
+    public function onPrepareComponentParams($arParams) {
+        $arParams['USE_JQUERY'] = (!empty($arParams['USE_JQUERY']) && $arParams['USE_JQUERY'] == 'Y') ? 'Y' : 'N';
+        $arParams['USE_FANCYBOX'] = (!empty($arParams['USE_FANCYBOX']) && $arParams['USE_FANCYBOX'] == 'Y') ? 'Y' : 'N';
+        return $arParams;
+    }
 
     public function executeComponent() {
         if (!\CModule::IncludeModule('sprint.editor')) {
             return 0;
+        }
+
+        if ($this->arParams['USE_JQUERY'] == 'Y') {
+            if ($this->getParent()) {
+                $this->getParent()->addChildJS('/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js');
+            } else {
+                Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js');
+            }
+        }
+        if ($this->arParams['USE_FANCYBOX'] == 'Y') {
+            if ($this->getParent()) {
+                $this->getParent()->addChildCSS('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.css');
+                $this->getParent()->addChildJS('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.js');
+            } else {
+                Asset::getInstance()->addCss('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.css');
+                Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.js');
+            }
         }
 
         $this->arParams['TEMPLATE_NAME'] = $this->getTemplateName();
@@ -184,7 +207,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
         }
 
-        $this->includeAssets();
+        $this->registerAssets();
         $this->includeHeader($value['blocks'], $this->arParams);
 
         $this->prepareBlocks($value['blocks']);
@@ -207,19 +230,25 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
     }
 
-    protected function includeAssets() {
-        global $APPLICATION;
-
+    protected function registerAssets() {
         $path = $this->findResource('_style.css');
         if ($path) {
-            $APPLICATION->SetAdditionalCSS($path);
+            if ($this->getParent()) {
+                $this->getParent()->addChildCSS($path);
+            } else {
+                Asset::getInstance()->addCss($path);
+            }
         }
 
         $path = $this->findResource('_script.js');
         if ($path) {
-            $APPLICATION->AddHeadScript($path);
-        }
+            if ($this->getParent()) {
+                $this->getParent()->addChildJS($path);
+            } else {
+                Asset::getInstance()->addJs($path);
+            }
 
+        }
     }
 
     protected function includeBlock($block) {
@@ -245,9 +274,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
     }
 
     protected function includeLayout($columns) {
-        $component = $this;
-
-        foreach ($columns as $index => $column){
+        foreach ($columns as $index => $column) {
             $columns[$index] = $this->getColumnCss($column);
         }
 

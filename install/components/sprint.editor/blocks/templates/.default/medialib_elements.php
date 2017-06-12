@@ -9,6 +9,6 @@ $images = Sprint\Editor\Blocks\MedialibElements::getImages($block, array(
 
 ?><div class="c-gallery">
 <?foreach ($images as $image):?>
-    <a class="fancy" rel="media-gallery" href="<?=$image['ORIGIN_SRC']?>"><img alt="<?=$image['DESCRIPTION']?>" src="<?=$image['SRC']?>"></a>
+    <a data-fancybox="gallery" class="fancy" rel="media-gallery" href="<?=$image['ORIGIN_SRC']?>"><img alt="<?=$image['DESCRIPTION']?>" src="<?=$image['SRC']?>"></a>
 <?endforeach;?>
 </div>

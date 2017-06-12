@@ -6,13 +6,21 @@
 Пример подключения в шаблоне компонента bitrix:news.detail
 
 ```
-<?$APPLICATION->IncludeComponent("sprint.editor:blocks", ".default", array(
-    'IBLOCK_ID' => $arResult['IBLOCK_ID'],
-    'ELEMENT_ID' => $arResult['ID'],
-    'PROPERTY_CODE' => 'EDITOR',
-),false,array(
-    'HIDE_ICONS' => 'Y'
-))?>
+<?$APPLICATION->IncludeComponent(
+    "sprint.editor:blocks",
+    ".default",
+    Array(
+        "ELEMENT_ID" => $arResult['ID'],
+        "IBLOCK_ID" => $arResult['IBLOCK_ID'],
+        "PROPERTY_CODE" => "EDITOR",
+        "USE_JQUERY" => "Y",
+        "USE_FANCYBOX" => "Y",
+    ),
+    $component,
+    Array(
+        'HIDE_ICONS' => 'Y'
+    )
+);?>
 
 ```
 

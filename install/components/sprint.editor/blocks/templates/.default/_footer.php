@@ -1,6 +1,5 @@
 <? /**
  * Подключается после вывода всех блоков
- * @var $blocks array - массив со всеми блоками
+ * @var $this \SprintEditorBlocksComponent
  * @var $arParams array - массив с параметрами компонента
- */
-?>
+ */?>
