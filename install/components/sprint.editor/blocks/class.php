@@ -160,24 +160,11 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
     protected function getColumnCss($column) {
         $cssClasses = explode(',', $column);
-
-        $cssClasses = array_map(function ($cssClass) {
-            $cssClass = trim($cssClass);
-
-            if (!empty($cssClass)) {
-                return 'col-' . $cssClass;
-            } else {
-                return '';
-            }
-
-        }, $cssClasses);
-
         if (!empty($cssClasses)) {
             $cssClasses = implode(' ', $cssClasses);
         } else {
             $cssClasses = '';
         }
-
         return $cssClasses;
     }
 
