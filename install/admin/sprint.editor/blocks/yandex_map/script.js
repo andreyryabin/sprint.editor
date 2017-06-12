@@ -55,14 +55,15 @@ sprint_editor.registerBlock('yandex_map', function ($, $el, data) {
             myMap = new ymaps.Map(data['map_id'], {
                 center: defaultCenter,
                 zoom: defaultZoom,
-                behaviors: ['default', 'scrollZoom'],
-                controls: ['geolocationControl', 'searchControl', 'zoomControl'],
+                behaviors: ['default'],
+                controls: ['geolocationControl', 'searchControl', 'zoomControl']
             }, {
                 balloonPanelMaxMapArea: Infinity
                 // balloonAutoPan: false
                 // balloonCloseButton : false
             });
 
+            myMap.behaviors.disable('scrollZoom');
             myMap.behaviors.disable('dblClickZoom');
 
             var searchControl = myMap.controls.get('searchControl');

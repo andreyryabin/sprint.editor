@@ -382,14 +382,21 @@ function sprint_editor_create($, params) {
             layoutEmptyAdd(1);
         }
 
-        var $column;
+        var $column = $boxes.find('.sp-x-lt-col').last();
 
         if (data.layout) {
             var pos = data.layout.split(',');
-
-            var $layout = $boxes.find('.sp-x-lt').eq(pos[0]);
-            $column = $layout.find('.sp-x-lt-col').eq(pos[1]);
-
+            $boxes.find('.sp-x-lt').each(function (pos1) {
+                if (pos1 == pos[0]){
+                    $(this).find('.sp-x-lt-col').each(function(pos2){
+                        if (pos2 == pos[1]){
+                            $column = $(this);
+                            return false;
+                        }
+                    });
+                    return false;
+                }
+            });
         } else {
             $column = $boxes.find('.sp-x-lt-col').last();
         }
