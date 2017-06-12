@@ -12,8 +12,7 @@ class Coub
         $block = array_merge(array(
             'width' => '420',
             'height' => '420',
-        ), $block);
-
+        ), $block, $params);
 
         $matches = array();
         if (preg_match('/^.*coub.com\/view\/(\w+)/',$block['url'], $matches)){

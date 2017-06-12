@@ -11,12 +11,12 @@ class Video
             return '';
         }
 
-        $params = array_merge(array(
-            'width' => '560',
-            'height' => '315',
-        ), $params);
+        $block = array_merge(array(
+            'width' => '100%',
+            'height' => 480
+        ), $block, $params);
 
-        return Youtube::getVideoHtml($block['url'], $params['width'], $params['height']);
+        return Youtube::getVideoHtml($block['url'], $block['width'], $block['height']);
 
     }
 }

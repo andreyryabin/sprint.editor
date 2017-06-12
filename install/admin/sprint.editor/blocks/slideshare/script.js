@@ -3,8 +3,8 @@ sprint_editor.registerBlock('slideshare', function($, $el, data) {
     data = $.extend({
         url: '',
         embed_url : '',
-        width: '',
-        height: ''
+        width: '510',
+        height: '420'
     }, data);
 
     this.getData = function () {

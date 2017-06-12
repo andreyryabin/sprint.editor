@@ -2,8 +2,8 @@ sprint_editor.registerBlock('video', function($, $el, data) {
 
     data = $.extend({
         url: '',
-        width: '',
-        height: ''
+        width: '100%',
+        height: '480'
     }, data);
 
     var areas = [

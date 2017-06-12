@@ -6,6 +6,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
     protected $preparedBlocks= array();
     protected $includedBlocks = 0;
+    protected $layoutIndex = 0;
 
     public function executeComponent() {
         if (!\CModule::IncludeModule('sprint.editor')) {
@@ -188,16 +189,17 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
         $this->prepareBlocks($value['blocks']);
 
-        foreach ($value['layouts'] as $layoutIndex => $columns) {
-            $this->includeLayout($layoutIndex, $columns);
+        $this->layoutIndex = 0;
+        foreach ($value['layouts'] as $columns) {
+            $this->includeLayout($columns);
         }
 
         $this->includeFooter($this->arParams);
 
     }
 
-    public function includeLayoutBlocks($layoutIndex, $columnIndex) {
-        $pos = $layoutIndex . ',' . $columnIndex;
+    public function includeLayoutBlocks($columnIndex) {
+        $pos = $this->layoutIndex . ',' . $columnIndex;
         if (isset($this->preparedBlocks[$pos])) {
             foreach ($this->preparedBlocks[$pos] as $block) {
                 $this->includeBlock($block);
@@ -242,7 +244,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
     }
 
-    protected function includeLayout($layoutIndex, $columns) {
+    protected function includeLayout($columns) {
         $component = $this;
 
         foreach ($columns as $index => $column){
@@ -254,9 +256,11 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         if (!$path) {
             return false;
         }
-
         /** @noinspection PhpIncludeInspection */
         include($root . $path);
+
+        $this->layoutIndex++;
+
         return true;
     }
 
