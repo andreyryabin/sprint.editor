@@ -73,10 +73,7 @@ var sprint_editor = {
 
 function sprint_editor_create($, params) {
     var $editor = $('.sp-x-editor' + params.uniqid);
-
-    var $buttons = $editor.find('.sp-x-buttons');
-    var $boxes = $editor.find('.sp-x-boxes');
-
+    var $inputresult = $('.sp-x-result' + params.uniqid);
     var $form = $editor.closest('form').first();
 
     var collections = [];
@@ -112,7 +109,7 @@ function sprint_editor_create($, params) {
 
         var index = 0;
 
-        $boxes.find('.sp-x-lt-table').each(function (pos1) {
+        $editor.find('.sp-x-lt-table').each(function (pos1) {
             var columns = [];
 
             $(this).find('.sp-x-lt-col').each(function(pos2){
@@ -122,11 +119,21 @@ function sprint_editor_create($, params) {
 
                 $(this).find('.sp-x-box').each(function(){
 
-                    var bdata = collectionCollect(index);
-                    bdata.layout = pos1 + ',' + pos2;
+                    var entry = collections[index];
+                    var data = entry.collectData();
 
-                    blocks.push(bdata);
+                    if (typeof entry.getAreas === 'function') {
+                        var areas = entry.getAreas();
+                        $.each(areas, function (areaIndex, area) {
+                            data[area.dataKey] = area.block.collectData()
+                        })
+                    }
+
+                    data.layout = pos1 + ',' + pos2;
+
+                    blocks.push(data);
                     index++;
+
                 });
 
             });
@@ -154,25 +161,16 @@ function sprint_editor_create($, params) {
         }
 
 
-        $boxes.find('input,textarea,select').removeAttr('name');
-        $editor.find('.sp-x-result').val(resultString);
+        $editor.find('input,textarea,select').removeAttr('name');
+        $inputresult.val(resultString);
     });
 
     if (params.enableChange) {
-
-        if (getLocal('mode') === '1') {
-            $editor.addClass('sp-x-layout-mode');
-        } else {
-            $editor.removeClass('sp-x-layout-mode');
-        }
-
         $editor.find('.sp-x-layout-toggle').on('click', function () {
             if ($editor.hasClass('sp-x-layout-mode')) {
                 $editor.removeClass('sp-x-layout-mode');
-                setLocal('mode', '');
             } else {
                 $editor.addClass('sp-x-layout-mode');
-                setLocal('mode', '1');
             }
         });
 
@@ -191,9 +189,9 @@ function sprint_editor_create($, params) {
             toggleLayoutButtons();
         });
 
-        $boxes.on('click', '.sp-x-box-up', function (e) {
+        $editor.on('click', '.sp-x-box-up', function (e) {
             e.preventDefault();
-            var index = $boxes.find('.sp-x-box-up').index(this);
+            var index = $editor.find('.sp-x-box-up').index(this);
             var block = $(this).closest('.sp-x-box');
 
             var nblock = block.prev('.sp-x-box');
@@ -205,9 +203,9 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $boxes.on('click', '.sp-x-box-dn', function (e) {
+        $editor.on('click', '.sp-x-box-dn', function (e) {
             e.preventDefault();
-            var index = $boxes.find('.sp-x-box-dn').index(this);
+            var index = $editor.find('.sp-x-box-dn').index(this);
             var block = $(this).closest('.sp-x-box');
 
             var nblock = block.next('.sp-x-box');
@@ -219,17 +217,17 @@ function sprint_editor_create($, params) {
             }
         });
 
-        $boxes.on('click', '.sp-x-box-del', function (e) {
+        $editor.on('click', '.sp-x-box-del', function (e) {
             e.preventDefault();
 
-            var index = $boxes.find('.sp-x-box-del').index(this);
+            var index = $editor.find('.sp-x-box-del').index(this);
             var $box = $(this).closest('.sp-x-box');
 
             collectionRemove(index);
             $box.remove();
         });
 
-        $boxes.on('click', '.sp-x-lt-types span', function (e) {
+        $editor.on('click', '.sp-x-lt-types span', function (e) {
             var $span = $(this);
 
             var $xcol = $span.closest('.sp-x-lt-col');
@@ -257,7 +255,7 @@ function sprint_editor_create($, params) {
 
         });
 
-        $boxes.on('click', '.sp-x-lt-title', function (e) {
+        $editor.on('click', '.sp-x-lt-title', function (e) {
             var $title = $(this);
             var $xcol = $title.closest('.sp-x-lt-col');
             var $sizes = $xcol.find('.sp-x-lt-types');
@@ -265,8 +263,8 @@ function sprint_editor_create($, params) {
                 $sizes.hide();
                 $title.removeClass('active');
             } else {
-                $boxes.find('.sp-x-lt-types').not($sizes).hide();
-                $boxes.find('.sp-x-lt-title').not($title).removeClass('active');
+                $editor.find('.sp-x-lt-types').not($sizes).hide();
+                $editor.find('.sp-x-lt-title').not($title).removeClass('active');
 
                 var cursizes = $xcol.find('.sp-x-lt-curtype').text();
                 cursizes = cursizes.split(',');
@@ -329,26 +327,27 @@ function sprint_editor_create($, params) {
         });
 
 
-        $boxes.append(layoutHtml);
+        $editor.find('.sp-x-boxes').append(layoutHtml);
 
         if (params.enableChange) {
 
-            var $lastCols = $boxes.find('.sp-x-lt-table').last().find('.sp-x-lt-col');
             var startIndex = 0;
             var stopIndex = 0;
 
-            $lastCols.sortable({
+            var $allCols = $editor.find(".sp-x-lt-col");
+
+            $allCols.sortable({
                 items: ".sp-x-box",
-                connectWith: ".sp-x-lt-col",
+                connectWith: $allCols,
                 handle: ".sp-x-box-handle",
                 placeholder: "sp-x-box-placeholder",
                 start: function (event, ui) {
-                    startIndex = $boxes.find('.sp-x-box').index(
+                    startIndex = $editor.find('.sp-x-box').index(
                         ui.item.get(0)
                     );
                 },
                 stop: function (event, ui) {
-                    stopIndex = $boxes.find('.sp-x-box').index(
+                    stopIndex = $editor.find('.sp-x-box').index(
                         ui.item.get(0)
                     );
 
@@ -361,10 +360,10 @@ function sprint_editor_create($, params) {
     }
 
     function toggleLayoutButtons() {
-        if ($boxes.find('.sp-x-lt-col').length <= 0) {
-            $buttons.hide();
+        if ($editor.find('.sp-x-lt-col').length <= 0) {
+            $editor.find('.sp-x-buttons').hide();
         } else {
-            $buttons.show();
+            $editor.find('.sp-x-buttons').show();
         }
     }
 
@@ -378,15 +377,15 @@ function sprint_editor_create($, params) {
         templateVars.enableChange = params.enableChange;
         var html = sprint_editor.renderTemplate('box', templateVars);
 
-        if ($boxes.find('.sp-x-lt-col').length <= 0) {
+        if ($editor.find('.sp-x-lt-col').length <= 0) {
             layoutEmptyAdd(1);
         }
 
-        var $column = $boxes.find('.sp-x-lt-col').last();
+        var $column = $editor.find('.sp-x-lt-col').last();
 
         if (data.layout) {
             var pos = data.layout.split(',');
-            $boxes.find('.sp-x-lt-table').each(function (pos1) {
+            $editor.find('.sp-x-lt-table').each(function (pos1) {
                 if (pos1 == pos[0]){
                     $(this).find('.sp-x-lt-col').each(function(pos2){
                         if (pos2 == pos[1]){
@@ -446,22 +445,8 @@ function sprint_editor_create($, params) {
         collections.splice(index, 1);
     }
 
-    function collectionCollect(index) {
-        var entry = collections[index];
-
-        var data = entry.collectData();
-        if (typeof entry.getAreas === 'function') {
-            var areas = entry.getAreas();
-            $.each(areas, function (areaIndex, area) {
-                data[area.dataKey] = area.block.collectData()
-            })
-        }
-
-        return data;
-    }
-
     function layoutRemoveEmpty() {
-        $boxes.find('.sp-x-lt-table').each(function (index) {
+        $editor.find('.sp-x-lt-table').each(function (index) {
             var colCnt = 0;
             var colEmp = 0;
             $(this).find('.sp-x-lt-col').each(function () {

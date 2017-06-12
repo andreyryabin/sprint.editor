@@ -19,7 +19,6 @@
  */
 ?>
 <div class="sp-x-editor<?= $uniqId ?>">
-    <textarea style="display: none;" class="sp-x-result" name="<?= $inputName ?>"></textarea>
     <div class="sp-x-boxes"></div>
 <? if ($enableChange): ?>
     <? if (!empty($selectValues)): ?>
@@ -50,6 +49,7 @@
     </div>
 <? endif; ?>
 </div>
+<textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;" ></textarea>
 <? if ($firstRun): ?><?php
     \CModule::IncludeModule('fileman');
     $compParamsLangMess = CComponentParamsManager::GetLangMessages();

@@ -151,7 +151,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
     }
 
-    public function getColumnCss($column) {
+    protected function getColumnCss($column) {
         $cssClasses = explode(',', $column);
 
         $cssClasses = array_map(function ($cssClass) {
@@ -245,8 +245,12 @@ class SprintEditorBlocksComponent extends CBitrixComponent
     protected function includeLayout($layoutIndex, $columns) {
         $component = $this;
 
+        foreach ($columns as $index => $column){
+            $columns[$index] = $this->getColumnCss($column);
+        }
+
         $root = \Sprint\Editor\Module::getDocRoot();
-        $path = $this->findResource('layout.php');
+        $path = $this->findResource('_layout.php');
         if (!$path) {
             return false;
         }
