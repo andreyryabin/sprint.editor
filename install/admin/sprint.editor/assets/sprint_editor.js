@@ -112,7 +112,7 @@ function sprint_editor_create($, params) {
 
         var index = 0;
 
-        $boxes.find('.sp-x-lt').each(function (pos1) {
+        $boxes.find('.sp-x-lt-yy').each(function (pos1) {
             var columns = [];
 
             $(this).find('.sp-x-lt-col').each(function(pos2){
@@ -333,7 +333,7 @@ function sprint_editor_create($, params) {
 
         if (params.enableChange) {
 
-            var $lastCols = $boxes.find('.sp-x-lt').last().find('.sp-x-lt-col');
+            var $lastCols = $boxes.find('.sp-x-lt-yy').last().find('.sp-x-lt-col');
             var startIndex = 0;
             var stopIndex = 0;
 
@@ -386,7 +386,7 @@ function sprint_editor_create($, params) {
 
         if (data.layout) {
             var pos = data.layout.split(',');
-            $boxes.find('.sp-x-lt').each(function (pos1) {
+            $boxes.find('.sp-x-lt-yy').each(function (pos1) {
                 if (pos1 == pos[0]){
                     $(this).find('.sp-x-lt-col').each(function(pos2){
                         if (pos2 == pos[1]){
@@ -463,7 +463,7 @@ function sprint_editor_create($, params) {
     }
 
     function layoutRemoveEmpty() {
-        $boxes.find('.sp-x-lt').each(function (index) {
+        $boxes.find('.sp-x-lt-yy').each(function (index) {
             var colCnt = 0;
             var colEmp = 0;
             $(this).find('.sp-x-lt-col').each(function () {
