@@ -98,7 +98,7 @@ function sprint_editor_create($, params) {
     });
 
     $.each(params.jsonValue.blocks, function (index, block) {
-        blockPush(block);
+        pushblock(block);
     });
 
 
@@ -186,7 +186,7 @@ function sprint_editor_create($, params) {
                 name = name.substr(7);
                 layoutEmptyAdd(name);
             } else {
-                blockPush({name: name});
+                pushblock({name: name});
             }
             toggleLayoutButtons();
         });
@@ -368,7 +368,7 @@ function sprint_editor_create($, params) {
         }
     }
 
-    function blockPush(data) {
+    function pushblock(data) {
         if (!data.name || !sprint_editor.hasBlockParams(data.name)) {
             return false;
         }
@@ -397,7 +397,7 @@ function sprint_editor_create($, params) {
         $column.append(html);
 
         var $el = $column.find('.sp-x-box-block').last();
-        var entry = blockInit($el, data.name, data);
+        var entry = initblock($el, data.name, data);
 
         if (typeof entry.getAreas == 'function') {
             var areas = entry.getAreas();
@@ -405,7 +405,7 @@ function sprint_editor_create($, params) {
 
             $.each(areas, function (areaIndex, area) {
                 if (data.name != area.blockName) {
-                    area.block = blockInit($el.find(area.container), area.blockName, entryData[area.dataKey]);
+                    area.block = initblock($el.find(area.container), area.blockName, entryData[area.dataKey]);
                 }
             });
         }
@@ -413,7 +413,7 @@ function sprint_editor_create($, params) {
         collections.push(entry);
     }
 
-    function blockInit($el, name, data) {
+    function initblock($el, name, data) {
         name = sprint_editor.hasBlockMethod(name) ? name : 'dump';
 
         var method = sprint_editor.getBlockMethod(name);
