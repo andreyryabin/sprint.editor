@@ -6,6 +6,31 @@
     width: 320px;
     height: 180px;
     background: #ccc;
-    margin-top: 10px;
     text-align: center;
+}
+
+
+.sp-block-slideshare .sp-table{
+    margin-top: 10px;
+}
+
+.sp-block-slideshare .sp-preview{
+    /*float: left;*/
+    width: 320px;
+    height: 180px;
+    background: #ccc;
+}
+
+.sp-block-slideshare .sp-col-preview{
+    width: 330px;
+    text-align: center;
+
+}
+.sp-block-slideshare .sp-col-sizes{
+    text-align: left;
+}
+
+.sp-block-slideshare .sp-col-sizes input{
+    margin-bottom: 5px;
+    width: 100px;
 }

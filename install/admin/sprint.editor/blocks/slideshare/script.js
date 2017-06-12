@@ -2,7 +2,9 @@ sprint_editor.registerBlock('slideshare', function($, $el, data) {
 
     data = $.extend({
         url: '',
-        embed_url : ''
+        embed_url : '',
+        width: '',
+        height: ''
     }, data);
 
     this.getData = function () {
@@ -11,6 +13,8 @@ sprint_editor.registerBlock('slideshare', function($, $el, data) {
 
     this.collectData = function () {
         data.url = $el.find('.sp-url').val();
+        data.width = $el.find('.sp-width').val();
+        data.height = $el.find('.sp-height').val();
         return data;
     };
 

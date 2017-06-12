@@ -1,7 +1,9 @@
 sprint_editor.registerBlock('video', function($, $el, data) {
 
     data = $.extend({
-        url: ''
+        url: '',
+        width: '',
+        height: ''
     }, data);
 
     var areas = [
@@ -23,6 +25,8 @@ sprint_editor.registerBlock('video', function($, $el, data) {
 
     this.collectData = function () {
         data.url = $el.find('.sp-url').val();
+        data.width = $el.find('.sp-width').val();
+        data.height = $el.find('.sp-height').val();
         return data;
     };
 

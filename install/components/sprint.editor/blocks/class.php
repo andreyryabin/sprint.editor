@@ -3,12 +3,11 @@
 class SprintEditorBlocksComponent extends CBitrixComponent
 {
 
-    protected $layouts = array();
-    protected $layoutIndex = 0;
-    protected $blocksIncluded = 0;
 
-    public function executeComponent()
-    {
+    protected $preparedBlocks= array();
+    protected $includedBlocks = 0;
+
+    public function executeComponent() {
         if (!\CModule::IncludeModule('sprint.editor')) {
             return 0;
         }
@@ -21,19 +20,18 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         if (!empty($this->arParams['JSON'])) {
             $this->outJson($this->arParams['~JSON']);
 
-        }elseif (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['ELEMENT_ID'])) {
+        } elseif (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['ELEMENT_ID'])) {
             $this->outIblockElement();
 
-        }elseif (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['SECTION_ID'])) {
+        } elseif (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['SECTION_ID'])) {
             $this->outIblockSection();
         }
 
-        return $this->blocksIncluded;
+        return $this->includedBlocks;
     }
 
 
-    protected function outIblockElement()
-    {
+    protected function outIblockElement() {
         \CModule::IncludeModule("iblock");
 
         $aPropertyCodes = array();
@@ -79,8 +77,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return true;
     }
 
-    protected function outIblockSection()
-    {
+    protected function outIblockSection() {
         \CModule::IncludeModule("iblock");
 
         $aPropertyCodes = array();
@@ -118,88 +115,97 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return true;
     }
 
-    protected function outJson($blocks)
-    {
-        $blocks = json_decode(Sprint\Editor\Locale::convertToUtf8IfNeed($blocks), true);
-        $blocks = Sprint\Editor\Locale::convertToWin1251IfNeed($blocks);
-        $blocks = (json_last_error() == JSON_ERROR_NONE) ? $blocks : array();
+    protected function prepareValue($value) {
+        $value = json_decode(Sprint\Editor\Locale::convertToUtf8IfNeed($value), true);
+        $value = Sprint\Editor\Locale::convertToWin1251IfNeed($value);
+        $value = (json_last_error() == JSON_ERROR_NONE) ? $value : array();
+
+        if (!empty($value) && !isset($value['layouts'])) {
+            foreach ($value as $index => $block) {
+                $block['layout'] = '0,0';
+                $value[$index] = $block;
+            }
+
+            $value = array(
+                'blocks' => $value,
+                'layouts' => array(
+                    array(''),
+                )
+            );
+        }
+
+        return $value;
+    }
+
+    protected function prepareBlocks($blocks) {
+        $this->preparedBlocks = array();
+
+        foreach ($blocks as $block) {
+            $pos = $block['layout'];
+
+            if (!isset($this->preparedBlocks[$pos])) {
+                $this->preparedBlocks[$pos] = array();
+            }
+
+            $this->preparedBlocks[$pos][] = $block;
+        }
+    }
+
+    public function getColumnCss($column) {
+        $cssClasses = explode(',', $column);
+
+        $cssClasses = array_map(function ($cssClass) {
+            $cssClass = trim($cssClass);
+
+            if (!empty($cssClass)) {
+                return 'col-' . $cssClass;
+            } else {
+                return '';
+            }
+
+        }, $cssClasses);
+
+        if (!empty($cssClasses)) {
+            $cssClasses = implode(' ', $cssClasses);
+        } else {
+            $cssClasses = '';
+        }
+
+        return $cssClasses;
+    }
+
+    protected function outJson($value) {
+
+        $value = $this->prepareValue($value);
 
         $events = GetModuleEvents("sprint.editor", "OnBeforeShowComponentBlocks", true);
         foreach ($events as $aEvent) {
-            ExecuteModuleEventEx($aEvent, array(&$blocks));
+            ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
         }
 
         $this->includeAssets();
-        $this->includePartial('_header', $blocks, $this->arParams);
+        $this->includeHeader($value['blocks'], $this->arParams);
 
-        
+        $this->prepareBlocks($value['blocks']);
 
-        $this->layouts = array();
-        $this->layoutIndex = 0;
-        $lindex = -1;
-        $lname = '';
-
-        foreach ($blocks as $block) {
-
-            $layout = !empty($block['layout']) ? $block['layout'] : array();
-
-            if (empty($layout['name'])){
-                $layout['name'] = 'A0B0';
-            }
-
-            if (empty($layout['type'])){
-                $layout['type'] = 1;
-            }
-
-            if (empty($layout['index'])){
-                $layout['index'] = 1;
-            }
-
-            if ($lname != $layout['name']){
-                $this->layouts[] = array();
-                $lindex++;
-                $lname = $layout['name'];
-            }
-        
-            $colName = 'col'.$layout['index'];
-
-            if (empty($this->layouts[$lindex][$colName])){
-                $this->layouts[$lindex][$colName] = array();
-            }
-
-            $this->layouts[$lindex][$colName][] = $block;
+        foreach ($value['layouts'] as $layoutIndex => $columns) {
+            $this->includeLayout($layoutIndex, $columns);
         }
 
-        foreach ($this->layouts as $columns){
-            $layoutName = 'layout'.count($columns);
-            if ($this->includeLayout($layoutName)){
-                $this->layoutIndex++;
-            }
-        }
-
-        $this->includePartial('_footer', $blocks, $this->arParams);
+        $this->includeFooter($this->arParams);
 
     }
 
-    public function includeLayoutBlocks($type){
-        $blocks = array();
-
-        if (isset($this->layouts[$this->layoutIndex])){
-            if (isset($this->layouts[$this->layoutIndex][$type])){
-                $blocks = $this->layouts[$this->layoutIndex][$type];
+    public function includeLayoutBlocks($layoutIndex, $columnIndex) {
+        $pos = $layoutIndex . ',' . $columnIndex;
+        if (isset($this->preparedBlocks[$pos])) {
+            foreach ($this->preparedBlocks[$pos] as $block) {
+                $this->includeBlock($block);
             }
         }
-
-        foreach ($blocks as $block) {
-            if ($this->includeBlock($block)) {
-                $this->blocksIncluded++;
-            }
-        }
-
     }
 
-    protected function includeAssets()
-    {
+    protected function includeAssets() {
         global $APPLICATION;
 
         $path = $this->findResource('_style.css');
@@ -214,8 +220,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
     }
 
-    protected function includeBlock($block)
-    {
+    protected function includeBlock($block) {
         $root = \Sprint\Editor\Module::getDocRoot();
 
         $path = $this->findResource($block['name'] . '.php');
@@ -230,16 +235,18 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
         /** @noinspection PhpIncludeInspection */
         include($root . $path);
+
+        $this->includedBlocks++;
+
         return true;
 
     }
 
-    protected function includeLayout($layoutName)
-    {
+    protected function includeLayout($layoutIndex, $columns) {
         $component = $this;
 
         $root = \Sprint\Editor\Module::getDocRoot();
-        $path = $this->findResource($layoutName . '.php');
+        $path = $this->findResource('layout.php');
         if (!$path) {
             return false;
         }
@@ -249,10 +256,9 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return true;
     }
 
-    protected function includePartial($partialName, &$blocks, $arParams)
-    {
+    protected function includeHeader(&$blocks, $arParams) {
         $root = \Sprint\Editor\Module::getDocRoot();
-        $path = $this->findResource($partialName . '.php');
+        $path = $this->findResource('_header.php');
         if (!$path) {
             return false;
         }
@@ -262,8 +268,19 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return true;
     }
 
-    protected function findResource($resName)
-    {
+    protected function includeFooter($arParams) {
+        $root = \Sprint\Editor\Module::getDocRoot();
+        $path = $this->findResource('_footer.php');
+        if (!$path) {
+            return false;
+        }
+
+        /** @noinspection PhpIncludeInspection */
+        include($root . $path);
+        return true;
+    }
+
+    protected function findResource($resName) {
         $templateName = $this->arParams['TEMPLATE_NAME'];
         $root = \Sprint\Editor\Module::getDocRoot();
 
