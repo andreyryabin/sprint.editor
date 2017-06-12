@@ -198,19 +198,19 @@
     display: none;
 }
 
-.sp-x-lt-yy {
+.sp-x-lt-table {
     position: relative;
 }
 
-.sp-x-lt-yy:last-child {
+.sp-x-lt-table:last-child {
     margin-bottom: 20px;
 }
 
-.sp-x-layout-mode .sp-x-lt-yy:last-child {
+.sp-x-layout-mode .sp-x-lt-table:last-child {
     margin-bottom: 10px;
 }
 
-.sp-x-layout-mode .sp-x-lt-yy {
+.sp-x-layout-mode .sp-x-lt-table {
     display: table;
     border-collapse: collapse;
     width: 100%;
