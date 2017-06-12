@@ -397,8 +397,6 @@ function sprint_editor_create($, params) {
                     return false;
                 }
             });
-        } else {
-            $column = $boxes.find('.sp-x-lt-col').last();
         }
 
         $column.append(html);
