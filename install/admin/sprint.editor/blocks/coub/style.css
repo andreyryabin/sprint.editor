@@ -1,5 +1,3 @@
-
-
 .sp-block-coub input[type=text]{
     width: 98%;
 
@@ -25,7 +23,7 @@
     text-align: left;
 }
 
-.sp-block-coub .sp-col-sizes input{
+.sp-block-coub .sp-col-sizes input[type=text]{
     margin-bottom: 5px;
     width: 100px;
 }

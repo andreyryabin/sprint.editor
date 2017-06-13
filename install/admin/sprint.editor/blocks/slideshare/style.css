@@ -30,7 +30,7 @@
     text-align: left;
 }
 
-.sp-block-slideshare .sp-col-sizes input{
+.sp-block-slideshare .sp-col-sizes input[type=text]{
     margin-bottom: 5px;
     width: 100px;
 }
