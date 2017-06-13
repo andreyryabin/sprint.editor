@@ -249,9 +249,7 @@ function sprint_editor_create($, params) {
                 result.push(tmp);
             });
 
-            $cursize.text(
-                result.join(',')
-            );
+            $cursize.text(result.join(' '));
 
         });
 
@@ -267,10 +265,11 @@ function sprint_editor_create($, params) {
                 $editor.find('.sp-x-lt-title').not($title).removeClass('active');
 
                 var cursizes = $xcol.find('.sp-x-lt-curtype').text();
-                cursizes = cursizes.split(',');
+                cursizes = cursizes.split(' ');
                 $sizes.find('span').each(function () {
                     var stext = $(this).text();
-                    if ($.inArray(stext, cursizes) >= 0) {
+                    stext = $.trim(stext);
+                    if (stext && $.inArray(stext, cursizes) >= 0) {
                         $(this).addClass('active');
                     }
                 });
@@ -287,11 +286,11 @@ function sprint_editor_create($, params) {
         var size = '';
 
         if (colCnt == 2){
-            size = 'col-md-6';
+            size = 'md-6';
         } else if (colCnt == 3){
-            size = 'col-md-4';
+            size = 'md-4';
         } else if (colCnt == 4){
-            size = 'col-md-3';
+            size = 'md-3';
         }
 
         for (var index = 1; index <= colCnt; index++) {
@@ -304,7 +303,7 @@ function sprint_editor_create($, params) {
     function layoutAdd(columns) {
 
         if (!sprint_editor.getCacheVar('layout-sizes')) {
-            var types = ['col-md-', 'col-sm-', 'col-xs-', 'col-lg-'];
+            var types = ['md-', 'sm-', 'xs-', 'lg-'];
             var groups = [];
             for (var type in types) {
                 var sizes = [];

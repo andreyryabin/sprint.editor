@@ -159,13 +159,13 @@ class SprintEditorBlocksComponent extends CBitrixComponent
     }
 
     protected function getColumnCss($column) {
-        $cssClasses = explode(',', $column);
-        if (!empty($cssClasses)) {
-            $cssClasses = implode(' ', $cssClasses);
-        } else {
-            $cssClasses = '';
-        }
-        return $cssClasses;
+        $replace = array(
+            'md-' => 'col-md-',
+            'sm-' => 'col-sm-',
+            'xs-' => 'col-xs-',
+            'lg-' => 'col-lg-',
+        );
+        return str_replace(array_keys($replace), array_values($replace), $column);
     }
 
     protected function outJson($value) {
@@ -202,8 +202,8 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
     }
 
-    protected function registerJs($path){
-        if (empty($path)){
+    protected function registerJs($path) {
+        if (empty($path)) {
             return false;
         }
 
@@ -213,8 +213,8 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
     }
 
-    protected function registerCss($path){
-        if (empty($path)){
+    protected function registerCss($path) {
+        if (empty($path)) {
             return false;
         }
 
