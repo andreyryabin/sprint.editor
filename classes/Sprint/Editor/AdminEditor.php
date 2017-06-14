@@ -59,10 +59,9 @@ class AdminEditor
             $showSortButtons = 0;
         }
 
-        $settFile = Module::getDocRoot() . '/bitrix/admin/sprint.editor/settings/example.php';
-        if (is_file($settFile)) {
-            $settings = array();
-            include $settFile;
+        if (!empty($params['userSettings']['SETTINGS_NAME'])) {
+            $settings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
+
             foreach ($settings as $blockName => $blockSettins) {
                 if (!empty(self::$parameters[$blockName])) {
                     self::$parameters[$blockName]['settings'] = $blockSettins;
@@ -81,6 +80,33 @@ class AdminEditor
             'uniqId' => $params['uniqId'],
             'firstRun' => (self::$initCounts == 1) ? 1 : 0,
         ));
+    }
+
+    protected static function loadSettings($settingsName){
+        $path = Module::getDocRoot() . '/bitrix/admin/sprint.editor/settings/';
+        $settingsFile = $path . $settingsName . '.php';
+
+        $settings = array();
+        if ($settingsName && is_file($settingsFile)){
+            include $settingsFile;
+        }
+
+        return $settings;
+    }
+
+    public static function getUserSettingsFiles(){
+        $path = Module::getDocRoot() . '/bitrix/admin/sprint.editor/settings/';
+        $directory = new \DirectoryIterator($path);
+        $result = array('' => GetMessage('SPRINT_EDITOR_SETTINGS_NAME_NO'));
+        foreach ($directory as $item) {
+            if ($item->isFile() && $item->getExtension() == 'php'){
+                $settingsName = $item->getBasename('.php');
+                $settings = self::loadSettings($settingsName);
+                $title = !empty($settings['title']) ? $settings['title'] : $settingsName;
+                $result[$settingsName] = $title;
+            }
+        }
+        return Locale::convertToWin1251IfNeed($result);
     }
 
     public static function prepareValue($value) {

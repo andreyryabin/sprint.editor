@@ -30,6 +30,7 @@ class IblockPropertyEditor
         if (self::isSettingsPage()){
             $settings['DISABLE_CHANGE'] = '';
             $settings['ENABLE_SORT_BUTTONS'] = '';
+            $settings['SETTINGS_NAME'] = '';
         }
 
         return AdminEditor::init(array(
@@ -53,10 +54,12 @@ class IblockPropertyEditor
 
         $settings = self::PrepareSettings($arProperty);
         $settings = $settings['USER_TYPE_SETTINGS'];
+        $userfiles = AdminEditor::getUserSettingsFiles();
 
         return AdminEditor::renderFile(Module::getModuleDir() . '/templates/iblock_property.php', array(
             'inputName' => $strHTMLControlName['NAME'],
-            'settings' => $settings
+            'settings' => $settings,
+            'userfiles' => $userfiles,
         ));
     }
 
@@ -64,7 +67,7 @@ class IblockPropertyEditor
         $settings = $arProperty['USER_TYPE_SETTINGS'];
         $newsettings = array();
 
-        foreach (array('DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS') as $val){
+        foreach (array('DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS','SETTINGS_NAME') as $val){
             $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
         }
 

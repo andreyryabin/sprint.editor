@@ -2,11 +2,11 @@
 /*
  * этот файл перезаписывается при обновлениях
  * используйте его в качестве примера
- *
- *
  */
 
 $settings = array(
+    'title' => 'Пример настройки',
+
     'text' => array(
         'param1' => array(
             'type' => 'select',
@@ -17,6 +17,7 @@ $settings = array(
             )
         ),
     ),
+
     'image' => array(
         'param1' => array(
             'type' => 'select',

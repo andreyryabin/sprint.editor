@@ -38,7 +38,7 @@ class UserTypeEditor
         $settings = $arUserField['SETTINGS'];
         $newsettings = array();
 
-        foreach (array('DEFAULT_VALUE','DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS') as $val){
+        foreach (array('DEFAULT_VALUE','DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS','SETTINGS_NAME') as $val){
             $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
         }
 
@@ -47,6 +47,7 @@ class UserTypeEditor
 
     public function GetSettingsHTML($arUserField, $arHtmlControl, $bVarsFromForm){
         $settings = self::PrepareSettings($arUserField);
+        $userfiles = AdminEditor::getUserSettingsFiles();
 
         $defaultEditor = AdminEditor::init(array(
             'uniqId' => $arUserField['ID'],
@@ -55,6 +56,7 @@ class UserTypeEditor
             'userSettings' => array(
                 'DISABLE_CHANGE' => '',
                 'ENABLE_SORT_BUTTONS' => '',
+                'SETTINGS_NAME' => ''
             ),
             'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE']
         ));
@@ -62,6 +64,7 @@ class UserTypeEditor
         return AdminEditor::renderFile(Module::getModuleDir() . '/templates/user_type.php', array(
             'inputName' => $arHtmlControl['NAME'],
             'settings' => $settings,
+            'userfiles' => $userfiles,
             'defaultEditor' => $defaultEditor,
         ));
     }
