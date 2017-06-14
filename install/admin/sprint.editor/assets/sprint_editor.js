@@ -112,26 +112,34 @@ function sprint_editor_create($, params) {
         $editor.find('.sp-x-lt-table').each(function (pos1) {
             var columns = [];
 
-            $(this).find('.sp-x-lt-col').each(function(pos2){
+            $(this).find('.sp-x-lt-col').each(function (pos2) {
 
                 var text = $(this).find('.sp-x-lt-curtype').text();
                 columns.push(text);
 
-                $(this).find('.sp-x-box').each(function(){
+                $(this).find('.sp-x-box').each(function () {
 
                     var entry = collections[index];
-                    var data = entry.collectData();
+                    var blockData = entry.collectData();
 
                     if (typeof entry.getAreas === 'function') {
                         var areas = entry.getAreas();
                         $.each(areas, function (areaIndex, area) {
-                            data[area.dataKey] = area.block.collectData()
+                            blockData[area.dataKey] = area.block.collectData()
                         })
                     }
 
-                    data.layout = pos1 + ',' + pos2;
+                    delete blockData.settings;
+                    var $boxsett = $(this).find('.sp-x-box-settings');
+                    if ($boxsett.length > 0) {
+                        blockData.settings = {};
+                        $.each($boxsett.find("select,input").serializeArray(), function () {
+                            blockData.settings[this.name] = this.value;
+                        });
+                    }
 
-                    blocks.push(data);
+                    blockData.layout = pos1 + ',' + pos2;
+                    blocks.push(blockData);
                     index++;
 
                 });
@@ -257,7 +265,7 @@ function sprint_editor_create($, params) {
             var $title = $(this);
             var $xcol = $title.closest('.sp-x-lt-col');
             var $sizes = $xcol.find('.sp-x-lt-types');
-            if ($title.hasClass('active')){
+            if ($title.hasClass('active')) {
                 $sizes.hide();
                 $title.removeClass('active');
             } else {
@@ -285,11 +293,11 @@ function sprint_editor_create($, params) {
         var columns = [];
         var size = '';
 
-        if (colCnt == 2){
+        if (colCnt == 2) {
             size = 'md-6';
-        } else if (colCnt == 3){
+        } else if (colCnt == 3) {
             size = 'md-4';
-        } else if (colCnt == 4){
+        } else if (colCnt == 4) {
             size = 'md-3';
         }
 
@@ -366,15 +374,21 @@ function sprint_editor_create($, params) {
         }
     }
 
-    function pushblock(data) {
-        if (!data.name || !sprint_editor.hasBlockParams(data.name)) {
+    function pushblock(blockData) {
+        if (!blockData.name || !sprint_editor.hasBlockParams(blockData.name)) {
             return false;
         }
 
-        var templateVars = sprint_editor.getBlockParams(data.name);
-        templateVars.showSortButtons = params.showSortButtons;
-        templateVars.enableChange = params.enableChange;
-        var html = sprint_editor.renderTemplate('box', templateVars);
+        var blockParams = sprint_editor.getBlockParams(blockData.name);
+        blockParams.showSortButtons = params.showSortButtons;
+        blockParams.enableChange = params.enableChange;
+
+        var compiled = compileSettings(blockParams,blockData);
+        if (compiled.length > 0){
+            blockParams.compiled = compiled;
+        }
+
+        var html = sprint_editor.renderTemplate('box', blockParams);
 
         if ($editor.find('.sp-x-lt-col').length <= 0) {
             layoutEmptyAdd(1);
@@ -382,12 +396,12 @@ function sprint_editor_create($, params) {
 
         var $column = $editor.find('.sp-x-lt-col').last();
 
-        if (data.layout) {
-            var pos = data.layout.split(',');
+        if (blockData.layout) {
+            var pos = blockData.layout.split(',');
             $editor.find('.sp-x-lt-table').each(function (pos1) {
-                if (pos1 == pos[0]){
-                    $(this).find('.sp-x-lt-col').each(function(pos2){
-                        if (pos2 == pos[1]){
+                if (pos1 == pos[0]) {
+                    $(this).find('.sp-x-lt-col').each(function (pos2) {
+                        if (pos2 == pos[1]) {
                             $column = $(this);
                             return false;
                         }
@@ -400,14 +414,14 @@ function sprint_editor_create($, params) {
         $column.append(html);
 
         var $el = $column.find('.sp-x-box-block').last();
-        var entry = initblock($el, data.name, data);
+        var entry = initblock($el, blockData.name, blockData);
 
         if (typeof entry.getAreas == 'function') {
             var areas = entry.getAreas();
             var entryData = entry.getData();
 
             $.each(areas, function (areaIndex, area) {
-                if (data.name != area.blockName) {
+                if (blockData.name != area.blockName) {
                     area.block = initblock($el.find(area.container), area.blockName, entryData[area.dataKey]);
                 }
             });
@@ -416,11 +430,11 @@ function sprint_editor_create($, params) {
         collections.push(entry);
     }
 
-    function initblock($el, name, data) {
+    function initblock($el, name, blockData) {
         name = sprint_editor.hasBlockMethod(name) ? name : 'dump';
 
         var method = sprint_editor.getBlockMethod(name);
-        var entry = new method($, $el, data);
+        var entry = new method($, $el, blockData);
 
         var html = sprint_editor.renderTemplate(name, entry.getData());
         $el.html(html).addClass('sp-block-' + name);
@@ -462,6 +476,44 @@ function sprint_editor_create($, params) {
         });
 
         toggleLayoutButtons();
+    }
+
+    function compileSettings(blockParams, blockData) {
+        var compiled = [];
+
+        if (!blockParams.settings) {
+            return compiled;
+        }
+
+        $.each(blockParams.settings, function (setName, setSet) {
+
+            if (!(setSet.type == 'select' && setSet.value)) {
+                return true;
+            }
+
+            var value = [];
+            var valSel = 0;
+
+            $.each(setSet.value, function (valVal, valTitle) {
+
+                valSel = (
+                    blockData.settings &&
+                    blockData.settings[setName] &&
+                    blockData.settings[setName] == valVal
+                ) ? 1 : 0;
+
+                value.push({
+                    value: valVal,
+                    title: valTitle,
+                    selected: valSel
+                })
+            });
+            compiled.push({
+                name: setName,
+                value: value
+            })
+        });
+        return compiled;
     }
 
     function setLocal(key, val) {

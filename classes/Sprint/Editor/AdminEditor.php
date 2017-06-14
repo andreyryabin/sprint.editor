@@ -59,6 +59,17 @@ class AdminEditor
             $showSortButtons = 0;
         }
 
+        $settFile = Module::getDocRoot() . '/bitrix/admin/sprint.editor/settings/example.php';
+        if (is_file($settFile)) {
+            $settings = array();
+            include $settFile;
+            foreach ($settings as $blockName => $blockSettins) {
+                if (!empty(self::$parameters[$blockName])) {
+                    self::$parameters[$blockName]['settings'] = $blockSettins;
+                }
+            }
+        }
+
         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
             'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
             'selectValues' => Locale::convertToWin1251IfNeed(self::$selectValues),

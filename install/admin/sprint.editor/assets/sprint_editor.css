@@ -123,8 +123,16 @@
 
 .sp-x-box-panel {
     position: relative;
-    text-align: left;
+    text-align: center;
     padding: 5px 0;
+}
+
+.sp-x-box-settings {
+    margin-bottom: 10px;
+}
+
+.sp-x-box-settings-item{
+    margin-right: 5px;
 }
 
 .sp-x-layout-mode .sp-x-box-panel {
