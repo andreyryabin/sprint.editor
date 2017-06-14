@@ -13,7 +13,7 @@
         <?if ($code == 'DEFAULT_VALUE'):?>
             <?=$defaultEditor?>
         <?elseif ($code == 'SETTINGS_NAME'):?>
-            <select name="<?= $inputName?>[<?=$code?>]">
+            <select style="width: 250px" name="<?= $inputName?>[<?=$code?>]">
             <?foreach ($userfiles as $userFileValue => $userFileTitle):?>
                 <option <? if($val == $userFileValue) echo 'selected="selected"';?> value="<?=$userFileValue?>"><?=$userFileTitle?></option>
             <?endforeach;?>
