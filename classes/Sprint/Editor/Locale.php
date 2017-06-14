@@ -40,7 +40,7 @@ class Locale
 
     }
 
-    public static function truncateText($strText, $intLen = 40){
+    public static function truncateText($strText, $intLen = 50){
         $strText = strip_tags($strText);
         if (self::isWin1251()){
             if(strlen($strText) > $intLen){
