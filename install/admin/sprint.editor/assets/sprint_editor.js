@@ -487,7 +487,7 @@ function sprint_editor_create($, params) {
 
         $.each(blockParams.settings, function (setName, setSet) {
 
-            if (!(setSet.type == 'select' && setSet.value)) {
+            if (!setSet.value || !setSet.type || setSet.type != 'select'){
                 return true;
             }
 
@@ -503,8 +503,8 @@ function sprint_editor_create($, params) {
                 ) ? 1 : 0;
 
                 value.push({
-                    value: valVal,
                     title: valTitle,
+                    value: valVal,
                     selected: valSel
                 })
             });

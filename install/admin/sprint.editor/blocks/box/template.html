@@ -6,6 +6,19 @@
             {{?}}
             <span title="{{=it.hint}}" class="sp-x-box-title1">{{=it.title}}</span>
         </span>
+        {{?it.compiled}}
+        <div class="sp-x-box-settings">
+            {{~it.compiled :item}}
+            <label class="sp-x-box-settings-item">
+                <select name="{{=item.name}}">
+                    {{~item.value :option}}
+                    <option {{?option.selected}}selected="selected"{{?}} value="{{=option.value}}">{{=option.title}}</option>
+                    {{~}}
+                </select>
+            </label>
+            {{~}}
+        </div>
+        {{?}}
         <div class="sp-x-box-buttons">
             {{?it.enableChange}}
             {{?it.showSortButtons}}
@@ -16,18 +29,5 @@
             {{?}}
         </div>
     </div>
-    {{?it.compiled}}
-    <div class="sp-x-box-settings">
-        {{~it.compiled :item}}
-        <label class="sp-x-box-settings-item">
-            <select name="{{=item.name}}">
-                {{~item.value :option}}
-                <option {{?option.selected}}selected="selected"{{?}} value="{{=option.value}}">{{=option.title}}</option>
-                {{~}}
-            </select>
-        </label>
-        {{~}}
-    </div>
-    {{?}}
     <div class="sp-x-box-block"></div>
 </div>

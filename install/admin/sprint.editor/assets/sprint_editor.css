@@ -128,11 +128,19 @@
 }
 
 .sp-x-box-settings {
-    margin-bottom: 10px;
+    display: inline-block;
+    /*margin-bottom: 10px;*/
+    /*text-align: left;*/
+    /*position: absolute;*/
+    /*left: 0;*/
+}
+
+.sp-x-layout-mode .sp-x-box-settings{
+    display: none;
 }
 
 .sp-x-box-settings-item{
-    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .sp-x-layout-mode .sp-x-box-panel {
@@ -162,6 +170,7 @@
 }
 
 .sp-x-box-buttons {
+    display: inline-block;
     position: absolute;
     right: 0;
     top: 4px;
