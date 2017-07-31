@@ -1,12 +1,26 @@
 <?/** @var $block array */?><?
 $images = Sprint\Editor\Blocks\Gallery::getImages($block, array(
-    'width' => 200,
-    'height' => 200,
+    'width' => 300,
+    'height' => 300,
     'exact' => 0,
-    //'jpg_quality' => 75
+), array(
+    'width' => 1024,
+    'height' => 768,
+    'exact' => 0,
 ));
-?><div class="c-gallery">
-<?foreach ($images as $image):?>
-    <a data-fancybox="gallery" class="fancy" rel="media-gallery" href="<?=$image['ORIGIN_SRC']?>"><img alt="<?=$image['DESCRIPTION']?>" src="<?=$image['SRC']?>"></a>
-<?endforeach;?>
+?><?if (!empty($images)):?>
+<div class="c-gallery">
+    <ul class="c-gallery-items">
+        <?foreach ($images as $image):?>
+        <li class="c-gallery-item">
+            <a data-fancybox="gallery" class="c-gallery-item-img-wrapper fancy" rel="media-gallery" href="<?=$image['DETAIL_SRC']?>">
+                <img alt="<?=$image['DESCRIPTION']?>" src="<?=$image['SRC']?>">
+                <div class="c-gallery-item-text">
+                    <div class="c-gallery-item-text-content"><?=$image['DESCRIPTION']?></div>
+                </div>
+            </a>
+        </li>
+        <?endforeach;?>
+    </ul>
 </div>
+<?endif;?>

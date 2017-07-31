@@ -5,7 +5,7 @@ use Sprint\Editor\Tools\Medialib;
 class MedialibElements
 {
 
-    static public function getImages($block, $resizeParams = array()){
+    static public function getImages($block, $resizePreview = array(), $resizeDetail = array()){
         if (empty($block['element_ids']) || empty($block['collection_id'])){
             return array();
         }
@@ -13,7 +13,7 @@ class MedialibElements
         $dbresult = Medialib::GetElements(array(
             'collection_id' => $block['collection_id'],
             'id' => $block['element_ids']
-        ), array(), $resizeParams);
+        ), array(), $resizePreview, $resizeDetail);
 
 
         $unsorted = array();

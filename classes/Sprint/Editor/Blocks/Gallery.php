@@ -5,15 +5,15 @@ use Sprint\Editor\Tools\Image as ImageTools;
 class Gallery
 {
 
-    static public function getImages($block, $resizeParams = array()){
+    static public function getImages($block, $resizePreview = array(),$resizeDetail = array()){
         if (empty($block['images'])){
             return array();
         }
-        $resizeParams = array_merge(array(
+        $resizePreview = array_merge(array(
             'width' => 200,
             'height' => 200,
             'exact' => 0,
-        ), $resizeParams);
+        ), $resizePreview);
 
         $items = array();
 
@@ -22,7 +22,13 @@ class Gallery
                 continue;
             }
 
-            $aItem = ImageTools::resizeImage2($image['file']['ID'],$resizeParams);
+            $aItem = ImageTools::resizeImage2($image['file']['ID'],$resizePreview);
+            $aItem['DETAIL_SRC'] = $aItem['SRC'];
+
+            if (!empty($resizeDetail)){
+                $aDetail = ImageTools::resizeImage2($image['file']['ID'],$resizeDetail);
+                $aItem['DETAIL_SRC'] = $aDetail['SRC'];
+            }
 
             $aItem['DESCRIPTION'] = htmlspecialchars($image['desc']);
 
