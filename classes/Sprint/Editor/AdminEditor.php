@@ -71,7 +71,7 @@ class AdminEditor
 
         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
             'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
-            'selectValues' => Locale::convertToWin1251IfNeed(self::$selectValues),
+            'selectValues' => self::$selectValues,
             'jsonTemplates' => json_encode(Locale::convertToUtf8IfNeed(self::$templates)),
             'jsonParameters' => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
             'showSortButtons' => $showSortButtons,
@@ -298,10 +298,10 @@ class AdminEditor
 
             self::sortBySort($selectBlocks);
 
-            self::$selectValues[] = array(
+            self::$selectValues[] = Locale::convertToWin1251IfNeed(array(
                 'title' => $group['title'],
                 'blocks' => $selectBlocks
-            );
+            ));
         }
 
         return true;
@@ -316,10 +316,10 @@ class AdminEditor
             );
         }
 
-        self::$selectValues[] = array(
+        self::$selectValues[] = Locale::convertToWin1251IfNeed(array(
             'title' => GetMessage('SPRINT_EDITOR_layout_group'),
             'blocks' => $layouts
-        );
+        ));
     }
 
     public static function renderFile($file, $vars = array()) {

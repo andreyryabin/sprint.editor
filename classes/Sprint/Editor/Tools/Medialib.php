@@ -40,7 +40,7 @@ class Medialib
         }
     }
 
-    public static function GetElements($filter, $navParams = array(), $resizeParams = array()) {
+    public static function GetElements($filter, $navParams = array(), $resizePreview = array(), $resizeDetail = array()) {
         self::initialize();
 
         global $DB;
@@ -114,11 +114,11 @@ class Medialib
             $limitQuery = 'LIMIT ' . $navoffsset . ',' . $pagesize;
         }
 
-        $resizeParams = array_merge(array(
+        $resizePreview = array_merge(array(
             'width' => \COption::GetOptionInt('fileman', "ml_thumb_width", 140),
             'height' => \COption::GetOptionInt('fileman', "ml_thumb_height", 105),
             'exact' => 0,
-        ), $resizeParams);
+        ), $resizePreview);
 
 
         $q = "SELECT MI.*,MCI.COLLECTION_ID, F.HEIGHT, F.WIDTH, F.FILE_SIZE, F.CONTENT_TYPE, F.SUBDIR, F.FILE_NAME, F.HANDLER_ID
@@ -132,8 +132,16 @@ class Medialib
 
         $dbResult = $DB->Query($q);
 
-        while ($aItem = $dbResult->Fetch()) {
-            $arResult['items'][] = Image::resizeImage2($aItem,$resizeParams);
+        while ($aImage = $dbResult->Fetch()) {
+            $aItem = Image::resizeImage2($aImage,$resizePreview);
+            $aItem['DETAIL_SRC'] = $aItem['SRC'];
+
+            if (!empty($resizeDetail)){
+                $aDetail = Image::resizeImage2($aImage,$resizeDetail);
+                $aItem['DETAIL_SRC'] = $aDetail['SRC'];
+            }
+
+            $arResult['items'][] = $aItem;
         }
 
         return $arResult;
