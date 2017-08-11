@@ -16,6 +16,7 @@
  *
  * @var $enableChange
  * @var $showSortButtons
+ * @var $jsonUserSettings
  */
 ?>
 <div class="sp-x-editor<?= $uniqId ?>">
@@ -61,12 +62,14 @@
         sprint_editor.registerParameters(<?=$jsonParameters?>);
     </script>
 <? endif;?>
+
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
-        sprint_editor_create($, {
+        sprint_editor.create($, {
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
             showSortButtons: <?=$showSortButtons?>,
+            jsonUserSettings:<?=$jsonUserSettings?>,
             jsonValue: <?=$jsonValue?>
         });
     });

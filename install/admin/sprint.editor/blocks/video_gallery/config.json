@@ -1,0 +1,9 @@
+{
+  "title": "Галерея видео",
+  "sort": "126",
+  "js": [
+    "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
+  ],
+  "templates": [
+  ]
+}
