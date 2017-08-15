@@ -173,7 +173,7 @@
     display: inline-block;
     position: absolute;
     right: 0;
-    top: 4px;
+    top: 0;
 }
 
 .sp-x-box-buttons span{
@@ -184,7 +184,8 @@
     margin-left: 5px;
     display: inline-block;
     text-align: center;
-    width: 18px;
+    min-width: 18px;
+    padding: 1px 5px;
 }
 
 
@@ -196,7 +197,7 @@
 .sp-x-layout-mode {
 
 }
-
+.sp-x-layout-mode .sp-x-box-copy,
 .sp-x-layout-mode .sp-x-box-up,
 .sp-x-layout-mode .sp-x-box-dn {
     display: none;

@@ -11,6 +11,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_LOAD_DOTJS" => "Подключить шаблонизатор doT *",
     "SPRINT_EDITOR_BTN_ADD" => "Добавить",
     "SPRINT_EDITOR_BTN_SAVE" => "Сохранить",
+    "SPRINT_EDITOR_BTN_PASTE" => "Вставить",
     "SPRINT_EDITOR_BTN_EXECUTE" => "Выполнить",
     "SPRINT_EDITOR_UPGRADES" => "Обновления",
     "SPRINT_EDITOR_TASKS" => "Инструменты",

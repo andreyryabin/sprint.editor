@@ -5,6 +5,9 @@ var sprint_editor = {
     _varscahe: {},
 
     _registered: {},
+    _events: {
+        focus: []
+    },
 
     registerBlock: function (name, method) {
         this._registered[name] = method;
@@ -79,7 +82,7 @@ var sprint_editor = {
             var entryData = entry.getData();
 
             for (var prop in areas) {
-                if( areas.hasOwnProperty( prop ) ) {
+                if (areas.hasOwnProperty(prop)) {
                     var area = areas[prop];
                     if (entryData.name != area.blockName) {
                         area.block = sprint_editor.initblock($el.find(area.container), area.blockName, entryData[area.dataKey]);
@@ -99,7 +102,7 @@ var sprint_editor = {
                 var areas = entry.getAreas();
 
                 for (var prop in areas) {
-                    if( areas.hasOwnProperty( prop ) ) {
+                    if (areas.hasOwnProperty(prop)) {
                         var area = areas[prop];
                         blockData[area.dataKey] = area.block.collectData();
                     }
@@ -108,6 +111,28 @@ var sprint_editor = {
         }
 
         return blockData;
+    },
+
+    fireevent: function (type) {
+        if (!this._events[type]) {
+            this._events[type] = [];
+        }
+
+        for (var prop in this._events[type]) {
+            if (this._events[type].hasOwnProperty(prop)) {
+                var event = this._events[type][prop];
+                if (typeof event === 'function') {
+                    event();
+                }
+            }
+        }
+    },
+
+    listenevent: function (type, callback) {
+        if (!this._events[type]) {
+            this._events[type] = [];
+        }
+        this._events[type].push(callback);
     },
 
     setCacheVar: function (name, value) {
@@ -120,6 +145,50 @@ var sprint_editor = {
             value = this._varscahe[name];
         }
         return value;
+    },
+
+
+    hasClipboard: function () {
+        var val = [];
+        if (window.localStorage) {
+            val = JSON.parse(
+                localStorage.getItem('sprint-editor-copyblocks')
+            )
+        }
+
+        return (val && val.length > 0);
+    },
+
+    copyToClipboard: function (blockData) {
+        if (window.localStorage) {
+            var val = JSON.parse(
+                localStorage.getItem('sprint-editor-copyblocks')
+            );
+
+            val = (val) ? val : [];
+            val.push(blockData);
+            localStorage.setItem("sprint-editor-copyblocks", JSON.stringify(val));
+            this.fireevent('copy');
+        }
+    },
+
+    clearClipboard: function () {
+        if (window.localStorage) {
+            localStorage.removeItem('sprint-editor-copyblocks');
+            this.fireevent('copy');
+        }
+
+    },
+    getClipboard: function () {
+        var val = [];
+        if (window.localStorage) {
+            val = JSON.parse(
+                localStorage.getItem('sprint-editor-copyblocks')
+            );
+        }
+
+        return val;
+
     },
 
     create: function ($, params) {
@@ -141,7 +210,7 @@ var sprint_editor = {
             params.jsonValue.layouts = [];
         }
 
-        if (!params.jsonUserSettings){
+        if (!params.jsonUserSettings) {
             params.jsonUserSettings = {};
         }
 
@@ -150,12 +219,21 @@ var sprint_editor = {
         });
 
         $.each(params.jsonValue.blocks, function (index, block) {
-            pushblock(block);
+            collectionsAdd(block);
         });
 
 
-        toggleLayoutButtons();
+        sprint_editor.listenevent('focus', function () {
+            checkClipboardButtons();
+        });
 
+        sprint_editor.listenevent('copy', function () {
+            checkClipboardButtons();
+        });
+
+
+        checkClipboardButtons();
+        toggleLayoutButtons();
 
         $form.on('submit', function (e) {
 
@@ -221,7 +299,8 @@ var sprint_editor = {
         });
 
         if (params.enableChange) {
-            $editor.find('.sp-x-layout-toggle').on('click', function () {
+
+            $editor.on('click', '.sp-x-layout-toggle', function (e) {
                 if ($editor.hasClass('sp-x-layout-mode')) {
                     $editor.removeClass('sp-x-layout-mode');
                 } else {
@@ -229,17 +308,37 @@ var sprint_editor = {
                 }
             });
 
-            $editor.find('.sp-x-layout-del').on('click', function (e) {
-                layoutRemoveEmpty();
+            $editor.on('click', '.sp-x-box-copy', function (e) {
+                e.preventDefault();
+                var index = $editor.find('.sp-x-box-copy').index(this);
+                if (collections[index]) {
+                    var entry = collections[index];
+                    sprint_editor.copyToClipboard(
+                        sprint_editor.collectData(entry)
+                    );
+                }
+
             });
 
-            $editor.find('.sp-x-box-add').on('click', function (e) {
+            $editor.on('click', '.sp-x-box-paste', function (e) {
+                e.preventDefault();
+
+                var clipboardData = sprint_editor.getClipboard();
+
+                $.each(clipboardData, function (index, blockData) {
+                    collectionsAdd(blockData);
+                });
+
+                sprint_editor.clearClipboard();
+            });
+
+            $editor.on('click', '.sp-x-box-add', function (e) {
                 var name = $editor.find('.sp-x-box-select').val();
                 if (name.indexOf('layout_') === 0) {
                     name = name.substr(7);
                     layoutEmptyAdd(name);
                 } else {
-                    pushblock({name: name});
+                    collectionsAdd({name: name});
                 }
                 toggleLayoutButtons();
             });
@@ -280,6 +379,7 @@ var sprint_editor = {
 
                 collectionRemove(index);
                 $box.remove();
+                layoutRemoveEmpty();
             });
 
             $editor.on('click', '.sp-x-lt-types span', function (e) {
@@ -334,6 +434,14 @@ var sprint_editor = {
                 }
 
             });
+        }
+
+        function checkClipboardButtons() {
+            if (sprint_editor.hasClipboard()) {
+                $editor.find('.sp-x-box-paste').show();
+            } else {
+                $editor.find('.sp-x-box-paste').hide();
+            }
         }
 
         function layoutEmptyAdd(colCnt) {
@@ -421,7 +529,7 @@ var sprint_editor = {
             }
         }
 
-        function pushblock(blockData) {
+        function collectionsAdd(blockData) {
             if (!blockData.name || !sprint_editor.hasBlockParams(blockData.name)) {
                 return false;
             }
@@ -431,8 +539,8 @@ var sprint_editor = {
             blockParams.enableChange = params.enableChange;
 
             blockParams.settings = {};
-            if (params.jsonUserSettings && params.jsonUserSettings.block_settings){
-                if (params.jsonUserSettings.block_settings[blockData.name]){
+            if (params.jsonUserSettings && params.jsonUserSettings.block_settings) {
+                if (params.jsonUserSettings.block_settings[blockData.name]) {
                     blockParams.settings = params.jsonUserSettings.block_settings[blockData.name];
                 }
             }
@@ -470,10 +578,7 @@ var sprint_editor = {
 
             var $el = $column.find('.sp-x-box-block').last();
             var entry = sprint_editor.initblock($el, blockData.name, blockData);
-
             sprint_editor.initblockAreas($el, entry);
-
-
             collections.push(entry);
         }
 
@@ -545,22 +650,6 @@ var sprint_editor = {
                 })
             });
             return compiled;
-        }
-
-        function setLocal(key, val) {
-            if (window.localStorage) {
-                key = 'sp' + params.uniqid + key;
-                localStorage.setItem(key, val);
-            }
-        }
-
-        function getLocal(key) {
-            var val = '';
-            if (window.localStorage) {
-                key = 'sp' + params.uniqid + key;
-                val = localStorage.getItem(key);
-            }
-            return val;
         }
 
     }
