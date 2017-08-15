@@ -40,6 +40,7 @@
                                class="sp-x-box-add adm-btn-green"
                                type="button"/>
                         <input value="<?= GetMessage('SPRINT_EDITOR_BTN_PASTE') ?>"
+                               data-title="<?= GetMessage('SPRINT_EDITOR_BTN_PASTE') ?>"
                                class="sp-x-box-paste"
                                type="button"/>
                     <? endif; ?>
@@ -50,8 +51,12 @@
             <div class="sp-col" style="text-align: right">
                 <input title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
                        type="button"
-                       class="sp-x-layout-toggle sp-x-buttons"
+                       class="sp-x-layout-toggle"
                        value="#"/>
+                <input title="<?= GetMessage('SPRINT_EDITOR_layout_remove') ?>"
+                       type="button"
+                       class="sp-x-layout-remove"
+                       value="x"/>
             </div>
         </div>
     </div>
@@ -70,7 +75,7 @@
         sprint_editor.registerParameters(<?=$jsonParameters?>);
 
         jQuery(window).focus(function () {
-            sprint_editor.fireevent('focus');
+            sprint_editor.fireEvent('focus');
         });
 
     </script>

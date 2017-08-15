@@ -2,8 +2,6 @@ var sprint_editor = {
     _templates: {},
     _parameters: {},
     _tplcache: {},
-    _varscahe: {},
-
     _registered: {},
     _events: {
         focus: []
@@ -113,7 +111,7 @@ var sprint_editor = {
         return blockData;
     },
 
-    fireevent: function (type) {
+    fireEvent: function (type) {
         if (!this._events[type]) {
             this._events[type] = [];
         }
@@ -128,27 +126,14 @@ var sprint_editor = {
         }
     },
 
-    listenevent: function (type, callback) {
+    listenEvent: function (type, callback) {
         if (!this._events[type]) {
             this._events[type] = [];
         }
         this._events[type].push(callback);
     },
 
-    setCacheVar: function (name, value) {
-        this._varscahe[name] = value;
-    },
-
-    getCacheVar: function (name) {
-        var value = '';
-        if (this._varscahe[name]) {
-            value = this._varscahe[name];
-        }
-        return value;
-    },
-
-
-    hasClipboard: function () {
+    getClipboardCnt: function () {
         var val = [];
         if (window.localStorage) {
             val = JSON.parse(
@@ -156,7 +141,7 @@ var sprint_editor = {
             )
         }
 
-        return (val && val.length > 0);
+        return (val && val.length > 0) ? val.length : 0;
     },
 
     copyToClipboard: function (blockData) {
@@ -168,14 +153,14 @@ var sprint_editor = {
             val = (val) ? val : [];
             val.push(blockData);
             localStorage.setItem("sprint-editor-copyblocks", JSON.stringify(val));
-            this.fireevent('copy');
+            this.fireEvent('copy');
         }
     },
 
     clearClipboard: function () {
         if (window.localStorage) {
             localStorage.removeItem('sprint-editor-copyblocks');
-            this.fireevent('copy');
+            this.fireEvent('copy');
         }
 
     },
@@ -223,11 +208,11 @@ var sprint_editor = {
         });
 
 
-        sprint_editor.listenevent('focus', function () {
+        sprint_editor.listenEvent('focus', function () {
             checkClipboardButtons();
         });
 
-        sprint_editor.listenevent('copy', function () {
+        sprint_editor.listenEvent('copy', function () {
             checkClipboardButtons();
         });
 
@@ -308,6 +293,10 @@ var sprint_editor = {
                 }
             });
 
+            $editor.on('click', '.sp-x-layout-remove', function (e) {
+                layoutRemoveIfEmpty();
+            });
+
             $editor.on('click', '.sp-x-box-copy', function (e) {
                 e.preventDefault();
                 var index = $editor.find('.sp-x-box-copy').index(this);
@@ -330,6 +319,7 @@ var sprint_editor = {
                 });
 
                 sprint_editor.clearClipboard();
+                toggleLayoutButtons();
             });
 
             $editor.on('click', '.sp-x-box-add', function (e) {
@@ -379,7 +369,6 @@ var sprint_editor = {
 
                 collectionRemove(index);
                 $box.remove();
-                layoutRemoveEmpty();
             });
 
             $editor.on('click', '.sp-x-lt-types span', function (e) {
@@ -412,52 +401,58 @@ var sprint_editor = {
                 var $title = $(this);
                 var $xcol = $title.closest('.sp-x-lt-col');
                 var $sizes = $xcol.find('.sp-x-lt-types');
-                if ($title.hasClass('active')) {
-                    $sizes.hide();
-                    $title.removeClass('active');
-                } else {
-                    $editor.find('.sp-x-lt-types').not($sizes).hide();
-                    $editor.find('.sp-x-lt-title').not($title).removeClass('active');
+                if ($sizes.length > 0) {
+                    if ($title.hasClass('active')) {
+                        $sizes.hide();
+                        $title.removeClass('active');
+                    } else {
+                        $editor.find('.sp-x-lt-types').not($sizes).hide();
+                        $editor.find('.sp-x-lt-title').not($title).removeClass('active');
 
-                    var cursizes = $xcol.find('.sp-x-lt-curtype').text();
-                    cursizes = cursizes.split(' ');
-                    $sizes.find('span').each(function () {
-                        var stext = $(this).text();
-                        stext = $.trim(stext);
-                        if (stext && $.inArray(stext, cursizes) >= 0) {
-                            $(this).addClass('active');
-                        }
-                    });
+                        var cursizes = $xcol.find('.sp-x-lt-curtype').text();
+                        cursizes = cursizes.split(' ');
+                        $sizes.find('span').each(function () {
+                            var stext = $(this).text();
+                            stext = $.trim(stext);
+                            if (stext && $.inArray(stext, cursizes) >= 0) {
+                                $(this).addClass('active');
+                            }
+                        });
 
-                    $sizes.show();
-                    $title.addClass('active');
+                        $sizes.show();
+                        $title.addClass('active');
+                    }
                 }
-
             });
         }
 
         function checkClipboardButtons() {
-            if (sprint_editor.hasClipboard()) {
-                $editor.find('.sp-x-box-paste').show();
+            var cnt = sprint_editor.getClipboardCnt();
+            if (cnt > 0) {
+                var $btn = $editor.find('.sp-x-box-paste');
+                $btn.val(
+                    $btn.data('title') + ' (' +cnt +')'
+                ).show();
+
             } else {
                 $editor.find('.sp-x-box-paste').hide();
             }
         }
 
         function layoutEmptyAdd(colCnt) {
-            var columns = [];
-            var size = '';
+            var ltname = 'layout' + colCnt;
 
-            if (colCnt == 2) {
-                size = 'md-6';
-            } else if (colCnt == 3) {
-                size = 'md-4';
-            } else if (colCnt == 4) {
-                size = 'md-3';
+            var columns = [];
+            var defaultclass = '';
+
+            if (params.jsonUserSettings && params.jsonUserSettings.layout_defaults) {
+                if (params.jsonUserSettings.layout_defaults[ltname]) {
+                    defaultclass = params.jsonUserSettings.layout_defaults[ltname];
+                }
             }
 
             for (var index = 1; index <= colCnt; index++) {
-                columns.push(size)
+                columns.push(defaultclass)
             }
 
             layoutAdd(columns);
@@ -465,31 +460,19 @@ var sprint_editor = {
 
         function layoutAdd(columns) {
 
-            if (!sprint_editor.getCacheVar('layout-sizes')) {
-                var types = ['md-', 'sm-', 'xs-', 'lg-'];
-                var groups = [];
-                for (var type in types) {
-                    var sizes = [];
-                    for (var index = 1; index <= 12; index++) {
-                        sizes.push(types[type] + index);
-                    }
-                    groups.push(sizes);
-                }
-                var sizesHtml = sprint_editor.renderTemplate('box-sizes', {
-                    groups: groups
-                });
+            var renderparams = {
+                columns: columns
+            };
 
-                sprint_editor.setCacheVar('layout-sizes', sizesHtml);
+            if (params.jsonUserSettings && params.jsonUserSettings.layout_classes) {
+                if (params.jsonUserSettings.layout_classes.length > 0){
+                    renderparams.classes = params.jsonUserSettings.layout_classes
+                }
             }
 
-            var layoutHtml = sprint_editor.renderTemplate('box-layout', {
-                sizeshtml: sprint_editor.getCacheVar('layout-sizes'),
-                columns: columns,
-                name: name
-            });
-
-
-            $editor.find('.sp-x-boxes').append(layoutHtml);
+            $editor.find('.sp-x-boxes').append(
+                sprint_editor.renderTemplate('box-layout', renderparams)
+            );
 
             if (params.enableChange) {
 
@@ -523,9 +506,11 @@ var sprint_editor = {
 
         function toggleLayoutButtons() {
             if ($editor.find('.sp-x-lt-col').length <= 0) {
-                $editor.find('.sp-x-buttons').hide();
+                $editor.find('.sp-x-layout-toggle').hide();
+                $editor.find('.sp-x-layout-remove').hide();
             } else {
-                $editor.find('.sp-x-buttons').show();
+                $editor.find('.sp-x-layout-toggle').show();
+                $editor.find('.sp-x-layout-remove').show();
             }
         }
 
@@ -594,8 +579,8 @@ var sprint_editor = {
             collections.splice(index, 1);
         }
 
-        function layoutRemoveEmpty() {
-            $editor.find('.sp-x-lt-table').each(function (index) {
+        function layoutRemoveIfEmpty() {
+            $editor.find('.sp-x-lt-table').each(function () {
                 var colCnt = 0;
                 var colEmp = 0;
                 $(this).find('.sp-x-lt-col').each(function () {

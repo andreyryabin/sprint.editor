@@ -121,7 +121,8 @@
     margin-bottom: 0;
 }
 
-.sp-x-box-panel {
+.sp-x-box-panel,
+.bx-core-adm-dialog div.sp-x-box-panel {
     position: relative;
     text-align: center;
     padding: 5px 0;
@@ -135,11 +136,11 @@
     /*left: 0;*/
 }
 
-.sp-x-layout-mode .sp-x-box-settings{
+.sp-x-layout-mode .sp-x-box-settings {
     display: none;
 }
 
-.sp-x-box-settings-item{
+.sp-x-box-settings-item {
     margin-left: 5px;
 }
 
@@ -147,7 +148,8 @@
     text-align: center;
 }
 
-.sp-x-lt-head {
+.sp-x-lt-head,
+.bx-core-adm-dialog div.sp-x-lt-head {
     text-align: center;
     border-bottom: 1px dashed #ccc;
 }
@@ -176,7 +178,7 @@
     top: 0;
 }
 
-.sp-x-box-buttons span{
+.sp-x-box-buttons span {
     cursor: pointer;
     text-decoration: none;
     border: 1px solid #ccc;
@@ -188,7 +190,6 @@
     padding: 1px 5px;
 }
 
-
 .sp-x-options-link {
     float: right;
     text-decoration: none;
@@ -197,9 +198,10 @@
 .sp-x-layout-mode {
 
 }
-.sp-x-layout-mode .sp-x-box-copy,
+
 .sp-x-layout-mode .sp-x-box-up,
-.sp-x-layout-mode .sp-x-box-dn {
+.sp-x-layout-mode .sp-x-box-dn,
+.sp-x-layout-mode .sp-x-box-copy {
     display: none;
 }
 
@@ -253,6 +255,9 @@
     color: #aaa;
 }
 
+.sp-x-lt-title {
+    cursor: pointer;
+}
 .sp-x-lt-title:hover,
 .sp-x-lt-title.active {
     color: #d00;
@@ -271,7 +276,7 @@
     padding: 5px;
 }
 
-.sp-x-lt-types-group{
+.sp-x-lt-types-group {
     margin-bottom: 10px;
 }
 
@@ -288,8 +293,4 @@
 .sp-x-lt-types span:hover,
 .sp-x-lt-types span.active {
     color: #d00;
-}
-
-.sp-x-lt-title {
-    cursor: pointer;
 }
