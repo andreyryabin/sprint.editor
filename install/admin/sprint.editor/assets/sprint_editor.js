@@ -366,6 +366,7 @@ var sprint_editor = {
 
                 var index = $editor.find('.sp-x-box-del').index(this);
                 var $box = $(this).closest('.sp-x-box');
+                var $layout = $(this).closest('.sp-x-lt-table');
 
                 collectionRemove(index);
                 $box.remove();
@@ -579,8 +580,12 @@ var sprint_editor = {
             collections.splice(index, 1);
         }
 
-        function layoutRemoveIfEmpty() {
-            $editor.find('.sp-x-lt-table').each(function () {
+        function layoutRemoveIfEmpty($layout) {
+            if (!$layout || $layout.length < 0){
+                $layout = $editor.find('.sp-x-lt-table');
+            }
+
+            $layout.each(function () {
                 var colCnt = 0;
                 var colEmp = 0;
                 $(this).find('.sp-x-lt-col').each(function () {
