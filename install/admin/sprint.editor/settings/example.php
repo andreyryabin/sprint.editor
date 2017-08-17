@@ -46,6 +46,4 @@ $settings = array(
 
     ),
 
-
-
 );
