@@ -33,5 +33,4 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_layout_type3" => "Сетка из 3 колонок",
     "SPRINT_EDITOR_layout_type4" => "Сетка из 4 колонок",
     "SPRINT_EDITOR_layout_toggle" => "Переключить отображение колонок",
-    "SPRINT_EDITOR_layout_remove" => "Удалить сетки с пустыми колонками",
 ));

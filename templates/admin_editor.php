@@ -53,10 +53,6 @@
                        type="button"
                        class="sp-x-layout-toggle"
                        value="#"/>
-                <input title="<?= GetMessage('SPRINT_EDITOR_layout_remove') ?>"
-                       type="button"
-                       class="sp-x-layout-remove"
-                       value="x"/>
             </div>
         </div>
     </div>

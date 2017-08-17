@@ -152,13 +152,13 @@
 .bx-core-adm-dialog div.sp-x-lt-head {
     text-align: center;
     border-bottom: 1px dashed #ccc;
+    padding: 5px 0;
 }
 
 .sp-x-layout-mode .sp-x-lt-head {
     text-align: center;
     background: #ddd;
     border: none;
-    padding: 5px 0;
     margin: 0 5px;
 }
 
@@ -169,6 +169,33 @@
 
 .sp-x-box-title1 {
     font-weight: bold !important;
+}
+
+.sp-x-lt-buttons{
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.sp-x-layout-mode .sp-x-lt-buttons{
+    right: 5px;
+}
+
+.sp-x-lt-buttons span {
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    color: #aaa;
+    margin-left: 5px;
+    display: inline-block;
+    text-align: center;
+    min-width: 18px;
+    padding: 1px 5px;
+}
+
+.sp-x-layout-mode .sp-x-lt-buttons span{
+    background: #ddd;
 }
 
 .sp-x-box-buttons {
@@ -190,6 +217,14 @@
     padding: 1px 5px;
 }
 
+.sp-x-layout-mode .sp-x-box-buttons span {
+    background: #e0e8ea;
+}
+
+.sp-x-layout-mode .sp-x-box.ui-sortable-helper .sp-x-box-buttons span{
+    background: #ddd;
+}
+
 .sp-x-options-link {
     float: right;
     text-decoration: none;
@@ -201,7 +236,8 @@
 
 .sp-x-layout-mode .sp-x-box-up,
 .sp-x-layout-mode .sp-x-box-dn,
-.sp-x-layout-mode .sp-x-box-copy {
+.sp-x-layout-mode .sp-x-box-copy,
+.sp-x-layout-mode .sp-x-lt-copy{
     display: none;
 }
 

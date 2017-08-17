@@ -3,9 +3,8 @@ var sprint_editor = {
     _parameters: {},
     _tplcache: {},
     _registered: {},
-    _events: {
-        focus: []
-    },
+    _events: {},
+    _entries: {},
 
     registerBlock: function (name, method) {
         this._registered[name] = method;
@@ -176,12 +175,14 @@ var sprint_editor = {
 
     },
 
+    makeUid: function () {
+        return 'sp-x-' + Math.random().toString(36).substring(2, 12);
+    },
+
     create: function ($, params) {
         var $editor = $('.sp-x-editor' + params.uniqid);
         var $inputresult = $('.sp-x-result' + params.uniqid);
         var $form = $editor.closest('form').first();
-
-        var collections = [];
 
         if (!params.jsonValue) {
             params.jsonValue = {};
@@ -204,7 +205,7 @@ var sprint_editor = {
         });
 
         $.each(params.jsonValue.blocks, function (index, block) {
-            collectionsAdd(block);
+            blockAdd(block);
         });
 
 
@@ -218,7 +219,7 @@ var sprint_editor = {
 
 
         checkClipboardButtons();
-        toggleLayoutButtons();
+        checkLayoutButtons();
 
         $form.on('submit', function (e) {
 
@@ -237,7 +238,15 @@ var sprint_editor = {
 
                     $(this).find('.sp-x-box').each(function () {
 
-                        var blockData = sprint_editor.collectData(collections[index]);
+                        var uid = $(this).data('uid');
+
+                        if (!sprint_editor._entries[uid]) {
+                            return true;
+                        }
+
+                        var blockData = sprint_editor.collectData(
+                            sprint_editor._entries[uid]
+                        );
 
                         delete blockData.settings;
                         var $boxsett = $(this).find('.sp-x-box-settings');
@@ -293,20 +302,27 @@ var sprint_editor = {
                 }
             });
 
-            $editor.on('click', '.sp-x-layout-remove', function (e) {
-                layoutRemoveIfEmpty();
+            $editor.on('click', '.sp-x-lt-copy', function (e) {
+                e.preventDefault();
+                var $col = $(this).closest('.sp-x-lt-table');
+                $col.find('.sp-x-box').each(function () {
+                    var uid = $(this).data('uid');
+                    if (sprint_editor._entries[uid]) {
+                        sprint_editor.copyToClipboard(
+                            sprint_editor.collectData(sprint_editor._entries[uid])
+                        );
+                    }
+                });
             });
 
             $editor.on('click', '.sp-x-box-copy', function (e) {
                 e.preventDefault();
-                var index = $editor.find('.sp-x-box-copy').index(this);
-                if (collections[index]) {
-                    var entry = collections[index];
+                var uid = $(this).closest('.sp-x-box').data('uid');
+                if (sprint_editor._entries[uid]) {
                     sprint_editor.copyToClipboard(
-                        sprint_editor.collectData(entry)
+                        sprint_editor.collectData(sprint_editor._entries[uid])
                     );
                 }
-
             });
 
             $editor.on('click', '.sp-x-box-paste', function (e) {
@@ -315,11 +331,11 @@ var sprint_editor = {
                 var clipboardData = sprint_editor.getClipboard();
 
                 $.each(clipboardData, function (index, blockData) {
-                    collectionsAdd(blockData);
+                    blockAdd(blockData);
                 });
 
                 sprint_editor.clearClipboard();
-                toggleLayoutButtons();
+                checkLayoutButtons();
             });
 
             $editor.on('click', '.sp-x-box-add', function (e) {
@@ -328,48 +344,38 @@ var sprint_editor = {
                     name = name.substr(7);
                     layoutEmptyAdd(name);
                 } else {
-                    collectionsAdd({name: name});
+                    blockAdd({name: name});
                 }
-                toggleLayoutButtons();
+                checkLayoutButtons();
             });
 
             $editor.on('click', '.sp-x-box-up', function (e) {
                 e.preventDefault();
-                var index = $editor.find('.sp-x-box-up').index(this);
                 var block = $(this).closest('.sp-x-box');
-
                 var nblock = block.prev('.sp-x-box');
                 if (nblock.length > 0) {
-                    var nindex = nblock.index();
-
                     block.insertBefore(nblock);
-                    collectionSwap(index, nindex);
                 }
             });
 
             $editor.on('click', '.sp-x-box-dn', function (e) {
                 e.preventDefault();
-                var index = $editor.find('.sp-x-box-dn').index(this);
                 var block = $(this).closest('.sp-x-box');
-
                 var nblock = block.next('.sp-x-box');
                 if (nblock.length > 0) {
-                    var nindex = nblock.index();
-
                     block.insertAfter(nblock);
-                    collectionSwap(index, nindex);
                 }
             });
 
             $editor.on('click', '.sp-x-box-del', function (e) {
                 e.preventDefault();
+                $(this).closest('.sp-x-box').remove();
+            });
 
-                var index = $editor.find('.sp-x-box-del').index(this);
-                var $box = $(this).closest('.sp-x-box');
-                var $layout = $(this).closest('.sp-x-lt-table');
-
-                collectionRemove(index);
-                $box.remove();
+            $editor.on('click', '.sp-x-lt-del', function (e) {
+                e.preventDefault();
+                $(this).closest('.sp-x-lt-table').remove();
+                checkLayoutButtons();
             });
 
             $editor.on('click', '.sp-x-lt-types span', function (e) {
@@ -432,7 +438,7 @@ var sprint_editor = {
             if (cnt > 0) {
                 var $btn = $editor.find('.sp-x-box-paste');
                 $btn.val(
-                    $btn.data('title') + ' (' +cnt +')'
+                    $btn.data('title') + ' (' + cnt + ')'
                 ).show();
 
             } else {
@@ -466,7 +472,7 @@ var sprint_editor = {
             };
 
             if (params.jsonUserSettings && params.jsonUserSettings.layout_classes) {
-                if (params.jsonUserSettings.layout_classes.length > 0){
+                if (params.jsonUserSettings.layout_classes.length > 0) {
                     renderparams.classes = params.jsonUserSettings.layout_classes
                 }
             }
@@ -476,51 +482,34 @@ var sprint_editor = {
             );
 
             if (params.enableChange) {
-
-                var startIndex = 0;
-                var stopIndex = 0;
-
                 var $allCols = $editor.find(".sp-x-lt-col");
 
                 $allCols.sortable({
                     items: ".sp-x-box",
                     connectWith: $allCols,
                     handle: ".sp-x-box-handle",
-                    placeholder: "sp-x-box-placeholder",
-                    start: function (event, ui) {
-                        startIndex = $editor.find('.sp-x-box').index(
-                            ui.item.get(0)
-                        );
-                    },
-                    stop: function (event, ui) {
-                        stopIndex = $editor.find('.sp-x-box').index(
-                            ui.item.get(0)
-                        );
-
-                        collectionSwap(startIndex, stopIndex);
-                    }
+                    placeholder: "sp-x-box-placeholder"
                 });
 
             }
 
         }
 
-        function toggleLayoutButtons() {
+        function checkLayoutButtons() {
             if ($editor.find('.sp-x-lt-col').length <= 0) {
                 $editor.find('.sp-x-layout-toggle').hide();
-                $editor.find('.sp-x-layout-remove').hide();
             } else {
                 $editor.find('.sp-x-layout-toggle').show();
-                $editor.find('.sp-x-layout-remove').show();
             }
         }
 
-        function collectionsAdd(blockData) {
+        function blockAdd(blockData) {
             if (!blockData.name || !sprint_editor.hasBlockParams(blockData.name)) {
                 return false;
             }
 
             var blockParams = sprint_editor.getBlockParams(blockData.name);
+            blockParams.uid = sprint_editor.makeUid();
             blockParams.showSortButtons = params.showSortButtons;
             blockParams.enableChange = params.enableChange;
 
@@ -565,23 +554,11 @@ var sprint_editor = {
             var $el = $column.find('.sp-x-box-block').last();
             var entry = sprint_editor.initblock($el, blockData.name, blockData);
             sprint_editor.initblockAreas($el, entry);
-            collections.push(entry);
-        }
-
-        function collectionSwap(indexA, indexB) {
-            if (indexA !== indexB) {
-                var tempA = collections[indexA];
-                collections.splice(indexA, 1);
-                collections.splice(indexB, 0, tempA);
-            }
-        }
-
-        function collectionRemove(index) {
-            collections.splice(index, 1);
+            sprint_editor._entries[blockParams.uid] = entry;
         }
 
         function layoutRemoveIfEmpty($layout) {
-            if (!$layout || $layout.length < 0){
+            if (!$layout || $layout.length < 0) {
                 $layout = $editor.find('.sp-x-lt-table');
             }
 
@@ -601,7 +578,7 @@ var sprint_editor = {
                 }
             });
 
-            toggleLayoutButtons();
+            checkLayoutButtons();
         }
 
         function compileSettings(blockParams, blockData) {
