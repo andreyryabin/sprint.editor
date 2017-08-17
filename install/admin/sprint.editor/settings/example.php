@@ -8,17 +8,37 @@ $settings = array(
     'title' => 'Пример настройки',
 
     'layout_classes' => array(
-        array('md-1', 'md-2', 'md-3', 'md-4', 'md-5', 'md-6', 'md-7', 'md-8', 'md-9', 'md-10', 'md-11', 'md-12'),
-        array('sm-1', 'sm-2', 'sm-3', 'sm-4', 'sm-5', 'sm-6', 'sm-7', 'sm-8', 'sm-9', 'sm-10', 'sm-11', 'sm-12'),
-        array('xs-1', 'xs-2', 'xs-3', 'xs-4', 'xs-5', 'xs-6', 'xs-7', 'xs-8', 'xs-9', 'xs-10', 'xs-11', 'xs-12'),
-        array('lg-1', 'lg-2', 'lg-3', 'lg-4', 'lg-5', 'lg-6', 'lg-7', 'lg-8', 'lg-9', 'lg-10', 'lg-11', 'lg-12'),
+        'type1' => array(
+            array('col-md-8', 'col-md-9', 'col-md-12'),
+            array('col-sm-8', 'col-sm-9', 'col-sm-12'),
+            array('col-xs-8', 'col-xs-9', 'col-xs-12'),
+            array('col-lg-8', 'col-lg-9', 'col-lg-12'),
+        ),
+        'type2' => array(
+            array('col-md-3', 'col-md-4', 'col-md-5', 'col-md-6', 'col-md-7', 'col-md-8', 'col-md-9'),
+            array('col-sm-3', 'col-sm-4', 'col-sm-5', 'col-sm-6', 'col-sm-7', 'col-sm-8', 'col-sm-9'),
+            array('col-xs-3', 'col-xs-4', 'col-xs-5', 'col-xs-6', 'col-xs-7', 'col-xs-8', 'col-xs-9'),
+            array('col-lg-3', 'col-lg-4', 'col-lg-5', 'col-lg-6', 'col-lg-7', 'col-lg-8', 'col-lg-9'),
+        ),
+        'type3' => array(
+            array('col-md-3', 'col-md-4', 'col-md-5', 'col-md-6', 'col-md-7', 'col-md-8'),
+            array('col-sm-3', 'col-sm-4', 'col-sm-5', 'col-sm-6', 'col-sm-7', 'col-sm-8'),
+            array('col-xs-3', 'col-xs-4', 'col-xs-5', 'col-xs-6', 'col-xs-7', 'col-xs-8'),
+            array('col-lg-3', 'col-lg-4', 'col-lg-5', 'col-lg-6', 'col-lg-7', 'col-lg-8'),
+        ),
+        'type4' => array(
+            array('col-md-3', 'col-md-4', 'col-md-5', 'col-md-6', 'col-md-7'),
+            array('col-sm-3', 'col-sm-4', 'col-sm-5', 'col-sm-6', 'col-sm-7'),
+            array('col-xs-3', 'col-xs-4', 'col-xs-5', 'col-xs-6', 'col-xs-7'),
+            array('col-lg-3', 'col-lg-4', 'col-lg-5', 'col-lg-6', 'col-lg-7'),
+        ),
     ),
 
     'layout_defaults' => array(
-        'layout1' => '',
-        'layout2' => 'md-6',
-        'layout3' => 'md-4',
-        'layout4' => 'md-3',
+        'type1' => '',
+        'type2' => 'col-md-6',
+        'type3' => 'col-md-4',
+        'type4' => 'col-md-3',
     ),
 
     'block_settings' => array(
@@ -32,7 +52,6 @@ $settings = array(
                 )
             ),
         ),
-
         'image' => array(
             'param1' => array(
                 'type' => 'select',

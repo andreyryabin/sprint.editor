@@ -158,16 +158,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
     }
 
-    protected function getColumnCss($column) {
-        $replace = array(
-            'md-' => 'col-md-',
-            'sm-' => 'col-sm-',
-            'xs-' => 'col-xs-',
-            'lg-' => 'col-lg-',
-        );
-        return str_replace(array_keys($replace), array_values($replace), $column);
-    }
-
     protected function outJson($value) {
 
         $value = $this->prepareValue($value);
@@ -247,10 +237,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
     }
 
     protected function includeLayout($columns) {
-        foreach ($columns as $index => $column) {
-            $columns[$index] = $this->getColumnCss($column);
-        }
-
         $root = \Sprint\Editor\Module::getDocRoot();
         $path = $this->findResource('_layout.php');
         if (!$path) {

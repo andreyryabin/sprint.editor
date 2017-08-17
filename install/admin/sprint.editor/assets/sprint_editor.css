@@ -116,9 +116,25 @@
 }
 
 .sp-x-layout-mode .sp-x-lt-col {
-    height: 74px;
     min-height: 74px;
     margin-bottom: 0;
+    float: left;
+    /*display: table-cell;*/
+    /*vertical-align: top;*/
+}
+
+.sp-x-layout-mode .sp-x-lt-type1 .sp-x-lt-col{
+    width: 100%;
+}
+.sp-x-layout-mode .sp-x-lt-type2 .sp-x-lt-col{
+    width: 50%;
+}
+.sp-x-layout-mode .sp-x-lt-type3 .sp-x-lt-col{
+    width: 33.3333%;
+}
+
+.sp-x-layout-mode .sp-x-lt-type4 .sp-x-lt-col{
+    width: 25%;
 }
 
 .sp-x-box-panel,
@@ -171,14 +187,14 @@
     font-weight: bold !important;
 }
 
-.sp-x-lt-buttons{
+.sp-x-lt-buttons {
     display: inline-block;
     position: absolute;
     right: 0;
     top: 0;
 }
 
-.sp-x-layout-mode .sp-x-lt-buttons{
+.sp-x-layout-mode .sp-x-lt-buttons {
     right: 5px;
 }
 
@@ -194,7 +210,7 @@
     padding: 1px 5px;
 }
 
-.sp-x-layout-mode .sp-x-lt-buttons span{
+.sp-x-layout-mode .sp-x-lt-buttons span {
     background: #ddd;
 }
 
@@ -221,7 +237,7 @@
     background: #e0e8ea;
 }
 
-.sp-x-layout-mode .sp-x-box.ui-sortable-helper .sp-x-box-buttons span{
+.sp-x-layout-mode .sp-x-box.ui-sortable-helper .sp-x-box-buttons span {
     background: #ddd;
 }
 
@@ -237,12 +253,18 @@
 .sp-x-layout-mode .sp-x-box-up,
 .sp-x-layout-mode .sp-x-box-dn,
 .sp-x-layout-mode .sp-x-box-copy,
-.sp-x-layout-mode .sp-x-lt-copy{
+.sp-x-layout-mode .sp-x-lt-copy {
     display: none;
 }
 
 .sp-x-lt-table {
     position: relative;
+}
+
+.sp-x-lt-table:after {
+    content: '';
+    display: block;
+    clear: both;
 }
 
 .sp-x-lt-table:last-child {
@@ -254,18 +276,13 @@
 }
 
 .sp-x-layout-mode .sp-x-lt-table {
-    display: table;
-    border-collapse: collapse;
+    /*display: table;*/
+    /*border-collapse: collapse;*/
     width: 100%;
 }
 
 .sp-x-layout-mode .sp-x-lt-row {
-    display: table-row;
-}
-
-.sp-x-layout-mode .sp-x-lt-col {
-    display: table-cell;
-    vertical-align: top;
+    /*display: table-row;*/
 }
 
 .sp-x-box .sp-x-box-handle {
@@ -294,6 +311,7 @@
 .sp-x-lt-title {
     cursor: pointer;
 }
+
 .sp-x-lt-title:hover,
 .sp-x-lt-title.active {
     color: #d00;
