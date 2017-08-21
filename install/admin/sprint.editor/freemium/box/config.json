@@ -1,6 +1,5 @@
 {
   "templates": [
-    "layout.html",
-    "sizes.html"
+    "layout.html"
   ]
 }
