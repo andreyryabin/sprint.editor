@@ -21,12 +21,11 @@
 ?>
 <div class="sp-x-editor<?= $uniqId ?>">
     <div class="sp-x-boxes"></div>
-
-    <div class="sp-table">
-        <div class="sp-row">
-            <div class="sp-col">
-                <? if (!empty($selectValues)): ?>
-                    <? if ($enableChange): ?>
+    <? if ($enableChange): ?>
+        <div class="sp-table">
+            <div class="sp-row">
+                <div class="sp-col">
+                    <? if (!empty($selectValues)): ?>
                         <select class="sp-x-box-select" style="width: 280px;">
                             <? foreach ($selectValues as $aGroup): ?>
                                 <optgroup label="<?= $aGroup['title'] ?>">
@@ -43,19 +42,21 @@
                                data-title="<?= GetMessage('SPRINT_EDITOR_BTN_PASTE') ?>"
                                class="sp-x-box-paste"
                                type="button"/>
+
+                    <? else: ?>
+                        <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
                     <? endif; ?>
-                <? else: ?>
-                    <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
-                <? endif; ?>
-            </div>
-            <div class="sp-col" style="text-align: right">
-                <input title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
-                       type="button"
-                       class="sp-x-layout-toggle"
-                       value="#"/>
+                </div>
+                <div class="sp-col" style="text-align: right">
+                    <input title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
+                           type="button"
+                           class="sp-x-layout-toggle"
+                           value="#"/>
+                </div>
+
             </div>
         </div>
-    </div>
+    <? endif; ?>
 </div>
 
 <textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"></textarea>

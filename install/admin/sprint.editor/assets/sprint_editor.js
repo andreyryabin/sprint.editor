@@ -472,26 +472,28 @@ var sprint_editor = {
         function layoutAdd(columns) {
             var ltname = 'type' + columns.length;
 
-            var renderparams = {
+            var renderVars = {
+                enableChange: params.enableChange,
                 columns: columns
             };
 
             if (params.jsonUserSettings && params.jsonUserSettings.layout_classes) {
                 if (params.jsonUserSettings.layout_classes[ltname]) {
                     if (params.jsonUserSettings.layout_classes[ltname].length > 0) {
-                        renderparams.classes = params.jsonUserSettings.layout_classes[ltname]
+                        renderVars.classes = params.jsonUserSettings.layout_classes[ltname]
                     }
                 }
             }
 
             $editor.find('.sp-x-boxes').append(
-                sprint_editor.renderTemplate('box-layout', renderparams)
+                sprint_editor.renderTemplate('box-layout', renderVars)
             );
 
             if (params.enableChange) {
-                $('.sp-x-lt-col').sortable({
+                var $allcolls = $editor.find('.sp-x-lt-col');
+                $allcolls.sortable({
                     items: ".sp-x-box",
-                    connectWith: '.sp-x-lt-col',
+                    connectWith: $allcolls,
                     handle: ".sp-x-box-handle",
                     placeholder: "sp-x-box-placeholder"
                 });
