@@ -1,0 +1,8 @@
+{
+  "title": "Привязка к элементам",
+  "subtitle": "Инфоблоки",
+  "sort": "700",
+  "templates": [
+    "select.html"
+  ]
+}

@@ -1,5 +1,8 @@
 <div class="sp-x-box" data-uid="{{=it.uid}}">
     <div class="sp-x-box-panel">
+        {{?it.subtitle}}
+        <span class="sp-x-box-subtitle">{{=it.subtitle}}.</span>
+        {{?}}
         <span title="{{=it.hint}}" class="{{?it.enableChange}}sp-x-box-handle{{?}} sp-x-box-title">{{=it.title}}</span>
         {{?it.compiled}}
         <div class="sp-x-box-settings">

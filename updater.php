@@ -23,13 +23,16 @@ if ($updater && $updater instanceof \CUpdater) {
             rmdir($dir);
         }
 
-        sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/blocks/');
         sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/schema/');
-        sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/iblock/');
-        sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/medialib/');
+        sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/blocks/');
 
 
-        sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . 'install/components/sprint.editor/blocks/templates/schema/');
+        sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/admin/sprint.editor/schema/');
+        sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/');
+
+
+        sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/components/sprint.editor/blocks/templates/schema/');
+        sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/components/sprint.editor/blocks/templates/schema/');
 
     }
 

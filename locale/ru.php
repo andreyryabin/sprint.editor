@@ -29,6 +29,8 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_group_layout" => "Модульные сетки",
     "SPRINT_EDITOR_group_freemium" => "Общие",
     "SPRINT_EDITOR_group_premium" => "Премиальные",
+    "SPRINT_EDITOR_group_medialib" => "Медиабиблиотека",
+    "SPRINT_EDITOR_group_iblock" => "Инфоблоки",
     "SPRINT_EDITOR_group_my" => "Пользовательские",
     "SPRINT_EDITOR_layout_type1" => "Сетка из 1 колонки",
     "SPRINT_EDITOR_layout_type2" => "Сетка из 2 колонок",
