@@ -1,6 +1,6 @@
 {
   "title": "Инстаграм",
-  "sort": "310",
+  "sort": "320",
   "js": [
     "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
   ]

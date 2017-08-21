@@ -23,8 +23,6 @@ class AdminEditor
 
             self::registerBlocks('freemium');
             self::registerBlocks('premium');
-            self::registerBlocks('iblock');
-            self::registerBlocks('medialib');
             self::registerBlocks('my');
             self::registerLayouts();
 
@@ -213,7 +211,6 @@ class AdminEditor
             $param['groupname'] = $groupname;
 
             $param['title'] = !empty($param['title']) ? $param['title'] : '';
-            $param['subtitle'] = !empty($param['subtitle']) ? $param['subtitle'] : '';
             $param['hint'] = !empty($param['hint']) ? $param['hint'] : '';
 
             $param['sort'] = !empty($param['sort']) ? intval($param['sort']) : 500;

@@ -1,6 +1,6 @@
 {
   "title": "Твиттер",
-  "sort": "320",
+  "sort": "330",
   "js": [
     "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
   ]

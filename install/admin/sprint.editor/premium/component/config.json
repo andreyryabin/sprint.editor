@@ -1,6 +1,6 @@
 {
   "title": "Компонент",
-  "sort": "200",
+  "sort": "120",
   "js": [
     "/bitrix/js/fileman/comp_params_manager/component_params_manager.js"
   ],

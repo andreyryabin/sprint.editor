@@ -1,6 +1,6 @@
 {
   "title": "Видео Youtube",
-  "sort": "154",
+  "sort": "300",
   "js": [
     "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
   ],
