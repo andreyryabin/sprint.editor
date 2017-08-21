@@ -150,6 +150,9 @@ var sprint_editor = {
             );
 
             val = (val) ? val : [];
+            
+            delete blockData.layout;
+
             val.push(blockData);
             localStorage.setItem("sprint-editor-copyblocks", JSON.stringify(val));
             this.fireEvent('copy');
