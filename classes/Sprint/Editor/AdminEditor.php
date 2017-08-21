@@ -21,11 +21,9 @@ class AdminEditor
 
         if (self::$initCounts == 1) {
 
-            $blockGroups = self::getBlockGroups();
-            foreach ($blockGroups as $aGroup) {
-                self::registerBlocks($aGroup);
-            }
-
+            self::registerBlocks('freemium');
+            self::registerBlocks('premium');
+            self::registerBlocks('my');
             self::registerLayouts();
 
             self::registerAssets();
@@ -64,7 +62,7 @@ class AdminEditor
             $userSettings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
         }
 
-         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
+        return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
             'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
             'selectValues' => self::$selectValues,
             'jsonTemplates' => json_encode(Locale::convertToUtf8IfNeed(self::$templates)),
@@ -133,43 +131,6 @@ class AdminEditor
         return $value;
     }
 
-    public static function getBlockGroups() {
-        $groups = array();
-        $rootpath = Module::getDocRoot() . '/bitrix/admin/sprint.editor/';
-
-        if (!is_dir($rootpath)) {
-            return $groups;
-        }
-
-        $iterator = new \DirectoryIterator($rootpath);
-        foreach ($iterator as $item) {
-            if (!$item->isDir() || $item->isDot()) {
-                continue;
-            }
-
-            $groupName = $item->getFilename();
-
-            if (!is_file($rootpath . $groupName . '/config.json')) {
-                continue;
-            }
-
-            $config = file_get_contents($rootpath . $groupName . '/config.json');
-            $config = json_decode($config, true);
-
-            if (empty($config['title'])) {
-                continue;
-            }
-
-            $config['name'] = $groupName;
-            $config['enable'] = Module::getDbOption('enable_blocks_' . $groupName, 'yes');
-            $groups[] = $config;
-        }
-
-        self::sortBySort($groups);
-
-        return $groups;
-    }
-
     public static function getSearchIndex($jsonValue) {
         $value = AdminEditor::prepareValue($jsonValue);
         $search = '';
@@ -222,8 +183,8 @@ class AdminEditor
         }
     }
 
-    protected static function registerBlocks($group) {
-        $webpath = '/bitrix/admin/sprint.editor/' . $group['name'] . '/';
+    protected static function registerBlocks($groupname) {
+        $webpath = '/bitrix/admin/sprint.editor/' . $groupname . '/';
         $rootpath = Module::getDocRoot() . $webpath;
 
         if (!is_dir($rootpath)) {
@@ -247,13 +208,13 @@ class AdminEditor
             }
 
             $param['name'] = $blockName;
+            $param['groupname'] = $groupname;
+
             $param['title'] = !empty($param['title']) ? $param['title'] : '';
             $param['hint'] = !empty($param['hint']) ? $param['hint'] : '';
 
             $param['sort'] = !empty($param['sort']) ? intval($param['sort']) : 500;
             $param['sort'] = ($param['sort'] > 0) ? $param['sort'] : 500;
-
-            $param['group'] = $group;
 
             if (is_file($rootpath . $blockName . '/style.css')) {
                 self::$css[] = $webpath . $blockName . '/style.css';
@@ -296,31 +257,26 @@ class AdminEditor
             self::$parameters[$blockName] = $param;
         }
 
-        if (!empty($selectBlocks) && $group['enable'] == 'yes') {
+        self::sortBySort($selectBlocks);
 
-            self::sortBySort($selectBlocks);
-
-            self::$selectValues[] = Locale::convertToWin1251IfNeed(array(
-                'title' => $group['title'],
-                'blocks' => $selectBlocks
-            ));
-        }
-
-        return true;
+        self::$selectValues[] = Locale::convertToWin1251IfNeed(array(
+            'title' => GetMessage('SPRINT_EDITOR_group_' . $groupname),
+            'blocks' => $selectBlocks
+        ));
     }
 
     protected static function registerLayouts() {
-        $layouts = array();
+        $selectLayouts = array();
         for ($num = 1; $num <= 4; $num++) {
-            $layouts[] = array(
+            $selectLayouts[] = array(
                 'title' => GetMessage('SPRINT_EDITOR_layout_type' . $num),
                 'name' => 'layout_' . $num,
             );
         }
 
         self::$selectValues[] = Locale::convertToWin1251IfNeed(array(
-            'title' => GetMessage('SPRINT_EDITOR_layout_group'),
-            'blocks' => $layouts
+            'title' => GetMessage('SPRINT_EDITOR_group_layout'),
+            'blocks' => $selectLayouts
         ));
     }
 

@@ -1,0 +1,8 @@
+<input placeholder="Заголовок" type="text" value="{{!it.value}}"/>
+<select>
+    {{~it.types :item}}
+    <option {{?item.selected}}selected="selected"{{?}}value="{{=item.value}}">{{=item.value}}</option>
+    {{~}}
+</select>
+<br/>
+<span class="sp-note sp-anchor">{{=it.anchor}}</span>

@@ -17,7 +17,7 @@ $video = Sprint\Editor\Blocks\Video::getHtml($block['video'], array(
 ));
 
 ?>
-<div class="c-video-text">
+<div class="sp-video-text">
     <div><?=$video?></div>
     <div><?=$text?></div>
 </div>

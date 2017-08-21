@@ -21,18 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && check_bitrix_sessid()) {
         }
     }
 
-    if (isset($_REQUEST['enable_blocks'])){
-        $blockGroups = \Sprint\Editor\AdminEditor::getBlockGroups();
-        foreach ($blockGroups as $aGroup){
-            $optname = 'enable_blocks_' . $aGroup['name'];
-            if (!empty($_REQUEST[$optname])){
-                \Sprint\Editor\Module::setDbOption($optname, 'yes');
-            } else {
-                \Sprint\Editor\Module::setDbOption($optname, 'no');
-            }
-        }
-    }
-
     if (isset($_REQUEST['install_upgrade']) && !empty($_REQUEST['upgrade_name'])){
         \Sprint\Editor\UpgradeManager::executeUpgrade($_REQUEST['upgrade_name']);
     }
@@ -59,28 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && check_bitrix_sessid()) {
     <? endforeach; ?>
     <br/>
     <input class="adm-btn-green" type="submit" name="opts_save" value="<?=GetMessage('SPRINT_EDITOR_BTN_SAVE')?>">
-    <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
-    <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
-    <?= bitrix_sessid_post(); ?>
-</form>
-<br/>
-<br/>
-
-<h2><?=GetMessage('SPRINT_EDITOR_ENABLE_BLOCKS')?></h2>
-<form method="post">
-<?
-    $blockGroups = \Sprint\Editor\AdminEditor::getBlockGroups();
-    foreach ($blockGroups as $aGroup):?>
-        <label>
-            <input <? if ($aGroup['enable'] == 'yes'): ?>checked="checked"<? endif ?>
-                   type="checkbox"
-                   name="enable_blocks_<?= $aGroup['name'] ?>"
-                   value="yes">
-            <?= \Sprint\Editor\Locale::convertToWin1251IfNeed($aGroup['title'])?>
-        </label><br/>
-    <?endforeach;?>
-    <br/>
-    <input class="adm-btn-green" type="submit" name="enable_blocks" value="<?=GetMessage('SPRINT_EDITOR_BTN_SAVE')?>">
     <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
     <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
     <?= bitrix_sessid_post(); ?>

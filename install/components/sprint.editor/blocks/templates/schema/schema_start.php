@@ -1,1 +1,0 @@
-<? /** @var $block array */ ?><div itemscope itemtype="http://schema.org/<?=$block['schema']?>">

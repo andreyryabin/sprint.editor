@@ -9,6 +9,6 @@ $preview = Sprint\Editor\Blocks\Image::getImage($block['preview'], array(
 ));
 */
 
-?><div class="c-video">
+?><div class="sp-video">
 <?=Sprint\Editor\Blocks\Video::getHtml($block) ?>
 </div>

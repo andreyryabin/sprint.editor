@@ -1,0 +1,7 @@
+{
+  "title": "Видео Coub",
+  "sort": "300",
+  "js": [
+    "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
+  ]
+}

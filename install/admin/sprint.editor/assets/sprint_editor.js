@@ -40,7 +40,7 @@ var sprint_editor = {
 
     getBlockWebPath: function (blockName) {
         var values = this.getBlockParams(blockName);
-        return '/bitrix/admin/sprint.editor/' + values.group.name + '/' + values.name;
+        return '/bitrix/admin/sprint.editor/' + values.groupname + '/' + values.name;
     },
 
     renderTemplate: function (name, data) {

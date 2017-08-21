@@ -1,7 +1,0 @@
-{
-  "title": "Галерея изображений",
-  "sort": "110",
-  "templates": [
-    "select.html"
-  ]
-}

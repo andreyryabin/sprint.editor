@@ -1,5 +1,5 @@
 <? /** @var $block array **/ /**@var $APPLICATION \CMain*/ ?>
-<div class="c-yandex-map">
+<div class="sp-yandex-map">
     <? global $APPLICATION;$APPLICATION->IncludeComponent(
         "bitrix:map.yandex.view",
         "",

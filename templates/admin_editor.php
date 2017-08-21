@@ -27,7 +27,7 @@
             <div class="sp-col">
                 <? if (!empty($selectValues)): ?>
                     <? if ($enableChange): ?>
-                        <select class="sp-x-box-select" style="width: 250px;">
+                        <select class="sp-x-box-select" style="width: 280px;">
                             <? foreach ($selectValues as $aGroup): ?>
                                 <optgroup label="<?= $aGroup['title'] ?>">
                                     <? foreach ($aGroup['blocks'] as $aBlock): ?>

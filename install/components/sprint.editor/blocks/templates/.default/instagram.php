@@ -1,3 +1,3 @@
-<?/** @var $block array */?><div class="c-instagram-post">
+<?/** @var $block array */?><div class="sp-instagram-post">
     <?=Sprint\Editor\Blocks\Instagram::getHtml($block) ?>
 </div>

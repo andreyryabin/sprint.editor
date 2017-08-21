@@ -168,10 +168,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
 
         $this->includeHeader($value['blocks'], $this->arParams);
-
-        $this->registerCss($this->findResource('_style.css'));
-        $this->registerJs($this->findResource('_script.js'));
-
         $this->prepareBlocks($value['blocks']);
 
         $this->layoutIndex = 0;

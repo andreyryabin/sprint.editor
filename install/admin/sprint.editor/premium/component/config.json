@@ -1,0 +1,13 @@
+{
+  "title": "Компонент",
+  "sort": "200",
+  "js": [
+    "/bitrix/js/fileman/comp_params_manager/component_params_manager.js"
+  ],
+  "css": [
+    "/bitrix/js/fileman/comp_params_manager/component_params_manager.css"
+  ],
+  "templates": [
+    "select.html"
+  ]
+}

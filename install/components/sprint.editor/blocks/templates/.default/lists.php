@@ -1,4 +1,4 @@
-<?/** @var $block array */?><ul class="c-lists">
+<?/** @var $block array */?><ul class="sp-lists">
     <?foreach ($block['elements'] as $item):?>
         <li><?=$item['text']?></li>
     <?endforeach;?>

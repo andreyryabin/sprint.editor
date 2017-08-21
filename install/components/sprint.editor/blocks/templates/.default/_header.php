@@ -13,3 +13,6 @@ if ($this->arParams['USE_FANCYBOX'] == 'Y') {
     $this->registerCss('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.css');
     $this->registerJs('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.js');
 }
+
+$this->registerCss($this->findResource('_style.css'));
+$this->registerJs($this->findResource('_script.js'));
