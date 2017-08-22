@@ -205,8 +205,10 @@
     padding: 1px 5px;
 }
 
-.sp-x-layout-mode .sp-x-lt-buttons span {
-    background: #ddd;
+.sp-x-lt-buttons span:hover,
+.sp-x-lt-buttons span.active{
+    background: #FFEBC1;
+    color: #d00;
 }
 
 .sp-x-box-buttons {
@@ -228,21 +230,15 @@
     padding: 1px 5px;
 }
 
-.sp-x-layout-mode .sp-x-box-buttons span {
-    background: #e0e8ea;
-}
-
-.sp-x-layout-mode .sp-x-box.ui-sortable-helper .sp-x-box-buttons span {
-    background: #ddd;
+.sp-x-box-buttons span:hover,
+.sp-x-box-buttons span.active{
+    background: #FFEBC1;
+    color: #d00;
 }
 
 .sp-x-options-link {
     float: right;
     text-decoration: none;
-}
-
-.sp-x-layout-mode {
-
 }
 
 .sp-x-layout-mode .sp-x-box-up,
@@ -271,13 +267,7 @@
 }
 
 .sp-x-layout-mode .sp-x-lt-table {
-    /*display: table;*/
-    /*border-collapse: collapse;*/
     width: 100%;
-}
-
-.sp-x-layout-mode .sp-x-lt-row {
-    /*display: table-row;*/
 }
 
 .sp-x-box .sp-x-box-handle {
@@ -307,7 +297,6 @@
     cursor: pointer;
 }
 
-.sp-x-lt-title:hover,
 .sp-x-lt-title.active {
     color: #d00;
 }
@@ -318,11 +307,11 @@
     left: 0;
     background: #eee;
     color: #aaa;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     text-align: left;
     z-index: 2;
     width: 100%;
-    padding: 5px;
+    padding: 8px;
 }
 
 .sp-x-lt-types-group {
@@ -342,4 +331,5 @@
 .sp-x-lt-types span:hover,
 .sp-x-lt-types span.active {
     color: #d00;
+    background: #FFEBC1;
 }

@@ -17,21 +17,13 @@ global $DB;
 
 
 if (\CModule::IncludeModule('sprint.editor')){
-
-
-    if (!empty($_REQUEST['url'])){
-
-        $handler = new \Sprint\Editor\UploadHandler(array(
-            'bitrix_resize' => array(
-                'width' => 100,
-                'height' => 100,
-                'exact' => 1
-            )
-        ),false);
-
-        $handler->saveResource($_REQUEST['url']);
-    }
-
+    $handler = new \Sprint\Editor\UploadHandler(array(
+        'bitrix_resize' => array(
+            'width' => 100,
+            'height' => 100,
+            'exact' => 1
+        )
+    ));
 }
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_after.php");

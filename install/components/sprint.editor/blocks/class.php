@@ -7,6 +7,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
     protected $preparedBlocks = array();
     protected $includedBlocks = 0;
     protected $layoutIndex = 0;
+    protected $resourcesCache = array();
 
     public function onPrepareComponentParams($arParams) {
         $arParams['USE_JQUERY'] = (!empty($arParams['USE_JQUERY']) && $arParams['USE_JQUERY'] == 'Y') ? 'Y' : 'N';
@@ -274,6 +275,12 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $templateName = $this->arParams['TEMPLATE_NAME'];
         $root = \Sprint\Editor\Module::getDocRoot();
 
+        $uniq = $templateName . $resName;
+
+        if (isset($this->resourcesCache[$uniq])) {
+            return $this->resourcesCache[$uniq];
+        }
+
         $paths = array(
 
             SITE_TEMPLATE_PATH . '/components/sprint.editor/blocks/' . $templateName . '/' . $resName,
@@ -294,6 +301,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
         foreach ($paths as $path) {
             if (is_file($root . $path)) {
+                $this->resourcesCache[$uniq] = $path;
                 return $path;
             }
         }

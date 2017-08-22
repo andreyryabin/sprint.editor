@@ -17,6 +17,7 @@
 namespace Sprint\Editor;
 
 use Sprint\Editor\Tools\Image;
+use \Sprint\Editor\Tools\Youtube;
 
 class UploadHandler
 {
@@ -484,7 +485,7 @@ class UploadHandler
             $redirect = stripslashes($this->get_post_param('redirect'));
             if ($redirect && preg_match($this->options['redirect_allow_target'], $redirect)) {
                 $this->header('Location: ' . sprintf($redirect, rawurlencode($json)));
-                return;
+                return '';
             }
             $this->head();
             if ($this->get_server_var('HTTP_CONTENT_RANGE')) {
@@ -593,6 +594,7 @@ class UploadHandler
         $res = array();
         foreach ($files as $k => $file) {
             $aFile = \CFile::MakeFileArray($file->path);
+            $aFile['MODULE_ID'] = 'sprint.editor';
             $checkErr = \CFile::CheckImageFile($aFile, 0, 0, 0);
             if (empty($checkErr)) {
                 $bitrixId = \CFile::SaveFile($aFile, 'sprint.editor');
@@ -607,7 +609,22 @@ class UploadHandler
     }
 
 
-    public function saveImage($url) {
+    public function saveResource($url){
+        $imgurl = Youtube::getPreviewImg($url);
+        if ($imgurl){
+            return $this->generate_response(array(
+                'image' => $this->downloadImage($imgurl),
+                'video' => $url
+            ), true);
+
+        } else {
+            return $this->generate_response(array(
+                'image' => $this->downloadImage($url),
+            ), true);
+        }
+    }
+
+    protected function downloadImage($url){
         $aFile = \CFile::MakeFileArray($url);
         $checkErr = \CFile::CheckImageFile($aFile, 0, 0, 0);
         $image = false;
@@ -617,6 +634,8 @@ class UploadHandler
                 $image = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
             }
         }
-        return $this->generate_response(array('image' => $image), true);
+
+        return $image;
     }
+
 }

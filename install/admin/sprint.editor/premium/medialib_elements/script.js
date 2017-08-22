@@ -34,10 +34,10 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
     this.afterRender = function () {
         $el.on('click','.sp-toggle', function(){
             if (hideSource){
-                $el.find('.sp-source,.sp-filter').show();
+                $el.find('.sp-source,.sp-filter').show(250);
                 hideSource = 0
             } else {
-                $el.find('.sp-source,.sp-filter').hide();
+                $el.find('.sp-source,.sp-filter').hide(250);
                 hideSource = 1;
             }
         });

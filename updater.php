@@ -16,25 +16,6 @@ if ($updater && $updater instanceof \CUpdater) {
         }
     }
 
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/schema/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/complex/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/iblock/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/medialib/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/blocks/');
-
-
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/admin/sprint.editor/schema/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/admin/sprint.editor/complex/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/admin/sprint.editor/iblock/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/admin/sprint.editor/medialib/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/');
-
-
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/components/sprint.editor/blocks/templates/schema/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/components/sprint.editor/blocks/templates/schema/');
-
-
-
     if (is_dir(__DIR__ . '/install/components/')){
         $updater->CopyFiles("install/components/", "components/" );
     }
@@ -43,6 +24,6 @@ if ($updater && $updater instanceof \CUpdater) {
         $updater->CopyFiles("install/admin/", "admin/" );
     }
 
-    //1.1.5
+    //1.1.6
 
 }

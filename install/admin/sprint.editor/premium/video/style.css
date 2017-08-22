@@ -43,3 +43,7 @@
     left: -120px !important;
 }
 
+.sp-block-video .sp-image_item-panel input[type=text]{
+    width: 300px;
+    margin-top: 30px;
+}

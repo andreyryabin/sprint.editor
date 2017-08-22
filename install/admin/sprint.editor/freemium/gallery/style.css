@@ -1,5 +1,5 @@
 
-.sp-block-gallery .sp-image_item {
+.sp-block-gallery .sp-image {
     position: relative;
     width: 100px;
     height: 100px;
@@ -8,45 +8,30 @@
     margin: 0 5px 5px 0;
     text-align: center;
     border: 2px solid #eee;
+    cursor: pointer;
 }
 
-.sp-block-gallery .sp-image_item-panel{
-    position: absolute;
-    top: 20px;
-    left: -115px;
-    height: 100px;
-    z-index: 2;
-    background: #eee;
-    border: 2px solid #ccc;
-    display: none;
-    padding: 0 10px;
+.sp-block-gallery .sp-image-desc {
+    width: 80%;
 }
 
-.sp-block-gallery .sp-image_item:hover{
+
+.sp-block-gallery .sp-edit{
+    background: #ddd;
+}
+
+.sp-block-gallery .sp-image.active{
     border: 2px solid #d00;
 }
 
-.sp-block-gallery .sp-image_item:hover .sp-image_item-panel{
-    display: block;
-}
-
-.sp-block-gallery .sp-image_item-panel input[type=text]{
-    width: 300px;
-    margin-top: 30px;
-}
-
-.sp-block-gallery .sp-image_item-buttons{
-    text-align: center;margin-top: 5px;
-}
 
 .sp-block-gallery .sp-result {
     background: #eee;
     min-height: 100px;
-    padding: 5px 5px 10px;
+    padding: 10px;
 }
 
 .sp-block-gallery .sp-source{
     background: #FFEBC1;
-    padding: 5px 5px 10px;
     display: none;
 }

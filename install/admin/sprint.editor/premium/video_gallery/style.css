@@ -1,3 +1,51 @@
-.sp-block-video_gallery .sp-video-item{
-    margin-bottom: 10px;
+
+.sp-block-video_gallery .sp-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background: #ccc;
+    margin: 0 5px 5px 0;
+    text-align: center;
+    border: 2px solid #eee;
+    cursor: pointer;
+}
+
+.sp-block-video_gallery .sp-item-desc,
+.sp-block-video_gallery .sp-item-video {
+    width: 80%;
+}
+
+
+.sp-block-video_gallery .sp-edit{
+    background: #ddd;
+}
+
+.sp-block-video_gallery .sp-item.active{
+    border: 2px solid #d00;
+}
+
+
+.sp-block-video_gallery .sp-result {
+    background: #eee;
+    min-height: 100px;
+    padding: 10px;
+}
+
+.sp-block-video_gallery .sp-source{
+    background: #FFEBC1;
+    display: none;
+}
+
+.sp-block-video_gallery .sp-is-video::after{
+    background-image: url(/bitrix/admin/sprint.editor/assets/video-gallery/img/white-play-icon.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    content: '';
+    display: block;
+    height: 30px;
+    right:5px;
+    position: absolute;
+    top:5px;
+    width: 30px;
 }
