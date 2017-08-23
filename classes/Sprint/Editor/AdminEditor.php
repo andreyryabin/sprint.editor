@@ -294,7 +294,6 @@ class AdminEditor
 
     protected static function sortBySort(&$input = array()) {
         usort($input, function ($a, $b) {
-//            return strcmp($a["title"], $b["title"]);
             if ($a['sort'] == $b['sort']) {
                 return 0;
             }

@@ -38,11 +38,6 @@
                         <input value="<?= GetMessage('SPRINT_EDITOR_BTN_ADD') ?>"
                                class="sp-x-box-add adm-btn-green"
                                type="button"/>
-                        <input value="<?= GetMessage('SPRINT_EDITOR_BTN_PASTE') ?>"
-                               data-title="<?= GetMessage('SPRINT_EDITOR_BTN_PASTE') ?>"
-                               class="sp-x-box-paste"
-                               type="button"/>
-
                     <? else: ?>
                         <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
                     <? endif; ?>
