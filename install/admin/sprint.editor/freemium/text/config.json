@@ -1,7 +1,0 @@
-{
-  "title": "Текст",
-  "sort": "120",
-  "js": [
-    "/bitrix/admin/sprint.editor/assets/sanitizer.js"
-  ]
-}

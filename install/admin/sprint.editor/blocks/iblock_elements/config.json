@@ -1,0 +1,7 @@
+{
+  "title": "Инфоблоки. Элементы",
+  "sort": "700",
+  "templates": [
+    "select.html"
+  ]
+}

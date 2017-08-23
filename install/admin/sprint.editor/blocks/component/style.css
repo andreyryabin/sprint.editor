@@ -1,0 +1,27 @@
+.sp-block-component .bxcompprop-wrap{
+    margin-top: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+
+.sp-block-component .bxcompprop-wrap .bxcompprop-left{
+    /*margin: 10px 0 0 0;*/
+    /*border:none;*/
+    /*box-shadow: none;*/
+}
+
+.sp-block-component .bxcompprop-wrap .bxcompprop-right{
+    /*top: 0;*/
+}
+
+.sp-block-component .sp-component{
+    width: 220px;
+}
+
+.sp-block-component .sp-label-site{
+    margin-left: 20px;
+}
+
+.sp-block-component .sp-filter-site{
+    width: 120px;margin-left: 5px;
+}

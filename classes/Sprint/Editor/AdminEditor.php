@@ -21,8 +21,7 @@ class AdminEditor
 
         if (self::$initCounts == 1) {
 
-            self::registerBlocks('freemium');
-            self::registerBlocks('premium');
+            self::registerBlocks('blocks');
             self::registerBlocks('my');
             self::registerLayouts();
 
@@ -295,6 +294,7 @@ class AdminEditor
 
     protected static function sortBySort(&$input = array()) {
         usort($input, function ($a, $b) {
+//            return strcmp($a["title"], $b["title"]);
             if ($a['sort'] == $b['sort']) {
                 return 0;
             }

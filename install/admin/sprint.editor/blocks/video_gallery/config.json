@@ -1,0 +1,14 @@
+{
+  "title": "Галерея видеороликов",
+  "sort": "60",
+  "js": [
+    "/bitrix/admin/sprint.editor/assets/query.file-upload-9/vendor/jquery.ui.widget.js",
+    "/bitrix/admin/sprint.editor/assets/jquery.file-upload-9/jquery.iframe-transport.js",
+    "/bitrix/admin/sprint.editor/assets/jquery.file-upload-9/jquery.fileupload.js",
+    "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
+  ],
+  "templates": [
+    "item.html",
+    "edit.html"
+  ]
+}

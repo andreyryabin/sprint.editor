@@ -69,7 +69,7 @@
 }
 
 .sp-video-gallery-thumbnails-list-item::before {
-	background-color: rgba(0,0,0,.7);
+	background-color: rgba(0,0,0,.4);
 	content: '';
 	display: block;
 	height: 100%;

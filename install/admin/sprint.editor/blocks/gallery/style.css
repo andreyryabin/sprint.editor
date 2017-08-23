@@ -1,0 +1,49 @@
+
+.sp-block-gallery .sp-image {
+    position: relative;
+    width: 98px;
+    height: 55px;
+    display: inline-block;
+    background: #ccc;
+    margin: 0 5px 5px 0;
+    text-align: center;
+    border: 2px solid #eee;
+    cursor: pointer;
+}
+
+.sp-block-gallery .sp-image-desc {
+    width: 80%;
+}
+
+
+.sp-block-gallery .sp-edit{
+    background: #ddd;
+}
+
+.sp-block-gallery .sp-active{
+    border: 2px solid #d00;
+}
+
+
+.sp-block-gallery .sp-result {
+    background: #eee;
+    min-height: 55px;
+    padding: 10px 10px 5px 10px;
+}
+
+.sp-block-gallery .sp-source{
+    background: #FFEBC1;
+    display: none;
+}
+
+.sp-block-gallery .sp-download-url{
+    width: 80%;
+}
+
+
+.sp-block-gallery .sp-fields{
+    padding: 10px;
+}
+.sp-block-gallery .sp-field{
+    margin-bottom: 10px;
+}

@@ -5,15 +5,28 @@ AddEventHandler('sprint.editor', 'OnBeforeShowEditorBlocks', function (&$blocks)
      * Обработчик восстанавливает превьюшки в админке для блоков "Галерея" и "Картинка",
      * если они удалились из /upload/iblock/resize_cache/
      */
-    foreach ($blocks as $block) {
+
+    foreach ($blocks as &$block) {
         if ($block['name'] == 'gallery') {
-            foreach ($block['images'] as &$aItem) {
+            foreach ($block['images'] as $key => $aItem) {
                 if (!empty($aItem['file']['ID'])) {
                     $aItem['file'] = Sprint\Editor\Tools\Image::resizeImage2($aItem['file']['ID'], array(
-                        'width' => 100,
-                        'height' => 100,
+                        'width' => 98,
+                        'height' => 55,
                         'exact' => 1
                     ));
+                    $block['images'][$key] = $aItem;
+                }
+            }
+        } elseif ($block['name'] == 'video_gallery') {
+            foreach ($block['items'] as $key => $aItem) {
+                if (!empty($aItem['file']['ID'])) {
+                    $aItem['file'] = Sprint\Editor\Tools\Image::resizeImage2($aItem['file']['ID'], array(
+                        'width' => 98,
+                        'height' => 55,
+                        'exact' => 1
+                    ));
+                    $block['items'][$key] = $aItem;
                 }
             }
         } elseif ($block['name'] == 'video') {

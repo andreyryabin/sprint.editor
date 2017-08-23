@@ -1,0 +1,25 @@
+<select class="sp-component">
+    <option value="">нет</option>
+    {{~it.components :group}}
+    <optgroup label="{{!group.name}}">
+        {{~group.items :item}}
+        <option {{?item.name== it.component_name}}selected="selected" {{?}} value="{{!item.name}}">
+            {{=item.name}} - {{=item.title}}
+        </option>
+        {{~}}
+    </optgroup>
+    {{~}}
+</select>
+
+
+<label class="sp-label-site">
+    Шаблон сайта
+<select class="sp-filter-site">
+    <option value="">нет</option>
+    {{~it.sitetemplates :item:index}}
+    <option {{?item.value== it.filter_site}}selected="selected" {{?}} value="{{!item.value}}">
+        {{=item.name}}
+    </option>
+    {{~}}
+</select>
+</label>

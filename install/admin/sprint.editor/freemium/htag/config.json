@@ -1,7 +1,0 @@
-{
-  "title": "Заголовок",
-  "sort": "110",
-  "js": [
-    "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
-  ]
-}

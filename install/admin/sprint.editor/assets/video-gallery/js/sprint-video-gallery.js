@@ -5,9 +5,7 @@
 		var defaults = {
 
 			thumbnailsVisible: {
-				0: 3,
-				1025: 4,
-				1280: 5
+				0: 3
 			},
 
 			thumbnailsNavButtons: true
@@ -26,6 +24,7 @@
 			this.visibleThumbnails = [];
 			this.largeThumbnailsCache = {};
 			this.thumbnailsScrollCursorwidth = 10;
+			this.hasNiceScroll = ($.fn.niceScroll);
 
 			this.setupHtml();
 			this.addListeners();
@@ -245,7 +244,7 @@
 				}
 
 				for (screen in self.settings.thumbnailsVisible) {
-					if ( window.innerWidth >= screen ) {
+					if ( this.$container.outerWidth() >= screen ) {
 						self.thumbnailWidth = width / self.settings.thumbnailsVisible[screen];
 						self.thumbnailsGroupCount = self.settings.thumbnailsVisible[screen];
 					}
@@ -265,10 +264,16 @@
 					}
 				});
 
-				self.$largeThumbnailContainer.css( 'height', this.$container.outerWidth() / 100 * 60 );
-				self.$thumbnailsList.css( 'width', self.thumbnailWidth * self.thumbnails.length );
-				self.$thumbnailsList.css( 'height', self.thumbnailWidth / 100 * 70 );
-				self.$thumbnailsListContainer.css( 'height', self.thumbnailWidth / 100 * 70 + self.thumbnailsScrollCursorwidth );
+				self.$largeThumbnailContainer.css( 'height', this.$container.outerWidth() / 100 * 56.5 );
+
+				if ( !self.hasNiceScroll ) {
+					self.$thumbnailsList.css( 'width', '100%' );
+				} else {
+					self.$thumbnailsList.css( 'width', self.thumbnailWidth * self.thumbnails.length );
+				}
+
+				self.$thumbnailsList.css( 'height', self.thumbnailWidth / 100 * 56.5 );
+				self.$thumbnailsListContainer.css( 'height', self.thumbnailWidth / 100 * 56.5 + self.thumbnailsScrollCursorwidth );
 			},
 
 			setupThumbnailsNavButtons: function() {
@@ -284,16 +289,18 @@
 			},
 
 			setupThumbnailsScroll: function() {
-				this.$thumbnailsListContainer.niceScroll( '.sp-video-gallery-thumbnails-list', {
-					background: 'rgba(0,0,0,.2)',
-					cursorborder: 'none',
-					cursorcolor: '#2b77c6',
-					cursorwidth: this.thumbnailsScrollCursorwidth,
-					autohidemode: false,
-					cursorborderradius: 0
-				});
-
-				this.thumbnailsScroll = this.$thumbnailsListContainer.getNiceScroll(0);
+				if ( this.hasNiceScroll ) {
+					this.$thumbnailsListContainer.niceScroll( '.sp-video-gallery-thumbnails-list', {
+						background: 'rgba(0,0,0,.2)',
+						cursorborder: 'none',
+						cursorcolor: '#2b77c6',
+						cursorwidth: this.thumbnailsScrollCursorwidth,
+						autohidemode: false,
+						cursorborderradius: 0
+					});
+	
+					this.thumbnailsScroll = this.$thumbnailsListContainer.getNiceScroll(0);
+				}
 			},
 
 			setActiveThumbnail: function($item) {

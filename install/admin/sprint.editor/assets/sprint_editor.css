@@ -205,6 +205,10 @@
     padding: 1px 5px;
 }
 
+.sp-x-layout-mode .sp-x-lt-buttons span{
+    background: #ddd;
+}
+
 .sp-x-lt-buttons span:hover,
 .sp-x-lt-buttons span.active{
     background: #FFEBC1;
@@ -228,6 +232,10 @@
     text-align: center;
     min-width: 18px;
     padding: 1px 5px;
+}
+
+.sp-x-layout-mode .sp-x-box-buttons span{
+    background: #e0e8ea;
 }
 
 .sp-x-box-buttons span:hover,
@@ -280,7 +288,6 @@
 }
 
 .sp-x-layout-mode .sp-x-box.ui-sortable-helper {
-    background: #ddd;
     padding: 0;
 }
 

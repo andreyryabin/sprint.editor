@@ -1,10 +1,10 @@
 var sprint_editor = {
     _templates: {},
     _parameters: {},
-    _tplcache: {},
     _registered: {},
     _events: {},
     _entries: {},
+    _uidcounter : 0,
 
     registerBlock: function (name, method) {
         this._registered[name] = method;
@@ -44,13 +44,8 @@ var sprint_editor = {
     },
 
     renderTemplate: function (name, data) {
-        if (window.doT) {
-            name = (this._templates[name]) ? name : 'dump';
-            if (!this._tplcache[name]) {
-                this._tplcache[name] = window.doT.template(this._templates[name]);
-            }
-
-            var tempfn = this._tplcache[name];
+        if (window.doT && this._templates[name]) {
+            var tempfn = window.doT.template(this._templates[name]);
             return tempfn(data);
         } else {
             return '';
@@ -174,7 +169,10 @@ var sprint_editor = {
     },
 
     makeUid: function () {
-        return 'sp-x-' + Math.random().toString(36).substring(2, 12);
+        var uniq = Math.random().toString(36).substring(2, 12);
+        this._uidcounter++;
+
+        return 'sp-x-' + this._uidcounter + uniq;
     },
 
     create: function ($, params) {

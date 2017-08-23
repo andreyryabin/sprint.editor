@@ -1,0 +1,32 @@
+<div class="sp-field">
+    <input type="button" class="sp-toggle" value="Выбрать">
+    <span {{?it.hideSource}}style="display: none"{{?}} class="sp-filter">
+        <select class="sp-select-iblock">
+            <option value="">нет</option>
+            {{~it.iblocks :item:index}}
+            <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
+            </option>
+            {{~}}
+        </select>
+        <input class="sp-nav-left" type="button" value="&larr;">
+        <input class="sp-nav-right" type="button" value="&rarr;">
+        {{=it.page_num}}/{{=it.page_cnt}}
+    </span>
+</div>
+
+<div {{?it.hideSource}}style="display: none"{{?}} class="sp-source">
+    {{~it.source :item:index}}
+    <div data-id="{{!item.id}}" class="sp-item">
+        {{!item.id}} - {{!item.title}}
+    </div>
+    {{~}}
+    <div title="Перетащите элементы вниз для их выбора" class="sp-arrows">&darr;&darr;&darr;</div>
+</div>
+
+<div class="sp-elements">
+    {{~it.elements :item:index}}
+    <div data-id="{{!item.id}}" class="sp-item">
+        {{!item.id}} - {{!item.title}}
+    </div>
+    {{~}}
+</div>

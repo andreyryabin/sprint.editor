@@ -1,0 +1,57 @@
+.sp-block-iblock_elements .sp-iblock-result{
+    position: relative;
+}
+
+.sp-block-iblock_elements .sp-item {
+    padding: 6px;
+    margin: 0 0 5px 0;
+    cursor: move;
+    white-space: nowrap;
+    width: 95%;
+    overflow: hidden;
+}
+
+.sp-block-iblock_elements .sp-placeholder{
+    border: 1px dotted black;
+    padding: 6px;
+    margin: 0 0 5px 0;
+    height: 18px;
+}
+
+.sp-block-iblock_elements .sp-source {
+    background: #FFEBC1;
+    padding: 5px 5px 10px;
+}
+
+.sp-block-iblock_elements .sp-arrows{
+    margin: 10px 0 0;
+    text-align: center;
+}
+
+.sp-block-iblock_elements .sp-elements {
+    background: #eee;
+    min-height: 100px;
+    padding: 5px 5px 10px;
+}
+
+.sp-block-iblock_elements .sp-source .sp-item{
+    border-bottom: 1px solid #FDBF3B;
+}
+
+.sp-block-iblock_elements .sp-elements .sp-item{
+    border-bottom: 1px solid #ccc;
+}
+.sp-block-iblock_elements .sp-item.ui-draggable-dragging{
+    background: #FDBF3B;
+}
+.sp-block-iblock_elements .sp-item.ui-sortable-helper {
+    background: #ccc;
+}
+
+.sp-block-iblock_elements .sp-field{
+    margin-bottom: 10px;
+}
+
+.sp-block-iblock_elements .sp-select-iblock{
+    width: 180px;
+}
