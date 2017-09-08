@@ -1,5 +1,6 @@
 var sprint_editor = {
     _templates: {},
+    _tplcache:{},
     _parameters: {},
     _registered: {},
     _events: {},
@@ -45,8 +46,12 @@ var sprint_editor = {
 
     renderTemplate: function (name, data) {
         if (window.doT && this._templates[name]) {
-            var tempfn = window.doT.template(this._templates[name]);
-            return tempfn(data);
+            if (this._tplcache[name]){
+                return this._tplcache[name](data);
+            } else {
+                this._tplcache[name] = window.doT.template(this._templates[name]);
+                return this._tplcache[name](data);
+            }
         } else {
             return '';
         }
@@ -359,11 +364,38 @@ var sprint_editor = {
                 }
             });
 
+
+            $editor.on('click', '.sp-x-grid-up', function (e) {
+                e.preventDefault();
+                var block = $(this).closest('.sp-x-lt-grid');
+                var nblock = block.prev('.sp-x-lt-grid');
+                if (nblock.length > 0) {
+                    block.insertBefore(nblock);
+                }
+            });
+
+            $editor.on('click', '.sp-x-grid-dn', function (e) {
+                e.preventDefault();
+                var block = $(this).closest('.sp-x-lt-grid');
+                var nblock = block.next('.sp-x-lt-grid');
+                if (nblock.length > 0) {
+                    block.insertAfter(nblock);
+                }
+            });
+
             $editor.on('click', '.sp-x-box-del', function (e) {
                 e.preventDefault();
                 var $target = $(this).closest('.sp-x-box');
                 $target.hide(250, function () {
                     $target.remove();
+                });
+            });
+
+            $editor.on('click','.sp-x-grid-del',function(e){
+                e.preventDefault();
+                var $grid = $(this).closest('.sp-x-lt-grid');
+                $grid.hide(250, function () {
+                    $grid.remove();
                 });
             });
 
@@ -439,6 +471,13 @@ var sprint_editor = {
                     }
                 }
             });
+
+            $editor.find('.sp-x-boxes').sortable({
+                items: ".sp-x-lt-grid",
+                handle: ".sp-x-grid-handle",
+                placeholder: "sp-x-grid-placeholder"
+            });
+
         }
 
         function checkClipboardButtons() {
@@ -485,7 +524,8 @@ var sprint_editor = {
             var ltname = 'type' + columns.length;
             var renderVars = {
                 enableChange: params.enableChange,
-                columns: columns
+                columns: columns,
+                showSortButtons: params.showSortButtons
             };
 
             if (params.jsonUserSettings && params.jsonUserSettings.layout_classes) {

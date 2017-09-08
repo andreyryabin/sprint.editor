@@ -99,6 +99,12 @@
     margin: 10px 5px 10px;
 }
 
+.sp-x-grid-placeholder {
+    border: 1px dotted black;
+    height: 20px;
+    margin: 0 0 10px 0;
+}
+
 .sp-x-box-placeholder {
     border: 1px dotted black;
     height: 100px;
@@ -180,8 +186,60 @@
     margin: 0 5px;
 }
 
+/*.sp-x-lt-grid .sp-x-lt-buttons{*/
+    /*display: none;*/
+/*}*/
+/*.sp-x-lt-grid .sp-x-box-buttons{*/
+    /*display: none;*/
+/*}*/
+
+/*.sp-x-lt-grid:hover .sp-x-lt-buttons{*/
+    /*display: inline-block;*/
+/*}*/
+/*.sp-x-lt-grid:hover .sp-x-box-buttons{*/
+    /*display: inline-block;*/
+/*}*/
+
 .sp-x-box-title {
     font-weight: bold !important;
+}
+
+.sp-x-grid-buttons{
+    margin: 0 0 5px 0;
+    text-align: center;
+    display: none;
+    /*display: inline-block;*/
+    /*position: absolute;*/
+    /*left: -30px;*/
+    /*top: 20px;*/
+    /*top: 36px;*/
+    /*z-index: 2;*/
+}
+
+.sp-x-lt-grid.ui-sortable-helper .sp-x-lt-col{
+    background: #F5F9F9;
+}
+
+.sp-x-layout-mode .sp-x-grid-buttons {
+    display: block;
+}
+
+.sp-x-grid-buttons span {
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    color: #aaa;
+    display: inline-block;
+    text-align: center;
+    min-width: 18px;
+    padding: 1px 5px;
+   /*background: #ddd;*/
+}
+
+.sp-x-grid-buttons span:hover,
+.sp-x-grid-buttons span.active{
+    background: #FFEBC1;
+    color: #d00;
 }
 
 .sp-x-lt-buttons {

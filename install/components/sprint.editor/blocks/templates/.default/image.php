@@ -6,5 +6,5 @@ $image = Sprint\Editor\Blocks\Image::getImage($block, array(
     //'jpg_quality' => 75
 ));
 ?><?if ($image):?>
-    <p><img alt="<?=$image['DESCRIPTION']?>" width="100%" src="<?=$image['SRC']?>"></p>
+    <div class="sp-image"><img alt="<?=$image['DESCRIPTION']?>" src="<?=$image['SRC']?>"></div>
 <?endif;?>

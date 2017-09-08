@@ -18,11 +18,8 @@ if ($updater && $updater instanceof \CUpdater) {
 
 
 
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/freemium/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/admin/sprint.editor/freemium/');
-
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/premium/');
-    sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/sprint.editor/install/admin/sprint.editor/premium/');
+    //example
+    //sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/freemium/');
 
     if (is_dir(__DIR__ . '/install/components/')){
         $updater->CopyFiles("install/components/", "components/" );
@@ -32,6 +29,6 @@ if ($updater && $updater instanceof \CUpdater) {
         $updater->CopyFiles("install/admin/", "admin/" );
     }
 
-    //1.1.6
+    //1.1.7
 
 }

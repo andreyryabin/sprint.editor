@@ -1,4 +1,15 @@
 <div class="sp-x-lt-grid sp-x-lt-type{{=it.columns.length}}">
+    {{?it.enableChange}}
+    <div class="sp-x-grid-buttons">
+        {{?it.showSortButtons}}
+        <span title="Поднять вверх" class="sp-x-grid-up">&uarr;</span>
+        <span title="Опустить вниз" class="sp-x-grid-down">&darr;</span>
+        {{??}}
+        <span title="Переместить сетку" class="sp-x-grid-handle">&uarr;&darr;</span>
+        {{?}}
+        <span title="Удалить сетку" class="sp-x-grid-del">x</span>
+    </div>
+    {{?}}
     {{~it.columns :col:index}}
     <div class="sp-x-lt-col">
         <div class="sp-x-lt-head">

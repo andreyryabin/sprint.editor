@@ -5,7 +5,7 @@
  */
 
 $settings = array(
-    'title' => 'Пример настройки',
+    'title' => 'Пример настройки 1',
 
     'layout_classes' => array(
         'type1' => array(
