@@ -70,7 +70,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             var $td = $el.find('.active');
             if ($td.length > 0) {
-                $('<td contenteditable="true">текст</td>').insertAfter($td);
+                $('<td contenteditable="true">text</td>').insertAfter($td);
 
                 $td.next('td').trigger('click');
             }
@@ -115,7 +115,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             var newtr = '';
             for (var index = 1; index <= colCount; index++) {
-                newtr += '<td contenteditable="true">текст</td>';
+                newtr += '<td contenteditable="true">text</td>';
             }
 
             if ($tr.length > 0) {
@@ -134,9 +134,8 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             if ($td.length > 0) {
                 $td.parent().remove();
-            } else {
-                $table.find('tr').last().remove();
             }
+
             showcolbtns();
         });
 
@@ -182,7 +181,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 }
 
                 if (cs > 1) {
-                    $('<td contenteditable="true">текст</td>').insertAfter($td);
+                    $('<td contenteditable="true">text</td>').insertAfter($td);
                 }
             }
             showcolbtns();
@@ -268,14 +267,9 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             $el.find('.sp-add-row').show();
 
-            if ($table.find('tr').length > 0) {
-                $el.find('.sp-del-row').show();
-            } else {
-                $el.find('.sp-del-row').hide();
-            }
-
             if ($td.length > 0) {
                 $el.find('.sp-col-buttons input').show();
+                $el.find('.sp-del-row').show();
 
                 var $tr = $td.parent();
                 var $ntd = $td.next('td');
@@ -318,6 +312,8 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 }
             } else {
                 $el.find('.sp-col-buttons input').hide();
+                $el.find('.sp-del-row').hide();
+
             }
         }
 

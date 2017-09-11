@@ -1,12 +1,12 @@
 .sp-block-table table {
     width: 100%;
-    border-collapse: collapse;
-    background: #eee;
-
+    border-collapse: separate;
+    background: #fff;
+    border: 1px solid #aaa !important;
 }
 
 .sp-block-table td{
-    border: 1px solid #ccc;
+    border: 1px solid #aaa;
     padding: 5px;
 }
 
@@ -29,20 +29,4 @@
 
 .sp-block-table .sp-buttons {
     /*text-align: center;*/
-}
-
-.sp-block-table .sp-buttons span {
-    cursor: pointer;
-    text-decoration: none;
-    border: 1px solid #aaa;
-    color: #888;
-    display: inline-block;
-    text-align: center;
-    min-width: 18px;
-    padding: 5px;
-}
-
-.sp-block-table .sp-buttons span:hover{
-    background: #FFEBC1;
-    color: #d00;
 }
