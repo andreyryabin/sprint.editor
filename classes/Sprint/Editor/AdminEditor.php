@@ -258,10 +258,10 @@ class AdminEditor
 
         self::sortBySort($selectBlocks);
 
-        self::$selectValues[] = Locale::convertToWin1251IfNeed(array(
+        self::$selectValues[] = array(
             'title' => GetMessage('SPRINT_EDITOR_group_' . $groupname),
-            'blocks' => $selectBlocks
-        ));
+            'blocks' => Locale::convertToWin1251IfNeed($selectBlocks)
+        );
     }
 
     protected static function registerLayouts() {
@@ -273,10 +273,10 @@ class AdminEditor
             );
         }
 
-        self::$selectValues[] = Locale::convertToWin1251IfNeed(array(
+        self::$selectValues[] = array(
             'title' => GetMessage('SPRINT_EDITOR_group_layout'),
-            'blocks' => $selectLayouts
-        ));
+            'blocks' => Locale::convertToWin1251IfNeed($selectLayouts)
+        );
     }
 
     public static function renderFile($file, $vars = array()) {

@@ -1,4 +1,32 @@
 /* Общие стили для блоков */
+.sp-block-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sp-block-table table tr {
+    background: #f7f7f7;
+    color: #8a8a8a;
+}
+
+.sp-block-table table tr:nth-child(odd) {
+    background: #e7e6e6;
+}
+
+.sp-block-table table tr:hover {
+    background: #d4d4d4;
+    color: #000;
+}
+
+.sp-block-table table td {
+    text-align: left;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.sp-image img{
+    width: 100%;
+}
 
 .sp-image-text {
     background: #eee;

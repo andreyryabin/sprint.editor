@@ -22,35 +22,26 @@
 <div class="sp-x-editor<?= $uniqId ?>">
     <div class="sp-x-boxes"></div>
     <? if ($enableChange): ?>
-        <div class="sp-table">
-            <div class="sp-row">
-                <div class="sp-col">
-                    <? if (!empty($selectValues)): ?>
-                        <select class="sp-x-box-select" style="width: 280px;">
-                            <? foreach ($selectValues as $aGroup): ?>
-                                <optgroup label="<?= $aGroup['title'] ?>">
-                                    <? foreach ($aGroup['blocks'] as $aBlock): ?>
-                                        <option value="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></option>
-                                    <? endforeach; ?>
-                                </optgroup>
-                            <? endforeach; ?>
-                        </select>
-                        <input value="<?= GetMessage('SPRINT_EDITOR_BTN_ADD') ?>"
-                               class="sp-x-box-add adm-btn-green"
-                               type="button"/>
-                    <? else: ?>
-                        <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
-                    <? endif; ?>
-                </div>
-                <div class="sp-col" style="text-align: right">
-                    <input title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
-                           type="button"
-                           class="sp-x-layout-toggle"
-                           value="#"/>
-                </div>
-
-            </div>
-        </div>
+        <? if (!empty($selectValues)): ?>
+            <select class="sp-x-box-select" style="width: 280px;">
+                <? foreach ($selectValues as $aGroup): ?>
+                    <optgroup label="<?= $aGroup['title'] ?>">
+                        <? foreach ($aGroup['blocks'] as $aBlock): ?>
+                            <option value="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></option>
+                        <? endforeach; ?>
+                    </optgroup>
+                <? endforeach; ?>
+            </select>
+            <input value="<?= GetMessage('SPRINT_EDITOR_BTN_ADD') ?>"
+                   class="sp-x-box-add adm-btn-green"
+                   type="button"/>
+        <? else: ?>
+            <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
+        <? endif; ?>
+        <input title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
+               type="button"
+               class="sp-x-layout-toggle"
+               value="#"/>
     <? endif; ?>
 </div>
 

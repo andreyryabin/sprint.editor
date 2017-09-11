@@ -1,0 +1,37 @@
+<table>
+    {{~it.rows :cols}}
+    <tr>
+        {{~cols :col}}
+        <td class="{{~col.attrs :css}} {{=css}} {{~}}"
+            contenteditable="true"
+            {{?col.colspan}}colspan="{{=col.colspan}}" {{?}}
+            {{?col.rowspan}}rowspan="{{=col.rowspan}}" {{?}}>
+            {{=col.text}}
+        </td>
+        {{~}}
+    </tr>
+    {{~}}
+</table>
+
+<div class="sp-buttons" style="margin-top: 10px;">
+    <input type="button" class="sp-add-row" value="добавить строку"/>
+    <input type="button" class="sp-del-row" value="удалить строку"/>
+</div>
+
+<div class="sp-buttons sp-col-buttons" style="margin-top: 10px;">
+    <input type="button" class="sp-add-col" value="добавить колонку"/>
+    <input type="button" class="sp-del-col" value="удалить колонку"/>
+</div>
+
+
+<div class="sp-buttons sp-col-buttons" style="margin-top: 10px;">
+    <input type="button" class="sp-add-cs" value="объединить с &rarr;" />
+    <input type="button" class="sp-del-cs" value="разъеднить с &rarr;" />
+    <input type="button" class="sp-add-rs" value="объединить с &darr;" />
+    <input type="button" class="sp-del-rs" value="разъеднить с &darr;" />
+</div>
+
+<div class="sp-buttons sp-col-buttons" style="margin-top: 10px;">
+    <input type="button" class="sp-toggle-align" value="выравнивание" />
+    <input type="button" class="sp-toggle-bold" value="выделить жирным" />
+</div>
