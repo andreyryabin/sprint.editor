@@ -1,7 +1,10 @@
 sprint_editor.registerBlock('table', function ($, $el, data) {
 
     data = $.extend({
-        rows: []
+        rows: [
+            [{text:''}, {text:''},{text:''}, {text:''}],
+            [{text:''}, {text:''},{text:''}, {text:''}]
+        ]
 
     }, data);
 
@@ -70,7 +73,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             var $td = $el.find('.active');
             if ($td.length > 0) {
-                $('<td contenteditable="true">text</td>').insertAfter($td);
+                $('<td contenteditable="true"></td>').insertAfter($td);
 
                 $td.next('td').trigger('click');
             }
@@ -115,7 +118,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             var newtr = '';
             for (var index = 1; index <= colCount; index++) {
-                newtr += '<td contenteditable="true">text</td>';
+                newtr += '<td contenteditable="true"></td>';
             }
 
             if ($tr.length > 0) {
@@ -181,7 +184,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 }
 
                 if (cs > 1) {
-                    $('<td contenteditable="true">text</td>').insertAfter($td);
+                    $('<td contenteditable="true"></td>').insertAfter($td);
                 }
             }
             showcolbtns();
