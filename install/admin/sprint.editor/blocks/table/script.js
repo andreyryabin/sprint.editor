@@ -39,7 +39,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                     col.rowspan = $(this).attr('rowspan');
                 }
 
-                if (attrs.length > 0){
+                if (attrs.length > 0) {
                     col.attrs = attrs;
                 }
 
@@ -86,8 +86,6 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             if ($td.length > 0) {
                 if ($tr.find('td').length - 1 > 0) {
                     $td.next('td').trigger('click');
-
-
                     $td.remove();
                 } else {
                     $tr.remove();
@@ -100,14 +98,32 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             e.preventDefault();
 
             var $tr = $el.find('.active').parent();
+            if ($tr.length <= 0) {
+                $tr = $table.find('tr').last();
+            }
 
-            var $newtr = $('<tr><td contenteditable="true">текст</td></tr>');
+            var colCount = 0;
+            $tr.find('td').each(function () {
+                if ($(this).attr('colspan')) {
+                    colCount += +$(this).attr('colspan');
+                } else {
+                    colCount++;
+                }
+            });
+
+            colCount = (colCount > 0 ) ? colCount : 1;
+
+            var newtr = '';
+            for (var index = 1; index <= colCount; index++) {
+                newtr += '<td contenteditable="true">текст</td>';
+            }
 
             if ($tr.length > 0) {
-                $newtr.insertAfter($tr);
+                $('<tr>' + newtr + '</tr>').insertAfter($tr);
             } else {
-                $table.append($newtr);
+                $table.append('<tr>' + newtr + '</tr>');
             }
+
             showcolbtns();
         });
 
@@ -159,13 +175,13 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 var cs = $td.attr('colspan');
                 cs = (cs) ? parseInt(cs, 10) : 1;
 
-                if (cs - 1 > 1){
+                if (cs - 1 > 1) {
                     $td.attr('colspan', cs - 1);
                 } else {
                     $td.removeAttr('colspan');
                 }
 
-                if (cs > 1){
+                if (cs > 1) {
                     $('<td contenteditable="true">текст</td>').insertAfter($td);
                 }
             }
@@ -247,18 +263,18 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             showcolbtns();
         });
 
-        function showcolbtns(){
+        function showcolbtns() {
             var $td = $table.find('.active');
 
             $el.find('.sp-add-row').show();
 
-            if ($table.find('tr').length > 0){
+            if ($table.find('tr').length > 0) {
                 $el.find('.sp-del-row').show();
             } else {
                 $el.find('.sp-del-row').hide();
             }
 
-            if ($td.length > 0){
+            if ($td.length > 0) {
                 $el.find('.sp-col-buttons input').show();
 
                 var $tr = $td.parent();
@@ -270,13 +286,13 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 var $ntr = $table.find('tr').eq(trindex + rs);
 
 
-                if ($tr.find('td').length > 1){
+                if ($tr.find('td').length > 1) {
                     $el.find('.sp-del-col').show();
                 } else {
                     $el.find('.sp-del-col').hide();
                 }
 
-                if ($ntd.length > 0){
+                if ($ntd.length > 0) {
                     $el.find('.sp-add-cs').show();
                 } else {
                     $el.find('.sp-add-cs').hide();
@@ -295,8 +311,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 }
 
 
-
-                if ($ntr.length > 0){
+                if ($ntr.length > 0) {
                     $el.find('.sp-add-rs').show();
                 } else {
                     $el.find('.sp-add-rs').hide();
