@@ -8,7 +8,7 @@
 <? else: ?>
     <div class="row">
         <? foreach ($columns as $columnIndex => $columnCss):?>
-            <div class="<?= $columnCss ?>"><? $this->includeLayoutBlocks($columnIndex) ?></div>
+            <div<?if (!empty($columnCss)):?> class="<?= $columnCss ?>"<?endif?>><? $this->includeLayoutBlocks($columnIndex) ?></div>
         <? endforeach; ?>
     </div>
 <? endif ?>

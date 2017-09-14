@@ -27,6 +27,14 @@ class Module
         }
     }
 
+    public static function getSettingsDir() {
+        if (is_dir( self::getDocRoot() . '/local/admin/sprint.editor/settings/')) {
+            return self::getDocRoot() . '/local/admin/sprint.editor/settings/';
+        } else {
+            return self::getDocRoot() . '/bitrix/admin/sprint.editor/settings/';
+        }
+    }
+
     public static function getVersion() {
         $arModuleVersion = array();
         /** @noinspection PhpIncludeInspection */

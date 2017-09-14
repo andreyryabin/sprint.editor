@@ -41,7 +41,11 @@ var sprint_editor = {
 
     getBlockWebPath: function (blockName) {
         var values = this.getBlockParams(blockName);
-        return '/bitrix/admin/sprint.editor/' + values.groupname + '/' + values.name;
+        if (values.islocal){
+            return '/local/admin/sprint.editor/' + values.groupname + '/' + values.name;
+        } else {
+            return '/bitrix/admin/sprint.editor/' + values.groupname + '/' + values.name;
+        }
     },
 
     renderTemplate: function (name, data) {

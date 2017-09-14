@@ -1,7 +1,5 @@
 <?php
 /**
- * @var $rawValue
- *
  * @var $jsonValue
  *
  * @var $jsonParameters
