@@ -44,7 +44,7 @@ class UploadHandler
 
     function __construct($options = null, $initialize = true, $error_messages = null) {
         $dir = '/upload/sprint.editor/temp/';
-        if (is_dir($_SERVER['DOCUMENT_ROOT'] . $dir)) {
+        if (!is_dir($_SERVER['DOCUMENT_ROOT'] . $dir)) {
             mkdir($_SERVER['DOCUMENT_ROOT'] . $dir, BX_DIR_PERMISSIONS, true);
         }
 
