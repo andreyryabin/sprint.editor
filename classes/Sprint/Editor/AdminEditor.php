@@ -109,7 +109,9 @@ class AdminEditor
     }
 
     public static function prepareValue($value) {
-        $value = !empty($value) && is_string($value) ? $value : '[]';
+        $value = str_replace("\xe2\x80\xa8", '\\u2028', $value);
+        $value = str_replace("\xe2\x80\xa9", '\\u2029', $value);
+
         $value = json_decode(Locale::convertToUtf8IfNeed($value), true);
         $value = (json_last_error() == JSON_ERROR_NONE && is_array($value)) ? $value : array();
         return self::prepareValueArray($value);

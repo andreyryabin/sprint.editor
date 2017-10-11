@@ -124,6 +124,9 @@ class SprintEditorBlocksComponent extends CBitrixComponent
     }
 
     protected function prepareValue($value) {
+        $value = str_replace("\xe2\x80\xa8", '\\u2028', $value);
+        $value = str_replace("\xe2\x80\xa9", '\\u2029', $value);
+
         $value = json_decode(Sprint\Editor\Locale::convertToUtf8IfNeed($value), true);
         $value = Sprint\Editor\Locale::convertToWin1251IfNeed($value);
         $value = (json_last_error() == JSON_ERROR_NONE) ? $value : array();
