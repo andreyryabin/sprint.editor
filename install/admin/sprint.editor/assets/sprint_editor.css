@@ -103,7 +103,7 @@
 
 .sp-x-grid-placeholder {
     border: 1px dotted black;
-    height: 20px;
+    height: 40px;
     margin: 0 0 10px 0;
 }
 
@@ -115,7 +115,7 @@
 
 .sp-x-layout-mode .sp-x-box-placeholder {
     margin: 10px 5px;
-    height: 20px;
+    height: 45px;
 }
 
 .sp-x-lt-col {
@@ -247,10 +247,10 @@
 }
 
 .sp-x-lt-buttons {
-    display: inline-block;
-    position: absolute;
-    right: 0;
-    top: 0;
+    /*display: inline-block;*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*top: -15px;*/
 }
 
 .sp-x-lt-buttons span {
@@ -275,10 +275,10 @@
 }
 
 .sp-x-box-buttons {
-    display: inline-block;
-    position: absolute;
-    right: 0;
-    top: 0;
+    /*display: inline-block;*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*top: 0;*/
 }
 
 .sp-x-box-buttons span {
@@ -358,14 +358,6 @@
 .sp-x-lt-curtype {
     margin-left: 5px;
     color: #aaa;
-}
-
-.sp-x-lt-title {
-    cursor: pointer;
-}
-
-.sp-x-lt-title.active {
-    color: #d00;
 }
 
 .sp-x-lt-types {

@@ -448,7 +448,7 @@ var sprint_editor = {
 
             });
 
-            $editor.on('click', '.sp-x-lt-title', function (e) {
+            $editor.on('click', '.sp-x-lt-classes', function (e) {
                 var $title = $(this);
                 var $xcol = $title.closest('.sp-x-lt-col');
                 var $sizes = $xcol.find('.sp-x-lt-types');
@@ -458,7 +458,7 @@ var sprint_editor = {
                         $title.removeClass('active');
                     } else {
                         $editor.find('.sp-x-lt-types').not($sizes).hide();
-                        $editor.find('.sp-x-lt-title').not($title).removeClass('active');
+                        $editor.find('.sp-x-lt-classes').not($title).removeClass('active');
 
                         var cursizes = $xcol.find('.sp-x-lt-curtype').text();
                         cursizes = cursizes.split(' ');

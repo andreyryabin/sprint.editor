@@ -13,19 +13,19 @@
     {{~it.columns :col:index}}
     <div class="sp-x-lt-col">
         <div class="sp-x-lt-head">
-            {{? it.enableChange && it.classes}}
-            <span class="sp-x-lt-title">Колонка {{=index+1}}</span>
-            {{??}}
             <span>Колонка {{=index+1}}</span>
-            {{?}}
             <span class="sp-x-lt-curtype">{{=col}}</span>
             {{?it.enableChange}}
             <div class="sp-x-lt-buttons">
                 <span title="Вставить блоки в колонку" class="sp-x-lt-paste">&crarr;</span>
+                {{? it.classes}}
+                <span title="Дополнительное оформление" class="sp-x-lt-classes">+</span>
+                {{?}}
                 <span title="Копировать блоки в колонке" class="sp-x-lt-copy">&equiv;</span>
                 <span title="Удалить колонку" class="sp-x-lt-del">x</span>
             </div>
             {{?}}
+
         </div>
         {{?it.enableChange && it.classes}}
         <div class="sp-x-lt-types">

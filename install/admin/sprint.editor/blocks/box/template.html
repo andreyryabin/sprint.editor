@@ -1,6 +1,6 @@
 <div class="sp-x-box" data-uid="{{=it.uid}}">
     <div class="sp-x-box-panel">
-        <span title="{{=it.hint}}" class="{{?it.enableChange}}sp-x-box-handle{{?}} sp-x-box-title">{{=it.title}}</span>
+        <span title="{{=it.hint}}" class="sp-x-box-title">{{=it.title}}</span>
         {{?it.compiled}}
         <div class="sp-x-box-settings">
             {{~it.compiled :item}}
@@ -19,6 +19,8 @@
             {{?it.showSortButtons}}
             <span title="Поднять вверх" class="sp-x-box-up">&uarr;</span>
             <span title="Опустить вниз" class="sp-x-box-dn">&darr;</span>
+            {{??}}
+            <span title="Переместить блок" class="sp-x-box-handle">&uarr;&darr;</span>
             {{?}}
             <span title="Копировать блок" class="sp-x-box-copy">&equiv;</span>
             <span title="Удалить блок" class="sp-x-box-del">x</span>
