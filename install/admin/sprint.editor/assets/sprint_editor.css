@@ -175,20 +175,6 @@
     margin: 0 5px;
 }
 
-/*.sp-x-lt-grid .sp-x-lt-buttons{*/
-/*display: none;*/
-/*}*/
-/*.sp-x-lt-grid .sp-x-box-buttons{*/
-/*display: none;*/
-/*}*/
-
-/*.sp-x-lt-grid:hover .sp-x-lt-buttons{*/
-/*display: inline-block;*/
-/*}*/
-/*.sp-x-lt-grid:hover .sp-x-box-buttons{*/
-/*display: inline-block;*/
-/*}*/
-
 .sp-x-box-title {
     font-weight: bold !important;
 }
