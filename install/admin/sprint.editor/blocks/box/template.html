@@ -1,18 +1,14 @@
 <div class="sp-x-box" data-uid="{{=it.uid}}">
     <div class="sp-x-box-panel">
         <span title="{{=it.hint}}" class="sp-x-box-title">{{=it.title}}</span>
-        {{?it.compiled}}
-        <div class="sp-x-box-settings">
+        {{?it.compiled.length > 0}}
+        <span class="sp-x-box-settings-current">
             {{~it.compiled :item}}
-            <label class="sp-x-box-settings-item">
-                <select name="{{=item.name}}">
-                    {{~item.value :option}}
-                    <option {{?option.selected}}selected="selected"{{?}} value="{{=option.value}}">{{=option.title}}</option>
-                    {{~}}
-                </select>
-            </label>
+                {{~item.value :option}}
+                    {{?option.selected}}{{=option.title}} {{?}}
+                {{~}}
             {{~}}
-        </div>
+        </span>
         {{?}}
         <div class="sp-x-box-buttons">
             {{?it.enableChange}}
@@ -22,10 +18,28 @@
             {{??}}
             <span title="Переместить блок" class="sp-x-box-handle">&uarr;&darr;</span>
             {{?}}
+
+            {{?it.compiled.length > 0}}
+            <span title="Дополнительные настройки" class="sp-x-box-settings-toggle">+</span>
+            {{?}}
+
             <span title="Копировать блок" class="sp-x-box-copy">&equiv;</span>
             <span title="Удалить блок" class="sp-x-box-del">x</span>
             {{?}}
         </div>
     </div>
+
+    {{?it.compiled.length > 0}}
+    <div class="sp-x-box-settings">
+        {{~it.compiled :item}}<label class="sp-x-box-settings-item">
+            <select name="{{=item.name}}">
+                {{~item.value :option}}
+                <option {{?option.selected}}selected="selected"{{?}} value="{{=option.value}}">{{=option.title}}</option>
+                {{~}}
+            </select>
+        </label>{{~}}
+    </div>
+    {{?}}
+
     <div class="sp-x-box-block"></div>
 </div>

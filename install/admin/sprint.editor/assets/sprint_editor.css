@@ -154,21 +154,6 @@
     padding: 5px 0;
 }
 
-.sp-x-box-settings {
-    display: inline-block;
-    /*margin-bottom: 10px;*/
-    /*text-align: left;*/
-    /*position: absolute;*/
-    /*left: 0;*/
-}
-
-.sp-x-layout-mode .sp-x-box-settings {
-    display: none;
-}
-
-.sp-x-box-settings-item {
-    margin-left: 5px;
-}
 
 .sp-x-layout-mode .sp-x-box-panel {
     text-align: center;
@@ -208,6 +193,7 @@
     font-weight: bold !important;
 }
 
+.bx-core-adm-dialog div.sp-x-grid-buttons,
 .sp-x-grid-buttons {
     margin: 0 0 5px 0;
     text-align: center;
@@ -246,7 +232,9 @@
     color: #d00;
 }
 
+.bx-core-adm-dialog div.sp-x-lt-buttons,
 .sp-x-lt-buttons {
+    text-align: center;
     /*display: inline-block;*/
     /*position: absolute;*/
     /*right: 0;*/
@@ -273,8 +261,9 @@
     background: #FFEBC1;
     color: #d00;
 }
-
+.bx-core-adm-dialog div.sp-x-box-buttons,
 .sp-x-box-buttons {
+    text-align: center;
     /*display: inline-block;*/
     /*position: absolute;*/
     /*right: 0;*/
@@ -355,12 +344,14 @@
     display: none;
 }
 
-.sp-x-lt-curtype {
+.sp-x-lt-settings-current,
+.sp-x-box-settings-current {
     margin-left: 5px;
     color: #aaa;
 }
 
-.sp-x-lt-types {
+.sp-x-box-settings,
+.sp-x-lt-settings {
     display: none;
     position: absolute;
     left: 0;
@@ -372,12 +363,20 @@
     width: 100%;
 }
 
-.sp-x-lt-types-group {
-    margin-bottom: 10px;
-    padding: 8px 8px 0 8px;
+.sp-x-box-settings-item{
+    display: inline-block;
+    padding: 8px 0 8px 8px;
 }
 
-.sp-x-lt-types span {
+.sp-x-lt-settings-group{
+    padding: 8px;
+}
+
+.sp-x-lt-settings-group:last-child{
+    margin-bottom: 8px;
+}
+
+.sp-x-lt-settings span {
     display: inline-block;
     cursor: pointer;
     border: 1px solid #ccc;
@@ -387,8 +386,8 @@
     text-align: center;
 }
 
-.sp-x-lt-types span:hover,
-.sp-x-lt-types span.active {
+.sp-x-lt-settings span:hover,
+.sp-x-lt-settings span.active {
     color: #d00;
     background: #FFEBC1;
 }

@@ -236,7 +236,7 @@ var sprint_editor = {
 
                 $(this).find('.sp-x-lt-col').each(function (cindex) {
 
-                    var text = $(this).find('.sp-x-lt-curtype').text();
+                    var text = $(this).find('.sp-x-lt-settings-current').text();
                     columns.push(text);
 
                     $(this).find('.sp-x-box').each(function () {
@@ -422,12 +422,28 @@ var sprint_editor = {
                 }
             });
 
-            $editor.on('click', '.sp-x-lt-types span', function (e) {
+            $editor.on('change', '.sp-x-box-settings select', function (e) {
+                var $span = $(this);
+                var $xcol = $span.closest('.sp-x-box');
+                var result = [];
+
+                var $sizes = $xcol.find('.sp-x-box-settings');
+                $sizes.find('select').each(function(){
+                    var tmp = $(this).find('option:selected').text();
+                    result.push(tmp);
+
+                });
+
+                var $cursize = $xcol.find('.sp-x-box-settings-current');
+                $cursize.text(result.join(' '));
+            });
+
+            $editor.on('click', '.sp-x-lt-settings span', function (e) {
                 var $span = $(this);
 
                 var $xcol = $span.closest('.sp-x-lt-col');
-                var $cursize = $xcol.find('.sp-x-lt-curtype');
-                var $sizes = $xcol.find('.sp-x-lt-types');
+                var $cursize = $xcol.find('.sp-x-lt-settings-current');
+                var $sizes = $xcol.find('.sp-x-lt-settings');
 
                 $span.siblings('span').removeClass('active');
 
@@ -448,19 +464,43 @@ var sprint_editor = {
 
             });
 
-            $editor.on('click', '.sp-x-lt-classes', function (e) {
+            $editor.on('click', '.sp-x-box-settings-toggle', function (e) {
+                var $title = $(this);
+                var $xcol = $title.closest('.sp-x-box');
+                var $sizes = $xcol.find('.sp-x-box-settings');
+
+                $editor.find('.sp-x-lt-settings').hide();
+                $editor.find('.sp-x-box-settings').hide();
+                $editor.find('.sp-x-lt-settings-toggle').removeClass('active');
+                $editor.find('.sp-x-box-settings-toggle').not($title).removeClass('active');
+
+                if ($title.hasClass('active')) {
+                    $sizes.hide(250);
+                    $title.removeClass('active');
+                } else {
+                    $sizes.show(250);
+                    $title.addClass('active');
+                }
+            });
+
+            $editor.on('click', '.sp-x-lt-settings-toggle', function (e) {
                 var $title = $(this);
                 var $xcol = $title.closest('.sp-x-lt-col');
-                var $sizes = $xcol.find('.sp-x-lt-types');
+                var $sizes = $xcol.find('.sp-x-lt-settings');
+
+                $editor.find('.sp-x-lt-settings').hide();
+                $editor.find('.sp-x-box-settings').hide();
+                $editor.find('.sp-x-lt-settings-toggle').not($title).removeClass('active');
+                $editor.find('.sp-x-box-settings-toggle').removeClass('active');
+
                 if ($sizes.length > 0) {
                     if ($title.hasClass('active')) {
                         $sizes.hide(250);
                         $title.removeClass('active');
                     } else {
-                        $editor.find('.sp-x-lt-types').not($sizes).hide();
-                        $editor.find('.sp-x-lt-classes').not($title).removeClass('active');
+                        $editor.find('.sp-x-lt-settings-toggle').not($title).removeClass('active');
 
-                        var cursizes = $xcol.find('.sp-x-lt-curtype').text();
+                        var cursizes = $xcol.find('.sp-x-lt-settings-current').text();
                         cursizes = cursizes.split(' ');
                         $sizes.find('span').each(function () {
                             var stext = $(this).text();
@@ -645,6 +685,7 @@ var sprint_editor = {
                     value: value
                 })
             });
+
             return compiled;
         }
 

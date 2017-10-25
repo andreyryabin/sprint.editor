@@ -14,12 +14,12 @@
     <div class="sp-x-lt-col">
         <div class="sp-x-lt-head">
             <span>Колонка {{=index+1}}</span>
-            <span class="sp-x-lt-curtype">{{=col}}</span>
+            <span class="sp-x-lt-settings-current">{{=col}}</span>
             {{?it.enableChange}}
             <div class="sp-x-lt-buttons">
                 <span title="Вставить блоки в колонку" class="sp-x-lt-paste">&crarr;</span>
                 {{? it.classes}}
-                <span title="Дополнительное оформление" class="sp-x-lt-classes">+</span>
+                <span title="Дополнительное оформление" class="sp-x-lt-settings-toggle">+</span>
                 {{?}}
                 <span title="Копировать блоки в колонке" class="sp-x-lt-copy">&equiv;</span>
                 <span title="Удалить колонку" class="sp-x-lt-del">x</span>
@@ -28,10 +28,8 @@
 
         </div>
         {{?it.enableChange && it.classes}}
-        <div class="sp-x-lt-types">
-            {{~it.classes :group}}
-            <div class="sp-x-lt-types-group">{{~group :size}}<span>{{=size}}</span>{{~}}</div>
-            {{~}}
+        <div class="sp-x-lt-settings">
+            {{~it.classes :group}}<div class="sp-x-lt-settings-group">{{~group :size}}<span>{{=size}}</span>{{~}}</div>{{~}}
         </div>
         {{?}}
     </div>
