@@ -62,9 +62,30 @@ class AdminEditor
             $userSettings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
         }
 
+        if (!empty($userSettings['block_enabled'])) {
+            $localValues = [];
+            foreach (self::$selectValues as $groupIndex => $group) {
+                $localBlocks = [];
+                foreach ($group['blocks'] as $blockIndex => $block) {
+                    if (in_array($block['name'], $userSettings['block_enabled'])) {
+                        $localBlocks[] = $block;
+                    }
+                }
+                if (!empty($localBlocks)) {
+                    $localValues[] = array(
+                        'title' => $group['title'],
+                        'blocks' => $localBlocks
+
+                    );
+                }
+            }
+        } else {
+            $localValues = self::$selectValues;
+        }
+
         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
             'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
-            'selectValues' => self::$selectValues,
+            'selectValues' => $localValues,
             'jsonTemplates' => json_encode(Locale::convertToUtf8IfNeed(self::$templates)),
             'jsonParameters' => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
             'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
@@ -195,7 +216,7 @@ class AdminEditor
         }
     }
 
-    protected static function registerBlocks($groupname, $islocal = false, $checkname = true) {
+    protected static function registerBlocks($groupname,$islocal = false,$checkname = true) {
         if ($islocal) {
             $webpath = '/local/admin/sprint.editor/' . $groupname . '/';
             $rootpath = Module::getDocRoot() . $webpath;
@@ -308,7 +329,7 @@ class AdminEditor
         );
     }
 
-    public static function renderFile($file, $vars = array()) {
+    public static function renderFile($file,$vars = array()) {
         if (is_array($vars)) {
             extract($vars, EXTR_SKIP);
         }

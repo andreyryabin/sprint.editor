@@ -65,4 +65,11 @@ $settings = array(
 
     ),
 
+    'block_enabled' => array(
+        'htag',
+        'text',
+        'gallery'
+    ),
+
+
 );
