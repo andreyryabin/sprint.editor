@@ -246,10 +246,12 @@
     padding: 1px 5px;
 }
 
+.sp-x-box-buttons span.sp-x-box-copy,
 .sp-x-lt-buttons span.sp-x-lt-copy{
     display: none;
 }
 
+.sp-x-layout-mode .sp-x-box-buttons span.sp-x-box-copy,
 .sp-x-layout-mode .sp-x-lt-buttons span.sp-x-lt-copy{
     display: inline-block;
 }
