@@ -154,7 +154,6 @@
     padding: 5px 0;
 }
 
-
 .sp-x-layout-mode .sp-x-box-panel {
     text-align: center;
 }
@@ -219,13 +218,22 @@
 }
 
 .bx-core-adm-dialog div.sp-x-lt-buttons,
-.sp-x-lt-buttons {
+.sp-x-lt-buttons{
     text-align: center;
-    /*display: inline-block;*/
-    /*position: absolute;*/
-    /*right: 0;*/
-    /*top: -15px;*/
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
+
+.bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-buttons,
+.sp-x-layout-mode .sp-x-lt-buttons{
+    display: block;
+    position: inherit;
+    right: inherit;
+    top: inherit;
+}
+
 
 .sp-x-lt-buttons span {
     cursor: pointer;
@@ -238,6 +246,14 @@
     padding: 1px 5px;
 }
 
+.sp-x-lt-buttons span.sp-x-lt-copy{
+    display: none;
+}
+
+.sp-x-layout-mode .sp-x-lt-buttons span.sp-x-lt-copy{
+    display: inline-block;
+}
+
 .sp-x-layout-mode .sp-x-lt-buttons span {
     background: #ddd;
 }
@@ -247,13 +263,22 @@
     background: #FFEBC1;
     color: #d00;
 }
+
 .bx-core-adm-dialog div.sp-x-box-buttons,
 .sp-x-box-buttons {
     text-align: center;
-    /*display: inline-block;*/
-    /*position: absolute;*/
-    /*right: 0;*/
-    /*top: 0;*/
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.bx-core-adm-dialog .sp-x-layout-mode div.sp-x-box-buttons,
+.sp-x-layout-mode .sp-x-box-buttons{
+    display: block;
+    position: inherit;
+    right: inherit;
+    top: inherit;
 }
 
 .sp-x-box-buttons span {
@@ -281,10 +306,6 @@
     float: right;
     text-decoration: none;
 }
-
-/*.sp-x-layout-mode .sp-x-box-copy,*/
-/*.sp-x-layout-mode .sp-x-lt-copy,*/
-/*.sp-x-layout-mode .sp-x-lt-paste{*/
 
 .sp-x-layout-mode .sp-x-box-up,
 .sp-x-layout-mode .sp-x-box-dn {
@@ -349,16 +370,16 @@
     width: 100%;
 }
 
-.sp-x-box-settings-item{
+.sp-x-box-settings-item {
     display: inline-block;
     padding: 8px 0 8px 8px;
 }
 
-.sp-x-lt-settings-group{
+.sp-x-lt-settings-group {
     padding: 8px;
 }
 
-.sp-x-lt-settings-group:last-child{
+.sp-x-lt-settings-group:last-child {
     margin-bottom: 8px;
 }
 
