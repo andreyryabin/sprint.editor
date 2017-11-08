@@ -12,17 +12,17 @@
         {{?}}
         <div class="sp-x-box-buttons">
             {{?it.enableChange}}
+
+            {{?it.compiled.length > 0}}
+            <span title="Дополнительные настройки" class="sp-x-box-settings-toggle">+</span>
+            {{?}}
+
             {{?it.showSortButtons}}
             <span title="Поднять вверх" class="sp-x-box-up">&uarr;</span>
             <span title="Опустить вниз" class="sp-x-box-dn">&darr;</span>
             {{??}}
             <span title="Переместить блок" class="sp-x-box-handle">&uarr;&darr;</span>
             {{?}}
-
-            {{?it.compiled.length > 0}}
-            <span title="Дополнительные настройки" class="sp-x-box-settings-toggle">+</span>
-            {{?}}
-
             <span title="Копировать блок" class="sp-x-box-copy">&equiv;</span>
             <span title="Удалить блок" class="sp-x-box-del">x</span>
             {{?}}
