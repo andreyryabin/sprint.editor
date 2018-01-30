@@ -183,12 +183,6 @@
     margin: 0 0 5px 0;
     text-align: center;
     display: none;
-    /*display: inline-block;*/
-    /*position: absolute;*/
-    /*left: -30px;*/
-    /*top: 20px;*/
-    /*top: 36px;*/
-    /*z-index: 2;*/
 }
 
 .sp-x-lt-grid.ui-sortable-helper .sp-x-lt-col {
@@ -368,7 +362,7 @@
     color: #aaa;
     border: 2px solid #ccc;
     text-align: left;
-    z-index: 2;
+    z-index: 20;
     width: 100%;
 }
 

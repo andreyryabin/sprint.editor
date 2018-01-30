@@ -39,7 +39,8 @@ sprint_editor.registerBlock('text', function ($, $el, data) {
                 ['viewHTML'],
                 ['bold', 'italic', 'underline', 'strikethrough'],
                 ['link'],
-                ['removeformat']
+                ['removeformat'],
+                ['mycss']
             ],
 
             autogrow: true
