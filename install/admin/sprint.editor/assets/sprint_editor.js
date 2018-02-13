@@ -175,17 +175,31 @@ var sprint_editor = {
         return (val) ? val : {};
     },
 
-    makeUid: function () {
+    makeUid: function (prefix) {
         var uniq = Math.random().toString(36).substring(2, 12);
         this._uidcounter++;
 
-        return 'sp-x-' + this._uidcounter + uniq;
+        prefix = (prefix) ? prefix : 'sp-x-';
+
+        return prefix + this._uidcounter + uniq;
     },
 
     create: function ($, params) {
         var $editor = $('.sp-x-editor' + params.uniqid);
         var $inputresult = $('.sp-x-result' + params.uniqid);
         var $form = $editor.closest('form').first();
+
+        $editor.on('keypress','input',function(e){
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        $('form input').on('keypress', function(e) {
+            return e.which !== 13;
+        });
 
         if (!params.jsonValue) {
             params.jsonValue = {};

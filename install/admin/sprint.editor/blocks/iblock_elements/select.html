@@ -1,20 +1,36 @@
 <div class="sp-field">
-    <input type="button" class="sp-toggle" value="Выбрать">
-    <span {{?it.hideSource}}style="display: none"{{?}} class="sp-filter">
-        <select class="sp-select-iblock">
-            <option value="">нет</option>
-            {{~it.iblocks :item:index}}
-            <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
-            </option>
-            {{~}}
-        </select>
+    <select class="sp-select-iblock">
+        <option value="">нет</option>
+        {{~it.iblocks :item:index}}
+        <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
+        </option>
+        {{~}}
+    </select>
+    <input type="button" class="sp-open" value="Выбрать">
+    <input id="{{!it.searchId}}" type="hidden" value=""/>
+    <input type="button" class="sp-toggle" value="Фильтр">
+</div>
+
+<div class="sp-filter">
+    <div class="sp-filter-row">
+        <input class="sp-filter-name" value="{{!it.name}}" type="text" style="width: 250px;" placeholder="Название">
+    </div>
+    <div class="sp-filter-row">
+        <input class="sp-filter-id1" value="{{!it.id1}}" type="text" style="width: 100px;" placeholder="id начальный">
+        ...
+        <input class="sp-filter-id2" value="{{!it.id2}}" type="text" style="width: 100px;" placeholder="id конечный">
+    </div>
+    <div class="sp-filter-row">
+        <input class="sp-filter-subm" type="button" value="найти">
+
         <input class="sp-nav-left" type="button" value="&larr;">
         <input class="sp-nav-right" type="button" value="&rarr;">
         {{=it.page_num}}/{{=it.page_cnt}}
-    </span>
+
+    </div>
 </div>
 
-<div {{?it.hideSource}}style="display: none"{{?}} class="sp-source">
+<div class="sp-source">
     {{~it.source :item:index}}
     <div data-id="{{!item.id}}" class="sp-item">
         {{!item.id}} - {{!item.title}}
@@ -22,6 +38,7 @@
     {{~}}
     <div title="Перетащите элементы вниз для их выбора" class="sp-arrows">&darr;&darr;&darr;</div>
 </div>
+
 
 <div class="sp-elements">
     {{~it.elements :item:index}}

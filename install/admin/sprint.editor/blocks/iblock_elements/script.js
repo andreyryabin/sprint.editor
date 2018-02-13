@@ -11,14 +11,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
         page_num: 1
     };
 
-    if (data.page_num && data.page_num >= 1){
-        navparams.page_num = data.page_num;
-    }
-
-    var hideSource = 1;
-    /*if (data.element_ids.length <=0 ){
-        hideSource = 0;
-    }*/
+    var searchId = sprint_editor.makeUid('sp');
 
     this.getData = function () {
         return data;
@@ -27,26 +20,95 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
     this.collectData = function () {
         data.iblock_id = findIblockId();
         data.element_ids = findElementIds();
-        data.page_num = navparams.page_num;
         return data;
     };
 
     this.afterRender = function () {
-        $el.on('click','.sp-toggle', function(){
-            if (hideSource){
-                $el.find('.sp-source,.sp-filter').show(250);
-                hideSource = 0
-            } else {
-                $el.find('.sp-source,.sp-filter').hide(250);
-                hideSource = 1;
+        $el.on('click', '.sp-open', function () {
+            var iblockId = findIblockId();
+            if (iblockId > 0) {
+                var url = '/bitrix/admin/iblock_element_search.php?' + decodeURIComponent($.param({
+                    lang: 'ru',
+                    IBLOCK_ID: iblockId,
+                    n: searchId,
+                    iblockfix: 'y'
+                }));
+
+                jsUtils.OpenWindow(url, 900, 700);
             }
+        });
+
+        $el.on('change', '#' + searchId, function () {
+            var newid = intval($(this).val());
+            if (newid > 0) {
+
+                var ids = findElementIds();
+                ids.push(newid);
+
+                sendrequest({
+                    iblock_id: findIblockId(),
+                    element_ids: ids,
+                    page: navparams.page_num,
+                    name: $el.find('.sp-filter-name').val(),
+                    id1: $el.find('.sp-filter-id1').val(),
+                    id2: $el.find('.sp-filter-id2').val()
+                });
+            }
+        });
+
+        $el.on('click', '.sp-toggle', function () {
+            if ($el.hasClass('sp-show')) {
+                $el.find('.sp-source,.sp-filter').hide(250);
+                $el.removeClass('sp-show');
+            } else {
+                $el.find('.sp-source,.sp-filter').show(250);
+                $el.addClass('sp-show');
+            }
+        });
+
+
+        $el.on('keypress', 'input', function (e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                var focusclass = $el.find('input:focus').attr('class');
+                focusclass = '.' + focusclass.split(' ').join('.');
+
+                sendrequest({
+                    iblock_id: findIblockId(),
+                    element_ids: findElementIds(),
+                    page: 1,
+                    name: $el.find('.sp-filter-name').val(),
+                    id1: $el.find('.sp-filter-id1').val(),
+                    id2: $el.find('.sp-filter-id2').val()
+                }, function () {
+                    var $input = $el.find(focusclass);
+                    var tval = $input.val();
+                    $input.focus().val('').val(tval);
+
+                });
+            }
+        });
+
+        $el.on('click', '.sp-filter-subm', function () {
+            sendrequest({
+                iblock_id: findIblockId(),
+                element_ids: findElementIds(),
+                page: 1,
+                name: $el.find('.sp-filter-name').val(),
+                id1: $el.find('.sp-filter-id1').val(),
+                id2: $el.find('.sp-filter-id2').val()
+            });
+
         });
 
         $el.on('change', '.sp-select-iblock', function () {
             sendrequest({
                 iblock_id: findIblockId(),
                 element_ids: findElementIds(),
-                page: 1
+                page: 1,
+                name: '',
+                id1: '',
+                id2: ''
             });
         });
 
@@ -54,7 +116,10 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
             sendrequest({
                 iblock_id: findIblockId(),
                 element_ids: findElementIds(),
-                page: navparams.page_left
+                page: navparams.page_left,
+                name: $el.find('.sp-filter-name').val(),
+                id1: $el.find('.sp-filter-id1').val(),
+                id2: $el.find('.sp-filter-id2').val()
             });
         });
 
@@ -62,14 +127,20 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
             sendrequest({
                 iblock_id: findIblockId(),
                 element_ids: findElementIds(),
-                page: navparams.page_right
+                page: navparams.page_right,
+                name: $el.find('.sp-filter-name').val(),
+                id1: $el.find('.sp-filter-id1').val(),
+                id2: $el.find('.sp-filter-id2').val()
             });
         });
 
         sendrequest({
             iblock_id: data.iblock_id,
             element_ids: data.element_ids,
-            page:navparams.page_num
+            page: navparams.page_num,
+            name: $el.find('.sp-filter-name').val(),
+            id1: $el.find('.sp-filter-id1').val(),
+            id2: $el.find('.sp-filter-id2').val()
         });
 
     };
@@ -95,13 +166,14 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
         return values;
     };
 
-    var intval = function(val){
+    var intval = function (val) {
         val = (val) ? val : 0;
-        val = parseInt(val,10);
+        val = parseInt(val, 10);
         return isNaN(val) ? 0 : val;
     };
 
-    var sendrequest = function (requestParams) {
+    var sendrequest = function (requestParams, callback) {
+
         var $jresult = $el.find('.sp-iblock-result');
 
         $.ajax({
@@ -110,9 +182,10 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
             data: requestParams,
             dataType: 'json',
             success: function (result) {
-                result.hideSource = hideSource;
                 result.page_num = intval(result.page_num);
                 result.page_cnt = intval(result.page_cnt);
+
+                result.searchId = searchId;
 
                 navparams.page_num = result.page_num;
                 if (result.page_num - 1 > 1) {
@@ -136,7 +209,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
                 var removeIntent = false;
                 $elem.sortable({
                     items: ".sp-item",
-                    placeholder:"sp-placeholder",
+                    placeholder: "sp-placeholder",
                     over: function () {
                         removeIntent = false;
                     },
@@ -144,7 +217,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
                         removeIntent = true;
                     },
                     beforeStop: function (event, ui) {
-                        if(removeIntent){
+                        if (removeIntent) {
                             ui.item.remove();
                         } else {
                             ui.item.removeAttr('style');
@@ -153,7 +226,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
                     },
                     receive: function (event, ui) {
                         var uiIndex = ui.item.attr('data-id');
-                        var item =  $(this).find('[data-id=' + uiIndex + ']');
+                        var item = $(this).find('[data-id=' + uiIndex + ']');
                         if (item.length > 1) {
                             item.last().remove();
                         }
@@ -164,7 +237,11 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
                     connectToSortable: $elem,
                     helper: "clone",
                     revert: "invalid"
-                  });
+                });
+
+                if (callback) {
+                    callback();
+                }
             },
             error: function () {
 
