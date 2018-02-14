@@ -1,8 +1,8 @@
 <div class="sp-field">
-    <input type="button" class="sp-toggle" value="Выбрать">
+    <input type="button" class="sp-toggle-x" value="Выбрать">
 </div>
 
-<div class="sp-filter">
+<div class="sp-filter-x">
     <div class="sp-filter-row">
         <select class="sp-select-iblock">
             <option value="">нет</option>
@@ -13,7 +13,12 @@
         </select>
         <input type="button" class="sp-open" value="Открыть">
         <input id="{{!it.searchId}}" type="hidden" value=""/>
+
+        <input type="button" class="sp-toggle-y" value="Фильтр">
     </div>
+</div>
+
+<div class="sp-filter-y">
     <div class="sp-filter-row">
         <input class="sp-filter-name" value="{{!it.name}}" type="text" style="width: 250px;" placeholder="Название">
     </div>

@@ -3,12 +3,17 @@
 }
 
 .sp-block-iblock_elements .sp-source,
-.sp-block-iblock_elements .sp-filter{
+.sp-block-iblock_elements .sp-filter-x,
+.sp-block-iblock_elements .sp-filter-y{
     display: none;
 }
 
-.sp-block-iblock_elements.sp-show .sp-source,
-.sp-block-iblock_elements.sp-show .sp-filter{
+.sp-block-iblock_elements.sp-show-y .sp-source,
+.sp-block-iblock_elements.sp-show-y .sp-filter-y{
+    display: block;
+}
+
+.sp-block-iblock_elements.sp-show-x .sp-filter-x{
     display: block;
 }
 
