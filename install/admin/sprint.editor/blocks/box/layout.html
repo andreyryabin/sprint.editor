@@ -2,12 +2,12 @@
     {{?it.enableChange}}
     <div class="sp-x-grid-buttons">
         {{?it.showSortButtons}}
-        <span title="Поднять вверх" class="sp-x-grid-up">&uarr;</span>
-        <span title="Опустить вниз" class="sp-x-grid-down">&darr;</span>
+        <span title="Поднять вверх" class="sp-x-btn sp-x-grid-up">&uarr;</span>
+        <span title="Опустить вниз" class="sp-x-btn sp-x-grid-down">&darr;</span>
         {{??}}
-        <span title="Переместить сетку" class="sp-x-grid-handle">&uarr;&darr;</span>
+        <span title="Переместить сетку" class="sp-x-btn sp-x-grid-handle">&uarr;&darr;</span>
         {{?}}
-        <span title="Удалить сетку" class="sp-x-grid-del">x</span>
+        <span title="Удалить сетку" class="sp-x-btn sp-x-grid-del">x</span>
     </div>
     {{?}}
     {{~it.columns :col:index}}
@@ -15,23 +15,27 @@
         <div class="sp-x-lt-head">
             <span>Колонка {{=index+1}}</span>
             <span class="sp-x-lt-settings-current">{{=col}}</span>
-            {{?it.enableChange}}
+
             <div class="sp-x-lt-buttons">
-                <span title="Вставить блоки в колонку" class="sp-x-lt-paste">&crarr;</span>
-                {{? it.classes}}
-                <span title="Дополнительное оформление" class="sp-x-lt-settings-toggle">+</span>
+                {{?it.classes}}
+                <span title="Дополнительное оформление" class="sp-x-btn sp-x-lt-settings-toggle">+</span>
                 {{?}}
-                <span title="Копировать блоки в колонке" class="sp-x-lt-copy">&equiv;</span>
-                <span title="Удалить колонку" class="sp-x-lt-del">x</span>
+
+                {{?it.enableChange}}
+                <span title="Вставить блоки в колонку" class="sp-x-btn sp-x-lt-paste">&crarr;</span>
+                <span title="Копировать блоки в колонке" class="sp-x-btn sp-x-lt-copy">&equiv;</span>
+                <span title="Удалить колонку" class="sp-x-btn sp-x-lt-del">x</span>
+                {{?}}
             </div>
-            {{?}}
 
         </div>
-        {{?it.enableChange && it.classes}}
+
+        {{?it.classes}}
         <div class="sp-x-lt-settings">
             {{~it.classes :group}}<div class="sp-x-lt-settings-group">{{~group :size}}<span>{{=size}}</span>{{~}}</div>{{~}}
         </div>
         {{?}}
+
     </div>
     {{~}}
 </div>

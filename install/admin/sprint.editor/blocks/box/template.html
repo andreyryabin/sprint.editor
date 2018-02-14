@@ -1,6 +1,8 @@
 <div class="sp-x-box" data-uid="{{=it.uid}}">
     <div class="sp-x-box-panel">
+
         <span title="{{=it.hint}}" class="sp-x-box-title">{{=it.title}}</span>
+
         {{?it.compiled.length > 0}}
         <span class="sp-x-box-settings-current">
             {{~it.compiled :item}}
@@ -10,21 +12,24 @@
             {{~}}
         </span>
         {{?}}
+
         <div class="sp-x-box-buttons">
-            {{?it.enableChange}}
-
             {{?it.compiled.length > 0}}
-            <span title="Дополнительные настройки" class="sp-x-box-settings-toggle">+</span>
+            <span title="Дополнительные настройки" class="sp-x-btn sp-x-box-settings-toggle">+</span>
             {{?}}
 
+            {{?it.enableChange}}
             {{?it.showSortButtons}}
-            <span title="Поднять вверх" class="sp-x-box-up">&uarr;</span>
-            <span title="Опустить вниз" class="sp-x-box-dn">&darr;</span>
+            <span title="Поднять вверх" class="sp-x-btn sp-x-box-up">&uarr;</span>
+            <span title="Опустить вниз" class="sp-x-btn sp-x-box-dn">&darr;</span>
             {{??}}
-            <span title="Переместить блок" class="sp-x-box-handle">&uarr;&darr;</span>
+            <span title="Переместить блок" class="sp-x-btn sp-x-box-handle">&uarr;&darr;</span>
             {{?}}
-            <span title="Копировать блок" class="sp-x-box-copy">&equiv;</span>
-            <span title="Удалить блок" class="sp-x-box-del">x</span>
+            {{?}}
+
+            {{?it.enableChange}}
+            <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">&equiv;</span>
+            <span title="Удалить блок" class="sp-x-btn sp-x-box-del">x</span>
             {{?}}
         </div>
     </div>

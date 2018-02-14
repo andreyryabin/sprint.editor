@@ -193,43 +193,38 @@
     display: block;
 }
 
-.sp-x-grid-buttons span {
-    cursor: pointer;
-    text-decoration: none;
-    border: 1px solid #ccc;
-    color: #aaa;
-    display: inline-block;
-    text-align: center;
-    min-width: 18px;
-    padding: 1px 5px;
-    /*background: #ddd;*/
-}
-
-.sp-x-grid-buttons span:hover,
-.sp-x-grid-buttons span.active {
-    background: #FFEBC1;
-    color: #d00;
-}
-
 .bx-core-adm-dialog div.sp-x-lt-buttons,
-.sp-x-lt-buttons{
+.sp-x-lt-buttons {
     text-align: center;
-    display: inline-block;
+    /*display: inline-block;*/
+    display: block;
     position: absolute;
     right: 0;
     top: 0;
 }
 
 .bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-buttons,
-.sp-x-layout-mode .sp-x-lt-buttons{
-    display: block;
+.sp-x-layout-mode .sp-x-lt-buttons {
+    /*display: block;*/
     position: inherit;
     right: inherit;
     top: inherit;
 }
 
+/*.sp-x-btn.sp-x-box-copy,*/
+/*.sp-x-lt-buttons span.sp-x-lt-copy{*/
+/*display: none;*/
+/*}*/
 
-.sp-x-lt-buttons span {
+/*.sp-x-layout-mode .sp-x-btn.sp-x-box-copy,*/
+/*.sp-x-layout-mode .sp-x-lt-buttons span.sp-x-lt-copy{*/
+/*display: inline-block;*/
+/*}*/
+
+/*.sp-x-box-settings-toggle*/
+/*.sp-x-lt-settings-toggle*/
+
+.sp-x-btn {
     cursor: pointer;
     text-decoration: none;
     border: 1px solid #ccc;
@@ -240,62 +235,41 @@
     padding: 1px 5px;
 }
 
-/*.sp-x-box-buttons span.sp-x-box-copy,*/
-/*.sp-x-lt-buttons span.sp-x-lt-copy{*/
-    /*display: none;*/
-/*}*/
-
-/*.sp-x-layout-mode .sp-x-box-buttons span.sp-x-box-copy,*/
-/*.sp-x-layout-mode .sp-x-lt-buttons span.sp-x-lt-copy{*/
-    /*display: inline-block;*/
-/*}*/
-
-.sp-x-layout-mode .sp-x-lt-buttons span {
-    background: #ddd;
-}
-
-.sp-x-lt-buttons span:hover,
-.sp-x-lt-buttons span.active {
+.sp-x-btn:hover,
+.sp-x-btn.sp-active {
     background: #FFEBC1;
     color: #d00;
 }
 
+/*.sp-x-lt-head:hover .sp-x-lt-buttons .sp-x-btn {*/
+    /*visibility: visible;*/
+/*}*/
+
+/*.sp-x-box:hover .sp-x-box-buttons .sp-x-btn {*/
+    /*visibility: visible;*/
+/*}*/
+
+/*.sp-x-box-buttons .sp-x-btn:not(.sp-x-box-settings-toggle):not(.sp-active),*/
+/*.sp-x-lt-buttons .sp-x-btn:not(.sp-active):not(.sp-x-lt-settings-toggle) {*/
+    /*visibility: hidden;*/
+/*}*/
+
 .bx-core-adm-dialog div.sp-x-box-buttons,
 .sp-x-box-buttons {
     text-align: center;
-    display: inline-block;
+    /*display: inline-block;*/
+    display: block;
     position: absolute;
     right: 0;
     top: 0;
 }
 
 .bx-core-adm-dialog .sp-x-layout-mode div.sp-x-box-buttons,
-.sp-x-layout-mode .sp-x-box-buttons{
-    display: block;
+.sp-x-layout-mode .sp-x-box-buttons {
+    /*display: block;*/
     position: inherit;
     right: inherit;
     top: inherit;
-}
-
-.sp-x-box-buttons span {
-    cursor: pointer;
-    text-decoration: none;
-    border: 1px solid #ccc;
-    color: #aaa;
-    display: inline-block;
-    text-align: center;
-    min-width: 18px;
-    padding: 1px 5px;
-}
-
-.sp-x-layout-mode .sp-x-box-buttons span {
-    background: #e0e8ea;
-}
-
-.sp-x-box-buttons span:hover,
-.sp-x-box-buttons span.active {
-    background: #FFEBC1;
-    color: #d00;
 }
 
 .sp-x-options-link {
@@ -305,7 +279,7 @@
 
 .sp-x-layout-mode .sp-x-box-up,
 .sp-x-layout-mode .sp-x-box-dn {
-    display: none;
+    /*display: none;*/
 }
 
 .sp-x-lt-grid {
@@ -390,7 +364,7 @@
 }
 
 .sp-x-lt-settings span:hover,
-.sp-x-lt-settings span.active {
+.sp-x-lt-settings span.sp-active {
     color: #d00;
     background: #FFEBC1;
 }

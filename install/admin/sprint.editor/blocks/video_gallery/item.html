@@ -1,3 +1,5 @@
-<div class="sp-item {{?it.video}}sp-is-video{{?}}">
-    {{?it.file && it.file.SRC}}<img src="{{!it.file.SRC}}"/>{{?}}
+<div data-uid="{{!it.uid}}" class="sp-item {{?it.item.video}}sp-is-video{{?}} {{?it.active}}sp-active{{?}}">
+    {{?it.item.file && it.item.file.SRC}}
+    <img src="{{!it.item.file.SRC}}"/>
+    {{?}}
 </div>

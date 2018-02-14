@@ -323,8 +323,7 @@ var sprint_editor = {
                     $editor.addClass('sp-x-layout-mode');
                 }
 
-                $(document).scrollTop($editor.offset().top - 50);
-
+                $(document).scrollTop($editor.offset().top - 80);
             });
 
             $editor.on('click', '.sp-x-lt-copy', function (e) {
@@ -440,101 +439,6 @@ var sprint_editor = {
                     });
                 }
             });
-
-            $editor.on('change', '.sp-x-box-settings select', function (e) {
-                var $span = $(this);
-                var $xcol = $span.closest('.sp-x-box');
-                var result = [];
-
-                var $sizes = $xcol.find('.sp-x-box-settings');
-                $sizes.find('select').each(function(){
-                    var tmp = $(this).find('option:selected').text();
-                    result.push(tmp);
-
-                });
-
-                var $cursize = $xcol.find('.sp-x-box-settings-current');
-                $cursize.text(result.join(' '));
-            });
-
-            $editor.on('click', '.sp-x-lt-settings span', function (e) {
-                var $span = $(this);
-
-                var $xcol = $span.closest('.sp-x-lt-col');
-                var $cursize = $xcol.find('.sp-x-lt-settings-current');
-                var $sizes = $xcol.find('.sp-x-lt-settings');
-
-                $span.siblings('span').removeClass('active');
-
-                if ($span.hasClass('active')) {
-                    $span.removeClass('active');
-                } else {
-                    $span.addClass('active');
-                }
-
-                var result = [];
-                $sizes.find('.active').each(function () {
-                    var tmp = $(this).text();
-                    tmp = $.trim(tmp);
-                    result.push(tmp);
-                });
-
-                $cursize.text(result.join(' '));
-
-            });
-
-            $editor.on('click', '.sp-x-box-settings-toggle', function (e) {
-                var $title = $(this);
-                var $xcol = $title.closest('.sp-x-box');
-                var $sizes = $xcol.find('.sp-x-box-settings');
-
-                $editor.find('.sp-x-lt-settings').hide();
-                $editor.find('.sp-x-box-settings').hide();
-                $editor.find('.sp-x-lt-settings-toggle').removeClass('active');
-                $editor.find('.sp-x-box-settings-toggle').not($title).removeClass('active');
-
-                if ($title.hasClass('active')) {
-                    $sizes.hide(250);
-                    $title.removeClass('active');
-                } else {
-                    $sizes.show(250);
-                    $title.addClass('active');
-                }
-            });
-
-            $editor.on('click', '.sp-x-lt-settings-toggle', function (e) {
-                var $title = $(this);
-                var $xcol = $title.closest('.sp-x-lt-col');
-                var $sizes = $xcol.find('.sp-x-lt-settings');
-
-                $editor.find('.sp-x-lt-settings').hide();
-                $editor.find('.sp-x-box-settings').hide();
-                $editor.find('.sp-x-lt-settings-toggle').not($title).removeClass('active');
-                $editor.find('.sp-x-box-settings-toggle').removeClass('active');
-
-                if ($sizes.length > 0) {
-                    if ($title.hasClass('active')) {
-                        $sizes.hide(250);
-                        $title.removeClass('active');
-                    } else {
-                        $editor.find('.sp-x-lt-settings-toggle').not($title).removeClass('active');
-
-                        var cursizes = $xcol.find('.sp-x-lt-settings-current').text();
-                        cursizes = cursizes.split(' ');
-                        $sizes.find('span').each(function () {
-                            var stext = $(this).text();
-                            stext = $.trim(stext);
-                            if (stext && $.inArray(stext, cursizes) >= 0) {
-                                $(this).addClass('active');
-                            }
-                        });
-
-                        $sizes.show(250);
-                        $title.addClass('active');
-                    }
-                }
-            });
-
             $editor.find('.sp-x-boxes').sortable({
                 items: ".sp-x-lt-grid",
                 handle: ".sp-x-grid-handle",
@@ -543,16 +447,111 @@ var sprint_editor = {
 
         }
 
+        $editor.on('change', '.sp-x-box-settings select', function (e) {
+            var $span = $(this);
+            var $xcol = $span.closest('.sp-x-box');
+            var result = [];
+
+            var $sizes = $xcol.find('.sp-x-box-settings');
+            $sizes.find('select').each(function(){
+                var tmp = $(this).find('option:selected').text();
+                result.push(tmp);
+
+            });
+
+            var $cursize = $xcol.find('.sp-x-box-settings-current');
+            $cursize.text(result.join(' '));
+        });
+
+        $editor.on('click', '.sp-x-lt-settings span', function (e) {
+            var $span = $(this);
+
+            var $xcol = $span.closest('.sp-x-lt-col');
+            var $cursize = $xcol.find('.sp-x-lt-settings-current');
+            var $sizes = $xcol.find('.sp-x-lt-settings');
+
+            $span.siblings('span').removeClass('sp-active');
+
+            if ($span.hasClass('sp-active')) {
+                $span.removeClass('sp-active');
+            } else {
+                $span.addClass('sp-active');
+            }
+
+            var result = [];
+            $sizes.find('.sp-active').each(function () {
+                var tmp = $(this).text();
+                tmp = $.trim(tmp);
+                result.push(tmp);
+            });
+
+            $cursize.text(result.join(' '));
+
+        });
+
+        $editor.on('click', '.sp-x-box-settings-toggle', function (e) {
+            var $title = $(this);
+            var $xcol = $title.closest('.sp-x-box');
+            var $sizes = $xcol.find('.sp-x-box-settings');
+
+            $editor.find('.sp-x-lt-settings').hide();
+            $editor.find('.sp-x-box-settings').hide();
+            $editor.find('.sp-x-lt-settings-toggle').removeClass('sp-active');
+            $editor.find('.sp-x-box-settings-toggle').not($title).removeClass('sp-active');
+
+            if ($title.hasClass('sp-active')) {
+                $sizes.hide(250);
+                $title.removeClass('sp-active');
+            } else {
+                $sizes.show(250);
+                $title.addClass('sp-active');
+            }
+        });
+
+        $editor.on('click', '.sp-x-lt-settings-toggle', function (e) {
+            var $title = $(this);
+            var $xcol = $title.closest('.sp-x-lt-col');
+            var $sizes = $xcol.find('.sp-x-lt-settings');
+
+            $editor.find('.sp-x-lt-settings').hide();
+            $editor.find('.sp-x-box-settings').hide();
+            $editor.find('.sp-x-lt-settings-toggle').not($title).removeClass('sp-active');
+            $editor.find('.sp-x-box-settings-toggle').removeClass('sp-active');
+
+            if ($sizes.length > 0) {
+                if ($title.hasClass('sp-active')) {
+                    $sizes.hide(250);
+                    $title.removeClass('sp-active');
+                } else {
+                    $editor.find('.sp-x-lt-settings-toggle').not($title).removeClass('sp-active');
+
+                    var cursizes = $xcol.find('.sp-x-lt-settings-current').text();
+                    cursizes = cursizes.split(' ');
+                    $sizes.find('span').each(function () {
+                        var stext = $(this).text();
+                        stext = $.trim(stext);
+                        if (stext && $.inArray(stext, cursizes) >= 0) {
+                            $(this).addClass('sp-active');
+                        }
+                    });
+
+                    $sizes.show(250);
+                    $title.addClass('sp-active');
+                }
+            }
+        });
+
+
         function checkClipboardButtons() {
             var clipboardData = sprint_editor.getClipboard();
 
             var cntBlocks = 0;
-            $editor.find('.sp-x-box-copy').removeClass('active');
+            $editor.find('.sp-x-box-copy').removeClass('sp-active');
 
             $.each(clipboardData, function (blockUid, blockData) {
                 var $block = $editor.find('[data-uid=' + blockUid + ']');
                 if ($block.length > 0) {
-                    $block.find('.sp-x-box-copy').addClass('active');
+                    $block.find('.sp-x-box-copy').addClass('sp-active');
                 }
                 cntBlocks++;
             });

@@ -1,5 +1,5 @@
 
-.sp-block-gallery .sp-image {
+.sp-block-gallery .sp-item {
     position: relative;
     width: 98px;
     height: 55px;
@@ -20,7 +20,7 @@
     float: left;
 }
 
-.sp-block-gallery .sp-image-desc {
+.sp-block-gallery .sp-item-desc {
     width: 80%;
 }
 

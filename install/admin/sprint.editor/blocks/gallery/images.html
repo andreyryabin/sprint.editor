@@ -1,7 +1,5 @@
-{{ for(var prop in it.images) { var item =  it.images[prop]; }}
-    {{?item.file && item.file.SRC}}
-    <div data-uid="{{!prop}}" class="sp-image">
-        <img src="{{!item.file.SRC}}"/>
-    </div>
-    {{?}}
-{{ } }}
+{{?it.item.file && it.item.file.SRC}}
+<div data-uid="{{!it.uid}}" class="sp-item {{?it.active}}sp-active{{?}}">
+    <img src="{{!it.item.file.SRC}}"/>
+</div>
+{{?}}

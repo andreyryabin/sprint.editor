@@ -3,13 +3,12 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         images: []
     }, data);
 
-    var imageCollection = {};
+    var itemsCollection = {};
 
     $.each(data.images, function (index, item) {
-        var uid = sprint_editor.makeUid('spg');
-        imageCollection[uid] = item;
+        var uid = sprint_editor.makeUid('sp');
+        itemsCollection[uid] = item;
     });
-
 
 
     this.getData = function () {
@@ -20,10 +19,10 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
 
         data.images = [];
 
-        $el.find('.sp-image').each(function () {
+        $el.find('.sp-item').each(function () {
             var uid = $(this).data('uid');
-            if (uid && imageCollection[uid]) {
-                data.images.push(imageCollection[uid]);
+            if (uid && itemsCollection[uid]) {
+                data.images.push(itemsCollection[uid]);
             }
 
         });
@@ -32,8 +31,9 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
     };
 
     this.afterRender = function () {
-
-        renderfiles();
+        $.each(itemsCollection, function (uid, item) {
+            renderitem(uid);
+        });
 
         var $btn = $el.find('.sp-file');
         var $btninput = $btn.find('input[type=file]');
@@ -45,14 +45,16 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             dataType: 'json',
             done: function (e, result) {
                 $.each(result.result.file, function (index, file) {
-                    var uid = sprint_editor.makeUid('spg');
-                    imageCollection[uid] = {
+                    var uid = sprint_editor.makeUid('sp');
+                    itemsCollection[uid] = {
                         file: file,
                         desc: ''
                     };
+                    renderitem(uid);
+
                 });
 
-                renderfiles();
+
             },
             progressall: function (e, result) {
                 var progress = parseInt(result.loaded / result.total * 100, 10);
@@ -75,33 +77,18 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             }
         });
 
-        $el.on('click', '.sp-image-del', function () {
-
+        $el.on('click', '.sp-item-del', function () {
             var $image = $el.find('.sp-active');
-
             $image.remove();
-            $el.find('.sp-edit').hide(250).empty();
+            closeedit();
         });
 
-        $el.on('click', '.sp-image', function () {
-
-            $el.find('.sp-image').removeClass('sp-active');
-
+        $el.on('click', '.sp-item', function () {
+            $el.find('.sp-item').removeClass('sp-active');
             $(this).addClass('sp-active');
+            var uid = $(this).data('uid');
 
-            var $image = $el.find('.sp-active');
-            var uid = $image.data('uid');
-
-            if (imageCollection[uid]) {
-                $el.find('.sp-edit').html(
-                    sprint_editor.renderTemplate('gallery-edit', imageCollection[uid])
-                ).show(250);
-
-                $el.find('.sp-image-desc').bindWithDelay('input', function () {
-                    imageCollection[uid].desc = $(this).val();
-                }, 500);
-
-            }
+            openedit(uid);
         });
 
         $el.find('.sp-download-url').bindWithDelay('input', function () {
@@ -125,13 +112,13 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
                 dataType: 'json',
                 success: function (result) {
                     if (result.image) {
-                        var uid = sprint_editor.makeUid('spg');
+                        var uid = sprint_editor.makeUid('sp');
 
-                        imageCollection[uid] = {
+                        itemsCollection[uid] = {
                             file: result.image,
                             desc: ''
                         };
-                        renderfiles();
+                        renderitem(uid);
                     }
 
                     $urltext.val('');
@@ -142,7 +129,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
 
         var removeIntent = false;
         $el.find('.sp-result').sortable({
-            items: ".sp-image",
+            items: ".sp-item",
             placeholder: "sp-placeholder",
             over: function () {
                 removeIntent = false;
@@ -153,6 +140,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             beforeStop: function (event, ui) {
                 if (removeIntent) {
                     ui.item.remove();
+                    closeedit();
                 } else {
                     ui.item.removeAttr('style');
                 }
@@ -161,16 +149,46 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         });
     };
 
-    var renderfiles = function () {
-        $el.find('.sp-edit').hide(250).empty();
+    var renderitem = function (uid) {
+        if (!itemsCollection[uid]) {
+            return;
+        }
 
-        $el.find('.sp-result').html(
-            sprint_editor.renderTemplate('gallery-images', {
-                images: imageCollection
-            })
-        );
+        var item = itemsCollection[uid];
+        var $item = $el.find('[data-uid="' + uid + '"]');
+
+        if ($item.length > 0) {
+            $item.replaceWith(sprint_editor.renderTemplate('gallery-images', {
+                item: item,
+                uid: uid,
+                active:1
+            }));
+
+        } else {
+            $el.find('.sp-result').append(sprint_editor.renderTemplate('gallery-images', {
+                item: item,
+                uid: uid,
+                active:0
+            }));
+        }
+    };
+
+    var closeedit = function () {
+        $el.find('.sp-edit').hide(250).empty();
+    };
+
+    var openedit = function (uid) {
+        if (!itemsCollection[uid]) {
+            return;
+        }
+        $el.find('.sp-edit').html(
+            sprint_editor.renderTemplate('gallery-edit', itemsCollection[uid])
+        ).show(250);
+
+        $el.find('.sp-item-desc').bindWithDelay('input', function () {
+            itemsCollection[uid].desc = $(this).val();
+        }, 500);
 
 
     }
-
 });
