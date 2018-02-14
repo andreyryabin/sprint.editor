@@ -1,6 +1,6 @@
 var sprint_editor = {
     _templates: {},
-    _tplcache:{},
+    _tplcache: {},
     _parameters: {},
     _registered: {},
     _events: {},
@@ -41,7 +41,7 @@ var sprint_editor = {
 
     getBlockWebPath: function (blockName) {
         var values = this.getBlockParams(blockName);
-        if (values.islocal){
+        if (values.islocal) {
             return '/local/admin/sprint.editor/' + values.groupname + '/' + values.name;
         } else {
             return '/bitrix/admin/sprint.editor/' + values.groupname + '/' + values.name;
@@ -50,7 +50,7 @@ var sprint_editor = {
 
     renderTemplate: function (name, data) {
         if (window.doT && this._templates[name]) {
-            if (this._tplcache[name]){
+            if (this._tplcache[name]) {
                 return this._tplcache[name](data);
             } else {
                 this._tplcache[name] = window.doT.template(this._templates[name]);
@@ -90,21 +90,55 @@ var sprint_editor = {
         }
     },
 
-    collectData: function (entry) {
-        var blockData = {};
+    beforeDelete: function (uid) {
+        if (!sprint_editor._entries[uid]) {
+            return;
+        }
 
-        if (entry && typeof entry.collectData == 'function') {
-            blockData = entry.collectData();
+        var entry = sprint_editor._entries[uid];
 
-            if (typeof entry.getAreas === 'function') {
-                var areas = entry.getAreas();
+        if (typeof entry.beforeDelete === 'function') {
+            entry.beforeDelete();
+        }
 
-                for (var prop in areas) {
-                    if (areas.hasOwnProperty(prop)) {
-                        var area = areas[prop];
-                        blockData[area.dataKey] = area.block.collectData();
+        if (typeof entry.getAreas === 'function') {
+            var areas = entry.getAreas();
+            for (var prop in areas) {
+                if (areas.hasOwnProperty(prop)) {
+                    var area = areas[prop];
+                    if (typeof area.block.beforeDelete === 'function') {
+                        area.block.beforeDelete();
                     }
                 }
+            }
+        }
+
+
+    },
+
+    collectData: function (uid) {
+        var blockData = {};
+        if (!sprint_editor._entries[uid]) {
+            return blockData;
+        }
+
+        var entry = sprint_editor._entries[uid];
+
+        if (typeof entry.collectData !== 'function') {
+            return blockData;
+        }
+
+        blockData = entry.collectData();
+
+        if (typeof entry.getAreas !== 'function') {
+            return blockData;
+        }
+
+        var areas = entry.getAreas();
+        for (var prop in areas) {
+            if (areas.hasOwnProperty(prop)) {
+                var area = areas[prop];
+                blockData[area.dataKey] = area.block.collectData();
             }
         }
 
@@ -136,7 +170,7 @@ var sprint_editor = {
     copyToClipboard: function (uid) {
         if (window.localStorage && sprint_editor._entries[uid]) {
 
-            var blockData = sprint_editor.collectData(sprint_editor._entries[uid]);
+            var blockData = sprint_editor.collectData(uid);
             var val = JSON.parse(
                 localStorage.getItem('sprint-editor-cb01')
             );
@@ -189,7 +223,7 @@ var sprint_editor = {
         var $inputresult = $('.sp-x-result' + params.uniqid);
         var $form = $editor.closest('form').first();
 
-        $editor.on('keypress','input',function(e){
+        $editor.on('keypress', 'input', function (e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
                 e.preventDefault();
@@ -197,7 +231,7 @@ var sprint_editor = {
             }
         });
 
-        $('form input').on('keypress', function(e) {
+        $('form input').on('keypress', function (e) {
             return e.which !== 13;
         });
 
@@ -261,9 +295,7 @@ var sprint_editor = {
                             return true;
                         }
 
-                        var blockData = sprint_editor.collectData(
-                            sprint_editor._entries[uid]
-                        );
+                        var blockData = sprint_editor.collectData(uid);
 
 
                         var $boxsett = $(this).find('.sp-x-box-settings');
@@ -340,7 +372,7 @@ var sprint_editor = {
                 var $grid = $(this).closest('.sp-x-lt-grid');
                 var $col = $(this).closest('.sp-x-lt-col');
 
-                var gindex =  $editor.find('.sp-x-lt-grid').index($grid);
+                var gindex = $editor.find('.sp-x-lt-grid').index($grid);
                 var cindex = $grid.find('.sp-x-lt-col').index($col);
 
                 var clipboardData = sprint_editor.getClipboard();
@@ -408,17 +440,30 @@ var sprint_editor = {
             $editor.on('click', '.sp-x-box-del', function (e) {
                 e.preventDefault();
                 var $target = $(this).closest('.sp-x-box');
+
+                var uid = $target.data('uid');
+                sprint_editor.beforeDelete(uid);
+
                 $target.hide(250, function () {
                     $target.remove();
                 });
             });
 
-            $editor.on('click','.sp-x-grid-del',function(e){
+            $editor.on('click', '.sp-x-grid-del', function (e) {
                 e.preventDefault();
+
                 var $grid = $(this).closest('.sp-x-lt-grid');
+
+                $grid.find('.sp-x-box').each(function () {
+                    var uid = $(this).data('uid');
+                    sprint_editor.beforeDelete(uid);
+                });
+
                 $grid.hide(250, function () {
                     $grid.remove();
                 });
+
+
             });
 
             $editor.on('click', '.sp-x-lt-del', function (e) {
@@ -426,9 +471,14 @@ var sprint_editor = {
                 var $grid = $(this).closest('.sp-x-lt-grid');
                 var $col = $(this).closest('.sp-x-lt-col');
 
+                $col.find('.sp-x-box').each(function () {
+                    var uid = $(this).data('uid');
+                    sprint_editor.beforeDelete(uid);
+                });
+
                 var colcount = $grid.find('.sp-x-lt-col').length;
                 var newcount = colcount - 1;
-                if (newcount > 0){
+                if (newcount > 0) {
                     $col.hide(250, function () {
                         $col.remove();
                         $grid.attr('class', 'sp-x-lt-grid').addClass('sp-x-lt-type' + newcount);
@@ -438,6 +488,8 @@ var sprint_editor = {
                         $grid.remove();
                     });
                 }
+
+
             });
 
             $editor.find('.sp-x-boxes').sortable({
@@ -454,7 +506,7 @@ var sprint_editor = {
             var result = [];
 
             var $sizes = $xcol.find('.sp-x-box-settings');
-            $sizes.find('select').each(function(){
+            $sizes.find('select').each(function () {
                 var tmp = $(this).find('option:selected').text();
                 result.push(tmp);
 

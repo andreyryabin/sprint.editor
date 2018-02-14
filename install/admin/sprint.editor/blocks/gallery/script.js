@@ -79,6 +79,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
 
         $el.on('click', '.sp-item-del', function () {
             var $image = $el.find('.sp-active');
+            deletefiles($image.data('uid'));
             $image.remove();
             closeedit();
         });
@@ -139,6 +140,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             },
             beforeStop: function (event, ui) {
                 if (removeIntent) {
+                    deletefiles(ui.item.data('uid'));
                     ui.item.remove();
                     closeedit();
                 } else {
@@ -161,14 +163,14 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             $item.replaceWith(sprint_editor.renderTemplate('gallery-images', {
                 item: item,
                 uid: uid,
-                active:1
+                active: 1
             }));
 
         } else {
             $el.find('.sp-result').append(sprint_editor.renderTemplate('gallery-images', {
                 item: item,
                 uid: uid,
-                active:0
+                active: 0
             }));
         }
     };
@@ -192,7 +194,28 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
 
     }
 
-    this.beforeDelete = function(){
-        
+    var deletefiles = function(uid){
+        if (uid && itemsCollection[uid]){
+            var items = {};
+            items[uid] =  itemsCollection[uid];
+            $.ajax({
+                url: sprint_editor.getBlockWebPath('gallery') + '/delete.php',
+                type: 'post',
+                data: {
+                    items: items
+                }
+            });
+        }
+    };
+
+    this.beforeDelete = function () {
+        $.ajax({
+            url: sprint_editor.getBlockWebPath('gallery') + '/delete.php',
+            type: 'post',
+            data: {
+                items: itemsCollection
+            }
+        });
     }
+
 });

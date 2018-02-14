@@ -27,6 +27,9 @@ sprint_editor.registerBlock('image', function($, $el, data) {
             url: sprint_editor.getBlockWebPath('image') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
+
+                deletefiles();
+
                 $.each(result.result.file, function(index,file){
                     data.file = file;
                 });
@@ -47,6 +50,8 @@ sprint_editor.registerBlock('image', function($, $el, data) {
 
 
         $el.on('click', '.sp-image_item-del', function(){
+            deletefiles();
+
             data['file'] = {};
             data['desc'] = '';
             renderfiles();
@@ -57,6 +62,20 @@ sprint_editor.registerBlock('image', function($, $el, data) {
         $el.find('.sp-result').html(
             sprint_editor.renderTemplate('image-image', data)
         );
+    };
+
+    var deletefiles = function(){
+        $.ajax({
+            url: sprint_editor.getBlockWebPath('image') + '/delete.php',
+            type: 'post',
+            data: {
+                file: data.file
+            }
+        });
+    };
+
+    this.beforeDelete = function () {
+        deletefiles();
     }
 
 
