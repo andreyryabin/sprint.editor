@@ -56,24 +56,13 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
             }
         });
 
-        $el.on('click', '.sp-toggle-x', function () {
-            if ($el.hasClass('sp-show-x')) {
-                $el.find('.sp-source,.sp-filter-x,.sp-filter-y').hide(250);
-                $el.removeClass('sp-show-x');
-                $el.removeClass('sp-show-y');
+        $el.on('click', '.sp-toggle', function () {
+            if ($el.hasClass('sp-show')) {
+                $el.find('.sp-source,.sp-filter').hide(250);
+                $el.removeClass('sp-show');
             } else {
-                $el.find('.sp-filter-x').show(250);
-                $el.addClass('sp-show-x');
-            }
-        });
-
-        $el.on('click', '.sp-toggle-y', function () {
-            if ($el.hasClass('sp-show-y')) {
-                $el.find('.sp-source,.sp-filter-y').hide(250);
-                $el.removeClass('sp-show-y');
-            } else {
-                $el.find('.sp-source,.sp-filter-y').show(250);
-                $el.addClass('sp-show-y');
+                $el.find('.sp-source,.sp-filter').show(250);
+                $el.addClass('sp-show');
             }
         });
 
@@ -182,6 +171,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
         return isNaN(val) ? 0 : val;
     };
 
+
     var sendrequest = function (requestParams, callback) {
 
         var $jresult = $el.find('.sp-iblock-result');
@@ -207,6 +197,12 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
                     navparams.page_right = result.page_cnt;
                 } else {
                     navparams.page_right = result.page_num + 1;
+                }
+
+                if (result.iblock_id > 0){
+                    $el.find('.sp-open').show();
+                } else {
+                    $el.find('.sp-open').hide();
                 }
 
                 $jresult.html(
