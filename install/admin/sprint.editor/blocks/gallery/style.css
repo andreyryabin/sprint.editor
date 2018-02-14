@@ -3,12 +3,21 @@
     position: relative;
     width: 98px;
     height: 55px;
-    display: inline-block;
     background: #ccc;
-    margin: 0 5px 5px 0;
     text-align: center;
     border: 2px solid #eee;
     cursor: pointer;
+    margin: 3px;
+    float: left;
+}
+
+
+.sp-block-gallery .sp-placeholder {
+    border: 2px dotted black;
+    width: 98px;
+    height: 55px;
+    margin: 3px;
+    float: left;
 }
 
 .sp-block-gallery .sp-image-desc {
@@ -28,12 +37,16 @@
 .sp-block-gallery .sp-result {
     background: #eee;
     min-height: 55px;
-    padding: 10px 10px 5px 10px;
+    padding: 5px;
 }
 
 .sp-block-gallery .sp-source{
     background: #FFEBC1;
     display: none;
+}
+
+.sp-block-gallery.sp-show .sp-source{
+    display: block;
 }
 
 .sp-block-gallery .sp-download-url{

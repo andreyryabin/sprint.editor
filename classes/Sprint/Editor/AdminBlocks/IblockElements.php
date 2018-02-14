@@ -11,6 +11,9 @@ class IblockElements
     public function __construct() {
         \CModule::IncludeModule('iblock');
 
+        $name = !empty($_REQUEST['name']) ? trim($_REQUEST['name']) : '';
+        $id1 = !empty($_REQUEST['id1']) ? intval($_REQUEST['id1']) : '';
+        $id2 = !empty($_REQUEST['id2']) ? trim($_REQUEST['id2']) : '';
 
         $ids = !empty($_REQUEST['element_ids']) ? $_REQUEST['element_ids'] : array();
         $ids = array_map(function ($val) {
@@ -27,7 +30,10 @@ class IblockElements
             'page' => $page,
             'limit' => 10,
             'iblock_id' => $ibid,
-            'element_ids' => $ids
+            'element_ids' => $ids,
+            'name' => $name,
+            'id1' => $id1,
+            'id2' => $id2,
         );
     }
 
@@ -56,8 +62,20 @@ class IblockElements
                 //$filter['!ID'] = $this->params['element_ids'];
             }
 
+            if (!empty($this->params['name'])){
+                $filter['NAME'] = '%'.$this->params['name'].'%';
+            }
+
+            if (!empty($this->params['id1'])){
+                $filter['>=ID'] = $this->params['id1'];
+            }
+
+            if (!empty($this->params['id2'])){
+                $filter['<=ID'] = $this->params['id2'];
+            }
+
             $dbRes = \CIBlockElement::GetList(array(
-                'ID' => 'DESC'
+                'ID' => 'ASC'
             ), $filter, false, array(
                 'nPageSize' => $this->params['limit'],
                 'iNumPage' => $this->params['page']
@@ -120,7 +138,10 @@ class IblockElements
             'iblock_id' => $this->params['iblock_id'],
             'element_ids' => $this->params['element_ids'],
             'page_num' => $pageNum,
-            'page_cnt' => $pageCnt
+            'page_cnt' => $pageCnt,
+            'name' => $this->params['name'],
+            'id1' => $this->params['id1'],
+            'id2' => $this->params['id2'],
         )));
     }
     

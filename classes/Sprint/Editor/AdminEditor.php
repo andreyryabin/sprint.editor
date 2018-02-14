@@ -199,6 +199,7 @@ class AdminEditor
 
         $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.min.css');
         $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/trumbowyg.min.js');
+        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/trumbowyg.mycss.js');
         if (Locale::isWin1251()) {
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/langs/ru.windows-1251.js');
         } else {

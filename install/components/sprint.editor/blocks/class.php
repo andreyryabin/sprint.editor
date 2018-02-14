@@ -168,7 +168,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
     }
 
-    public function includeLayoutBlocks($columnIndex) {
+    protected function includeLayoutBlocks($columnIndex) {
         $pos = $this->layoutIndex . ',' . $columnIndex;
         if (isset($this->preparedBlocks[$pos])) {
             foreach ($this->preparedBlocks[$pos] as $block) {

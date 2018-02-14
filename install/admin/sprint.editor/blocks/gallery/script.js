@@ -1,21 +1,38 @@
 sprint_editor.registerBlock('gallery', function ($, $el, data) {
     data = $.extend({
         images: []
-
     }, data);
 
-    var hideSource = 1;
+    var imageCollection = {};
+
+    $.each(data.images, function (index, item) {
+        var uid = sprint_editor.makeUid('spg');
+        imageCollection[uid] = item;
+    });
+
+
 
     this.getData = function () {
         return data;
     };
 
     this.collectData = function () {
+
+        data.images = [];
+
+        $el.find('.sp-image').each(function () {
+            var uid = $(this).data('uid');
+            if (uid && imageCollection[uid]) {
+                data.images.push(imageCollection[uid]);
+            }
+
+        });
+
         return data;
     };
 
     this.afterRender = function () {
-        renderSource();
+
         renderfiles();
 
         var $btn = $el.find('.sp-file');
@@ -28,10 +45,11 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             dataType: 'json',
             done: function (e, result) {
                 $.each(result.result.file, function (index, file) {
-                    data.images.push({
+                    var uid = sprint_editor.makeUid('spg');
+                    imageCollection[uid] = {
                         file: file,
                         desc: ''
-                    });
+                    };
                 });
 
                 renderfiles();
@@ -47,47 +65,44 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
 
-        $el.on('click', '.sp-toggle-source', function () {
-            toggleSource();
+        $el.on('click', '.sp-toggle', function () {
+            if ($el.hasClass('sp-show')) {
+                $el.find('.sp-source').hide(250);
+                $el.removeClass('sp-show');
+            } else {
+                $el.find('.sp-source').show(250);
+                $el.addClass('sp-show');
+            }
         });
 
         $el.on('click', '.sp-image-del', function () {
 
             var $image = $el.find('.sp-active');
-            var index = $el.find('.sp-image').index($image);
 
-            if (data.images[index]) {
-                data.images.splice(index, 1);
-                $image.remove();
-                $el.find('.sp-edit').hide(250).empty();
-            }
-
+            $image.remove();
+            $el.find('.sp-edit').hide(250).empty();
         });
 
-        $el.on('click','.sp-image',function(){
+        $el.on('click', '.sp-image', function () {
 
             $el.find('.sp-image').removeClass('sp-active');
 
             $(this).addClass('sp-active');
 
-
             var $image = $el.find('.sp-active');
-            var index = $el.find('.sp-image').index($image);
+            var uid = $image.data('uid');
 
-            if (data.images[index]){
+            if (imageCollection[uid]) {
                 $el.find('.sp-edit').html(
-                    sprint_editor.renderTemplate('gallery-edit', data.images[index])
+                    sprint_editor.renderTemplate('gallery-edit', imageCollection[uid])
                 ).show(250);
 
                 $el.find('.sp-image-desc').bindWithDelay('input', function () {
-                    data.images[index].desc = $(this).val();
+                    imageCollection[uid].desc = $(this).val();
                 }, 500);
 
             }
-
-
         });
-
 
         $el.find('.sp-download-url').bindWithDelay('input', function () {
             var $urltext = $(this);
@@ -110,10 +125,12 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
                 dataType: 'json',
                 success: function (result) {
                     if (result.image) {
-                        data.images.push({
+                        var uid = sprint_editor.makeUid('spg');
+
+                        imageCollection[uid] = {
                             file: result.image,
                             desc: ''
-                        });
+                        };
                         renderfiles();
                     }
 
@@ -123,34 +140,37 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         }, 500);
 
 
-    };
+        var removeIntent = false;
+        $el.find('.sp-result').sortable({
+            items: ".sp-image",
+            placeholder: "sp-placeholder",
+            over: function () {
+                removeIntent = false;
+            },
+            out: function () {
+                removeIntent = true;
+            },
+            beforeStop: function (event, ui) {
+                if (removeIntent) {
+                    ui.item.remove();
+                } else {
+                    ui.item.removeAttr('style');
+                }
 
-    var renderSource = function () {
-        var $obj = $el.find('.sp-source');
-        if (hideSource) {
-            $obj.hide(250);
-        } else {
-            $obj.show(250);
-        }
-    };
-
-    var toggleSource = function () {
-        if (hideSource) {
-            hideSource = 0;
-            renderSource();
-
-        } else {
-            hideSource = 1;
-            renderSource();
-        }
+            }
+        });
     };
 
     var renderfiles = function () {
         $el.find('.sp-edit').hide(250).empty();
 
         $el.find('.sp-result').html(
-            sprint_editor.renderTemplate('gallery-images', data)
+            sprint_editor.renderTemplate('gallery-images', {
+                images: imageCollection
+            })
         );
+
+
     }
 
 });

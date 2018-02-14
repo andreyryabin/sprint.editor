@@ -316,10 +316,15 @@ var sprint_editor = {
 
             $editor.on('click', '.sp-x-layout-toggle', function (e) {
                 if ($editor.hasClass('sp-x-layout-mode')) {
+                    $(this).removeClass('adm-btn-active');
                     $editor.removeClass('sp-x-layout-mode');
                 } else {
+                    $(this).addClass('adm-btn-active');
                     $editor.addClass('sp-x-layout-mode');
                 }
+
+                $(document).scrollTop($editor.offset().top - 50);
+
             });
 
             $editor.on('click', '.sp-x-lt-copy', function (e) {

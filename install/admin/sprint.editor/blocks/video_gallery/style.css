@@ -3,12 +3,13 @@
     position: relative;
     width: 98px;
     height: 55px;
-    display: inline-block;
     background: #ccc;
-    margin: 0 5px 5px 0;
+    margin: 3px;
     text-align: center;
     border: 2px solid #eee;
     cursor: pointer;
+    float: left;
+
 }
 
 .sp-block-video_gallery .sp-item {
@@ -33,7 +34,7 @@
 .sp-block-video_gallery .sp-result {
     background: #eee;
     min-height: 55px;
-    padding: 10px 10px 5px 10px;
+    padding: 5px;
 }
 
 .sp-block-video_gallery .sp-source{

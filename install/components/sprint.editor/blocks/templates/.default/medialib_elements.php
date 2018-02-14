@@ -10,17 +10,19 @@ $images = Sprint\Editor\Blocks\MedialibElements::getImages($block, array(
 ));
 ?><?if (!empty($images)):?>
 <div class="sp-gallery">
-    <ul class="sp-gallery-items">
+    <div class="sp-gallery-items">
         <?foreach ($images as $image):?>
-            <li class="sp-gallery-item">
+            <div class="sp-gallery-item">
                 <a data-fancybox="gallery" class="sp-gallery-item-img-wrapper fancy" rel="media-gallery" href="<?=$image['DETAIL_SRC']?>">
                     <img alt="<?=$image['DESCRIPTION']?>" src="<?=$image['SRC']?>">
+                    <?if (!empty($image['DESCRIPTION'])):?>
                     <div class="sp-gallery-item-text">
                         <div class="sp-gallery-item-text-content"><?=$image['DESCRIPTION']?></div>
                     </div>
+                    <?endif;?>
                 </a>
-            </li>
+            </div>
         <?endforeach;?>
-    </ul>
+    </div>
 </div>
 <?endif;?>

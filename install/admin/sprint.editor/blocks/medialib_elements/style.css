@@ -3,23 +3,16 @@
 }
 
 .sp-block-medialib_elements .sp-item {
-    cursor: move;
-    overflow: hidden;
-    text-align: center;
-    width: 100px;
-    height: 100px;
-    /*float: left;*/
-    margin: 0 6px 6px 0;
-    display: inline-block;
-}
-
-.sp-block-medialib_elements .sp-placeholder{
-    border: 1px dotted black;
+    position: relative;
     width: 98px;
-    height: 98px;
-    /*float: left;*/
-    margin: 0 5px 5px 0;
-    display: inline-block;
+    height: 55px;
+    background: #ccc;
+    text-align: center;
+    border: 2px solid #eee;
+    cursor: pointer;
+    margin: 3px;
+    float: left;
+    overflow: hidden;
 }
 
 .sp-block-medialib_elements .sp-item img{
@@ -27,9 +20,33 @@
     min-height: 100px;
 }
 
+.sp-block-medialib_elements .sp-placeholder{
+    border: 2px dotted black;
+    width: 98px;
+    height: 55px;
+    margin: 3px;
+    float: left;
+}
+
+
+.sp-block-medialib_elements .sp-filter {
+    display: none;
+}
+
+.sp-block-medialib_elements .sp-filter-row {
+    margin-bottom: 10px;
+}
+
+
 .sp-block-medialib_elements .sp-source {
     background: #FFEBC1;
-    padding: 5px 5px 10px
+    padding: 5px 5px 10px;
+    display: none;
+}
+
+.sp-block-medialib_elements.sp-show .sp-filter,
+.sp-block-medialib_elements.sp-show .sp-source{
+    display: block;
 }
 
 .sp-block-medialib_elements .sp-arrows{

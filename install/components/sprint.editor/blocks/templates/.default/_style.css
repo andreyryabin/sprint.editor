@@ -62,14 +62,8 @@
     padding: 0 5px;
 }
 
-.sp-gallery ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
 .sp-gallery {
-    background-color: #fff;
+
 }
 
 .sp-gallery-items {
@@ -80,121 +74,7 @@
     float: left;
     height: 220px;
     padding: 5px;
-    width: 20%;
-}
-
-@media screen and (max-width: 1680px) {
-    .sp-gallery-item {
-        height: 190px;
-    }
-}
-
-@media screen and (max-width: 1440px) {
-    .sp-gallery-item {
-        height: 170px;
-    }
-}
-
-@media screen and (max-width: 1366px) {
-    .sp-gallery-item {
-        height: 160px;
-    }
-}
-
-@media screen and (max-width: 1240px) {
-    .sp-gallery-item {
-        height: 150px;
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    .sp-gallery-item {
-        height: 180px;
-        width: 25%;
-    }
-}
-
-@media screen and (max-width: 1140px) {
-    .sp-gallery-item {
-        height: 160px;
-        width: 25%;
-    }
-}
-
-@media screen and (max-width: 1000px) {
-    .sp-gallery-item {
-        height: 150px;
-        width: 25%;
-    }
-}
-
-@media screen and (max-width: 900px) {
-    .sp-gallery-item {
-        height: 170px;
-        width: 33.333333333333336%;
-    }
-}
-
-@media screen and (max-width: 780px) {
-    .sp-gallery-item {
-        height: 150px;
-    }
-}
-
-@media screen and (max-width: 680px) {
-    .sp-gallery-item {
-        height: 130px;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .sp-gallery-item {
-        height: 170px;
-        width: 50%;
-    }
-}
-
-@media screen and (max-width: 520px) {
-    .sp-gallery-item {
-        height: 155px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .sp-gallery-item {
-        height: 140px;
-    }
-}
-
-@media screen and (max-width: 440px) {
-    .sp-gallery-item {
-        height: 125px;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .sp-gallery-item {
-        height: 220px;
-        width: 100%;
-    }
-}
-
-@media screen and (max-width: 370px) {
-    .sp-gallery-item {
-        height: 200px;
-    }
-}
-
-@media screen and (max-width: 340px) {
-    .sp-gallery-item {
-        height: 190px;
-    }
-}
-
-@media screen and (max-width: 320px) {
-    .sp-gallery-item {
-        height: 180px;
-    }
+    /*width: 20%;*/
 }
 
 .sp-gallery-item-img-wrapper {

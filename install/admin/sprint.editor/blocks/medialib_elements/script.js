@@ -15,11 +15,6 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
         navparams.page_num = data.page_num;
     }
 
-    var hideSource = 1;
-    /*if (data.element_ids.length <=0 ){
-        hideSource = 0;
-    }*/
-
     this.getData = function () {
         return data;
     };
@@ -32,13 +27,14 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
     };
 
     this.afterRender = function () {
-        $el.on('click','.sp-toggle', function(){
-            if (hideSource){
-                $el.find('.sp-source,.sp-filter').show(250);
-                hideSource = 0
-            } else {
+
+        $el.on('click', '.sp-toggle', function () {
+            if ($el.hasClass('sp-show')) {
                 $el.find('.sp-source,.sp-filter').hide(250);
-                hideSource = 1;
+                $el.removeClass('sp-show');
+            } else {
+                $el.find('.sp-source,.sp-filter').show(250);
+                $el.addClass('sp-show');
             }
         });
 
@@ -110,7 +106,6 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
             data: requestParams,
             dataType: 'json',
             success: function (result) {
-                result.hideSource = hideSource;
                 result.page_num = intval(result.page_num);
                 result.page_cnt = intval(result.page_cnt);
 
