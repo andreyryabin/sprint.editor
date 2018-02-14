@@ -439,6 +439,7 @@ var sprint_editor = {
                     });
                 }
             });
+
             $editor.find('.sp-x-boxes').sortable({
                 items: ".sp-x-lt-grid",
                 handle: ".sp-x-grid-handle",

@@ -191,4 +191,8 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
 
 
     }
+
+    this.beforeDelete = function(){
+        
+    }
 });
