@@ -35,11 +35,16 @@ Class sprint_editor extends CModule
         RegisterModuleDependences('iblock', 'OnIBlockPropertyBuildList', 'sprint.editor', '\\Sprint\\Editor\\IblockPropertyEditor', 'GetUserTypeDescription');
         RegisterModuleDependences('main', 'OnUserTypeBuildList', 'sprint.editor', '\\Sprint\\Editor\\UserTypeEditor', 'GetUserTypeDescription');
 
-        $this->afterInstall();
+        $this->afterInstallCopyAdmin();
+        $this->afterInstallCopyPublic();
     }
 
-    function afterInstall(){
+
+    function afterInstallCopyAdmin(){
         CopyDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin", true, true);
+    }
+
+    function afterInstallCopyPublic(){
         CopyDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components", true, true);
     }
 

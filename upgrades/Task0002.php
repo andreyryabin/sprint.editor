@@ -2,20 +2,20 @@
 
 namespace Sprint\Editor;
 
-class Task0001 extends Upgrade
+class Task0002 extends Upgrade
 {
 
     public function getDescription() {
-        return 'Обновить скрипты';
+        return 'Обновить компоненты';
     }
 
     public function execute() {
 
         /** @var $tmpmodule \sprint_editor */
         $tmpmodule = \CModule::CreateModuleObject('sprint.editor');
-        $tmpmodule->afterInstallCopyAdmin();
+        $tmpmodule->afterInstallCopyPublic();
 
-        $this->out('Скрипты обновлены');
+        $this->out('Компоненты обновлены');
 
     }
 
