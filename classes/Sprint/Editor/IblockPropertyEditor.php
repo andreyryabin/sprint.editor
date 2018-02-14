@@ -16,6 +16,7 @@ class IblockPropertyEditor
             "GetSearchContent" => array(__CLASS__, "GetSearchContent"),
             "GetSettingsHTML" => array(__CLASS__, "GetSettingsHTML"),
             "PrepareSettings" => array(__CLASS__, "PrepareSettings"),
+            "GetPublicEditHTML" => array(__CLASS__, "GetPublicEditHTML"),
         );
     }
 
@@ -40,6 +41,10 @@ class IblockPropertyEditor
             'defaultValue' => $arProperty['DEFAULT_VALUE'],
             'userSettings' => $settings
         ));
+    }
+
+    public function GetPublicEditHTML($arProperty, $value, $strHTMLControlName){
+        return self::GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName);
     }
 
     public function GetSearchContent($arProperty, $value, $strHTMLControlName) {
