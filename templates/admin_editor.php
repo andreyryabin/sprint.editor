@@ -32,7 +32,7 @@
                 <? endforeach; ?>
             </select>
             <input value="<?= GetMessage('SPRINT_EDITOR_BTN_ADD') ?>"
-                   class="sp-x-box-add adm-btn adm-btn-green"
+                   class="sp-x-box-add adm-btn-green"
                    type="button"/>
         <? else: ?>
             <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
