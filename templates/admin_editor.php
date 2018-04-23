@@ -20,7 +20,7 @@
 <div class="sp-x-editor<?= $uniqId ?>">
     <div class="sp-x-boxes"></div>
     <? if ($enableChange): ?>
-        <span class="sp-x-editor-buttons">
+    <span class="sp-x-editor-buttons">
         <? if (!empty($selectValues)): ?>
             <select class="sp-x-box-select" style="width: 250px;">
                 <? foreach ($selectValues as $aGroup): ?>
@@ -37,12 +37,11 @@
         <? else: ?>
             <?= GetMessage('SPRINT_EDITOR_SELECT_EMPTY') ?>
         <? endif; ?>
-            <input type="button"
-                   title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
-                   class="sp-x-layout-toggle adm-btn"
-                   value="#"/>
-        </div>
-    <? endif; ?>
+        <input type="button"
+               title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
+               class="sp-x-layout-toggle adm-btn"
+               value="#"/>
+        <? endif; ?>
 </div>
 
 <textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"></textarea>
