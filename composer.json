@@ -14,7 +14,7 @@
   },
   "scripts": {
     "sprint-editor-install": [
-      "php tools/install.php"
+      "@php tools/install.php"
     ],
     "post-install-cmd": [
       "@sprint-editor-install"
