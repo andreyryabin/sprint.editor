@@ -5,8 +5,9 @@ namespace Sprint\Editor;
 class Upgrade0001 extends Upgrade
 {
 
-    public function getDescription() {
-        return 'Обновить блоки с картинками (1.0.1 -> 1.0.2)';
+    public function __construct() {
+        $this->addButton('execute', GetMessage('SPRINT_EDITOR_BTN_EXECUTE'));
+        $this->setDescription('Обновить блоки с картинками (1.0.1 -> 1.0.2)');
     }
 
     public function execute() {

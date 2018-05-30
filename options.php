@@ -21,12 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && check_bitrix_sessid()) {
         }
     }
 
-    if (isset($_REQUEST['install_upgrade']) && !empty($_REQUEST['upgrade_name'])) {
-        \Sprint\Editor\UpgradeManager::executeUpgrade($_REQUEST['upgrade_name']);
-    }
-
-    if (isset($_REQUEST['install_task']) && !empty($_REQUEST['task_name'])) {
-        \Sprint\Editor\UpgradeManager::executeTask($_REQUEST['task_name']);
+    if (isset($_REQUEST['task_name']) && isset($_REQUEST['task_action'])) {
+        \Sprint\Editor\UpgradeManager::executeTask(
+            $_REQUEST['task_name'],
+            $_REQUEST['task_action']
+        );
     }
 
 }
@@ -115,44 +114,44 @@ if (\CModule::IncludeModule('iblock')) {
 <br/>
 <br/>
 
-<h2><?= GetMessage('SPRINT_EDITOR_TASKS') ?></h2>
 <?
 $taskList = \Sprint\Editor\UpgradeManager::getTasks();
-foreach ($taskList as $aItem):?>
-    <form method="post">
-        <? \Sprint\Editor\UpgradeManager::outMessages($aItem['name']) ?>
-        <input type="submit" name="install_task" value="<?= GetMessage('SPRINT_EDITOR_BTN_EXECUTE') ?>"> -
-        <?= $aItem['description'] ?>
-        <input type="hidden" name="task_name" value="<?= $aItem['name'] ?>">
-        <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
-        <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
-        <?= bitrix_sessid_post(); ?>
-    </form>
-    <br/>
+?>
+
+<h2><?= GetMessage('SPRINT_EDITOR_TASKS') ?></h2>
+
+<?foreach ($taskList as $aItem):?>
+
+<div style="margin-bottom: 20px;">
+    <? \Sprint\Editor\UpgradeManager::outMessages($aItem['name']) ?>
+
+    <?foreach ($aItem['buttons'] as $button):?>
+        <form method="post" style="display: inline">
+            <? if ($aItem['installed'] == 'yes'): ?>
+                <input type="submit" disabled="disabled" value="<?=$button['title']?>">
+            <? else:?>
+                <input type="submit" value="<?=$button['title']?>">
+            <? endif; ?>
+
+            <input type="hidden" name="task_name" value="<?= $aItem['name'] ?>">
+            <input type="hidden" name="task_action" value="<?= $button['name'] ?>">
+            <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
+            <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
+            <?= bitrix_sessid_post(); ?>
+        </form>
+    <?endforeach?>
+
+    <? if ($aItem['installed'] == 'yes'): ?>
+        <strike><?= $aItem['description'] ?></strike>
+    <? else: ?>
+        <?= nl2br($aItem['description']) ?>
+    <? endif; ?>
+
+</div>
+
 <? endforeach; ?>
 
-<h2><?= GetMessage('SPRINT_EDITOR_UPGRADES') ?></h2>
-<?
-$upgradeList = \Sprint\Editor\UpgradeManager::getUpgrades();
-foreach ($upgradeList as $aItem):?>
-    <form method="post">
-        <? \Sprint\Editor\UpgradeManager::outMessages($aItem['name']) ?>
 
-        <input type="submit" name="install_upgrade" value="<?= GetMessage('SPRINT_EDITOR_BTN_EXECUTE') ?>"> -
-        <? if ($aItem['installed'] == 'yes'): ?>
-            <strike><?= $aItem['description'] ?></strike>
-        <? else: ?>
-            <?= $aItem['description'] ?>
-        <? endif; ?>
-
-        <input type="hidden" name="upgrade_name" value="<?= $aItem['name'] ?>">
-        <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
-        <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
-        <?= bitrix_sessid_post(); ?>
-
-    </form>
-    <br/>
-<? endforeach; ?>
 
 
 <? if (!empty($editorIblocks)): ?>

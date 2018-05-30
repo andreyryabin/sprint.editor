@@ -21,19 +21,26 @@ class UpgradeManager
         }
     }
 
-    public static function executeUpgrade($name){
-        $ok = self::doExecute($name);
+    public static function executeTaskFromRequest($request){
+        $buttons = $obj->getButtonsForUpgradeManager();
+        foreach ($buttons as $buttonName => $button){
+            if (isset($request[$buttonName]) && method_exists($obj,$buttonName)){
+                $ok = $obj->$buttonName();
+            }
+        }
+
+
+    }
+
+    public static function executeUpgrade($name, $action = 'execute'){
+        $ok = self::doExecute($name,$action);
         self::markClass($name, $ok, 'upgrade');
         return $ok;
     }
 
-    public static function executeTask($name){
-        $ok = self::doExecute($name);
+    public static function executeTask($name, $action = 'execute'){
+        $ok = self::doExecute($name,$action);
         return $ok;
-    }
-    
-    public static function getUpgrades(){
-        return self::findClasses('upgrade');
     }
     
     public static function getTasks(){
@@ -81,14 +88,15 @@ class UpgradeManager
                 continue;
             }
 
-            $descr = $obj->getDescription();
+            $descr = $obj->getDescriptionForUpgradeManager();
             $descr =  Locale::convertToWin1251IfNeed($descr);
             $isinst = in_array($fileName, $installed) ? 'yes' : 'no';
 
             $result[] = array(
                 'name' => $fileName,
                 'installed' => $isinst,
-                'description' => $descr
+                'description' => $descr,
+                'buttons' => $obj->getButtonsForUpgradeManager()
             );
         }
 
@@ -99,25 +107,31 @@ class UpgradeManager
         return $result;
     }
 
-    protected static function doExecute($name){
+    protected static function doExecute($name, $action = 'execute'){
         self::$executeMessages[$name] = array();
         $obj = self::initClass($name);
         if (!$obj){
-            self::$executeMessages[$name] = array('type' => 'ERROR', 'msg' => 'upgrade not found');
+            self::$executeMessages[$name] = array('type' => 'ERROR', 'msg' => 'Class not found');
             return false;
         }
         try {
-            $ok = $obj->execute();
+
+            $ok = false;
+
+            if (method_exists($obj, $action)){
+                $ok = $obj->$action();
+            }
+
             $messages = $obj->getOutMessages();
             foreach ($messages as $msg) {
                 self::$executeMessages[$name][] = $msg;
             }
             if ($ok === false) {
-                self::$executeMessages[$name][] = array('type' => 'ERROR', 'msg' => 'upgrade error');
+                self::$executeMessages[$name][] = array('type' => 'ERROR', 'msg' => 'Error');
                 return false;
             }
         } catch (\Exception $e){
-            self::$executeMessages[$name][] = array('type' => 'ERROR', 'msg' => 'upgrade exception: ' . $e->getMessage());
+            self::$executeMessages[$name][] = array('type' => 'ERROR', 'msg' => 'Exception: ' . $e->getMessage());
             return false;
         }
         return true;
