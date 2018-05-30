@@ -147,6 +147,14 @@
     width: 25%;
 }
 
+.sp-x-lt-dock{
+    min-height: 50px;
+    margin-bottom: 50px;
+    /*border: 1px dotted #000;*/
+}
+
+
+
 .sp-x-box-panel,
 .bx-core-adm-dialog div.sp-x-box-panel {
     position: relative;
@@ -329,21 +337,43 @@
 
 .sp-x-box-settings,
 .sp-x-lt-settings {
-    display: none;
-    position: absolute;
-    left: 0;
+    /*display: none;*/
+    /*position: absolute;*/
+    /*left: 0;*/
     background: #eee;
     color: #aaa;
-    border: 2px solid #ccc;
+    /*border: 2px solid #ccc;*/
     text-align: left;
     z-index: 20;
     width: 100%;
+    margin-bottom: 10px;
 }
 
 .sp-x-box-settings-item {
-    display: inline-block;
-    padding: 8px 0 8px 8px;
+    padding: 8px;
 }
+
+.sp-x-box-settings-item:last-child {
+    margin-bottom: 8px;
+}
+
+
+.sp-x-box-settings span {
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 2px;
+    margin: 2px;
+    min-width: 38px;
+    text-align: center;
+}
+
+.sp-x-box-settings span:hover,
+.sp-x-box-settings span.sp-active {
+    color: #d00;
+    background: #FFEBC1;
+}
+
 
 .sp-x-lt-settings-group {
     padding: 8px;

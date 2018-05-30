@@ -4,12 +4,12 @@ sprint_editor.registerBlock('text', function ($, $el, data) {
         value: ''
     }, data);
 
-    var parser = new HtmlWhitelistedSanitizer();
+    //var parser = new HtmlWhitelistedSanitizer();
 
     this.getData = function () {
-        data.value = parser.sanitizeString(
-            escapeHtml(data.value)
-        );
+        // data.value = parser.sanitizeString(
+        //     escapeHtml(data.value)
+        // );
         return data;
     };
 
@@ -18,9 +18,12 @@ sprint_editor.registerBlock('text', function ($, $el, data) {
             return data;
         }
 
-        data.value = parser.sanitizeString(
-            $el.find('.sp-text').val()
-        );
+        // data.value = parser.sanitizeString(
+        //     $el.find('.sp-text').val()
+        // );
+
+        data.value = $el.find('.sp-text').val();
+
         return data;
     };
 
@@ -39,7 +42,11 @@ sprint_editor.registerBlock('text', function ($, $el, data) {
                 ['viewHTML'],
                 ['bold', 'italic', 'underline', 'strikethrough'],
                 ['link'],
-                ['removeformat']
+                ['removeformat'],
+
+                ['justifyLeft', 'justifyCenter', 'justifyRight'],
+                ['unorderedList', 'orderedList']
+                /* ['formatting'] */
                 /* ['mycss'] */
             ],
 
