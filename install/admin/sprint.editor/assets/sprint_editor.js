@@ -656,7 +656,7 @@ var sprint_editor = {
             );
 
             if (params.enableChange) {
-                var $allcolls = $editor.find('.sp-x-lt-dock');
+                var $allcolls = $editor.find('.sp-x-lt-col');
                 $allcolls.sortable({
                     items: ".sp-x-box",
                     connectWith: $allcolls,
@@ -713,7 +713,7 @@ var sprint_editor = {
                 $column = $editor.find('.sp-x-lt-col').last();
             }
 
-            $column.find('.sp-x-lt-dock').append(html);
+            $column.append(html);
 
             var $el = $column.find('.sp-x-box-block').last();
             var entry = sprint_editor.initblock($, $el, blockData.name, blockData);

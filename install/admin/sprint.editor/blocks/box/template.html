@@ -19,17 +19,16 @@
         {{?}}
 
         <div class="sp-x-box-buttons">
-            {{?it.compiled.length > 0}}
-            <span title="Дополнительные настройки" class="sp-x-btn sp-x-box-settings-toggle">+</span>
-            {{?}}
-
             {{?it.enableChange && it.showSortButtons}}
             <span title="Поднять вверх" class="sp-x-btn sp-x-box-up">&uarr;</span>
             <span title="Опустить вниз" class="sp-x-btn sp-x-box-dn">&darr;</span>
             {{?}}
 
-            {{?it.enableChange}}
+            {{?it.enableChange && it.showCopyButtons}}
             <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">&equiv;</span>
+            {{?}}
+
+            {{?it.enableChange}}
             <span title="Удалить блок" class="sp-x-btn sp-x-box-del">x</span>
             {{?}}
         </div>
@@ -38,7 +37,7 @@
 
     {{?it.compiled}}
     <div class="sp-x-box-settings">
-        {{~it.compiled :item}}<div data-name="{{=item.name}}" class="sp-x-box-settings-item">{{~item.value :option}}<span data-value="{{=option.value}}">{{=option.title}} {{?option.selected}}*{{?}}</span>{{~}}</div>{{~}}
+        {{~it.compiled :item}}<div data-name="{{=item.name}}" class="sp-x-box-settings-group">{{~item.value :option}}<span data-value="{{=option.value}}">{{=option.title}} {{?option.selected}}*{{?}}</span>{{~}}</div>{{~}}
     </div>
     {{?}}
 

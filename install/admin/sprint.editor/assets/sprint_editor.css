@@ -114,7 +114,7 @@
 }
 
 .sp-x-layout-mode .sp-x-box-placeholder {
-    margin: 10px 5px;
+    margin: 10px 0 10px;
     height: 45px;
 }
 
@@ -123,12 +123,22 @@
     margin-bottom: 10px;
 }
 
-.sp-x-layout-mode .sp-x-lt-col {
-    min-height: 74px;
+.sp-x-layout-mode .sp-x-lt-col
+{
+    /*min-height: 74px;*/
     margin-bottom: 0;
-    float: left;
+    /*float: left;*/
     /*display: table-cell;*/
     /*vertical-align: top;*/
+    display: table-cell;
+}
+
+.sp-x-layout-mode .sp-x-grid-buttons{
+    display: table-caption;
+}
+
+.sp-x-layout-mode .sp-x-grid-row{
+    display: table-row;
 }
 
 .sp-x-layout-mode .sp-x-lt-type1 .sp-x-lt-col {
@@ -148,8 +158,9 @@
 }
 
 .sp-x-lt-dock{
-    min-height: 50px;
-    margin-bottom: 50px;
+    /*min-height: 50px;*/
+    /*padding-bottom: 50px;*/
+    /*margin-bottom: 50px;*/
     /*border: 1px dotted #000;*/
 }
 
@@ -179,8 +190,14 @@
     text-align: center;
     background: #ddd;
     border: none;
+
+}
+
+.sp-x-layout-mode .sp-x-lt-head,
+.sp-x-layout-mode .sp-x-lt-settings{
     margin: 0 5px;
 }
+
 
 .sp-x-box-title {
     font-weight: bold !important;
@@ -195,10 +212,6 @@
 
 .sp-x-lt-grid.ui-sortable-helper .sp-x-lt-col {
     background: #F5F9F9;
-}
-
-.sp-x-layout-mode .sp-x-grid-buttons {
-    display: block;
 }
 
 .bx-core-adm-dialog div.sp-x-lt-buttons,
@@ -301,20 +314,23 @@
 }
 
 .sp-x-lt-grid:last-child {
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
 }
 
 .sp-x-layout-mode .sp-x-lt-grid:last-child {
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
 }
 
 .sp-x-layout-mode .sp-x-lt-grid {
-    width: 100%;
+    /*width: 100%;*/
+    display: table;
 }
 
-.sp-x-box .sp-x-box-handle {
+.sp-x-box-handle,
+.sp-x-grid-handle {
     cursor: move;
 }
+
 
 .sp-x-box.ui-sortable-helper {
     background: #e0e8ea;
@@ -344,19 +360,28 @@
     color: #aaa;
     /*border: 2px solid #ccc;*/
     text-align: left;
-    z-index: 20;
-    width: 100%;
+    /*z-index: 20;*/
+    /*width: 100%;*/
     margin-bottom: 10px;
 }
 
-.sp-x-box-settings-item {
+.sp-x-box-settings-group,
+.sp-x-lt-settings-group{
+    display: none;
     padding: 8px;
-}
-
-.sp-x-box-settings-item:last-child {
     margin-bottom: 8px;
 }
 
+.sp-x-box-settings-group:first-child,
+.sp-x-lt-settings-group:first-child{
+    display: block;
+}
+
+
+
+.sp-x-layout-mode .sp-x-box-settings-group{
+    display: none;
+}
 
 .sp-x-box-settings span {
     display: inline-block;
@@ -372,15 +397,6 @@
 .sp-x-box-settings span.sp-active {
     color: #d00;
     background: #FFEBC1;
-}
-
-
-.sp-x-lt-settings-group {
-    padding: 8px;
-}
-
-.sp-x-lt-settings-group:last-child {
-    margin-bottom: 8px;
 }
 
 .sp-x-lt-settings span {
