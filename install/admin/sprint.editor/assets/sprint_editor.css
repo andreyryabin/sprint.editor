@@ -322,7 +322,7 @@
 }
 
 .sp-x-layout-mode .sp-x-lt-grid {
-    /*width: 100%;*/
+    width: 100%;
     display: table;
 }
 
