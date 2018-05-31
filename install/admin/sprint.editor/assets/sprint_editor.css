@@ -348,7 +348,9 @@
 .sp-x-lt-settings-group{
     /*display: none;*/
     /*padding: 8px;*/
-    background: #eee;
+
+    background: #e0e8ea;
+    /*background: #d7e0e2;*/
     padding: 8px;
 
     border-radius: 4px;
@@ -371,7 +373,7 @@
 .sp-x-lt-settings-group:nth-child(even)
 {
     /*background: none;*/
-    background: #ddd;
+    background: #eee;
     /*background: #eee;*/
 }
 
