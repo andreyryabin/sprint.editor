@@ -11,8 +11,6 @@
             <span class="">Колонка {{=index+1}}</span>
             {{?}}
 
-            <span class="sp-x-lt-settings-current">{{=col}}</span>
-
             <div class="sp-x-lt-buttons">
                 {{?it.enableChange && it.showCopyButtons}}
                 <span title="Вставить блоки в колонку" class="sp-x-btn sp-x-lt-paste">&crarr;</span>
@@ -23,13 +21,24 @@
                 <span title="Удалить колонку" class="sp-x-btn sp-x-lt-del">x</span>
                 {{?}}
             </div>
-
         </div>
+
         {{?it.classes}}
         <div class="sp-x-lt-settings">
-            {{~it.classes :group}}<div class="sp-x-lt-settings-group">{{~group :size}}<span>{{=size}}</span>{{~}}</div>{{~}}
+            {{~it.classes :group}}
+            <div class="sp-x-lt-settings-group">
+            {{~group :cssval}}
+                {{? ($.inArray(cssval,col.classes) >=0) }}
+                <span class="sp-active">{{=cssval}}</span>
+                {{??}}
+                <span>{{=cssval}}</span>
+                {{?}}
+            {{~}}
+            </div>
+            {{~}}
         </div>
         {{?}}
+
     </div>
     {{~}}
     </div>

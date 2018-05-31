@@ -246,8 +246,6 @@
 /*display: inline-block;*/
 /*}*/
 
-/*.sp-x-box-settings-toggle*/
-/*.sp-x-lt-settings-toggle*/
 
 .sp-x-btn {
     cursor: pointer;
@@ -274,10 +272,7 @@
     /*visibility: visible;*/
 /*}*/
 
-/*.sp-x-box-buttons .sp-x-btn:not(.sp-x-box-settings-toggle):not(.sp-active),*/
-/*.sp-x-lt-buttons .sp-x-btn:not(.sp-active):not(.sp-x-lt-settings-toggle) {*/
-    /*visibility: hidden;*/
-/*}*/
+
 
 .bx-core-adm-dialog div.sp-x-box-buttons,
 .sp-x-box-buttons {
@@ -348,12 +343,6 @@
 
 .sp-x-layout-mode .sp-x-box-block {
     display: none;
-}
-
-.sp-x-lt-settings-current,
-.sp-x-box-settings-current {
-    margin-left: 5px;
-    color: #aaa;
 }
 
 .sp-x-box-settings,
