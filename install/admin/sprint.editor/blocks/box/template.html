@@ -7,17 +7,6 @@
         <span title="{{=it.hint}}" class="sp-x-box-title">{{=it.title}}</span>
         {{?}}
 
-
-        {{?it.compiled}}
-        <span class="sp-x-box-settings-current">
-            {{~it.compiled :item}}
-                {{~item.value :option}}
-                    {{?option.selected}}{{=option.title}} {{?}}
-                {{~}}
-            {{~}}
-        </span>
-        {{?}}
-
         <div class="sp-x-box-buttons">
             {{?it.enableChange && it.showSortButtons}}
             <span title="Поднять вверх" class="sp-x-btn sp-x-box-up">&uarr;</span>
@@ -37,7 +26,17 @@
 
     {{?it.compiled}}
     <div class="sp-x-box-settings">
-        {{~it.compiled :item}}<div data-name="{{=item.name}}" class="sp-x-box-settings-group">{{~item.value :option}}<span data-value="{{=option.value}}">{{=option.title}} {{?option.selected}}*{{?}}</span>{{~}}</div>{{~}}
+        {{~it.compiled :item}}
+        <div data-name="{{!item.name}}" class="sp-x-box-settings-group">
+            {{~item.options :option}}
+            {{?option.selected}}
+            <span class="sp-active" data-value="{{!option.value}}">{{=option.title}}</span>
+            {{??}}
+            <span data-value="{{!option.value}}">{{=option.title}}</span>
+            {{?}}
+            {{~}}
+        </div>
+        {{~}}
     </div>
     {{?}}
 

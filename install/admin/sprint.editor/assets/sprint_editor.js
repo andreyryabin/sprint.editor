@@ -306,16 +306,23 @@ var sprint_editor = {
 
                         var blockData = sprint_editor.collectData(uid);
 
-
+                        var settcnt = 0;
+                        var settval={};
                         var $boxsett = $(this).find('.sp-x-box-settings');
-                        var settarr = $boxsett.find("select,input").serializeArray();
+                        $boxsett.find('.sp-x-box-settings-group').each(function(){
+                            var name = $(this).data('name');
+                            var $val = $(this).find('.sp-active').first();
 
-                        delete blockData.settings;
-                        if (settarr.length > 0) {
-                            blockData.settings = {};
-                            $.each(settarr, function () {
-                                blockData.settings[this.name] = this.value;
-                            });
+                            if ($val.length > 0){
+                                settval[name] = $val.data('value');
+                                settcnt++;
+                            }
+                        });
+
+                        if (settcnt > 0){
+                            blockData.settings = settval;
+                        } else {
+                            delete blockData.settings;
                         }
 
                         blockData.layout = gindex + ',' + cindex;
@@ -572,31 +579,19 @@ var sprint_editor = {
 
         function layoutAdd(columns) {
             var ltname = 'type' + columns.length;
+
             var renderVars = {
                 enableChange: params.enableChange,
                 showSortButtons: params.showSortButtons,
                 showCopyButtons: params.showCopyButtons
             };
 
-            var allclasses = [];
-            if (params.jsonUserSettings && params.jsonUserSettings.layout_classes) {
-                if (params.jsonUserSettings.layout_classes[ltname]) {
-                    if (params.jsonUserSettings.layout_classes[ltname].length > 0) {
-                        allclasses = params.jsonUserSettings.layout_classes[ltname]
-                    }
-                }
-            }
-
-            var rendercols = [];
-            $.each(columns,function (index,val) {
-                rendercols.push({
-                    classes: val.split(' ')
-                });
-            });
-
-            renderVars.classes = allclasses;
-            renderVars.columns = rendercols;
-
+            renderVars.columns = [];
+            $.each(columns, function(index,cssstr){
+                renderVars.columns.push({
+                    compiled: compileClasses(ltname, cssstr)
+                })
+            }) ;
 
 
             $editor.find('.sp-x-boxes').append(
@@ -629,22 +624,16 @@ var sprint_editor = {
                 return false;
             }
 
-            var blockParams = sprint_editor.getBlockParams(blockData.name);
-            blockParams.uid = sprint_editor.makeUid();
-            blockParams.showSortButtons = params.showSortButtons;
-            blockParams.showCopyButtons = params.showCopyButtons;
-            blockParams.enableChange = params.enableChange;
+            var renderVars = sprint_editor.getBlockParams(blockData.name);
 
-            blockParams.settings = {};
-            if (params.jsonUserSettings && params.jsonUserSettings.block_settings) {
-                if (params.jsonUserSettings.block_settings[blockData.name]) {
-                    blockParams.settings = params.jsonUserSettings.block_settings[blockData.name];
-                }
-            }
+            renderVars.uid = sprint_editor.makeUid();
+            renderVars.showSortButtons = params.showSortButtons;
+            renderVars.showCopyButtons = params.showCopyButtons;
+            renderVars.enableChange = params.enableChange;
 
-            blockParams.compiled = compileSettings(blockParams, blockData);
+            renderVars.compiled = compileSettings(blockData);
 
-            var html = sprint_editor.renderTemplate('box', blockParams);
+            var html = sprint_editor.renderTemplate('box', renderVars);
 
             if ($editor.find('.sp-x-lt-col').length <= 0) {
                 layoutEmptyAdd(1);
@@ -666,17 +655,25 @@ var sprint_editor = {
             var $el = $column.find('.sp-x-box-block').last();
             var entry = sprint_editor.initblock($, $el, blockData.name, blockData);
             sprint_editor.initblockAreas($, $el, entry);
-            sprint_editor._entries[blockParams.uid] = entry;
+            sprint_editor._entries[renderVars.uid] = entry;
         }
 
-        function compileSettings(blockParams, blockData) {
+        function compileSettings(blockData) {
+            var settings = {};
+
+            if (params.jsonUserSettings && params.jsonUserSettings.block_settings) {
+                if (params.jsonUserSettings.block_settings[blockData.name]) {
+                    settings = params.jsonUserSettings.block_settings[blockData.name];
+                }
+            }
+
             var compiled = [];
 
-            if (!blockParams.settings) {
+            if (!settings) {
                 return compiled;
             }
 
-            $.each(blockParams.settings, function (setName, setSet) {
+            $.each(settings, function (setName, setSet) {
 
                 if (!setSet.value || !setSet.type || setSet.type != 'select') {
                     return true;
@@ -701,13 +698,63 @@ var sprint_editor = {
                 });
                 compiled.push({
                     name: setName,
-                    value: value
+                    options: value
                 })
             });
 
             return compiled;
         }
 
+
+        function compileClasses(ltname,cssstr) {
+
+            var selectedCss = cssstr.split(' ');
+
+            var allclasses = {};
+            if (params.jsonUserSettings && params.jsonUserSettings.layout_classes) {
+                if (params.jsonUserSettings.layout_classes[ltname]) {
+                    if (params.jsonUserSettings.layout_classes[ltname].length > 0) {
+                        allclasses = params.jsonUserSettings.layout_classes[ltname]
+                    }
+                }
+            }
+
+            var compiled = [];
+
+            if (!allclasses) {
+                return compiled;
+            }
+
+            $.each(allclasses, function (groupIndex, groupClasses) {
+
+                if (!$.isArray(groupClasses)){
+                    return true;
+                }
+
+                var value = [];
+                var valSel = 0;
+
+                $.each(groupClasses, function (cssIndex, cssTitle) {
+
+                    valSel = (
+                        $.inArray(cssTitle, selectedCss) >= 0
+                    ) ? 1 : 0;
+
+                    value.push({
+                        title: cssTitle,
+                        value: cssTitle,
+                        selected: valSel
+                    })
+                });
+
+
+                compiled.push({
+                    options: value
+                })
+            });
+
+            return compiled;
+        }
     }
 };
 

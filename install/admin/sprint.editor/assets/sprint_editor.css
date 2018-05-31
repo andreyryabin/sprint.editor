@@ -375,10 +375,22 @@
 }
 
 
+.sp-x-box-settings-group{
+    display: block;
+}
+
+.sp-x-lt-settings-group{
+    display: none;
+}
 
 .sp-x-layout-mode .sp-x-box-settings-group{
     display: none;
 }
+
+.sp-x-layout-mode .sp-x-lt-settings-group{
+    display: block;
+}
+
 
 .sp-x-box-settings span {
     display: inline-block;

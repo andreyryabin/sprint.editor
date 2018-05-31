@@ -23,21 +23,23 @@
             </div>
         </div>
 
-        {{?it.classes}}
+
+        {{?col.compiled}}
         <div class="sp-x-lt-settings">
-            {{~it.classes :group}}
+            {{~col.compiled :item}}
             <div class="sp-x-lt-settings-group">
-            {{~group :cssval}}
-                {{? ($.inArray(cssval,col.classes) >=0) }}
-                <span class="sp-active">{{=cssval}}</span>
+                {{~item.options :option}}
+                {{?option.selected}}
+                <span class="sp-active">{{=option.title}}</span>
                 {{??}}
-                <span>{{=cssval}}</span>
+                <span>{{=option.title}}</span>
                 {{?}}
-            {{~}}
+                {{~}}
             </div>
             {{~}}
         </div>
         {{?}}
+
 
     </div>
     {{~}}
