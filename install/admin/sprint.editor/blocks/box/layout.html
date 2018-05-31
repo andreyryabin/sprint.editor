@@ -1,8 +1,8 @@
 <div class="sp-x-lt-grid sp-x-lt-type{{=it.columns.length}}">
-
     <div class="sp-x-grid-row">
     {{~it.columns :col:index}}
     <div class="sp-x-lt-col">
+
         <div class="sp-x-lt-head">
 
             {{?it.enableChange}}
@@ -23,9 +23,7 @@
             </div>
         </div>
 
-
-        {{?col.compiled}}
-        <div class="sp-x-lt-settings">
+        {{?col.compiled}}<div class="sp-x-lt-settings">
             {{~col.compiled :item}}
             <div class="sp-x-lt-settings-group">
                 {{~item.options :option}}
@@ -37,14 +35,9 @@
                 {{~}}
             </div>
             {{~}}
-        </div>
-        {{?}}
-
+        </div>{{?}}
 
     </div>
     {{~}}
     </div>
-
-
-
 </div>
