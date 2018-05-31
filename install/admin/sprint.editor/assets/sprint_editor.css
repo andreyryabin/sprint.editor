@@ -98,7 +98,6 @@
 
 .sp-x-layout-mode .sp-x-box {
     background: #e0e8ea;
-    margin: 10px 5px 10px;
 }
 
 .sp-x-grid-placeholder {
@@ -197,6 +196,11 @@
 .sp-x-layout-mode .sp-x-lt-settings{
     margin: 0 5px;
 }
+
+.sp-x-layout-mode .sp-x-box{
+    margin: 10px 5px 10px;
+}
+
 
 
 .sp-x-box-title {
@@ -305,6 +309,7 @@
 
 .sp-x-lt-grid {
     position: relative;
+    margin-bottom: 20px;
 }
 
 .sp-x-lt-grid:after {
@@ -367,14 +372,17 @@
 
 .sp-x-box-settings-group,
 .sp-x-lt-settings-group{
-    display: none;
-    padding: 8px;
-    margin-bottom: 8px;
+    /*display: none;*/
+    /*padding: 8px;*/
+    padding: 0 8px 8px 8px;
+    /*margin-bottom: 8px;*/
+    /*display: inline-block;*/
+
 }
 
 .sp-x-box-settings-group:first-child,
 .sp-x-lt-settings-group:first-child{
-    display: block;
+    padding-top: 8px;
 }
 
 
