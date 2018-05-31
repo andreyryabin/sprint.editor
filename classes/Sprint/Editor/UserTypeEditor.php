@@ -38,7 +38,7 @@ class UserTypeEditor
         $settings = $arUserField['SETTINGS'];
         $newsettings = array();
 
-        foreach (array('DEFAULT_VALUE','DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS','SETTINGS_NAME') as $val){
+        foreach (array('DEFAULT_VALUE','DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS','ENABLE_COPY_BUTTONS','SETTINGS_NAME') as $val){
             $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
         }
 
@@ -56,6 +56,7 @@ class UserTypeEditor
             'userSettings' => array(
                 'DISABLE_CHANGE' => '',
                 'ENABLE_SORT_BUTTONS' => '',
+                'ENABLE_COPY_BUTTONS' => '',
                 'SETTINGS_NAME' => ''
             ),
             'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE']

@@ -638,9 +638,10 @@ var sprint_editor = {
         function layoutAdd(columns) {
             var ltname = 'type' + columns.length;
             var renderVars = {
-                enableChange: params.enableChange,
                 columns: columns,
-                showSortButtons: params.showSortButtons
+                enableChange: params.enableChange,
+                showSortButtons: params.showSortButtons,
+                showCopyButtons: params.showCopyButtons
             };
 
             if (params.jsonUserSettings && params.jsonUserSettings.layout_classes) {
@@ -685,6 +686,7 @@ var sprint_editor = {
             var blockParams = sprint_editor.getBlockParams(blockData.name);
             blockParams.uid = sprint_editor.makeUid();
             blockParams.showSortButtons = params.showSortButtons;
+            blockParams.showCopyButtons = params.showCopyButtons;
             blockParams.enableChange = params.enableChange;
 
             blockParams.settings = {};

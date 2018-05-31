@@ -57,6 +57,11 @@ class AdminEditor
             $showSortButtons = 0;
         }
 
+        $showCopyButtons = 1;
+        if (empty($params['userSettings']['ENABLE_COPY_BUTTONS'])) {
+            $showCopyButtons = 0;
+        }
+
         $userSettings = array();
         if (!empty($params['userSettings']['SETTINGS_NAME'])) {
             $userSettings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
@@ -91,6 +96,7 @@ class AdminEditor
             'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
             'showSortButtons' => $showSortButtons,
             'enableChange' => $enableChange,
+            'showCopyButtons' => $showCopyButtons,
             'inputName' => $params['inputName'],
             'uniqId' => $params['uniqId'],
             'firstRun' => (self::$initCounts == 1) ? 1 : 0,

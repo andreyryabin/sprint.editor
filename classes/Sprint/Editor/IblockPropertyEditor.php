@@ -31,6 +31,7 @@ class IblockPropertyEditor
         if (self::isSettingsPage()){
             $settings['DISABLE_CHANGE'] = '';
             $settings['ENABLE_SORT_BUTTONS'] = '';
+            $settings['ENABLE_COPY_BUTTONS'] = '';
             $settings['SETTINGS_NAME'] = '';
         }
 
@@ -72,7 +73,7 @@ class IblockPropertyEditor
         $settings = $arProperty['USER_TYPE_SETTINGS'];
         $newsettings = array();
 
-        foreach (array('DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS','SETTINGS_NAME') as $val){
+        foreach (array('DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS','ENABLE_COPY_BUTTONS','SETTINGS_NAME') as $val){
             $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
         }
 

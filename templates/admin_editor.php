@@ -14,6 +14,7 @@
  *
  * @var $enableChange
  * @var $showSortButtons
+ * @var $showCopyButtons
  * @var $jsonUserSettings
  */
 ?>
@@ -69,6 +70,7 @@
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
             showSortButtons: <?=$showSortButtons?>,
+            showCopyButtons: <?=$showCopyButtons?>,
             jsonUserSettings:<?=$jsonUserSettings?>,
             jsonValue: <?=$jsonValue?>
         });
