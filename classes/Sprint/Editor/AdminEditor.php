@@ -203,9 +203,14 @@ class AdminEditor
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/doT-master/doT.min.js');
         }
 
-        $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.min.css');
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/trumbowyg.min.js');
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/trumbowyg.mycss.js');
+        $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.css');
+        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/trumbowyg.js');
+
+        $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/mycss/ui/trumbowyg.mycss.css');
+        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/mycss/trumbowyg.mycss.js');
+
+        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/cleanpaste/trumbowyg.cleanpaste.js');
+
         if (Locale::isWin1251()) {
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/langs/ru.windows-1251.js');
         } else {

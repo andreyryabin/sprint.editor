@@ -1,10 +1,3 @@
-/* ===========================================================
- * ru.js
- * Russion translation for Trumbowyg
- * http://alex-d.github.com/Trumbowyg
- * ===========================================================
- * Author : Yuri Lya
- */
 jQuery.trumbowyg.langs.ru = {
     viewHTML: "Посмотреть HTML",
     undo: "Отменить",
@@ -43,5 +36,6 @@ jQuery.trumbowyg.langs.ru = {
     required: "Обязательное",
     description: "Описание",
     title: "Подсказка",
-    text: "Текст"
+    text: "Текст",
+    myCss: "Стиль"
 };

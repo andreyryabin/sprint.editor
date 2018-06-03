@@ -1,0 +1,36 @@
+
+.trumbowyg-dropdown-myCss {
+    /*width: 276px;*/
+    /*padding: 7px 5px;*/
+}
+
+.trumbowyg-dropdown-myCss svg {
+    /*display: none !important;*/
+}
+
+.trumbowyg-dropdown-myCss button {
+    /*display: block;*/
+    /*position: relative;*/
+    /*float: left;*/
+    /*text-indent: -9999px;*/
+    /*height: 20px;*/
+    /*width: 20px;*/
+    /*border: 1px solid #333;*/
+    /*padding: 0;*/
+    /*margin: 2px;*/
+}
+
+.trumbowyg-dropdown-myCss button:hover::after,
+.trumbowyg-dropdown-myCss button:focus::after {
+    /*content: " ";*/
+    /*display: block;*/
+    /*position: absolute;*/
+    /*top: -5px;*/
+    /*left: -5px;*/
+    /*height: 27px;*/
+    /*width: 27px;*/
+    /*background: inherit;*/
+    /*border: 1px solid #FFF;*/
+    /*box-shadow: #000 0 0 2px;*/
+    /*z-index: 10;*/
+}

@@ -345,12 +345,11 @@
 }
 
 .sp-x-box-settings-group,
-.sp-x-lt-settings-group{
+.sp-x-lt-settings-group
+{
     /*display: none;*/
     /*padding: 8px;*/
 
-    background: #e0e8ea;
-    /*background: #d7e0e2;*/
     padding: 8px;
 
     border-radius: 4px;
@@ -361,19 +360,29 @@
 
 }
 
+.sp-x-lt-settings-group{
+    background: #eee;
+}
+
 .sp-x-layout-mode .sp-x-box-settings-group,
 .sp-x-layout-mode .sp-x-lt-settings-group{
     border-radius: inherit;
     margin:0;
 }
 
+.sp-x-box-settings-group{
+    background: #eee;
+}
+.sp-x-lt-settings-group{
+    background: #eee;
+}
 
 
-.sp-x-box-settings-group:nth-child(even),
-.sp-x-lt-settings-group:nth-child(even)
+.sp-x-box-settings-group:nth-child(even)
 {
     /*background: none;*/
-    background: #eee;
+    /*background: #e0e8ea;*/
+
     /*background: #eee;*/
 }
 

@@ -40,14 +40,13 @@ sprint_editor.registerBlock('text', function ($, $el, data) {
             removeformatPasted: true,
             btns: [
                 ['viewHTML'],
-                ['bold', 'italic', 'underline', 'strikethrough'],
+                ['myCss'],
+                ['strong', 'em', 'underline', 'del'],
                 ['link'],
                 ['removeformat'],
 
                 ['justifyLeft', 'justifyCenter', 'justifyRight'],
                 ['unorderedList', 'orderedList']
-                /* ['formatting'] */
-                /* ['mycss'] */
             ],
 
             autogrow: true
