@@ -21,10 +21,12 @@ class AdminEditor
 
         if (self::$initCounts == 1) {
 
+            self::registerPacks();
             self::registerBlocks('blocks', false, false);
             self::registerBlocks('my', false, true);
             self::registerBlocks('my', true, true);
             self::registerLayouts();
+
 
             self::registerAssets();
         }
@@ -145,6 +147,8 @@ class AdminEditor
     }
 
     public static function prepareValueArray($value) {
+
+        /* convert to version 1 */
         if (!empty($value) && !isset($value['layouts'])) {
             foreach ($value as $index => $block) {
                 $block['layout'] = '0,0';
@@ -158,6 +162,36 @@ class AdminEditor
                 )
             );
         }
+
+        /* convert to version 2 */
+        if (!empty($value) && !isset($value['version'])) {
+
+            $newlayots = array();
+
+            foreach ($value['layouts'] as $index => $layout) {
+
+                $newcolumns = array();
+                foreach ($layout as $column) {
+                    $newcolumns[] = array(
+                        'css' => $column
+                    );
+                }
+
+                $newlayots[] = array(
+                    'columns' => $newcolumns
+                );
+
+            }
+
+
+            $value = array(
+                'version' => 2,
+                'blocks' => $value['blocks'],
+                'layouts' => $newlayots
+            );
+
+        }
+
 
         if (!isset($value['blocks'])) {
             $value['blocks'] = array();
@@ -228,7 +262,7 @@ class AdminEditor
         }
     }
 
-    protected static function registerBlocks($groupname,$islocal = false,$checkname = true) {
+    protected static function registerBlocks($groupname, $islocal = false, $checkname = true) {
         if ($islocal) {
             $webpath = '/local/admin/sprint.editor/' . $groupname . '/';
             $rootpath = Module::getDocRoot() . $webpath;
@@ -341,7 +375,21 @@ class AdminEditor
         );
     }
 
-    public static function renderFile($file,$vars = array()) {
+    protected static function registerPacks() {
+        $packs = array(
+            array(
+                'title' => 'pack1',
+                'name' => 'pack_pack1'
+            )
+        );
+
+        self::$selectValues[] = array(
+            'title' => GetMessage('SPRINT_EDITOR_group_packs'),
+            'blocks' => Locale::convertToWin1251IfNeed($packs)
+        );
+    }
+
+    public static function renderFile($file, $vars = array()) {
         if (is_array($vars)) {
             extract($vars, EXTR_SKIP);
         }

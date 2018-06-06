@@ -10,27 +10,15 @@ $settings = array(
     'layout_classes' => array(
         'type1' => array(
             array('col-md-8', 'col-md-9', 'col-md-12'),
-            array('col-sm-8', 'col-sm-9', 'col-sm-12'),
-            array('col-xs-8', 'col-xs-9', 'col-xs-12'),
-            array('col-lg-8', 'col-lg-9', 'col-lg-12'),
         ),
         'type2' => array(
             array('col-md-3', 'col-md-4', 'col-md-5', 'col-md-6', 'col-md-7', 'col-md-8', 'col-md-9'),
-            array('col-sm-3', 'col-sm-4', 'col-sm-5', 'col-sm-6', 'col-sm-7', 'col-sm-8', 'col-sm-9'),
-            array('col-xs-3', 'col-xs-4', 'col-xs-5', 'col-xs-6', 'col-xs-7', 'col-xs-8', 'col-xs-9'),
-            array('col-lg-3', 'col-lg-4', 'col-lg-5', 'col-lg-6', 'col-lg-7', 'col-lg-8', 'col-lg-9'),
         ),
         'type3' => array(
             array('col-md-3', 'col-md-4', 'col-md-5', 'col-md-6', 'col-md-7', 'col-md-8'),
-            array('col-sm-3', 'col-sm-4', 'col-sm-5', 'col-sm-6', 'col-sm-7', 'col-sm-8'),
-            array('col-xs-3', 'col-xs-4', 'col-xs-5', 'col-xs-6', 'col-xs-7', 'col-xs-8'),
-            array('col-lg-3', 'col-lg-4', 'col-lg-5', 'col-lg-6', 'col-lg-7', 'col-lg-8'),
         ),
         'type4' => array(
             array('col-md-3', 'col-md-4', 'col-md-5', 'col-md-6', 'col-md-7'),
-            array('col-sm-3', 'col-sm-4', 'col-sm-5', 'col-sm-6', 'col-sm-7'),
-            array('col-xs-3', 'col-xs-4', 'col-xs-5', 'col-xs-6', 'col-xs-7'),
-            array('col-lg-3', 'col-lg-4', 'col-lg-5', 'col-lg-6', 'col-lg-7'),
         ),
     ),
 
@@ -50,7 +38,7 @@ $settings = array(
                     'style2' => 'Стиль 2',
                     'style3' => 'Стиль 3',
                 )
-            ),
+            )
         ),
         'image' => array(
             'param1' => array(
@@ -65,11 +53,44 @@ $settings = array(
 
     ),
 
+
+    'packs' => array(
+        'pack1' => array(
+
+            'blocks' => array(
+                array('name' => 'text', 'layout' => '0,0'),
+                array('name' => 'htag', 'layout' => '0,1'),
+            ),
+
+            'layouts' => array(
+                0 => array(
+                    'columns' => array(
+                        0 => array('css' => 'col-md-3'),
+                        1 => array('css' => 'col-md-9')
+                    )
+                ),
+
+            )
+
+        )
+
+    ),
+
+
+//    'block_params'
+
+
+    'text_csslist' => array(
+        'sp-text-1' => 'Стиль 1',
+        'sp-text-2' => 'Стиль 2',
+        'sp-text-3' => 'Стиль 3',
+    ),
+
+
     'block_enabled' => array(
 //        'htag',
 //        'text',
 //        'gallery'
     ),
-
 
 );

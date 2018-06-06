@@ -18,7 +18,11 @@
 
 
     var defaultOptions = {
-        cssList: ['my-class-1', 'my-class-2', 'my-class-3', 'my-class-4']
+        cssList: {
+            'my-css-1' : 'MyCss1',
+            'my-css-2' : 'MyCss2',
+            'my-css-3' : 'MyCss3'
+        }
     };
 
     // Add all colors in two dropdowns
@@ -40,10 +44,10 @@
                 tagHandler: function (element, trumbowyg) {
                     var tags = [];
 
-                    $.each(trumbowyg.o.plugins.mycss.cssList, function (index, cssName) {
+                    $.each(trumbowyg.o.plugins.mycss.cssList, function (cssName, cssTitle) {
                         if ($(element).hasClass(cssName)) {
 
-                            tags.push('mycssAdd' + cssName);
+                            tags.push('mycss-' + cssName);
                             return true;
                         }
                     });
@@ -57,11 +61,11 @@
     function buildDropdown(trumbowyg) {
         var dropdown = [];
 
-        $.each(trumbowyg.o.plugins.mycss.cssList, function (i, cssName) {
-            var btn = 'mycssAdd' + cssName;
+        $.each(trumbowyg.o.plugins.mycss.cssList, function (cssName,cssTitle) {
+            var btn = 'mycss-' + cssName;
 
             trumbowyg.addBtnDef(btn, {
-                text: cssName,
+                text: cssTitle,
                 hasIcon: false,
                 fn: function () {
                     trumbowyg.saveRange();

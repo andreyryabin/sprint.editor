@@ -151,6 +151,8 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
         $value = $this->prepareValue($value);
 
+        echo "<pre>";print_r($value);/*debug*/echo "</pre>";
+
         $events = GetModuleEvents("sprint.editor", "OnBeforeShowComponentBlocks", true);
         foreach ($events as $aEvent) {
             ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
@@ -160,8 +162,8 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $this->prepareBlocks($value['blocks']);
 
         $this->layoutIndex = 0;
-        foreach ($value['layouts'] as $columns) {
-            $this->includeLayout($columns);
+        foreach ($value['layouts'] as $layout) {
+            $this->includeLayout($layout);
         }
 
         $this->includeFooter($this->arParams);
@@ -221,12 +223,13 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
     }
 
-    protected function includeLayout($columns) {
+    protected function includeLayout($layout) {
         $root = \Sprint\Editor\Module::getDocRoot();
-        $path = $this->findResource('_layout.php');
+        $path = $this->findResource('_grid.php');
         if (!$path) {
             return false;
         }
+
         /** @noinspection PhpIncludeInspection */
         include($root . $path);
 

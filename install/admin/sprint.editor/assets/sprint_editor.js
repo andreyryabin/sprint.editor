@@ -84,7 +84,12 @@ var sprint_editor = {
             for (var prop in areas) {
                 if (areas.hasOwnProperty(prop)) {
                     var area = areas[prop];
-                    area.block = sprint_editor.initblock($, $el.find(area.container), area.blockName, entryData[area.dataKey]);
+                    area.block = sprint_editor.initblock(
+                        $,
+                        $el.find(area.container),
+                        area.blockName,
+                        entryData[area.dataKey]
+                    );
                 }
             }
         }
@@ -251,8 +256,8 @@ var sprint_editor = {
             params.jsonUserSettings = {};
         }
 
-        $.each(params.jsonValue.layouts, function (index, columns) {
-            layoutAdd(columns);
+        $.each(params.jsonValue.layouts, function (index, layout) {
+            layoutAdd(layout);
         });
 
         $.each(params.jsonValue.blocks, function (index, block) {
@@ -411,6 +416,9 @@ var sprint_editor = {
                 if (name.indexOf('layout_') === 0) {
                     name = name.substr(7);
                     layoutEmptyAdd(name);
+                } else if(name.indexOf('pack_') === 0) {
+                    name = name.substr(5);
+                    packAdd(name);
                 } else {
                     blockAdd({name: name});
                 }
@@ -571,14 +579,18 @@ var sprint_editor = {
             }
 
             for (var index = 1; index <= colCnt; index++) {
-                columns.push(defaultclass)
+                columns.push({
+                    css: defaultclass
+                })
             }
 
-            layoutAdd(columns);
+            layoutAdd({
+                columns: columns
+            });
         }
 
-        function layoutAdd(columns) {
-            var ltname = 'type' + columns.length;
+        function layoutAdd(layout) {
+            var ltname = 'type' + layout.columns.length;
 
             var renderVars = {
                 enableChange: params.enableChange,
@@ -587,9 +599,9 @@ var sprint_editor = {
             };
 
             renderVars.columns = [];
-            $.each(columns, function(index,cssstr){
+            $.each(layout.columns, function(index,column){
                 renderVars.columns.push({
-                    compiled: compileClasses(ltname, cssstr)
+                    compiled: compileClasses(ltname, column.css)
                 })
             }) ;
 
@@ -656,6 +668,48 @@ var sprint_editor = {
             var entry = sprint_editor.initblock($, $el, blockData.name, blockData);
             sprint_editor.initblockAreas($, $el, entry);
             sprint_editor._entries[renderVars.uid] = entry;
+        }
+
+        function packAdd(packname) {
+            var pack = {};
+
+            if (params.jsonUserSettings && params.jsonUserSettings.packs) {
+                if (params.jsonUserSettings.packs[packname]) {
+                    pack = params.jsonUserSettings.packs[packname];
+                }
+            }
+
+            if (!pack.layouts && !pack.blocks){
+                return;
+            }
+
+            var layoutIndex = layoutCnt();
+
+            $.each(pack.layouts, function(index, layout){
+               layoutAdd(layout)
+            });
+
+            $.each(pack.blocks, function(index, block){
+                var pos = block.layout;
+
+                pos = pos.split(',');
+
+                pos = [
+                    parseInt(pos[0], 10) + layoutIndex ,
+                    parseInt(pos[1], 10)
+                ];
+
+                var newblock = $.extend({}, block,{
+                    layout: pos.join(',')
+                });
+
+                blockAdd(newblock);
+            });
+
+        }
+
+        function layoutCnt() {
+            return $editor.find('.sp-x-lt-grid').length;
         }
 
         function compileSettings(blockData) {

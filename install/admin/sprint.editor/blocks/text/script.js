@@ -38,6 +38,7 @@ sprint_editor.registerBlock('text', function ($, $el, data) {
             lang: 'ru',
             resetCss: true,
             removeformatPasted: true,
+            autogrow: true,
             btns: [
                 ['viewHTML'],
                 ['myCss'],
@@ -48,9 +49,15 @@ sprint_editor.registerBlock('text', function ($, $el, data) {
                 ['justifyLeft', 'justifyCenter', 'justifyRight'],
                 ['unorderedList', 'orderedList']
             ],
-
-            autogrow: true
-
+            plugins: {
+                mycss : {
+                    cssList: {
+                        'my-css-1' : 'MyCss1',
+                        'my-css-2' : 'MyCss2',
+                        'my-css-3' : 'MyCss3'
+                    }
+                }
+            }
         });
 
     };
