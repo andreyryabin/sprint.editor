@@ -8,13 +8,13 @@
         {{?}}
 
         <div class="sp-x-box-buttons">
+            {{?it.enableChange && it.showCopyButtons}}
+            <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">&equiv;</span>
+            {{?}}
+
             {{?it.enableChange && it.showSortButtons}}
             <span title="Поднять вверх" class="sp-x-btn sp-x-box-up">&uarr;</span>
             <span title="Опустить вниз" class="sp-x-btn sp-x-box-dn">&darr;</span>
-            {{?}}
-
-            {{?it.enableChange && it.showCopyButtons}}
-            <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">&equiv;</span>
             {{?}}
 
             {{?it.enableChange}}
