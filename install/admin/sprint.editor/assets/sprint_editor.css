@@ -188,7 +188,7 @@
 .sp-x-lt-col-head,
 .bx-core-adm-dialog div.sp-x-lt-col-head {
     text-align: center;
-    /*border-bottom: 1px dashed #ccc;*/
+    border-bottom: 1px dashed #ccc;
     padding: 5px 0;
     position: relative;
 }
@@ -197,7 +197,7 @@
 .bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-col-head {
     text-align: center;
     background: #ddd;
-    /*border: none;*/
+    border: none;
 
 }
 
@@ -247,42 +247,29 @@
 }
 
 .bx-core-adm-dialog div.sp-x-lt-col-buttons,
-.sp-x-lt-col-buttons {
-    margin: 0 0 5px 0;
+.sp-x-lt-col-buttons,
+.bx-core-adm-dialog div.sp-x-lt-buttons,
+.sp-x-lt-buttons {
+    /*margin: 0 0 5px 0;*/
     text-align: center;
     /*display: inline-block;*/
     display: block;
     position: absolute;
     right: 0;
-    top: 0;
+    top: -5px;
 }
 
 .bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-col-buttons,
-.sp-x-layout-mode .sp-x-lt-col-buttons {
-    /*display: block;*/
-    position: inherit;
-    right: inherit;
-    top: inherit;
-}
-
-
-.bx-core-adm-dialog div.sp-x-lt-buttons,
-.sp-x-lt-buttons {
-    text-align: center;
-    /*display: inline-block;*/
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-
+.sp-x-layout-mode .sp-x-lt-col-buttons,
 .bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-buttons,
-.sp-x-layout-mode .sp-x-lt-buttons {
+.sp-x-layout-mode .sp-x-lt-buttons
+{
     /*display: block;*/
     position: inherit;
     right: inherit;
     top: inherit;
 }
+
 
 /*.sp-x-btn.sp-x-box-copy,*/
 /*.sp-x-lt-col-buttons span.sp-x-lt-col-copy{*/
