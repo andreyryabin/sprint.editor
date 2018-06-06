@@ -584,7 +584,7 @@ var sprint_editor = {
             var renderVars = {
                 enableChange: params.enableChange,
                 showSortButtons: params.showSortButtons,
-                showCopyButtons: params.showCopyButtons
+                showCopyButtons: params.showCopyButtons,
             };
 
             renderVars.columns = [];
@@ -593,7 +593,6 @@ var sprint_editor = {
                     compiled: compileClasses(ltname, column.css)
                 })
             });
-
 
             $editor.find('.sp-x-editor-lt').append(
                 sprint_editor.renderTemplate('box-layout', renderVars)
@@ -784,7 +783,6 @@ var sprint_editor = {
             return compiled;
         }
 
-
         function compileClasses(ltname, cssstr) {
 
             var selectedCss = cssstr.split(' ');
@@ -857,7 +855,6 @@ var sprint_editor = {
                     });
 
                     columns.push({
-                        title: '',
                         css: colclasses.join(' ')
                     });
 
@@ -900,7 +897,6 @@ var sprint_editor = {
 
                 if (columns.length > 0) {
                     layouts.push({
-                        title: '',
                         columns: columns
                     });
                 }
