@@ -450,6 +450,24 @@ var sprint_editor = {
                 }
             });
 
+            $editor.on('click', '.sp-x-lt-col-left', function (e) {
+                e.preventDefault();
+                var block = $(this).closest('.sp-x-lt-col');
+                var nblock = block.prev('.sp-x-lt-col');
+                if (nblock.length > 0) {
+                    block.insertBefore(nblock);
+                }
+            });
+
+            $editor.on('click', '.sp-x-lt-col-right', function (e) {
+                e.preventDefault();
+                var block = $(this).closest('.sp-x-lt-col');
+                var nblock = block.next('.sp-x-lt-col');
+                if (nblock.length > 0) {
+                    block.insertAfter(nblock);
+                }
+            });
+
             $editor.on('click', '.sp-x-box-del', function (e) {
                 e.preventDefault();
                 var $target = $(this).closest('.sp-x-box');
@@ -474,7 +492,39 @@ var sprint_editor = {
 
                 $grid.hide(250, function () {
                     $grid.remove();
+                    checkLayoutButtons();
                 });
+            });
+
+            $editor.on('click','.sp-x-lt-col-add',function(e){
+                e.preventDefault();
+                var $grid = $(this).closest('.sp-x-lt');
+
+                var $row = $grid.find('.sp-x-lt-row');
+
+                var newcount = $row.find('.sp-x-lt-col').length + 1;
+
+                if (newcount > 4){
+                    return;
+                }
+
+                var ltname = 'type' + newcount;
+
+                $grid.attr('class', 'sp-x-lt').addClass('sp-x-lt-type' + newcount);
+
+                var html = sprint_editor.renderTemplate('box-layout-col', {
+                    enableChange: params.enableChange,
+                    showSortButtons: params.showSortButtons,
+                    showCopyButtons: params.showCopyButtons,
+                    compiledHtml: sprint_editor.renderTemplate('box-layout-col-settings', {
+                        compiled: compileClasses(ltname, '')
+                    })
+                });
+
+                $row.append(html);
+
+                checkClipboardButtons();
+
             });
 
             $editor.on('click', '.sp-x-lt-col-del', function (e) {
@@ -497,6 +547,7 @@ var sprint_editor = {
                 } else {
                     $grid.hide(250, function () {
                         $grid.remove();
+                        checkLayoutButtons();
                     });
                 }
             });
@@ -581,21 +632,28 @@ var sprint_editor = {
         function layoutAdd(layout) {
             var ltname = 'type' + layout.columns.length;
 
-            var renderVars = {
-                enableChange: params.enableChange,
-                showSortButtons: params.showSortButtons,
-                showCopyButtons: params.showCopyButtons,
-            };
+            var columnsHtml = [];
 
-            renderVars.columns = [];
             $.each(layout.columns, function (index, column) {
-                renderVars.columns.push({
-                    compiled: compileClasses(ltname, column.css)
-                })
+                columnsHtml.push(
+                    sprint_editor.renderTemplate('box-layout-col', {
+                        enableChange: params.enableChange,
+                        showSortButtons: params.showSortButtons,
+                        showCopyButtons: params.showCopyButtons,
+                        compiledHtml: sprint_editor.renderTemplate('box-layout-col-settings', {
+                            compiled: compileClasses(ltname, column.css)
+                        })
+                    })
+                )
             });
 
             $editor.find('.sp-x-editor-lt').append(
-                sprint_editor.renderTemplate('box-layout', renderVars)
+                sprint_editor.renderTemplate('box-layout', {
+                    enableChange: params.enableChange,
+                    showSortButtons: params.showSortButtons,
+                    showCopyButtons: params.showCopyButtons,
+                    columnsHtml: columnsHtml
+                })
             );
 
             if (params.enableChange) {

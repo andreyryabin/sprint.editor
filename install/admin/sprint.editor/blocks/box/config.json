@@ -1,6 +1,8 @@
 {
   "templates": [
     "layout.html",
+    "layout-col.html",
+    "layout-col-settings.html",
     "select-pack.html"
   ]
 }

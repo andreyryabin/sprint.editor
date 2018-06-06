@@ -151,8 +151,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
         $value = $this->prepareValue($value);
 
-        echo "<pre>";print_r($value);/*debug*/echo "</pre>";
-
         $events = GetModuleEvents("sprint.editor", "OnBeforeShowComponentBlocks", true);
         foreach ($events as $aEvent) {
             ExecuteModuleEventEx($aEvent, array(&$value['blocks']));

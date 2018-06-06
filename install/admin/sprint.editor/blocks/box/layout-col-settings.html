@@ -1,0 +1,15 @@
+{{?it.compiled}}
+<div class="sp-x-lt-settings">
+    {{~it.compiled :item}}
+    <div class="sp-x-lt-settings-group">
+        {{~item.options :option}}
+        {{?option.selected}}
+        <span class="sp-active">{{=option.title}}</span>
+        {{??}}
+        <span>{{=option.title}}</span>
+        {{?}}
+        {{~}}
+    </div>
+    {{~}}
+</div>
+{{?}}
