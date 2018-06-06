@@ -22,13 +22,16 @@ class AdminEditor
         if (self::$initCounts == 1) {
 
             self::registerPacks();
+
             self::registerBlocks('blocks', false, false);
             self::registerBlocks('my', false, true);
             self::registerBlocks('my', true, true);
+
             self::registerLayouts();
 
 
             self::registerAssets();
+
         }
 
         $params = array_merge(array(
@@ -55,14 +58,7 @@ class AdminEditor
         }
 
         $showSortButtons = 1;
-        if (empty($params['userSettings']['ENABLE_SORT_BUTTONS'])) {
-            $showSortButtons = 0;
-        }
-
         $showCopyButtons = 1;
-        if (empty($params['userSettings']['ENABLE_COPY_BUTTONS'])) {
-            $showCopyButtons = 0;
-        }
 
         $userSettings = array();
         if (!empty($params['userSettings']['SETTINGS_NAME'])) {
@@ -81,6 +77,7 @@ class AdminEditor
                 if (!empty($localBlocks)) {
                     $localValues[] = array(
                         'title' => $group['title'],
+                        'type' => $group['type'],
                         'blocks' => $localBlocks
 
                     );
@@ -353,9 +350,11 @@ class AdminEditor
             return false;
         }
 
-        self::sortBySort($selectBlocks);
+        self::sortByNum($selectBlocks, 'sort');
+
         self::$selectValues[] = array(
             'title' => GetMessage('SPRINT_EDITOR_group_' . $groupname),
+            'type' => 'blocks_'. $groupname,
             'blocks' => Locale::convertToWin1251IfNeed($selectBlocks)
         );
 
@@ -372,22 +371,51 @@ class AdminEditor
 
         self::$selectValues[] = array(
             'title' => GetMessage('SPRINT_EDITOR_group_layout'),
+            'type' => 'layouts',
             'blocks' => Locale::convertToWin1251IfNeed($selectLayouts)
         );
     }
 
-    protected static function registerPacks() {
-        $packs = array(
-            array(
-                'title' => 'pack1',
-                'name' => 'pack_pack1'
-            )
-        );
+    public static function registerPacks() {
+        $packs = array();
 
-        self::$selectValues[] = array(
+        $dir = Module::getPacksDir();
+
+        $iterator = new \DirectoryIterator($dir);
+        foreach ($iterator as $item) {
+            if ($item->getExtension() != 'json') {
+                continue;
+            }
+
+            $packuid = $item->getBasename('.'.$item->getExtension());
+
+            $content = file_get_contents($item->getPathname());
+            $content = json_decode($content, true);
+
+            if ($content && isset($content['blocks']) && $content['layouts']) {
+
+                $packname = !empty($content['packname']) ? $content['packname'] : $packuid;
+
+                $packs[] = array(
+                    'name' => 'pack_' . $packuid,
+                    'title' => $packname,
+                );
+
+            }
+
+        }
+
+        self::sortByStr($packs, 'title');
+
+        $result = array(
             'title' => GetMessage('SPRINT_EDITOR_group_packs'),
+            'type' => 'packs',
             'blocks' => Locale::convertToWin1251IfNeed($packs)
         );
+
+        self::$selectValues[] = $result;
+
+        return $result;
     }
 
     public static function renderFile($file, $vars = array()) {
@@ -403,13 +431,18 @@ class AdminEditor
         return $html;
     }
 
-    protected static function sortBySort(&$input = array()) {
-        usort($input, function ($a, $b) {
-            if ($a['sort'] == $b['sort']) {
+    protected static function sortByNum(&$input = array(), $key = 'sort') {
+        usort($input, function ($a, $b) use ($key){
+            if ($a[$key] == $b[$key]) {
                 return 0;
             }
-            return ($a['sort'] < $b['sort']) ? -1 : 1;
+            return ($a[$key] < $b[$key]) ? -1 : 1;
         });
     }
 
+    protected static function sortByStr(&$input = array(), $key = 'title') {
+        usort($input, function ($a, $b) use ($key){
+            return strcmp($a[$key], $b[$key]);
+        });
+    }
 }

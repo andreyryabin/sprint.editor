@@ -23,8 +23,6 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_HELP_TRACKER" => "Форма для вопросов и предложений ",
     "SPRINT_EDITOR_HELP_MARKETPLACE" => "Страничка модуля в маркетплейсе",
     "SPRINT_EDITOR_SETTINGS_DISABLE_CHANGE" => "Отключить добавление блоков",
-    "SPRINT_EDITOR_SETTINGS_ENABLE_SORT_BUTTONS" => "Включить кнопки сортировки",
-    "SPRINT_EDITOR_SETTINGS_ENABLE_COPY_BUTTONS" => "Включить кнопки копирования",
     "SPRINT_EDITOR_SETTINGS_SETTINGS_NAME" => "Пользовательские настройки блоков",
     "SPRINT_EDITOR_SETTINGS_DEFAULT_VALUE" => "Значение по умолчанию",
     "SPRINT_EDITOR_SETTINGS_NAME_NO" => "нет",

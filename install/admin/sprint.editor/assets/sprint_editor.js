@@ -228,6 +228,8 @@ var sprint_editor = {
         var $inputresult = $('.sp-x-result' + params.uniqid);
         var $form = $editor.closest('form').first();
 
+        var $select = $editor.find('.sp-x-box-select');
+
         $editor.on('keypress', 'input', function (e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
@@ -287,10 +289,27 @@ var sprint_editor = {
         if (params.enableChange) {
 
             $editor.on('click', '.sp-x-pack-save', function (e) {
-                $.post('/bitrix/admin/sprint.editor/assets/backend/save.php',{
-                    pack : saveToString()
-                })
+                var packname = prompt('Enter pack name');
+                packname = '' + packname;
+
+                if (packname){
+                    packSave(packname);
+                }
+
             });
+
+            $editor.on('click', '.sp-x-pack-del', function (e) {
+                var packname = $select.val();
+                if (packname.indexOf('pack_') === 0) {
+                    packname = packname.substr(5);
+
+                    if (confirm("Delete pack?")){
+                        packDelete(packname);
+                    }
+
+                }
+            });
+
 
             $editor.on('click', '.sp-x-layout-toggle', function (e) {
                 if ($editor.hasClass('sp-x-layout-mode')) {
@@ -337,13 +356,13 @@ var sprint_editor = {
             });
 
             $editor.on('click', '.sp-x-box-add', function (e) {
-                var name = $editor.find('.sp-x-box-select').val();
+                var name = $select.val();
                 if (name.indexOf('layout_') === 0) {
                     name = name.substr(7);
                     layoutEmptyAdd(name);
-                } else if(name.indexOf('pack_') === 0) {
+                } else if (name.indexOf('pack_') === 0) {
                     name = name.substr(5);
-                    packAdd(name);
+                    packLoad(name);
                 } else {
                     blockAdd({name: name});
                 }
@@ -359,15 +378,15 @@ var sprint_editor = {
                 var nblock = block.prev('.sp-x-box');
                 if (nblock.length > 0) {
                     block.insertBefore(nblock);
-                } else{
+                } else {
                     var ncol = col.prev('.sp-x-lt-col');
-                    if (ncol.length > 0){
+                    if (ncol.length > 0) {
                         block.appendTo(ncol);
                     } else {
                         var ngrid = grid.prev('.sp-x-lt-t');
-                        if (ngrid.length > 0){
+                        if (ngrid.length > 0) {
                             var ncol = ngrid.find('.sp-x-lt-col').last();
-                            if (ncol.length > 0){
+                            if (ncol.length > 0) {
                                 block.appendTo(ncol);
                             }
                         }
@@ -386,11 +405,11 @@ var sprint_editor = {
                 var nblock = block.next('.sp-x-box');
                 if (nblock.length > 0) {
                     block.insertAfter(nblock);
-                } else{
+                } else {
                     var ncol = col.next('.sp-x-lt-col');
-                    if (ncol.length > 0){
-                        var head =  ncol.find('.sp-x-lt-settings');
-                        if (head.length <= 0){
+                    if (ncol.length > 0) {
+                        var head = ncol.find('.sp-x-lt-settings');
+                        if (head.length <= 0) {
                             ncol.find('.sp-x-lt-col-head');
                         }
 
@@ -398,12 +417,12 @@ var sprint_editor = {
                         block.insertAfter(head);
                     } else {
                         var ngrid = grid.next('.sp-x-lt-t');
-                        if (ngrid.length > 0){
+                        if (ngrid.length > 0) {
                             var ncol = ngrid.find('.sp-x-lt-col').first();
-                            if (ncol.length > 0){
+                            if (ncol.length > 0) {
 
-                                var head =  ncol.find('.sp-x-lt-settings');
-                                if (head.length <= 0){
+                                var head = ncol.find('.sp-x-lt-settings');
+                                if (head.length <= 0) {
                                     ncol.find('.sp-x-lt-col-head');
                                 }
 
@@ -572,11 +591,11 @@ var sprint_editor = {
             };
 
             renderVars.columns = [];
-            $.each(layout.columns, function(index,column){
+            $.each(layout.columns, function (index, column) {
                 renderVars.columns.push({
                     compiled: compileClasses(ltname, column.css)
                 })
-            }) ;
+            });
 
 
             $editor.find('.sp-x-editor-lt').append(
@@ -643,41 +662,77 @@ var sprint_editor = {
             sprint_editor._entries[renderVars.uid] = entry;
         }
 
-        function packAdd(packname) {
-            var pack = {};
+        function packSave(packname) {
+            $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
+                save: saveToString(packname)
+            },function(resp){
+                $select.find('optgroup[data-type=packs]').remove();
 
-            if (params.jsonUserSettings && params.jsonUserSettings.packs) {
-                if (params.jsonUserSettings.packs[packname]) {
-                    pack = params.jsonUserSettings.packs[packname];
+                if (resp && resp.select){
+                    $select.prepend(
+                        sprint_editor.renderTemplate('box-select-pack', resp.select)
+                    );
                 }
-            }
 
-            if (!pack.layouts && !pack.blocks){
-                return;
-            }
+                if (resp && resp.current){
+                    $select.val(resp.current)
+                }
 
-            var layoutIndex = layoutCnt();
-
-            $.each(pack.layouts, function(index, layout){
-               layoutAdd(layout)
             });
+        }
 
-            $.each(pack.blocks, function(index, block){
-                var pos = block.layout;
+        function packDelete(packname) {
+            $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
+                del: packname
+            }, function(resp){
+                $select.find('optgroup[data-type=packs]').remove();
 
-                pos = pos.split(',');
+                if (resp && resp.select){
+                    $select.prepend(
+                        sprint_editor.renderTemplate('box-select-pack', resp.select)
+                    );
+                }
 
-                pos = [
-                    parseInt(pos[0], 10) + layoutIndex ,
-                    parseInt(pos[1], 10)
-                ];
+                if (resp && resp.current){
+                    $select.val(resp.current)
+                }
+            });
+        }
 
-                var newblock = $.extend({}, block,{
-                    layout: pos.join(',')
+        function packLoad(packname) {
+            $.get('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
+                load: packname
+            }, function (pack) {
+
+                if (!pack || !pack.layouts || !pack.blocks) {
+                    return;
+                }
+
+                var layoutIndex = layoutCnt();
+
+                $.each(pack.layouts, function (index, layout) {
+                    layoutAdd(layout)
                 });
 
-                blockAdd(newblock);
+                $.each(pack.blocks, function (index, block) {
+                    var pos = block.layout;
+
+                    pos = pos.split(',');
+
+                    pos = [
+                        parseInt(pos[0], 10) + layoutIndex,
+                        parseInt(pos[1], 10)
+                    ];
+
+                    var newblock = $.extend({}, block, {
+                        layout: pos.join(',')
+                    });
+
+                    blockAdd(newblock);
+                });
+
             });
+
 
         }
 
@@ -733,7 +788,7 @@ var sprint_editor = {
         }
 
 
-        function compileClasses(ltname,cssstr) {
+        function compileClasses(ltname, cssstr) {
 
             var selectedCss = cssstr.split(' ');
 
@@ -754,7 +809,7 @@ var sprint_editor = {
 
             $.each(allclasses, function (groupIndex, groupClasses) {
 
-                if (!$.isArray(groupClasses)){
+                if (!$.isArray(groupClasses)) {
                     return true;
                 }
 
@@ -797,7 +852,7 @@ var sprint_editor = {
                 $(this).find('.sp-x-lt-col').each(function (cindex) {
 
                     var colclasses = [];
-                    $(this).find('.sp-x-lt-settings .sp-active').each(function(){
+                    $(this).find('.sp-x-lt-settings .sp-active').each(function () {
                         var text = $(this).text();
                         colclasses.push(
                             $.trim(text)
@@ -820,19 +875,19 @@ var sprint_editor = {
                         var blockData = sprint_editor.collectData(uid);
 
                         var settcnt = 0;
-                        var settval={};
+                        var settval = {};
                         var $boxsett = $(this).find('.sp-x-box-settings');
-                        $boxsett.find('.sp-x-box-settings-group').each(function(){
+                        $boxsett.find('.sp-x-box-settings-group').each(function () {
                             var name = $(this).data('name');
                             var $val = $(this).find('.sp-active').first();
 
-                            if ($val.length > 0){
+                            if ($val.length > 0) {
                                 settval[name] = $val.data('value');
                                 settcnt++;
                             }
                         });
 
-                        if (settcnt > 0){
+                        if (settcnt > 0) {
                             blockData.settings = settval;
                         } else {
                             delete blockData.settings;
@@ -846,7 +901,7 @@ var sprint_editor = {
 
                 });
 
-                if (columns.length > 0){
+                if (columns.length > 0) {
                     layouts.push({
                         title: '',
                         columns: columns
