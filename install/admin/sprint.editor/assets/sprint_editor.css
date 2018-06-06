@@ -106,6 +106,13 @@
     margin: 0 0 10px 0;
 }
 
+.sp-x-layout-mode .sp-x-grid-placeholder {
+    border: 1px dotted black;
+    width: 40px;
+    display: table-row;
+    margin-bottom: 0;
+}
+
 .sp-x-box-placeholder {
     border: 1px dotted black;
     height: 100px;
@@ -141,19 +148,19 @@
 }
 
 .sp-x-layout-mode .sp-x-lt-type1 .sp-x-lt-col {
-    width: 100%;
+    /*width: 100%;*/
 }
 
 .sp-x-layout-mode .sp-x-lt-type2 .sp-x-lt-col {
-    width: 50%;
+    /*width: 50%;*/
 }
 
 .sp-x-layout-mode .sp-x-lt-type3 .sp-x-lt-col {
-    width: 33.3333%;
+    /*width: 33.3333%;*/
 }
 
 .sp-x-layout-mode .sp-x-lt-type4 .sp-x-lt-col {
-    width: 25%;
+    /*width: 25%;*/
 }
 
 .sp-x-lt-dock{
@@ -399,7 +406,7 @@
 }
 
 .sp-x-lt-settings-group{
-    display: none;
+    /*display: none;*/
 }
 
 .sp-x-layout-mode .sp-x-box-settings-group{

@@ -59,14 +59,17 @@ $settings = array(
 
             'blocks' => array(
                 array('name' => 'text', 'layout' => '0,0'),
-                array('name' => 'htag', 'layout' => '0,1'),
+                array('name' => 'htag', 'layout' => '0,0'),
+                array('name' => 'video', 'layout' => '0,1'),
+
+
             ),
 
             'layouts' => array(
                 0 => array(
                     'columns' => array(
-                        0 => array('css' => 'col-md-3'),
-                        1 => array('css' => 'col-md-9')
+                        0 => array('css' => 'col-md-6'),
+                        1 => array('css' => 'col-md-6')
                     )
                 ),
 

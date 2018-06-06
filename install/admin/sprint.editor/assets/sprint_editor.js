@@ -338,7 +338,13 @@ var sprint_editor = {
 
                 });
 
-                layouts.push(columns);
+
+
+                if (columns.length > 0){
+                    layouts.push(columns);
+                }
+
+
             });
 
             var resultString = '';
@@ -513,7 +519,7 @@ var sprint_editor = {
             });
 
             $editor.find('.sp-x-boxes').sortable({
-                items: ".sp-x-lt-grid",
+                items: ".sp-x-grid",
                 handle: ".sp-x-grid-handle",
                 placeholder: "sp-x-grid-placeholder"
             });
