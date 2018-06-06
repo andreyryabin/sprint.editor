@@ -38,8 +38,18 @@ $settings = array(
                     'style2' => 'Стиль 2',
                     'style3' => 'Стиль 3',
                 )
-            )
+            ),
+
+            'csslist' => array(
+                'type' => 'hidden',
+                'value' => array(
+                    'sp-text-1' => 'Стиль 1',
+                    'sp-text-2' => 'Стиль 2',
+                    'sp-text-3' => 'Стиль 3',
+                )
+            ),
         ),
+
         'image' => array(
             'param1' => array(
                 'type' => 'select',
@@ -52,16 +62,6 @@ $settings = array(
         ),
 
     ),
-
-//    'block_params'
-
-
-    'text_csslist' => array(
-        'sp-text-1' => 'Стиль 1',
-        'sp-text-2' => 'Стиль 2',
-        'sp-text-3' => 'Стиль 3',
-    ),
-
 
     'block_enabled' => array(
 //        'htag',

@@ -121,9 +121,11 @@ class AdminEditor
     }
 
     public static function getUserSettingsFiles() {
-        $directory = new \DirectoryIterator(Module::getSettingsDir());
-
         $result = array('' => GetMessage('SPRINT_EDITOR_SETTINGS_NAME_NO'));
+
+        $dir = Module::getSettingsDir();
+
+        $directory = new \DirectoryIterator($dir);
         foreach ($directory as $item) {
             if ($item->isFile() && $item->getExtension() == 'php') {
                 $settingsName = $item->getBasename('.php');

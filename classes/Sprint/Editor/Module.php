@@ -29,17 +29,17 @@ class Module
 
     public static function getSettingsDir() {
         if (is_dir( self::getDocRoot() . '/local/admin/sprint.editor/settings/')) {
-            return self::getDocRoot() . '/local/admin/sprint.editor/settings/';
+            return self::makeDir('/local/admin/sprint.editor/settings/');
         } else {
-            return self::getDocRoot() . '/bitrix/admin/sprint.editor/settings/';
+            return self::makeDir('/bitrix/admin/sprint.editor/settings/');
         }
     }
 
     public static function getPacksDir() {
         if (is_dir( self::getDocRoot() . '/local/admin/sprint.editor/packs/')) {
-            return self::getDocRoot() . '/local/admin/sprint.editor/packs/';
+            return self::makeDir('/local/admin/sprint.editor/packs/');
         } else {
-            return self::getDocRoot() . '/bitrix/admin/sprint.editor/packs/';
+            return self::makeDir('/bitrix/admin/sprint.editor/packs/');
         }
     }
 
@@ -82,6 +82,16 @@ class Module
             self::$configcache = include self::getModuleDir() . '/config.php';
         }
         return self::$configcache;
+    }
+
+
+    protected static function makeDir($dir){
+        $dir = self::getDocRoot() . $dir;
+        if (!is_dir($dir)){
+            mkdir($dir, BX_DIR_PERMISSIONS, true);
+        }
+
+        return $dir;
     }
 }
 
