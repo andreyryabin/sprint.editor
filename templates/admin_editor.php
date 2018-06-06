@@ -46,10 +46,12 @@
 
         <div style="float: right">
         <input type="button"
+               title="<?= GetMessage('SPRINT_EDITOR_pack_save') ?>"
                class="sp-x-pack-save adm-btn"
                value="+"/>
 
         <input type="button"
+               title="<?= GetMessage('SPRINT_EDITOR_pack_del') ?>"
                class="sp-x-pack-del adm-btn"
                value="-"/>
         </div>
@@ -64,9 +66,14 @@
     \CModule::IncludeModule('fileman');
     $compParamsLangMess = CComponentParamsManager::GetLangMessages();
     $compParamsLangMess = CUtil::PhpToJSObject($compParamsLangMess, false);
+
+    $sprintEditorLangMess = \Sprint\Editor\Locale::GetLangMessages();
+    $sprintEditorLangMess = CUtil::PhpToJSObject($sprintEditorLangMess, false);
+
     ?>
     <script type="text/javascript">
         BX.message(<?=$compParamsLangMess?>);
+        BX.message(<?=$sprintEditorLangMess?>);
         sprint_editor.registerTemplates(<?=$jsonTemplates?>);
         sprint_editor.registerParameters(<?=$jsonParameters?>);
 

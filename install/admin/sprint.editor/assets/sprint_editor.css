@@ -188,7 +188,7 @@
 .sp-x-lt-col-head,
 .bx-core-adm-dialog div.sp-x-lt-col-head {
     text-align: center;
-    border-bottom: 1px dashed #ccc;
+    /*border-bottom: 1px dashed #ccc;*/
     padding: 5px 0;
     position: relative;
 }
@@ -197,7 +197,7 @@
 .bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-col-head {
     text-align: center;
     background: #ddd;
-    border: none;
+    /*border: none;*/
 
 }
 
@@ -422,13 +422,11 @@
     border-radius: 4px;
     margin: 0 1px 4px 0;
 
+    background: #eee;
+
     /*margin-bottom: 8px;*/
     /*display: inline-block;*/
 
-}
-
-.sp-x-lt-settings-group{
-    background: #eee;
 }
 
 .sp-x-layout-mode .sp-x-box-settings-group,
@@ -436,14 +434,6 @@
     border-radius: inherit;
     margin:0;
 }
-
-.sp-x-box-settings-group{
-    background: #eee;
-}
-.sp-x-lt-settings-group{
-    background: #eee;
-}
-
 
 .sp-x-box-settings-group:nth-child(even)
 {
@@ -460,13 +450,9 @@
 /*}*/
 
 
-.sp-x-box-settings-group{
-    /*display: block;*/
-    display: inline-block;
-}
-
+.sp-x-box-settings-group,
 .sp-x-lt-settings-group{
-    /*display: none;*/
+    display: inline-block;
 }
 
 .sp-x-layout-mode .sp-x-box-settings-group{
@@ -474,7 +460,7 @@
 }
 
 .sp-x-layout-mode .sp-x-lt-settings-group{
-    display: block;
+    display: inline-block;
 }
 
 
@@ -573,7 +559,8 @@
             /*#fff 0 1px 1px;*/
 }
 
-.sp-x-layout-toggle {
+.sp-x-layout-toggle,
+.sp-x-pack-del{
     display: none;
 }
 

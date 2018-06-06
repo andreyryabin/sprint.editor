@@ -6,6 +6,8 @@ class Locale
 {
     private static $localeLoaded = false;
 
+    private static $messages = array();
+
     public static function isWin1251() {
         return (defined('BX_UTF') && BX_UTF === true) ? 0 : 1;
     }
@@ -34,10 +36,16 @@ class Locale
 
         if (!self::$localeLoaded) {
             foreach ($loc as $key => $msg) {
-                $MESS[$key] = self::convertToWin1251IfNeed($msg);
+                $msg = self::convertToWin1251IfNeed($msg);
+                self::$messages[$key] = $msg;
+                $MESS[$key] = $msg;
             }
         }
 
+    }
+
+    public static function GetLangMessages(){
+        return self::$messages;
     }
 
     public static function truncateText($strText, $intLen = 60){

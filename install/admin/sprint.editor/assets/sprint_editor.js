@@ -278,6 +278,8 @@ var sprint_editor = {
 
         checkLayoutButtons();
         checkClipboardButtons();
+        checkPackDelButton();
+
 
         $form.on('submit', function (e) {
             var resultString = saveToString();
@@ -288,8 +290,13 @@ var sprint_editor = {
 
         if (params.enableChange) {
 
+
+            $select.on('change',function(){
+                checkPackDelButton();
+            });
+
             $editor.on('click', '.sp-x-pack-save', function (e) {
-                var packname = prompt('Enter pack name');
+                var packname = prompt(BX.message('SPRINT_EDITOR_pack_setname'));
                 if (packname){
                     packSave('' + packname);
                 }
@@ -300,10 +307,12 @@ var sprint_editor = {
                 if (packname.indexOf('pack_') === 0) {
                     packname = packname.substr(5);
 
-                    if (confirm("Delete pack?")){
+                    if (confirm(BX.message('SPRINT_EDITOR_pack_del_confirm'))){
                         packDelete(packname);
                     }
 
+                } else {
+                    alert(BX.message('SPRINT_EDITOR_pack_del_error'))
                 }
             });
 
@@ -677,6 +686,15 @@ var sprint_editor = {
             }
         }
 
+        function checkPackDelButton() {
+            var name = $select.val();
+            if (name.indexOf('pack_') === 0) {
+                $editor.find('.sp-x-pack-del').show();
+            } else {
+                $editor.find('.sp-x-pack-del').hide();
+            }
+        }
+
         function blockAdd(blockData) {
             if (!blockData.name || !sprint_editor.hasBlockParams(blockData.name)) {
                 return false;
@@ -732,6 +750,7 @@ var sprint_editor = {
                     $select.val(resp.current)
                 }
 
+                checkPackDelButton();
             });
         }
 
@@ -750,6 +769,8 @@ var sprint_editor = {
                 if (resp && resp.current){
                     $select.val(resp.current)
                 }
+
+                checkPackDelButton();
             });
         }
 
