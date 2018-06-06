@@ -296,7 +296,7 @@ var sprint_editor = {
             });
 
             $editor.on('click', '.sp-x-pack-save', function (e) {
-                var packname = prompt(BX.message('SPRINT_EDITOR_pack_setname'));
+                var packname = prompt(BX.message('SPRINT_EDITOR_pack_change'));
                 if (packname){
                     packSave('' + packname);
                 }
@@ -525,6 +525,7 @@ var sprint_editor = {
                     enableChange: params.enableChange,
                     showSortButtons: params.showSortButtons,
                     showCopyButtons: params.showCopyButtons,
+                    title: BX.message('SPRINT_EDITOR_col_default'),
                     compiledHtml: sprint_editor.renderTemplate('box-layout-col-settings', {
                         compiled: compileClasses(ltname, '')
                     })
@@ -561,13 +562,34 @@ var sprint_editor = {
                 }
             });
 
-            $editor.find('.sp-x-editor-lt').sortable({
-                items: ".sp-x-lt",
-                handle: ".sp-x-lt-handle",
-                placeholder: "sp-x-lt-placeholder"
-            });
+            // $editor.find('.sp-x-editor-lt').sortable({
+            //     items: ".sp-x-lt",
+            //     handle: ".sp-x-lt-handle",
+            //     placeholder: "sp-x-lt-placeholder"
+            // });
 
         }
+
+
+        $editor.on('dblclick', '.sp-x-lt-title', function (e) {
+            var $title = $(this);
+            var newtitle = prompt(BX.message('SPRINT_EDITOR_lt_change'), $title.text());
+            newtitle = $.trim(newtitle);
+
+            if (newtitle){
+                $title.text(newtitle);
+            }
+        });
+
+        $editor.on('dblclick', '.sp-x-lt-col-title', function (e) {
+            var $title = $(this);
+            var newtitle = prompt(BX.message('SPRINT_EDITOR_col_change'), $title.text());
+            newtitle = $.trim(newtitle);
+
+            if (newtitle){
+                $title.text(newtitle);
+            }
+        });
 
         $editor.on('click', '.sp-x-box-settings span', function (e) {
             var $span = $(this);
@@ -649,6 +671,7 @@ var sprint_editor = {
                         enableChange: params.enableChange,
                         showSortButtons: params.showSortButtons,
                         showCopyButtons: params.showCopyButtons,
+                        title: (column.title) ? column.title : BX.message('SPRINT_EDITOR_col_default'),
                         compiledHtml: sprint_editor.renderTemplate('box-layout-col-settings', {
                             compiled: compileClasses(ltname, column.css)
                         })
@@ -661,7 +684,8 @@ var sprint_editor = {
                     enableChange: params.enableChange,
                     showSortButtons: params.showSortButtons,
                     showCopyButtons: params.showCopyButtons,
-                    columnsHtml: columnsHtml
+                    columnsHtml: columnsHtml,
+                    title: (layout.title) ? layout.title : BX.message('SPRINT_EDITOR_lt_default')
                 })
             );
 
@@ -922,8 +946,11 @@ var sprint_editor = {
 
             $editor.find('.sp-x-lt').each(function (gindex) {
                 var columns = [];
+                var lttitle = $(this).find('.sp-x-lt-title').text();
 
                 $(this).find('.sp-x-lt-col').each(function (cindex) {
+
+                    var coltitle = $(this).find('.sp-x-lt-col-title').text();
 
                     var colclasses = [];
                     $(this).find('.sp-x-lt-settings .sp-active').each(function () {
@@ -933,9 +960,16 @@ var sprint_editor = {
                         );
                     });
 
-                    columns.push({
-                        css: colclasses.join(' ')
-                    });
+                    if (coltitle !== BX.message('SPRINT_EDITOR_col_default')){
+                        columns.push({
+                            title:coltitle,
+                            css: colclasses.join(' ')
+                        });
+                    } else {
+                        columns.push({
+                            css: colclasses.join(' ')
+                        });
+                    }
 
                     $(this).find('.sp-x-box').each(function () {
 
@@ -975,9 +1009,18 @@ var sprint_editor = {
                 });
 
                 if (columns.length > 0) {
-                    layouts.push({
-                        columns: columns
-                    });
+
+                    if (lttitle !== BX.message('SPRINT_EDITOR_lt_default')){
+                        layouts.push({
+                            title: lttitle,
+                            columns: columns
+                        });
+                    } else {
+                        layouts.push({
+                            columns: columns
+                        });
+                    }
+
                 }
 
             });

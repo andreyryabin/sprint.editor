@@ -40,9 +40,14 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_pack_save" => "Сохранить колнки с блоками в новый набор",
     "SPRINT_EDITOR_pack_del" => "Удалить набор",
 
-    "SPRINT_EDITOR_pack_setname" => "Введите название макета",
+    "SPRINT_EDITOR_pack_change" => "Укажите название макета",
     "SPRINT_EDITOR_pack_del_confirm" => "Удалить набор?",
     "SPRINT_EDITOR_pack_del_error" => "Выберите набор в выпадающем списке",
+
+    "SPRINT_EDITOR_lt_change" => "Укажите название сетки",
+    "SPRINT_EDITOR_col_change" => "Укажите название колонки",
+    "SPRINT_EDITOR_lt_default" => "Сетка",
+    "SPRINT_EDITOR_col_default" => "Колонка",
 
     "SPRINT_EDITOR_USED_IBLOCKS" => "Инфоблоки с редактором",
     "SPRINT_EDITOR_USED_ENTITIES" => "Пользовательские поля",
