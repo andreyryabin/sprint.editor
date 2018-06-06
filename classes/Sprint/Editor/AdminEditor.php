@@ -405,6 +405,10 @@ class AdminEditor
 
         }
 
+        if (empty($packs)){
+            return false;
+        }
+
         self::sortByStr($packs, 'title');
 
         $result = array(

@@ -290,12 +290,9 @@ var sprint_editor = {
 
             $editor.on('click', '.sp-x-pack-save', function (e) {
                 var packname = prompt('Enter pack name');
-                packname = '' + packname;
-
                 if (packname){
-                    packSave(packname);
+                    packSave('' + packname);
                 }
-
             });
 
             $editor.on('click', '.sp-x-pack-del', function (e) {

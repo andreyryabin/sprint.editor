@@ -32,7 +32,6 @@ if (\CModule::IncludeModule('sprint.editor')){
         file_put_contents($dir. $packid . '.json', $json);
 
         $packs = \Sprint\Editor\AdminEditor::registerPacks();
-        $packs = !empty($packs['blocks']) ? $packs : false;
 
         $current = 'pack_' . $packid;
         
@@ -67,7 +66,6 @@ if (\CModule::IncludeModule('sprint.editor')){
         }
 
         $packs = \Sprint\Editor\AdminEditor::registerPacks();
-        $packs = !empty($packs['blocks']) ? $packs : false;
 
         $current = '';
 
