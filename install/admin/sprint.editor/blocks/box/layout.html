@@ -1,42 +1,36 @@
-<div class="sp-x-lt-grid sp-x-lt-type{{=it.columns.length}}">
-    <div class="sp-x-grid-row">
+<div class="sp-x-lt sp-x-lt-type{{=it.columns.length}}">
+    <div class="sp-x-lt-row">
     {{~it.columns :col:index}}
     <div class="sp-x-lt-col">
-
         <div class="sp-x-lt-head">
-
             {{?it.enableChange}}
-            <span class="sp-x-grid-handle">Колонка {{=index+1}}</span>
+            <span class="sp-x-lt-handle">Колонка {{=index+1}}</span>
             {{??}}
             <span class="">Колонка {{=index+1}}</span>
             {{?}}
-
-            <div class="sp-x-lt-buttons">
+            <div class="sp-x-lt-col-buttons">
                 {{?it.enableChange && it.showCopyButtons}}
-                <span title="Вставить блоки в колонку" class="sp-x-btn sp-x-lt-paste">&crarr;</span>
-                <span title="Копировать блоки в колонке" class="sp-x-btn sp-x-lt-copy">&equiv;</span>
+                <span title="Вставить блоки в колонку" class="sp-x-btn sp-x-lt-col-paste">&crarr;</span>
                 {{?}}
 
                 {{?it.enableChange}}
-                <span title="Удалить колонку" class="sp-x-btn sp-x-lt-del">x</span>
+                <span title="Удалить колонку" class="sp-x-btn sp-x-lt-col-del">x</span>
                 {{?}}
             </div>
         </div>
-
         {{?col.compiled}}<div class="sp-x-lt-settings">
-            {{~col.compiled :item}}
-            <div class="sp-x-lt-settings-group">
-                {{~item.options :option}}
-                {{?option.selected}}
-                <span class="sp-active">{{=option.title}}</span>
-                {{??}}
-                <span>{{=option.title}}</span>
-                {{?}}
-                {{~}}
-            </div>
+        {{~col.compiled :item}}
+        <div class="sp-x-lt-settings-group">
+            {{~item.options :option}}
+            {{?option.selected}}
+            <span class="sp-active">{{=option.title}}</span>
+            {{??}}
+            <span>{{=option.title}}</span>
+            {{?}}
             {{~}}
-        </div>{{?}}
-
+        </div>
+        {{~}}
+    </div>{{?}}
     </div>
     {{~}}
     </div>

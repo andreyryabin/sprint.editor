@@ -19,9 +19,9 @@
  */
 ?>
 <div class="sp-x-editor<?= $uniqId ?>">
-    <div class="sp-x-boxes"></div>
+    <div class="sp-x-editor-lt"></div>
     <? if ($enableChange): ?>
-    <span class="sp-x-editor-buttons">
+    <span class="sp-x-editor-bt">
         <? if (!empty($selectValues)): ?>
             <select class="sp-x-box-select" style="width: 250px;">
                 <? foreach ($selectValues as $aGroup): ?>

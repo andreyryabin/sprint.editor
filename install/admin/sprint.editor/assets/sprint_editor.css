@@ -100,13 +100,13 @@
     background: #e0e8ea;
 }
 
-.sp-x-grid-placeholder {
+.sp-x-lt-placeholder {
     border: 1px dotted black;
     height: 40px;
     margin: 0 0 10px 0;
 }
 
-.sp-x-layout-mode .sp-x-grid-placeholder {
+.sp-x-layout-mode .sp-x-lt-placeholder {
     border: 1px dotted black;
     width: 40px;
     display: table-row;
@@ -139,28 +139,30 @@
     display: table-cell;
 }
 
-.sp-x-layout-mode .sp-x-grid-buttons{
-    display: table-caption;
+.sp-x-layout-mode .sp-x-lt-col-buttons{
+    /*display: table-caption;*/
 }
 
-.sp-x-layout-mode .sp-x-grid-row{
+.sp-x-layout-mode .sp-x-lt-row
+
+{
     display: table-row;
 }
 
 .sp-x-layout-mode .sp-x-lt-type1 .sp-x-lt-col {
-    /*width: 100%;*/
+    width: 100%;
 }
 
 .sp-x-layout-mode .sp-x-lt-type2 .sp-x-lt-col {
-    /*width: 50%;*/
+    width: 50%;
 }
 
 .sp-x-layout-mode .sp-x-lt-type3 .sp-x-lt-col {
-    /*width: 33.3333%;*/
+    width: 33.3333%;
 }
 
 .sp-x-layout-mode .sp-x-lt-type4 .sp-x-lt-col {
-    /*width: 25%;*/
+    width: 25%;
 }
 
 .sp-x-lt-dock{
@@ -214,19 +216,19 @@
     font-weight: bold !important;
 }
 
-.bx-core-adm-dialog div.sp-x-grid-buttons,
-.sp-x-grid-buttons {
+.bx-core-adm-dialog div.sp-x-lt-col-buttons,
+.sp-x-lt-col-buttons {
     margin: 0 0 5px 0;
     text-align: center;
     display: none;
 }
 
-.sp-x-lt-grid.ui-sortable-helper .sp-x-lt-col {
+.sp-x-lt.ui-sortable-helper .sp-x-lt-col {
     background: #F5F9F9;
 }
 
-.bx-core-adm-dialog div.sp-x-lt-buttons,
-.sp-x-lt-buttons {
+.bx-core-adm-dialog div.sp-x-lt-col-buttons,
+.sp-x-lt-col-buttons {
     text-align: center;
     /*display: inline-block;*/
     display: block;
@@ -235,8 +237,8 @@
     top: 0;
 }
 
-.bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-buttons,
-.sp-x-layout-mode .sp-x-lt-buttons {
+.bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-col-buttons,
+.sp-x-layout-mode .sp-x-lt-col-buttons {
     /*display: block;*/
     position: inherit;
     right: inherit;
@@ -244,19 +246,19 @@
 }
 
 /*.sp-x-btn.sp-x-box-copy,*/
-/*.sp-x-lt-buttons span.sp-x-lt-copy{*/
+/*.sp-x-lt-col-buttons span.sp-x-lt-col-copy{*/
 /*display: none;*/
 /*}*/
 
 /*.sp-x-layout-mode .sp-x-btn.sp-x-box-copy,*/
-/*.sp-x-layout-mode .sp-x-lt-buttons span.sp-x-lt-copy{*/
+/*.sp-x-layout-mode .sp-x-lt-col-buttons span.sp-x-lt-col-copy{*/
 /*display: inline-block;*/
 /*}*/
 
 
 
 
-/*.sp-x-lt-head:hover .sp-x-lt-buttons .sp-x-btn {*/
+/*.sp-x-lt-head:hover .sp-x-lt-col-buttons .sp-x-btn {*/
     /*visibility: visible;*/
 /*}*/
 
@@ -294,32 +296,52 @@
     /*display: none;*/
 }
 
-.sp-x-lt-grid {
+.sp-x-lt {
     position: relative;
-    margin-bottom: 20px;
+
+    /*padding-left: 10px;*/
 }
 
-.sp-x-lt-grid:after {
+.sp-x-lt {
+    border-top: 1px dashed #f00;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.sp-x-lt:first-child{
+    margin-top: 0;
+    padding-top: 0;
+    border: none;
+}
+
+.sp-x-layout-mode .sp-x-lt{
+    margin-top: 0;
+    padding-top: 0;
+
+    border: none;
+}
+
+.sp-x-lt:after {
     content: '';
     display: block;
     clear: both;
 }
 
-.sp-x-lt-grid:last-child {
+.sp-x-lt:last-child {
     /*margin-bottom: 20px;*/
 }
 
-.sp-x-layout-mode .sp-x-lt-grid:last-child {
+.sp-x-layout-mode .sp-x-lt:last-child {
     /*margin-bottom: 10px;*/
 }
 
-.sp-x-layout-mode .sp-x-lt-grid {
+.sp-x-layout-mode .sp-x-lt {
     width: 100%;
     display: table;
 }
 
 .sp-x-box-handle,
-.sp-x-grid-handle {
+.sp-x-lt-handle {
     cursor: move;
 }
 
