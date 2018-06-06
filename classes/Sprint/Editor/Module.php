@@ -35,6 +35,14 @@ class Module
         }
     }
 
+    public static function getPacksDir() {
+        if (is_dir( self::getDocRoot() . '/local/admin/sprint.editor/packs/')) {
+            return self::getDocRoot() . '/local/admin/sprint.editor/packs/';
+        } else {
+            return self::getDocRoot() . '/bitrix/admin/sprint.editor/packs/';
+        }
+    }
+
     public static function getVersion() {
         $arModuleVersion = array();
         /** @noinspection PhpIncludeInspection */

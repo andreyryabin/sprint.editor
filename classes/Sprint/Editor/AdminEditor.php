@@ -185,6 +185,7 @@ class AdminEditor
 
 
             $value = array(
+                'packname' => '',
                 'version' => 2,
                 'blocks' => $value['blocks'],
                 'layouts' => $newlayots

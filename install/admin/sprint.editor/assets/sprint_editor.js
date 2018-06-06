@@ -278,100 +278,19 @@ var sprint_editor = {
         checkClipboardButtons();
 
         $form.on('submit', function (e) {
-
-            var blocks = [];
-            var layouts = [];
-
-            var index = 0;
-
-            $editor.find('.sp-x-lt').each(function (gindex) {
-                var columns = [];
-
-                $(this).find('.sp-x-lt-col').each(function (cindex) {
-
-                    var colclasses = [];
-                    $(this).find('.sp-x-lt-settings .sp-active').each(function(){
-                        var text = $(this).text();
-                        colclasses.push(
-                            $.trim(text)
-                        );
-                    });
-
-                    columns.push(
-                        colclasses.join(' ')
-                    );
-
-                    $(this).find('.sp-x-box').each(function () {
-
-                        var uid = $(this).data('uid');
-
-                        if (!sprint_editor._entries[uid]) {
-                            return true;
-                        }
-
-                        var blockData = sprint_editor.collectData(uid);
-
-                        var settcnt = 0;
-                        var settval={};
-                        var $boxsett = $(this).find('.sp-x-box-settings');
-                        $boxsett.find('.sp-x-box-settings-group').each(function(){
-                            var name = $(this).data('name');
-                            var $val = $(this).find('.sp-active').first();
-
-                            if ($val.length > 0){
-                                settval[name] = $val.data('value');
-                                settcnt++;
-                            }
-                        });
-
-                        if (settcnt > 0){
-                            blockData.settings = settval;
-                        } else {
-                            delete blockData.settings;
-                        }
-
-                        blockData.layout = gindex + ',' + cindex;
-                        blocks.push(blockData);
-                        index++;
-
-                    });
-
-                });
-
-
-
-                if (columns.length > 0){
-                    layouts.push(columns);
-                }
-
-
-            });
-
-            var resultString = '';
-
-            if (layouts.length > 0) {
-                var post = {
-                    blocks: blocks,
-                    layouts: layouts
-                };
-
-                resultString = JSON.stringify(post);
-                resultString = resultString.replace(/\\n/g, "\\n")
-                    .replace(/\\'/g, "\\'")
-                    .replace(/\\"/g, '\\"')
-                    .replace(/\\&/g, "\\&")
-                    .replace(/\\r/g, "\\r")
-                    .replace(/\\t/g, "\\t")
-                    .replace(/\\b/g, "\\b")
-                    .replace(/\\f/g, "\\f");
-            }
-
+            var resultString = saveToString();
 
             $editor.find('input,textarea,select').removeAttr('name');
             $inputresult.val(resultString);
         });
 
         if (params.enableChange) {
+
+            $editor.on('click', '.sp-x-pack-save', function (e) {
+                $.post('/bitrix/admin/sprint.editor/assets/backend/save.php',{
+                    pack : saveToString()
+                })
+            });
 
             $editor.on('click', '.sp-x-layout-toggle', function (e) {
                 if ($editor.hasClass('sp-x-layout-mode')) {
@@ -396,10 +315,10 @@ var sprint_editor = {
             $editor.on('click', '.sp-x-lt-col-paste', function (e) {
                 e.preventDefault();
 
-                var $grid = $(this).closest('.sp-x-lt');
+                var $grid = $(this).closest('.sp-x-lt-t');
                 var $col = $(this).closest('.sp-x-lt-col');
 
-                var gindex = $editor.find('.sp-x-lt').index($grid);
+                var gindex = $editor.find('.sp-x-lt-t').index($grid);
                 var cindex = $grid.find('.sp-x-lt-col').index($col);
 
                 var clipboardData = sprint_editor.getClipboard();
@@ -435,7 +354,7 @@ var sprint_editor = {
 
                 var block = $(this).closest('.sp-x-box');
                 var col = $(this).closest('.sp-x-lt-col');
-                var grid = $(this).closest('.sp-x-lt');
+                var grid = $(this).closest('.sp-x-lt-t');
 
                 var nblock = block.prev('.sp-x-box');
                 if (nblock.length > 0) {
@@ -445,7 +364,7 @@ var sprint_editor = {
                     if (ncol.length > 0){
                         block.appendTo(ncol);
                     } else {
-                        var ngrid = grid.prev('.sp-x-lt');
+                        var ngrid = grid.prev('.sp-x-lt-t');
                         if (ngrid.length > 0){
                             var ncol = ngrid.find('.sp-x-lt-col').last();
                             if (ncol.length > 0){
@@ -462,7 +381,7 @@ var sprint_editor = {
 
                 var block = $(this).closest('.sp-x-box');
                 var col = $(this).closest('.sp-x-lt-col');
-                var grid = $(this).closest('.sp-x-lt');
+                var grid = $(this).closest('.sp-x-lt-t');
 
                 var nblock = block.next('.sp-x-box');
                 if (nblock.length > 0) {
@@ -472,20 +391,20 @@ var sprint_editor = {
                     if (ncol.length > 0){
                         var head =  ncol.find('.sp-x-lt-settings');
                         if (head.length <= 0){
-                            ncol.find('.sp-x-lt-head');
+                            ncol.find('.sp-x-lt-col-head');
                         }
 
 
                         block.insertAfter(head);
                     } else {
-                        var ngrid = grid.next('.sp-x-lt');
+                        var ngrid = grid.next('.sp-x-lt-t');
                         if (ngrid.length > 0){
                             var ncol = ngrid.find('.sp-x-lt-col').first();
                             if (ncol.length > 0){
 
                                 var head =  ncol.find('.sp-x-lt-settings');
                                 if (head.length <= 0){
-                                    ncol.find('.sp-x-lt-head');
+                                    ncol.find('.sp-x-lt-col-head');
                                 }
 
                                 block.insertAfter(head);
@@ -499,8 +418,8 @@ var sprint_editor = {
 
             $editor.on('click', '.sp-x-lt-up', function (e) {
                 e.preventDefault();
-                var block = $(this).closest('.sp-x-lt');
-                var nblock = block.prev('.sp-x-lt');
+                var block = $(this).closest('.sp-x-lt-t');
+                var nblock = block.prev('.sp-x-lt-t');
                 if (nblock.length > 0) {
                     block.insertBefore(nblock);
                 }
@@ -508,8 +427,8 @@ var sprint_editor = {
 
             $editor.on('click', '.sp-x-lt-dn', function (e) {
                 e.preventDefault();
-                var block = $(this).closest('.sp-x-lt');
-                var nblock = block.next('.sp-x-lt');
+                var block = $(this).closest('.sp-x-lt-t');
+                var nblock = block.next('.sp-x-lt-t');
                 if (nblock.length > 0) {
                     block.insertAfter(nblock);
                 }
@@ -530,7 +449,7 @@ var sprint_editor = {
             $editor.on('click', '.sp-x-lt-del', function (e) {
                 e.preventDefault();
 
-                var $grid = $(this).closest('.sp-x-lt');
+                var $grid = $(this).closest('.sp-x-lt-t');
 
                 $grid.find('.sp-x-box').each(function () {
                     var uid = $(this).data('uid');
@@ -544,7 +463,7 @@ var sprint_editor = {
 
             $editor.on('click', '.sp-x-lt-col-del', function (e) {
                 e.preventDefault();
-                var $grid = $(this).closest('.sp-x-lt');
+                var $grid = $(this).closest('.sp-x-lt-t');
                 var $col = $(this).closest('.sp-x-lt-col');
 
                 $col.find('.sp-x-box').each(function () {
@@ -557,7 +476,7 @@ var sprint_editor = {
                 if (newcount > 0) {
                     $col.hide(250, function () {
                         $col.remove();
-                        $grid.attr('class', 'sp-x-lt').addClass('sp-x-lt-type' + newcount);
+                        $grid.attr('class', 'sp-x-lt-t').addClass('sp-x-lt-type' + newcount);
                     });
                 } else {
                     $grid.hide(250, function () {
@@ -665,7 +584,7 @@ var sprint_editor = {
             );
 
             if (params.enableChange) {
-                $editor.find('.sp-x-lt').last().find('.sp-x-lt-col').sortable({
+                $editor.find('.sp-x-lt-t').last().find('.sp-x-lt-col').sortable({
                     items: ".sp-x-box",
                     connectWith: ".sp-x-lt-col",
                     handle: ".sp-x-box-handle",
@@ -708,7 +627,7 @@ var sprint_editor = {
             var $column = false;
             if (blockData.layout) {
                 var pos = blockData.layout.split(',');
-                var $grid = $editor.find('.sp-x-lt').eq(pos[0]);
+                var $grid = $editor.find('.sp-x-lt-t').eq(pos[0]);
                 $column = $grid.find('.sp-x-lt-col').eq(pos[1]);
             }
 
@@ -763,7 +682,7 @@ var sprint_editor = {
         }
 
         function layoutCnt() {
-            return $editor.find('.sp-x-lt').length;
+            return $editor.find('.sp-x-lt-t').length;
         }
 
         function compileSettings(blockData) {
@@ -862,6 +781,102 @@ var sprint_editor = {
             });
 
             return compiled;
+        }
+
+        function saveToString(packname) {
+            packname = packname || '';
+
+            var blocks = [];
+            var layouts = [];
+
+            var index = 0;
+
+            $editor.find('.sp-x-lt-t').each(function (gindex) {
+                var columns = [];
+
+                $(this).find('.sp-x-lt-col').each(function (cindex) {
+
+                    var colclasses = [];
+                    $(this).find('.sp-x-lt-settings .sp-active').each(function(){
+                        var text = $(this).text();
+                        colclasses.push(
+                            $.trim(text)
+                        );
+                    });
+
+                    columns.push({
+                        title: '',
+                        css: colclasses.join(' ')
+                    });
+
+                    $(this).find('.sp-x-box').each(function () {
+
+                        var uid = $(this).data('uid');
+
+                        if (!sprint_editor._entries[uid]) {
+                            return true;
+                        }
+
+                        var blockData = sprint_editor.collectData(uid);
+
+                        var settcnt = 0;
+                        var settval={};
+                        var $boxsett = $(this).find('.sp-x-box-settings');
+                        $boxsett.find('.sp-x-box-settings-group').each(function(){
+                            var name = $(this).data('name');
+                            var $val = $(this).find('.sp-active').first();
+
+                            if ($val.length > 0){
+                                settval[name] = $val.data('value');
+                                settcnt++;
+                            }
+                        });
+
+                        if (settcnt > 0){
+                            blockData.settings = settval;
+                        } else {
+                            delete blockData.settings;
+                        }
+
+                        blockData.layout = gindex + ',' + cindex;
+                        blocks.push(blockData);
+                        index++;
+
+                    });
+
+                });
+
+                if (columns.length > 0){
+                    layouts.push({
+                        title: '',
+                        columns: columns
+                    });
+                }
+
+            });
+
+            var resultString = '';
+
+            if (layouts.length > 0) {
+                var post = {
+                    packname: packname,
+                    version: 2,
+                    blocks: blocks,
+                    layouts: layouts
+                };
+
+                resultString = JSON.stringify(post);
+                resultString = resultString.replace(/\\n/g, "\\n")
+                    .replace(/\\'/g, "\\'")
+                    .replace(/\\"/g, '\\"')
+                    .replace(/\\&/g, "\\&")
+                    .replace(/\\r/g, "\\r")
+                    .replace(/\\t/g, "\\t")
+                    .replace(/\\b/g, "\\b")
+                    .replace(/\\f/g, "\\f");
+            }
+
+            return resultString;
         }
     }
 };

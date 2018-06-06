@@ -21,7 +21,7 @@
 <div class="sp-x-editor<?= $uniqId ?>">
     <div class="sp-x-editor-lt"></div>
     <? if ($enableChange): ?>
-    <span class="sp-x-editor-bt">
+    <div class="sp-x-editor-bt">
         <? if (!empty($selectValues)): ?>
             <select class="sp-x-box-select" style="width: 250px;">
                 <? foreach ($selectValues as $aGroup): ?>
@@ -42,7 +42,20 @@
                title="<?= GetMessage('SPRINT_EDITOR_layout_toggle') ?>"
                class="sp-x-layout-toggle adm-btn"
                value="#"/>
+
+
+        <div style="float: right">
+        <input type="button"
+               class="sp-x-pack-save adm-btn"
+               value="+"/>
+
+        <input type="button"
+               class="sp-x-pack-del adm-btn"
+               value="-"/>
+        </div>
+
         <? endif; ?>
+    </div>
 </div>
 
 <textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"></textarea>

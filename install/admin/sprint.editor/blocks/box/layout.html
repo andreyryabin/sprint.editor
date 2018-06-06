@@ -1,47 +1,64 @@
 <div class="sp-x-lt sp-x-lt-type{{=it.columns.length}}">
-    <div class="sp-x-lt-row">
-    {{~it.columns :col:index}}
-    <div class="sp-x-lt-col">
-        <div class="sp-x-lt-head">
+
+    <div class="sp-x-lt-head">
+
+        {{?it.enableChange}}
+        <span class="sp-x-lt-handle">Сетка</span>
+        {{??}}
+        <span class="">Сетка</span>
+        {{?}}
+
+        <div class="sp-x-lt-buttons">
+            {{?it.enableChange && it.showSortButtons}}
+            <span title="Поднять вверх" class="sp-x-btn sp-x-lt-up">&uarr;</span>
+            <span title="Опустить вниз" class="sp-x-btn sp-x-lt-dn">&darr;</span>
+            {{?}}
 
             {{?it.enableChange}}
-            <span class="sp-x-lt-handle">Колонка</span>
-            {{??}}
-            <span class="">Колонка</span>
+            <span title="Удалить сетку" class="sp-x-btn sp-x-lt-del">x</span>
             {{?}}
-
-            <div class="sp-x-lt-col-buttons">
-                {{?it.enableChange && it.showCopyButtons}}
-                <span title="Вставить блоки в колонку" class="sp-x-btn sp-x-lt-col-paste">&crarr;</span>
-                <span title="Копировать блоки в колонке" class="sp-x-btn sp-x-lt-col-copy">&equiv;</span>
-                {{?}}
-
-                {{?it.enableChange && it.showSortButtons}}
-                <span title="Поднять вверх" class="sp-x-btn sp-x-lt-up">&uarr;</span>
-                <span title="Опустить вниз" class="sp-x-btn sp-x-lt-dn">&darr;</span>
-                {{?}}
-
-                {{?it.enableChange}}
-                <span title="Удалить сетку" class="sp-x-btn sp-x-lt-del">x</span>
-                {{?}}
-
-
-            </div>
         </div>
-        {{?col.compiled}}<div class="sp-x-lt-settings">
-        {{~col.compiled :item}}
-        <div class="sp-x-lt-settings-group">
-            {{~item.options :option}}
-            {{?option.selected}}
-            <span class="sp-active">{{=option.title}}</span>
-            {{??}}
-            <span>{{=option.title}}</span>
-            {{?}}
+    </div>
+
+
+
+
+    <div class="sp-x-lt-t">
+        <div class="sp-x-lt-row">
+            {{~it.columns :col:index}}
+            <div class="sp-x-lt-col">
+                <div class="sp-x-lt-col-head">
+
+                    {{?it.enableChange}}
+                    <span class="sp-x-lt-col-handle">Колонка</span>
+                    {{??}}
+                    <span class="">Колонка</span>
+                    {{?}}
+
+                    <div class="sp-x-lt-col-buttons">
+                        {{?it.enableChange && it.showCopyButtons}}
+                        <span title="Вставить блоки в колонку" class="sp-x-btn sp-x-lt-col-paste">&crarr;</span>
+                        <span title="Копировать блоки в колонке" class="sp-x-btn sp-x-lt-col-copy">&equiv;</span>
+                        {{?}}
+                    </div>
+                </div>
+                {{?col.compiled}}
+                <div class="sp-x-lt-settings">
+                    {{~col.compiled :item}}
+                    <div class="sp-x-lt-settings-group">
+                        {{~item.options :option}}
+                        {{?option.selected}}
+                        <span class="sp-active">{{=option.title}}</span>
+                        {{??}}
+                        <span>{{=option.title}}</span>
+                        {{?}}
+                        {{~}}
+                    </div>
+                    {{~}}
+                </div>
+                {{?}}
+            </div>
             {{~}}
         </div>
-        {{~}}
-    </div>{{?}}
-    </div>
-    {{~}}
     </div>
 </div>

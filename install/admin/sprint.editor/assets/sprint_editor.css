@@ -185,26 +185,48 @@
     text-align: center;
 }
 
-.sp-x-lt-head,
-.bx-core-adm-dialog div.sp-x-lt-head {
+.sp-x-lt-col-head,
+.bx-core-adm-dialog div.sp-x-lt-col-head {
     text-align: center;
     border-bottom: 1px dashed #ccc;
     padding: 5px 0;
     position: relative;
 }
 
-.sp-x-layout-mode .sp-x-lt-head,
-.bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-head {
+.sp-x-layout-mode .sp-x-lt-col-head,
+.bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-col-head {
     text-align: center;
     background: #ddd;
     border: none;
 
 }
 
+.sp-x-lt-head,
+.bx-core-adm-dialog div.sp-x-lt-head {
+    text-align: center;
+    position: relative;
+}
+
 .sp-x-layout-mode .sp-x-lt-head,
+.bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-head {
+    text-align: center;
+    border: none;
+
+}
+
+
+
+.sp-x-layout-mode .sp-x-lt-head,
+.sp-x-layout-mode .sp-x-lt-col-head,
 .sp-x-layout-mode .sp-x-lt-settings{
     margin: 0 5px;
 }
+
+
+
+
+
+
 
 .sp-x-layout-mode .sp-x-box{
     margin: 10px 5px 10px;
@@ -216,19 +238,13 @@
     font-weight: bold !important;
 }
 
-.bx-core-adm-dialog div.sp-x-lt-col-buttons,
-.sp-x-lt-col-buttons {
-    margin: 0 0 5px 0;
-    text-align: center;
-    display: none;
-}
-
 .sp-x-lt.ui-sortable-helper .sp-x-lt-col {
     background: #F5F9F9;
 }
 
 .bx-core-adm-dialog div.sp-x-lt-col-buttons,
 .sp-x-lt-col-buttons {
+    margin: 0 0 5px 0;
     text-align: center;
     /*display: inline-block;*/
     display: block;
@@ -239,6 +255,25 @@
 
 .bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-col-buttons,
 .sp-x-layout-mode .sp-x-lt-col-buttons {
+    /*display: block;*/
+    position: inherit;
+    right: inherit;
+    top: inherit;
+}
+
+
+.bx-core-adm-dialog div.sp-x-lt-buttons,
+.sp-x-lt-buttons {
+    text-align: center;
+    /*display: inline-block;*/
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.bx-core-adm-dialog .sp-x-layout-mode div.sp-x-lt-buttons,
+.sp-x-layout-mode .sp-x-lt-buttons {
     /*display: block;*/
     position: inherit;
     right: inherit;
@@ -258,7 +293,7 @@
 
 
 
-/*.sp-x-lt-head:hover .sp-x-lt-col-buttons .sp-x-btn {*/
+/*.sp-x-lt-col-head:hover .sp-x-lt-col-buttons .sp-x-btn {*/
     /*visibility: visible;*/
 /*}*/
 
@@ -296,49 +331,48 @@
     /*display: none;*/
 }
 
-.sp-x-lt {
+.sp-x-lt-t {
     position: relative;
 
     /*padding-left: 10px;*/
 }
 
-.sp-x-lt {
-    border-top: 1px dashed #f00;
-    margin-top: 10px;
-    padding-top: 10px;
-}
-
-.sp-x-lt:first-child{
-    margin-top: 0;
-    padding-top: 0;
-    border: none;
-}
-
-.sp-x-layout-mode .sp-x-lt{
-    margin-top: 0;
-    padding-top: 0;
-
-    border: none;
-}
-
-.sp-x-lt:after {
+.sp-x-lt-t:after {
     content: '';
     display: block;
     clear: both;
 }
 
-.sp-x-lt:last-child {
+.sp-x-lt-t:last-child {
     /*margin-bottom: 20px;*/
 }
 
-.sp-x-layout-mode .sp-x-lt:last-child {
+.sp-x-layout-mode .sp-x-lt-t:last-child {
     /*margin-bottom: 10px;*/
 }
 
-.sp-x-layout-mode .sp-x-lt {
+.sp-x-layout-mode .sp-x-lt-t {
     width: 100%;
     display: table;
+    margin-top: 0;
+    padding-top: 0;
+    border: none;
+    margin-bottom: 10px;
 }
+
+.sp-x-lt-head {
+    border-bottom: 1px dashed #f00;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+
+/*.sp-x-lt-t:first-child{*/
+    /*margin-top: 0;*/
+    /*padding-top: 0;*/
+    /*border: none;*/
+/*}*/
+
 
 .sp-x-box-handle,
 .sp-x-lt-handle {
