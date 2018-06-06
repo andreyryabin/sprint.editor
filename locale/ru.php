@@ -37,7 +37,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_layout_type4" => "Сетка из 4 колонок",
     "SPRINT_EDITOR_layout_toggle" => "Переключить отображение колонок",
 
-    "SPRINT_EDITOR_pack_save" => "Сохранить колнки с блоками в новый набор",
+    "SPRINT_EDITOR_pack_save" => "Сохранить колонки с блоками в новый набор",
     "SPRINT_EDITOR_pack_del" => "Удалить набор",
 
     "SPRINT_EDITOR_pack_change" => "Укажите название макета",

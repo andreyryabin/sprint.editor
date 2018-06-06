@@ -61,11 +61,11 @@ var sprint_editor = {
         }
     },
 
-    initblock: function ($, $el, name, blockData) {
+    initblock: function ($, $el, name, blockData, blockSettings) {
         name = sprint_editor.hasBlockMethod(name) ? name : 'dump';
 
         var method = sprint_editor.getBlockMethod(name);
-        var entry = new method($, $el, blockData);
+        var entry = new method($, $el, blockData, blockSettings);
 
         var html = sprint_editor.renderTemplate(name, entry.getData());
         $el.html(html).addClass('sp-block-' + name);
@@ -291,13 +291,13 @@ var sprint_editor = {
         if (params.enableChange) {
 
 
-            $select.on('change',function(){
+            $select.on('change', function () {
                 checkPackDelButton();
             });
 
             $editor.on('click', '.sp-x-pack-save', function (e) {
                 var packname = prompt(BX.message('SPRINT_EDITOR_pack_change'));
-                if (packname){
+                if (packname) {
                     packSave('' + packname);
                 }
             });
@@ -307,7 +307,7 @@ var sprint_editor = {
                 if (packname.indexOf('pack_') === 0) {
                     packname = packname.substr(5);
 
-                    if (confirm(BX.message('SPRINT_EDITOR_pack_del_confirm'))){
+                    if (confirm(BX.message('SPRINT_EDITOR_pack_del_confirm'))) {
                         packDelete(packname);
                     }
 
@@ -505,7 +505,7 @@ var sprint_editor = {
                 });
             });
 
-            $editor.on('click','.sp-x-lt-col-add',function(e){
+            $editor.on('click', '.sp-x-lt-col-add', function (e) {
                 e.preventDefault();
                 var $grid = $(this).closest('.sp-x-lt');
 
@@ -513,7 +513,7 @@ var sprint_editor = {
 
                 var newcount = $row.find('.sp-x-lt-col').length + 1;
 
-                if (newcount > 4){
+                if (newcount > 4) {
                     return;
                 }
 
@@ -576,7 +576,7 @@ var sprint_editor = {
             var newtitle = prompt(BX.message('SPRINT_EDITOR_lt_change'), $title.text());
             newtitle = $.trim(newtitle);
 
-            if (newtitle){
+            if (newtitle) {
                 $title.text(newtitle);
             }
         });
@@ -586,7 +586,7 @@ var sprint_editor = {
             var newtitle = prompt(BX.message('SPRINT_EDITOR_col_change'), $title.text());
             newtitle = $.trim(newtitle);
 
-            if (newtitle){
+            if (newtitle) {
                 $title.text(newtitle);
             }
         });
@@ -731,7 +731,16 @@ var sprint_editor = {
             renderVars.showCopyButtons = params.showCopyButtons;
             renderVars.enableChange = params.enableChange;
 
-            renderVars.compiled = compileSettings(blockData);
+
+            var blockSettings = {};
+
+            if (params.jsonUserSettings && params.jsonUserSettings.block_settings) {
+                if (params.jsonUserSettings.block_settings[blockData.name]) {
+                    blockSettings = params.jsonUserSettings.block_settings[blockData.name];
+                }
+            }
+
+            renderVars.compiled = compileSettings(blockData, blockSettings);
 
             var html = sprint_editor.renderTemplate('box', renderVars);
 
@@ -753,7 +762,7 @@ var sprint_editor = {
             $column.append(html);
 
             var $el = $column.find('.sp-x-box-block').last();
-            var entry = sprint_editor.initblock($, $el, blockData.name, blockData);
+            var entry = sprint_editor.initblock($, $el, blockData.name, blockData, blockSettings);
             sprint_editor.initblockAreas($, $el, entry);
             sprint_editor._entries[renderVars.uid] = entry;
         }
@@ -761,16 +770,16 @@ var sprint_editor = {
         function packSave(packname) {
             $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
                 save: saveToString(packname)
-            },function(resp){
+            }, function (resp) {
                 $select.find('optgroup[data-type=packs]').remove();
 
-                if (resp && resp.select){
+                if (resp && resp.select) {
                     $select.prepend(
                         sprint_editor.renderTemplate('box-select-pack', resp.select)
                     );
                 }
 
-                if (resp && resp.current){
+                if (resp && resp.current) {
                     $select.val(resp.current)
                 }
 
@@ -781,16 +790,16 @@ var sprint_editor = {
         function packDelete(packname) {
             $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
                 del: packname
-            }, function(resp){
+            }, function (resp) {
                 $select.find('optgroup[data-type=packs]').remove();
 
-                if (resp && resp.select){
+                if (resp && resp.select) {
                     $select.prepend(
                         sprint_editor.renderTemplate('box-select-pack', resp.select)
                     );
                 }
 
-                if (resp && resp.current){
+                if (resp && resp.current) {
                     $select.val(resp.current)
                 }
 
@@ -839,14 +848,7 @@ var sprint_editor = {
             return $editor.find('.sp-x-lt').length;
         }
 
-        function compileSettings(blockData) {
-            var settings = {};
-
-            if (params.jsonUserSettings && params.jsonUserSettings.block_settings) {
-                if (params.jsonUserSettings.block_settings[blockData.name]) {
-                    settings = params.jsonUserSettings.block_settings[blockData.name];
-                }
-            }
+        function compileSettings(blockData, settings) {
 
             var compiled = [];
 
@@ -960,9 +962,9 @@ var sprint_editor = {
                         );
                     });
 
-                    if (coltitle !== BX.message('SPRINT_EDITOR_col_default')){
+                    if (coltitle !== BX.message('SPRINT_EDITOR_col_default')) {
                         columns.push({
-                            title:coltitle,
+                            title: coltitle,
                             css: colclasses.join(' ')
                         });
                     } else {
@@ -1010,7 +1012,7 @@ var sprint_editor = {
 
                 if (columns.length > 0) {
 
-                    if (lttitle !== BX.message('SPRINT_EDITOR_lt_default')){
+                    if (lttitle !== BX.message('SPRINT_EDITOR_lt_default')) {
                         layouts.push({
                             title: lttitle,
                             columns: columns

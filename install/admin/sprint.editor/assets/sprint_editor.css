@@ -407,8 +407,7 @@
     padding: 8px;
 
     border-radius: 4px;
-    margin: 0 1px 4px 0;
-
+    margin: 4px 1px;
     background: #eee;
 
     /*margin-bottom: 8px;*/
@@ -447,7 +446,7 @@
 }
 
 .sp-x-layout-mode .sp-x-lt-settings-group{
-    display: inline-block;
+    display: block;
 }
 
 
