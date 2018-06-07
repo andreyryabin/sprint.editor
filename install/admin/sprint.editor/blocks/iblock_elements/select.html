@@ -1,43 +1,15 @@
 <div class="sp-filter">
-    <div class="sp-filter-row">
-        <select class="sp-select-iblock">
-            <option value="">нет</option>
-            {{~it.iblocks :item:index}}
-            <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
-            </option>
-            {{~}}
-        </select>
-        <input class="sp-filter-subm" type="button" value="найти">
-        <input id="{{!it.searchId}}" type="hidden" value=""/>
-    </div>
+    <select class="sp-select-iblock">
+        <option value="">нет</option>
+        {{~it.iblocks :item:index}}
+        <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
+        </option>
+        {{~}}
+    </select>
+    {{?it.iblock_id}}
+    <input type="button" class="sp-open" value="Добавить">
+    {{?}}
 </div>
-
-<div class="sp-filter">
-    <div class="sp-filter-row">
-        <input class="sp-filter-name" value="{{!it.name}}" type="text" style="width: 250px;" placeholder="Название">
-    </div>
-    <div class="sp-filter-row">
-        <input class="sp-filter-id1" value="{{!it.id1}}" type="text" style="width: 100px;" placeholder="id начальный">
-        ...
-        <input class="sp-filter-id2" value="{{!it.id2}}" type="text" style="width: 100px;" placeholder="id конечный">
-    </div>
-    <div class="sp-filter-row">
-        <input class="sp-nav-left" type="button" value="&larr;">
-        <input class="sp-nav-right" type="button" value="&rarr;">
-        {{=it.page_num}}/{{=it.page_cnt}}
-
-    </div>
-</div>
-
-<div class="sp-source">
-    {{~it.source :item:index}}
-    <div data-id="{{!item.id}}" class="sp-item">
-        {{!item.id}} - {{!item.title}}
-    </div>
-    {{~}}
-    <div title="Перетащите элементы вниз для их выбора" class="sp-arrows">&darr;&darr;&darr;</div>
-</div>
-
 
 <div class="sp-elements">
     {{~it.elements :item:index}}

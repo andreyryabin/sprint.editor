@@ -27,17 +27,6 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
     };
 
     this.afterRender = function () {
-
-        $el.on('click', '.sp-toggle', function () {
-            if ($el.hasClass('sp-show')) {
-                $el.find('.sp-source,.sp-filter').hide(250);
-                $el.removeClass('sp-show');
-            } else {
-                $el.find('.sp-source,.sp-filter').show(250);
-                $el.addClass('sp-show');
-            }
-        });
-
         $el.on('change', '.sp-select-collection', function () {
             sendrequest({
                 collection_id: findCollectionId(),

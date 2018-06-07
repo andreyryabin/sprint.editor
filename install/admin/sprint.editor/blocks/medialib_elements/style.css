@@ -30,7 +30,7 @@
 
 
 .sp-block-medialib_elements .sp-filter {
-    display: none;
+    /*display: none;*/
 }
 
 .sp-block-medialib_elements .sp-filter-row {
@@ -41,7 +41,7 @@
 .sp-block-medialib_elements .sp-source {
     background: #FFEBC1;
     padding: 5px 5px 10px;
-    display: none;
+    /*display: none;*/
 }
 
 .sp-block-medialib_elements.sp-show .sp-filter,
