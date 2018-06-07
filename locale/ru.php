@@ -27,7 +27,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_SETTINGS_DEFAULT_VALUE" => "Значение по умолчанию",
     "SPRINT_EDITOR_SETTINGS_NAME_NO" => "нет",
     "SPRINT_EDITOR_group_layout" => "Модульные сетки",
-    "SPRINT_EDITOR_group_packs" => "Наборы",
+    "SPRINT_EDITOR_group_packs" => "Макеты",
     "SPRINT_EDITOR_group_blocks" => "Общие",
     "SPRINT_EDITOR_group_my" => "Пользовательские",
 
@@ -37,12 +37,12 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_layout_type4" => "Сетка из 4 колонок",
     "SPRINT_EDITOR_layout_toggle" => "Переключить отображение колонок",
 
-    "SPRINT_EDITOR_pack_save" => "Сохранить колонки с блоками в новый набор",
-    "SPRINT_EDITOR_pack_del" => "Удалить набор",
+    "SPRINT_EDITOR_pack_save" => "Сохранить колонки с блоками в новый макет",
+    "SPRINT_EDITOR_pack_del" => "Удалить макет",
 
     "SPRINT_EDITOR_pack_change" => "Укажите название макета",
-    "SPRINT_EDITOR_pack_del_confirm" => "Удалить набор?",
-    "SPRINT_EDITOR_pack_del_error" => "Выберите набор в выпадающем списке",
+    "SPRINT_EDITOR_pack_del_confirm" => "Удалить макет?",
+    "SPRINT_EDITOR_pack_del_error" => "Выберите макет в выпадающем списке",
 
     "SPRINT_EDITOR_lt_change" => "Укажите название сетки",
     "SPRINT_EDITOR_col_change" => "Укажите название колонки",
