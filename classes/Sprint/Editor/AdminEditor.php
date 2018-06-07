@@ -63,8 +63,9 @@ class AdminEditor
         $userSettings = array();
         if (!empty($params['userSettings']['SETTINGS_NAME'])) {
             $userSettings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
+            
+            self::registerSettingsAssets($params['userSettings']['SETTINGS_NAME']);
         }
-
         if (!empty($userSettings['block_enabled'])) {
             $localValues = [];
             foreach (self::$selectValues as $groupIndex => $group) {
@@ -118,6 +119,15 @@ class AdminEditor
         ), $settings);
 
         return $settings;
+    }
+    
+    protected function registerSettingsAssets($settingsName){
+        global $APPLICATION;
+        $cssFile = Module::getSettingsDir() . $settingsName . '.css';
+        if (is_file($cssFile)){
+            $cssFile = str_replace(Module::getDocRoot() ,'',$cssFile );
+            $APPLICATION->SetAdditionalCSS($cssFile);
+        }
     }
 
     public static function getUserSettingsFiles() {

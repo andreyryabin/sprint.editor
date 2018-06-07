@@ -35,6 +35,7 @@ class Module
         }
     }
 
+
     public static function getPacksDir() {
         if (is_dir( self::getDocRoot() . '/local/admin/sprint.editor/packs/')) {
             return self::makeDir('/local/admin/sprint.editor/packs/');
