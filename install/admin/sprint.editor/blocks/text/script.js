@@ -37,7 +37,7 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
             var cssList = {};
             var plugins = {};
 
-            if (settings.csslist && settings.csslist.value) {
+            if (settings && settings.csslist && settings.csslist.value) {
                 cssList = settings.csslist.value;
 
                 plugins = {
