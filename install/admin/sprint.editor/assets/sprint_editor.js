@@ -533,6 +533,13 @@ var sprint_editor = {
 
                 $row.append(html);
 
+                $grid.find('.sp-x-lt-col').last().sortable({
+                    items: ".sp-x-box",
+                    connectWith: ".sp-x-lt-col",
+                    handle: ".sp-x-box-handle",
+                    placeholder: "sp-x-box-placeholder"
+                });
+
                 checkClipboardButtons();
 
             });
@@ -561,12 +568,6 @@ var sprint_editor = {
                     });
                 }
             });
-
-            // $editor.find('.sp-x-editor-lt').sortable({
-            //     items: ".sp-x-lt",
-            //     handle: ".sp-x-lt-handle",
-            //     placeholder: "sp-x-lt-placeholder"
-            // });
 
         }
 

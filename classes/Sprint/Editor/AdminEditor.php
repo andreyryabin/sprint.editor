@@ -59,13 +59,17 @@ class AdminEditor
 
         $showSortButtons = 1;
         $showCopyButtons = 1;
-
         $userSettings = array();
-        if (!empty($params['userSettings']['SETTINGS_NAME'])) {
-            $userSettings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
-            
-            self::registerSettingsAssets($params['userSettings']['SETTINGS_NAME']);
+
+        if (empty($params['userSettings']['SETTINGS_NAME'])) {
+            //$params['userSettings']['SETTINGS_NAME'] = 'example';
         }
+
+        if (!empty($params['userSettings']['SETTINGS_NAME'])) {
+            self::registerSettingsAssets($params['userSettings']['SETTINGS_NAME']);
+            $userSettings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
+        }
+
         if (!empty($userSettings['block_enabled'])) {
             $localValues = [];
             foreach (self::$selectValues as $groupIndex => $group) {
@@ -120,12 +124,12 @@ class AdminEditor
 
         return $settings;
     }
-    
-    protected function registerSettingsAssets($settingsName){
+
+    public static function registerSettingsAssets($settingsName) {
         global $APPLICATION;
         $cssFile = Module::getSettingsDir() . $settingsName . '.css';
-        if (is_file($cssFile)){
-            $cssFile = str_replace(Module::getDocRoot() ,'',$cssFile );
+        if (is_file($cssFile)) {
+            $cssFile = str_replace(Module::getDocRoot(), '', $cssFile);
             $APPLICATION->SetAdditionalCSS($cssFile);
         }
     }
@@ -366,7 +370,7 @@ class AdminEditor
 
         self::$selectValues[] = array(
             'title' => GetMessage('SPRINT_EDITOR_group_' . $groupname),
-            'type' => 'blocks_'. $groupname,
+            'type' => 'blocks_' . $groupname,
             'blocks' => Locale::convertToWin1251IfNeed($selectBlocks)
         );
 
@@ -399,7 +403,7 @@ class AdminEditor
                 continue;
             }
 
-            $packuid = $item->getBasename('.'.$item->getExtension());
+            $packuid = $item->getBasename('.' . $item->getExtension());
 
             $content = file_get_contents($item->getPathname());
             $content = json_decode($content, true);
@@ -417,7 +421,7 @@ class AdminEditor
 
         }
 
-        if (empty($packs)){
+        if (empty($packs)) {
             return false;
         }
 
@@ -448,7 +452,7 @@ class AdminEditor
     }
 
     protected static function sortByNum(&$input = array(), $key = 'sort') {
-        usort($input, function ($a, $b) use ($key){
+        usort($input, function ($a, $b) use ($key) {
             if ($a[$key] == $b[$key]) {
                 return 0;
             }
@@ -457,7 +461,7 @@ class AdminEditor
     }
 
     protected static function sortByStr(&$input = array(), $key = 'title') {
-        usort($input, function ($a, $b) use ($key){
+        usort($input, function ($a, $b) use ($key) {
             return strcmp($a[$key], $b[$key]);
         });
     }
