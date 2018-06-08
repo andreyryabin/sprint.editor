@@ -120,7 +120,6 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
                     },
                     dataType: 'json',
                     success: function (result) {
-                        deletefiles(uid);
                         itemsCollection[uid].file = result.image;
                         itemsCollection[uid].video = val;
                         renderitem(uid);
@@ -139,8 +138,6 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
             url: sprint_editor.getBlockWebPath('video_gallery') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
-                deletefiles(uid);
-
                 itemsCollection[uid].file = result.result.file[0];
 
                 renderitem(uid);
@@ -182,30 +179,19 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
                 active:0
             }));
         }
-    }
+    };
 
     var deletefiles = function(uid){
         if (uid && itemsCollection[uid]){
             var items = {};
             items[uid] =  itemsCollection[uid];
-            $.ajax({
-                url: sprint_editor.getBlockWebPath('video_gallery') + '/delete.php',
-                type: 'post',
-                data: {
-                    items: items
-                }
-            });
+
+            sprint_editor.markImagesForDelete(items);
         }
     };
 
     this.beforeDelete = function () {
-        $.ajax({
-            url: sprint_editor.getBlockWebPath('video_gallery') + '/delete.php',
-            type: 'post',
-            data: {
-                items: itemsCollection
-            }
-        });
+        sprint_editor.markImagesForDelete(itemsCollection);
     }
 
 });

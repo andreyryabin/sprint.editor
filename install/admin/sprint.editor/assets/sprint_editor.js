@@ -7,6 +7,9 @@ var sprint_editor = {
     _entries: {},
     _uidcounter: 0,
 
+    _imagesdelete: {},
+    _submiteditor: 0,
+
     registerBlock: function (name, method) {
         this._registered[name] = method;
     },
@@ -59,6 +62,33 @@ var sprint_editor = {
         } else {
             return '';
         }
+    },
+
+    markImagesForDelete: function (items) {
+        this._imagesdelete = $.extend({}, this._imagesdelete, items);
+
+        console.log(this._imagesdelete);
+    },
+
+    deleteImagesBeforeSubmit: function () {
+        this._submiteditor++;
+
+        if (this._submiteditor !== 1) {
+            return;
+        }
+
+        if (jQuery.isEmptyObject(this._imagesdelete)) {
+            return;
+        }
+
+        jQuery.ajax({
+            url: '/bitrix/admin/sprint.editor/assets/backend/delete.php',
+            type: 'post',
+            data: {
+                items: this._imagesdelete
+            }
+        });
+
     },
 
     initblock: function ($, $el, name, blockData, blockSettings) {
@@ -282,6 +312,8 @@ var sprint_editor = {
 
 
         $form.on('submit', function (e) {
+            sprint_editor.deleteImagesBeforeSubmit();
+
             var resultString = saveToString();
 
             $editor.find('input,textarea,select').removeAttr('name');
