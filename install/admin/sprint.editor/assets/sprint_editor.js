@@ -581,7 +581,9 @@ var sprint_editor = {
                 $grid.hide(250, function () {
                     $grid.remove();
                     checkLayoutButtons();
+                    updateIndexes();
                 });
+
             });
 
             $editor.on('click', '.sp-x-lt-add-col', function (e) {
@@ -620,7 +622,7 @@ var sprint_editor = {
                 });
 
                 checkClipboardButtons();
-
+                updateIndexes();
             });
 
             $editor.on('click', '.sp-x-lt-col-del', function (e) {
@@ -639,13 +641,18 @@ var sprint_editor = {
                     $col.hide(250, function () {
                         $col.remove();
                         $grid.attr('class', 'sp-x-lt').addClass('sp-x-lt-type' + newcount);
+                        updateIndexes();
                     });
                 } else {
                     $grid.hide(250, function () {
                         $grid.remove();
+                        updateIndexes();
                         checkLayoutButtons();
                     });
                 }
+
+
+
             });
 
             $editor.on('click','.sp-x-lt-edit',function(e){
@@ -784,6 +791,7 @@ var sprint_editor = {
 
             checkLayoutButtons();
             checkClipboardButtons();
+            updateIndexes();
         }
 
         function checkLayoutButtons() {
@@ -1206,6 +1214,17 @@ var sprint_editor = {
             }
 
             return resultString;
+        }
+
+        function updateIndexes() {
+            $editor.find('.sp-x-lt').each(function (gindex) {
+                $(this).find('.sp-x-lt-index').text(gindex+1);
+
+                $(this).find('.sp-x-lt-col').each(function (cindex) {
+                    $(this).find('.sp-x-lt-col-index').text((gindex+1) + ':' + (cindex+1));
+                });
+
+            });
         }
     }
 };

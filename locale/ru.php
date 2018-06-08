@@ -26,9 +26,9 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_SETTINGS_SETTINGS_NAME" => "Пользовательские настройки блоков",
     "SPRINT_EDITOR_SETTINGS_DEFAULT_VALUE" => "Значение по умолчанию",
     "SPRINT_EDITOR_SETTINGS_NAME_NO" => "нет",
-    "SPRINT_EDITOR_group_layout" => "Модульные сетки",
+    "SPRINT_EDITOR_group_layout" => "Сетки",
     "SPRINT_EDITOR_group_packs" => "Макеты",
-    "SPRINT_EDITOR_group_blocks" => "Общие",
+    "SPRINT_EDITOR_group_blocks" => "Блоки",
     "SPRINT_EDITOR_group_my" => "Пользовательские",
 
     "SPRINT_EDITOR_layout_type1" => "Сетка из 1 колонки",

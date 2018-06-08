@@ -24,10 +24,10 @@ class AdminEditor
             self::registerPacks();
             self::registerLayouts();
 
+            self::registerBlocks('blocks', false, false);
+
             self::registerBlocks('my', false, true);
             self::registerBlocks('my', true, true);
-
-            self::registerBlocks('blocks', false, false);
 
             self::registerAssets();
 
