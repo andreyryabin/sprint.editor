@@ -261,6 +261,8 @@ var sprint_editor = {
 
         var $select = $editor.find('.sp-x-box-select');
 
+        var $lastcolumn;
+
         $editor.on('keypress', 'input', function (e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
@@ -312,6 +314,10 @@ var sprint_editor = {
         checkPackDelButton();
 
 
+        $editor.append(
+            sprint_editor.renderTemplate('box-blocks')
+        );
+
         $form.on('submit', function (e) {
             sprint_editor.deleteImagesBeforeSubmit();
             var resultString = saveToString();
@@ -347,7 +353,6 @@ var sprint_editor = {
                     alert(BX.message('SPRINT_EDITOR_pack_del_error'))
                 }
             });
-
 
             $editor.on('click', '.sp-x-layout-toggle', function (e) {
                 if ($editor.hasClass('sp-x-layout-mode')) {
@@ -386,6 +391,31 @@ var sprint_editor = {
                 });
 
                 sprint_editor.clearClipboard();
+            });
+
+            $editor.on('click', '.sp-x-boxes-popup .sp-x-btn', function (e) {
+                var name = $(this).data('name');
+                if (name && $lastcolumn){
+                    blockPopupAdd(name, $lastcolumn);
+                }
+                $editor.find('.sp-x-boxes-popup').hide();
+            });
+
+            $editor.on('click', '.sp-x-lt-col-add-box', function (e) {
+                var $popup = $editor.find('.sp-x-boxes-popup');
+                if ($popup.is(':hidden')){
+
+                    $lastcolumn = $(this).closest('.sp-x-lt-col');
+
+                    var top = $(this).offset().top + 25;
+                    var left = $(this).offset().left;
+                    $popup.css({left: left, top: top}).show();
+
+
+
+                } else {
+                    $popup.hide();
+                }
             });
 
             $editor.on('click', '.sp-x-box-copy', function (e) {
@@ -750,6 +780,10 @@ var sprint_editor = {
             } else {
                 $editor.find('.sp-x-pack-del').hide();
             }
+        }
+
+        function blockPopupAdd(name, $column) {
+            alert(name);
         }
 
         function blockAdd(blockData) {

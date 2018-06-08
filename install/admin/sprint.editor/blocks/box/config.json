@@ -3,6 +3,7 @@
     "layout.html",
     "layout-col.html",
     "layout-col-settings.html",
+    "blocks.html",
     "select-pack.html"
   ]
 }
