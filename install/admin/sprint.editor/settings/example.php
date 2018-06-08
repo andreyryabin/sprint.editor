@@ -9,17 +9,26 @@ $settings = array(
 
     'layout_classes' => array(
         'type1' => array(
-            array('col-md-8', 'col-md-9', 'col-md-12'),
+            array('col-md-8', 'col-md-9', 'col-md-12')
         ),
         'type2' => array(
-            array('col-md-3', 'col-md-4', 'col-md-5', 'col-md-6', 'col-md-7', 'col-md-8', 'col-md-9'),
+            array('col-md-3', 'col-md-4', 'col-md-6', 'col-md-8', 'col-md-9'),
         ),
         'type3' => array(
-            array('col-md-3', 'col-md-4', 'col-md-5', 'col-md-6', 'col-md-7', 'col-md-8'),
+            array('col-md-3', 'col-md-4', 'col-md-6', 'col-md-8'),
         ),
         'type4' => array(
-            array('col-md-3', 'col-md-4', 'col-md-5', 'col-md-6', 'col-md-7'),
+            array('col-md-3', 'col-md-6', 'col-md-9'),
         ),
+    ),
+
+    'layout_titles' => array(
+        'col-md-12' => '100%',
+        'col-md-9' => '75%',
+        'col-md-8' => '66.66%',
+        'col-md-6' => '50%',
+        'col-md-4' => '33.33%',
+        'col-md-3' => '25%',
     ),
 
     'layout_defaults' => array(

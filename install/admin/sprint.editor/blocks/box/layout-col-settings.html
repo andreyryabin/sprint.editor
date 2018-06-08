@@ -4,9 +4,9 @@
     <div class="sp-x-lt-settings-group">
         {{~item.options :option}}
         {{?option.selected}}
-        <span class="sp-active">{{=option.title}}</span>
+        <span data-value="{{!option.value}}" class="sp-active">{{=option.title}}</span>
         {{??}}
-        <span>{{=option.title}}</span>
+        <span data-value="{{!option.value}}">{{=option.title}}</span>
         {{?}}
         {{~}}
     </div>

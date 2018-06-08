@@ -254,7 +254,7 @@ var sprint_editor = {
         var uniq = Math.random().toString(36).substring(2, 12);
         this._uidcounter++;
 
-        prefix = (prefix) ? prefix : 'sp-x-';
+        prefix = (prefix) ? prefix : 'sp';
 
         return prefix + this._uidcounter + uniq;
     },
@@ -1033,6 +1033,18 @@ var sprint_editor = {
             return compiled;
         }
 
+        function getClassTitle(cssname) {
+            if (params.jsonUserSettings && params.jsonUserSettings.layout_titles) {
+                if (params.jsonUserSettings.layout_titles[cssname]) {
+                    if (params.jsonUserSettings.layout_titles[cssname].length > 0) {
+                        return params.jsonUserSettings.layout_titles[cssname];
+                    }
+                }
+            }
+
+            return cssname;
+        }
+
         function compileClasses(ltname, cssstr) {
 
             var selectedCss = cssstr.split(' ');
@@ -1061,15 +1073,15 @@ var sprint_editor = {
                 var value = [];
                 var valSel = 0;
 
-                $.each(groupClasses, function (cssIndex, cssTitle) {
+                $.each(groupClasses, function (cssIndex, cssName) {
 
                     valSel = (
-                        $.inArray(cssTitle, selectedCss) >= 0
+                        $.inArray(cssName, selectedCss) >= 0
                     ) ? 1 : 0;
 
                     value.push({
-                        title: cssTitle,
-                        value: cssTitle,
+                        title: getClassTitle(cssName),
+                        value: cssName,
                         selected: valSel
                     })
                 });
@@ -1101,9 +1113,9 @@ var sprint_editor = {
 
                     var colclasses = [];
                     $(this).find('.sp-x-lt-settings .sp-active').each(function () {
-                        var text = $(this).text();
+                        var cssname = $(this).data('value');
                         colclasses.push(
-                            $.trim(text)
+                            $.trim(cssname)
                         );
                     });
 

@@ -22,13 +22,12 @@ class AdminEditor
         if (self::$initCounts == 1) {
 
             self::registerPacks();
+            self::registerLayouts();
 
-            self::registerBlocks('blocks', false, false);
             self::registerBlocks('my', false, true);
             self::registerBlocks('my', true, true);
 
-            self::registerLayouts();
-
+            self::registerBlocks('blocks', false, false);
 
             self::registerAssets();
 
