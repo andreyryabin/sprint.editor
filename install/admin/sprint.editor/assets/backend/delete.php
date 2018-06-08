@@ -1,6 +1,6 @@
 <?php
-
 define("PUBLIC_AJAX_MODE", true);
+
 
 define("NO_KEEP_STATISTIC", true);
 define("NO_AGENT_STATISTIC", true);

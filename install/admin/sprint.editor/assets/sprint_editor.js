@@ -6,6 +6,9 @@ var sprint_editor = {
     _events: {},
     _entries: {},
     _uidcounter: 0,
+    _submit:0,
+    _imagesfordelete: {},
+    
 
     _imagesdelete: {},
     _submiteditor: 0,
@@ -244,6 +247,23 @@ var sprint_editor = {
         return (val) ? val : {};
     },
 
+    markImagesForDelete: function(images){
+        this._imagesfordelete = jQuery.extend({}, this._imagesfordelete, images);
+        
+    },
+
+    deleteImagesOnce: function(){
+        this._submit++;
+
+        if (this._submit !== 1) {
+            return;
+        }
+
+        jQuery.post('/bitrix/admin/sprint.editor/assets/backend/delete.php', {
+            items: this._imagesfordelete
+        });
+    },
+    
     makeUid: function (prefix) {
         var uniq = Math.random().toString(36).substring(2, 12);
         this._uidcounter++;
@@ -313,7 +333,6 @@ var sprint_editor = {
 
         $form.on('submit', function (e) {
             sprint_editor.deleteImagesBeforeSubmit();
-
             var resultString = saveToString();
 
             $editor.find('input,textarea,select').removeAttr('name');
