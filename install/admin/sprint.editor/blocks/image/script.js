@@ -65,13 +65,14 @@ sprint_editor.registerBlock('image', function($, $el, data) {
     };
 
     var deletefiles = function(){
-        $.ajax({
-            url: sprint_editor.getBlockWebPath('image') + '/delete.php',
-            type: 'post',
-            data: {
-                file: data.file
-            }
-        });
+        var uid = sprint_editor.makeUid('sp');
+
+        var items = {};
+        items[uid] = {
+            file: data['file']
+        };
+
+        sprint_editor.markImagesForDelete(items);
     };
 
     this.beforeDelete = function () {

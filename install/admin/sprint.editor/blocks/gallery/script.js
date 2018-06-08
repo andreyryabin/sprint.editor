@@ -192,30 +192,19 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         }, 500);
 
 
-    }
+    };
 
     var deletefiles = function(uid){
         if (uid && itemsCollection[uid]){
             var items = {};
             items[uid] =  itemsCollection[uid];
-            $.ajax({
-                url: sprint_editor.getBlockWebPath('gallery') + '/delete.php',
-                type: 'post',
-                data: {
-                    items: items
-                }
-            });
+
+            sprint_editor.markImagesForDelete(items);
         }
     };
 
     this.beforeDelete = function () {
-        $.ajax({
-            url: sprint_editor.getBlockWebPath('gallery') + '/delete.php',
-            type: 'post',
-            data: {
-                items: itemsCollection
-            }
-        });
+        sprint_editor.markImagesForDelete(itemsCollection);
     }
 
 });
