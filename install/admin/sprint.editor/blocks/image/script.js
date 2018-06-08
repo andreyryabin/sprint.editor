@@ -27,7 +27,6 @@ sprint_editor.registerBlock('image', function($, $el, data) {
             url: sprint_editor.getBlockWebPath('image') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
-
                 deletefiles();
 
                 $.each(result.result.file, function(index,file){
@@ -52,8 +51,9 @@ sprint_editor.registerBlock('image', function($, $el, data) {
         $el.on('click', '.sp-image_item-del', function(){
             deletefiles();
 
-            data['file'] = {};
-            data['desc'] = '';
+            data.file = {};
+            data.desc = '';
+
             renderfiles();
         });
     };

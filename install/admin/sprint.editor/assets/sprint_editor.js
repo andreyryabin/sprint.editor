@@ -69,8 +69,6 @@ var sprint_editor = {
 
     markImagesForDelete: function (items) {
         this._imagesdelete = $.extend({}, this._imagesdelete, items);
-
-        console.log(this._imagesdelete);
     },
 
     deleteImagesBeforeSubmit: function () {
@@ -247,23 +245,6 @@ var sprint_editor = {
         return (val) ? val : {};
     },
 
-    markImagesForDelete: function(images){
-        this._imagesfordelete = jQuery.extend({}, this._imagesfordelete, images);
-        
-    },
-
-    deleteImagesOnce: function(){
-        this._submit++;
-
-        if (this._submit !== 1) {
-            return;
-        }
-
-        jQuery.post('/bitrix/admin/sprint.editor/assets/backend/delete.php', {
-            items: this._imagesfordelete
-        });
-    },
-    
     makeUid: function (prefix) {
         var uniq = Math.random().toString(36).substring(2, 12);
         this._uidcounter++;
