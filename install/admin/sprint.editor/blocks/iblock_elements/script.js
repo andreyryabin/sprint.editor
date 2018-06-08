@@ -19,7 +19,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
 
         var popupIds = [];
 
-        var uid = sprint_editor.makeUid('sp');
+        var uid = sprint_editor.makeUid();
         window[uid] = {
             AddValue: function (newid) {
                 newid = intval(newid);

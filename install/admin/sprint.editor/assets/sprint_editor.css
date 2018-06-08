@@ -521,6 +521,7 @@
     padding: 10px;
     z-index: 20;
     position: absolute;
+    right: 0;
     border-radius: 4px;
 
     box-shadow:
@@ -535,6 +536,9 @@
     text-align: left;
 }
 
+.sp-x-editor-pp-group {
+    text-align: left;
+}
 /*.sp-x-btn {*/
 /*cursor: pointer;*/
 /*text-decoration: none;*/

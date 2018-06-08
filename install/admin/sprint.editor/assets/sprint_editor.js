@@ -388,6 +388,8 @@ var sprint_editor = {
                 if (name && $lastcolumn){
                     blockPopupAdd({name:name}, $lastcolumn);
                 }
+
+                popupClose();
             });
 
             $editor.on('click', '.sp-x-lt-col-add-box', function (e) {
@@ -407,17 +409,10 @@ var sprint_editor = {
                     $(this).addClass('sp-active');
 
                     $lastcolumn = $(this).closest('.sp-x-lt-col');
+                    $popup.insertAfter($(this));
 
-                    var top = $(this).offset().top + 25;
+                    $popup.show();
 
-                    var left = $(this).offset().left;
-
-                    var ww = $(window).width();
-                    if (left + 300 > ww) {
-                        left = left - 290;
-                    }
-
-                    $popup.css({left: left + 'px', top: top + 'px'}).show();
 
                 } else {
                     popupClose();

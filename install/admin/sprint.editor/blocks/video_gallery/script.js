@@ -6,7 +6,7 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
     var itemsCollection = {};
 
     $.each(data.items, function (index, item) {
-        var uid = sprint_editor.makeUid('sp');
+        var uid = sprint_editor.makeUid();
         itemsCollection[uid] = item;
     });
 
@@ -44,7 +44,7 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
         });
 
         $el.on('click', '.sp-item-add', function () {
-            var uid = sprint_editor.makeUid('sp');
+            var uid = sprint_editor.makeUid();
 
             itemsCollection[uid] = {
                 video: '',

@@ -6,7 +6,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
     var itemsCollection = {};
 
     $.each(data.images, function (index, item) {
-        var uid = sprint_editor.makeUid('sp');
+        var uid = sprint_editor.makeUid();
         itemsCollection[uid] = item;
     });
 
@@ -45,7 +45,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             dataType: 'json',
             done: function (e, result) {
                 $.each(result.result.file, function (index, file) {
-                    var uid = sprint_editor.makeUid('sp');
+                    var uid = sprint_editor.makeUid();
                     itemsCollection[uid] = {
                         file: file,
                         desc: ''
@@ -113,7 +113,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
                 dataType: 'json',
                 success: function (result) {
                     if (result.image) {
-                        var uid = sprint_editor.makeUid('sp');
+                        var uid = sprint_editor.makeUid();
 
                         itemsCollection[uid] = {
                             file: result.image,
