@@ -351,10 +351,10 @@ var sprint_editor = {
 
             $editor.on('click', '.sp-x-layout-toggle', function (e) {
                 if ($editor.hasClass('sp-x-layout-mode')) {
-                    $(this).removeClass('adm-btn-active');
+                    $(this).removeClass('sp-active');
                     $editor.removeClass('sp-x-layout-mode');
                 } else {
-                    $(this).addClass('adm-btn-active');
+                    $(this).addClass('sp-active');
                     $editor.addClass('sp-x-layout-mode');
                 }
 
@@ -537,7 +537,7 @@ var sprint_editor = {
                 });
             });
 
-            $editor.on('click', '.sp-x-lt-col-add', function (e) {
+            $editor.on('click', '.sp-x-lt-add-col', function (e) {
                 e.preventDefault();
                 var $grid = $(this).closest('.sp-x-lt');
 
@@ -603,25 +603,26 @@ var sprint_editor = {
 
         }
 
+        $editor.on('click','.sp-x-lt-edit',function(e){
+            var $title = $(this).closest('.sp-x-lt').find('.sp-x-lt-title');
+            layoutEditTitle($title);
+        });
 
         $editor.on('dblclick', '.sp-x-lt-title', function (e) {
             var $title = $(this);
-            var newtitle = prompt(BX.message('SPRINT_EDITOR_lt_change'), $title.text());
-            newtitle = $.trim(newtitle);
-
-            if (newtitle) {
-                $title.text(newtitle);
-            }
+            layoutEditTitle($title);
         });
 
         $editor.on('dblclick', '.sp-x-lt-col-title', function (e) {
             var $title = $(this);
-            var newtitle = prompt(BX.message('SPRINT_EDITOR_col_change'), $title.text());
-            newtitle = $.trim(newtitle);
+            layoutEditColumnTitle($title);
 
-            if (newtitle) {
-                $title.text(newtitle);
-            }
+        });
+
+        $editor.on('click', '.sp-x-lt-col-edit', function (e) {
+            var $title = $(this).closest('.sp-x-lt-col').find('.sp-x-lt-col-title');
+            layoutEditColumnTitle($title);
+
         });
 
         $editor.on('click', '.sp-x-box-settings span', function (e) {
@@ -647,7 +648,6 @@ var sprint_editor = {
                 $span.addClass('sp-active');
             }
         });
-
 
         function checkClipboardButtons() {
             var clipboardData = sprint_editor.getClipboard();
@@ -737,9 +737,9 @@ var sprint_editor = {
 
         function checkLayoutButtons() {
             if ($editor.find('.sp-x-lt-col').length <= 0) {
-                $editor.find('.sp-x-layout-toggle').hide();
+                $editor.find('.sp-x-layout-toggle').css('display','none');
             } else {
-                $editor.find('.sp-x-layout-toggle').show();
+                $editor.find('.sp-x-layout-toggle').css('display','inline-block');
             }
         }
 
@@ -879,6 +879,23 @@ var sprint_editor = {
 
         function layoutCnt() {
             return $editor.find('.sp-x-lt').length;
+        }
+
+        function layoutEditTitle($title){
+            var newtitle = prompt(BX.message('SPRINT_EDITOR_lt_change'), $title.text());
+            newtitle = $.trim(newtitle);
+
+            if (newtitle) {
+                $title.text(newtitle);
+            }
+        }
+        function layoutEditColumnTitle($title){
+            var newtitle = prompt(BX.message('SPRINT_EDITOR_col_change'), $title.text());
+            newtitle = $.trim(newtitle);
+
+            if (newtitle) {
+                $title.text(newtitle);
+            }
         }
 
         function compileSettings(blockData, settings) {

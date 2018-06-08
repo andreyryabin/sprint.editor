@@ -1,17 +1,17 @@
 <div class="sp-x-lt sp-x-lt-type{{=it.columnsHtml.length}}">
     <div class="sp-x-lt-head">
-
         <span class="sp-x-lt-title">{{=it.title}}</span>
-
         <div class="sp-x-lt-buttons">
             {{?it.enableChange}}
-            <span title="Добавить колонку" class="sp-x-btn sp-x-lt-col-add">+</span>
+            <span title="Добавить колонку" class="sp-x-btn sp-x-lt-add-col">+</span>
+            <span title="Изменить название" class="sp-x-btn sp-x-lt-edit">&#128393;</span>
             {{?}}
 
             {{?it.enableChange && it.showSortButtons}}
             <span title="Поднять вверх" class="sp-x-btn sp-x-lt-up">&uarr;</span>
             <span title="Опустить вниз" class="sp-x-btn sp-x-lt-dn">&darr;</span>
             {{?}}
+
             {{?it.enableChange}}
             <span title="Удалить сетку" class="sp-x-btn sp-x-lt-del">x</span>
             {{?}}
