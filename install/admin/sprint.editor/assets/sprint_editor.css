@@ -511,13 +511,15 @@
     display: none;
 }
 
-.sp-x-boxes-popup {
+.sp-x-editor-pp {
     display: none;
+
+    width: 300px;
 
     background: #f5f9f9;
     /*border: 1px solid #;*/
     padding: 10px;
-    z-index: 10;
+    z-index: 20;
     position: absolute;
     border-radius: 4px;
 
@@ -526,6 +528,11 @@
     inset rgba(0,0,0,.2) 0 1px,
     inset #fff 0 2px,
     rgba(0,0,0,.2) 0 1px 1px;
+}
+
+.sp-x-editor-pp-group-title {
+    font-weight: bold;
+    text-align: left;
 }
 
 /*.sp-x-btn {*/
