@@ -426,9 +426,9 @@ var sprint_editor = {
                     $(this).addClass('sp-active');
 
                     $lastcolumn = $(this).closest('.sp-x-lt-col');
-
                     $(this).after($popup);
 
+                    $popup.css({right: 0});
                     $popup.show();
                 } else {
                     popupClose();
