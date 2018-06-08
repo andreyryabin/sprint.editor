@@ -51,16 +51,25 @@ var sprint_editor = {
     },
 
     renderTemplate: function (name, data) {
-        if (window.doT && this._templates[name]) {
-            if (this._tplcache[name]) {
-                return this._tplcache[name](data);
-            } else {
-                this._tplcache[name] = window.doT.template(this._templates[name]);
-                return this._tplcache[name](data);
-            }
-        } else {
+        if (!window.doT){
             return '';
         }
+
+        var $tpl = jQuery('#sp-x-template-' + name);
+        if ($tpl.length <= 0){
+            return '';
+        }
+
+        var func;
+        if (!this._tplcache[name]){
+            var html = $tpl.html();
+            func = window.doT.template(html);
+            this._tplcache[name] = func;
+        } else {
+            func = this._tplcache[name];
+        }
+
+        return func(data);
     },
 
     markImagesForDelete: function (items) {
@@ -353,6 +362,8 @@ var sprint_editor = {
                     $editor.addClass('sp-x-layout-mode');
                 }
 
+                popupClose();
+
                 $(document).scrollTop($editor.offset().top - 80);
             });
 
@@ -394,6 +405,12 @@ var sprint_editor = {
 
             $editor.on('click', '.sp-x-lt-col-add-box', function (e) {
                 var $popup = $editor.find('.sp-x-editor-pp');
+
+                if ($popup.length <= 0){
+                    var popuphtml = sprint_editor.renderTemplate('pp'+params.uniqid,{});
+                    $popup = $(popuphtml);
+                }
+
                 var showPopup = false;
 
                 if ($(this).hasClass('sp-active')){
@@ -409,11 +426,10 @@ var sprint_editor = {
                     $(this).addClass('sp-active');
 
                     $lastcolumn = $(this).closest('.sp-x-lt-col');
-                    $popup.insertAfter($(this));
+
+                    $(this).after($popup);
 
                     $popup.show();
-
-
                 } else {
                     popupClose();
 
@@ -503,7 +519,6 @@ var sprint_editor = {
                     }
                 }
             });
-
 
             $editor.on('click', '.sp-x-lt-up', function (e) {
                 e.preventDefault();
@@ -801,14 +816,18 @@ var sprint_editor = {
             var blockSettings = getBlockSettings(blockData.name);
             var html = renderBlock(blockData,blockSettings,uid);
 
-            var head = $column.find('.sp-x-lt-settings');
-            if (head.length <= 0) {
-                head = $column.find('.sp-x-lt-col-head');
-            }
+            // var head = $column.find('.sp-x-lt-settings');
+            // if (head.length <= 0) {
+            //     head = $column.find('.sp-x-lt-col-head');
+            // }
 
-            $(html).insertAfter(head);
+            // $(html).insertAfter(head);
 
-            var $el = $column.find('.sp-x-box-block').first();
+            $column.append(html);
+
+            // var $el = $column.find('.sp-x-box-block').first();
+            var $el = $column.find('.sp-x-box-block').last();
+
             var entry = sprint_editor.initblock($, $el, blockData.name, blockData, blockSettings);
             sprint_editor.initblockAreas($, $el, entry);
             sprint_editor._entries[uid] = entry;

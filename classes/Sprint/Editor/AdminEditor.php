@@ -95,7 +95,7 @@ class AdminEditor
         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
             'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
             'selectValues' => $localValues,
-            'jsonTemplates' => json_encode(Locale::convertToUtf8IfNeed(self::$templates)),
+            'templates' => self::$templates,
             'jsonParameters' => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
             'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
             'showSortButtons' => $showSortButtons,

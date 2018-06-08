@@ -58,24 +58,20 @@
             </div>
         </div>
     <? endif; ?>
-
-    <? if ($enableChange && !empty($selectValues)): ?>
-        <div class="sp-x-editor-pp">
-            <? foreach ($selectValues as $aGroup): if (in_array($aGroup['type'], array('blocks_blocks', 'blocks_my'))): ?>
-                <div class="sp-x-editor-pp-group" style="margin-bottom: 10px;" data-type="<?= $aGroup['type'] ?>">
-                    <div class="sp-x-editor-pp-group-title"><?= $aGroup['title'] ?></div>
-                    <? foreach ($aGroup['blocks'] as $aBlock): ?>
-                        <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
-                    <? endforeach; ?>
-                </div>
-            <? endif;endforeach ?>
-            <div class="sp-x-editor-pp-group">
-                <span class="sp-x-btn sp-x-editor-pp-close">x</span>
-            </div>
-        </div>
-    <? endif; ?>
-
 </div>
+
+<script type="text/html" id="sp-x-template-pp<?= $uniqId ?>">
+    <div class="sp-x-editor-pp">
+        <? foreach ($selectValues as $aGroup): if (in_array($aGroup['type'], array('blocks_blocks', 'blocks_my'))): ?>
+            <div class="sp-x-editor-pp-group" style="margin-bottom: 10px;" data-type="<?= $aGroup['type'] ?>">
+                <div class="sp-x-editor-pp-group-title"><?= $aGroup['title'] ?></div>
+                <? foreach ($aGroup['blocks'] as $aBlock): ?>
+                    <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
+                <? endforeach; ?>
+            </div>
+        <? endif;endforeach ?>
+    </div>
+</script>
 
 <textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"></textarea>
 
@@ -88,10 +84,17 @@
     $sprintEditorLangMess = CUtil::PhpToJSObject($sprintEditorLangMess, false);
 
     ?>
+
+    <? foreach ($templates as $templateName => $templateHtml): ?>
+        <script type="text/html" id="sp-x-template-<?= $templateName ?>">
+            <?= $templateHtml ?>
+        </script>
+    <? endforeach; ?>
+
     <script type="text/javascript">
         BX.message(<?=$compParamsLangMess?>);
         BX.message(<?=$sprintEditorLangMess?>);
-        sprint_editor.registerTemplates(<?=$jsonTemplates?>);
+
         sprint_editor.registerParameters(<?=$jsonParameters?>);
 
         jQuery(window).focus(function () {
