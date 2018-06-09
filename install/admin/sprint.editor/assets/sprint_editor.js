@@ -803,11 +803,13 @@ var sprint_editor = {
         }
 
         function checkPackDelButton() {
-            var name = $select.val();
-            if (name.indexOf('pack_') === 0) {
-                $editor.find('.sp-x-pack-del').show();
-            } else {
-                $editor.find('.sp-x-pack-del').hide();
+            if ($select.length > 0){
+                var name = $select.val();
+                if (name && name.indexOf('pack_') === 0) {
+                    $editor.find('.sp-x-pack-del').show();
+                } else {
+                    $editor.find('.sp-x-pack-del').hide();
+                }
             }
         }
 

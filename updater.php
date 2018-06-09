@@ -29,6 +29,6 @@ if ($updater && $updater instanceof \CUpdater) {
         $updater->CopyFiles("install/admin/", "admin/" );
     }
 
-    //2.2.1
+    //2.2.2
 
 }
