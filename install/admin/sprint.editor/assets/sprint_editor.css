@@ -434,6 +434,10 @@
 /*background: #FFEBC1;*/
 /*}*/
 
+.sp-x-btn-group {
+    display: inline-block;
+}
+
 .sp-x-lt-settings span,
 .sp-x-box-settings span,
 .sp-x-btn,
