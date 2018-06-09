@@ -9,16 +9,16 @@ $settings = array(
 
     'layout_classes' => array(
         'type1' => array(
-            array('col-md-8', 'col-md-9', 'col-md-12')
+            array('col-md-3', 'col-md-4', 'col-md-6', 'col-md-8', 'col-md-9', 'col-md-12')
         ),
         'type2' => array(
-            array('col-md-3', 'col-md-4', 'col-md-6', 'col-md-8', 'col-md-9'),
+            array('col-md-3', 'col-md-4', 'col-md-6', 'col-md-8', 'col-md-9', 'col-md-12'),
         ),
         'type3' => array(
-            array('col-md-3', 'col-md-4', 'col-md-6', 'col-md-8'),
+            array('col-md-3', 'col-md-4', 'col-md-6', 'col-md-8', 'col-md-9', 'col-md-12'),
         ),
         'type4' => array(
-            array('col-md-3', 'col-md-6', 'col-md-9'),
+            array('col-md-3', 'col-md-4', 'col-md-6', 'col-md-8', 'col-md-9', 'col-md-12'),
         ),
     ),
 
