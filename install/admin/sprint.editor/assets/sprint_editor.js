@@ -55,20 +55,21 @@ var sprint_editor = {
             return '';
         }
 
-        var $tpl = jQuery('#sp-x-template-' + name);
-        if ($tpl.length <= 0){
-            return '';
-        }
-
-        var func;
-        if (!this._tplcache[name]){
-            var html = $tpl.html();
-            func = window.doT.template(html);
-            this._tplcache[name] = func;
+        var html = '';
+        
+        if (this._tplcache[name]){
+            html = this._tplcache[name];
         } else {
-            func = this._tplcache[name];
+            var $tpl = jQuery('#sp-x-template-' + name);
+            if ($tpl.length > 0){
+                html = $tpl.html();
+            }
+
+            this._tplcache[name] = html;
+
         }
 
+        var func = window.doT.template(html);
         return func(data);
     },
 
