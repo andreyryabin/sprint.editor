@@ -51,26 +51,23 @@ var sprint_editor = {
     },
 
     renderTemplate: function (name, data) {
-        if (!window.doT){
-            return '';
-        }
-
-        var html = '';
-        
-        if (this._tplcache[name]){
-            html = this._tplcache[name];
-        } else {
+        if (!this._tplcache[name]){
             var $tpl = jQuery('#sp-x-template-' + name);
             if ($tpl.length > 0){
-                html = $tpl.html();
+                this._tplcache[name] = $tpl.html();
+            } else {
+                this._tplcache[name] = '';
             }
-
-            this._tplcache[name] = html;
-
         }
 
-        var func = window.doT.template(html);
-        return func(data);
+        if (window.doT){
+            var func = window.doT.template(
+                this._tplcache[name]
+            );
+            return func(data);
+        }
+
+        return '';
     },
 
     markImagesForDelete: function (items) {
