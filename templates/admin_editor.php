@@ -44,7 +44,6 @@
                    class="sp-x-layout-toggle adm-btn"
                    value="#"/>
 
-
             <div style="float: right">
                 <input type="button"
                        title="<?= GetMessage('SPRINT_EDITOR_pack_save') ?>"
