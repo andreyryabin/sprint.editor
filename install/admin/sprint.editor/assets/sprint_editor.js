@@ -688,31 +688,31 @@ var sprint_editor = {
                 layoutEditColumnTitle($title);
 
             });
-
-            $editor.on('click', '.sp-x-box-settings span', function (e) {
-                var $span = $(this);
-
-                $span.siblings('span').removeClass('sp-active');
-
-                if ($span.hasClass('sp-active')) {
-                    $span.removeClass('sp-active');
-                } else {
-                    $span.addClass('sp-active');
-                }
-            });
-
-            $editor.on('click', '.sp-x-lt-settings span', function (e) {
-                var $span = $(this);
-
-                $span.siblings('span').removeClass('sp-active');
-
-                if ($span.hasClass('sp-active')) {
-                    $span.removeClass('sp-active');
-                } else {
-                    $span.addClass('sp-active');
-                }
-            });
         }
+
+        $editor.on('click', '.sp-x-box-settings span', function (e) {
+            var $span = $(this);
+
+            $span.siblings('span').removeClass('sp-active');
+
+            if ($span.hasClass('sp-active')) {
+                $span.removeClass('sp-active');
+            } else {
+                $span.addClass('sp-active');
+            }
+        });
+
+        $editor.on('click', '.sp-x-lt-settings span', function (e) {
+            var $span = $(this);
+
+            $span.siblings('span').removeClass('sp-active');
+
+            if ($span.hasClass('sp-active')) {
+                $span.removeClass('sp-active');
+            } else {
+                $span.addClass('sp-active');
+            }
+        });
 
         function popupClose() {
             $editor.find('.sp-x-lt-col-add-box').removeClass('sp-active');
