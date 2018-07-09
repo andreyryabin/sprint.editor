@@ -15,7 +15,6 @@
     width: 200px;
     height: 200px;
     background: #ccc;
-    border: 2px solid #ccc;
 }
 
 .sp-block-image .sp-result img {
@@ -23,6 +22,9 @@
     height: 200px;
 }
 
+.sp-block-image .sp-col-desc {
+    background: #eee;
+}
 .sp-block-image .sp-source {
     background: #FFEBC1;
 }
