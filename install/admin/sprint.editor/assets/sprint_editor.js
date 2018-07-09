@@ -51,16 +51,16 @@ var sprint_editor = {
     },
 
     renderTemplate: function (name, data) {
-        if (!this._tplcache[name]){
+        if (!this._tplcache[name]) {
             var $tpl = jQuery('#sp-x-template-' + name);
-            if ($tpl.length > 0){
+            if ($tpl.length > 0) {
                 this._tplcache[name] = $tpl.html();
             } else {
                 this._tplcache[name] = '';
             }
         }
 
-        if (window.doT){
+        if (window.doT) {
             var func = window.doT.template(
                 this._tplcache[name]
             );
@@ -120,7 +120,7 @@ var sprint_editor = {
                     var area = areas[prop];
 
                     var areaData = {};
-                    if (area.dataFrom){
+                    if (area.dataFrom) {
                         areaData[area.dataFrom] = entryData[area.dataKey];
                     } else {
                         areaData = entryData[area.dataKey];
@@ -186,7 +186,7 @@ var sprint_editor = {
             if (areas.hasOwnProperty(prop)) {
                 var area = areas[prop];
                 var adata = area.block.collectData();
-                if (area.dataFrom){
+                if (area.dataFrom) {
                     blockData[area.dataKey] = adata[area.dataFrom];
                 } else {
                     blockData[area.dataKey] = adata;
@@ -375,8 +375,7 @@ var sprint_editor = {
                 }
 
                 popupClose();
-
-                $(document).scrollTop($editor.offset().top - 80);
+                scrollTo($editor);
             });
 
             $editor.on('click', '.sp-x-lt-col-copy', function (e) {
@@ -408,32 +407,33 @@ var sprint_editor = {
 
             $editor.on('click', '.sp-x-editor-pp .sp-x-btn', function (e) {
                 var name = $(this).data('name');
-                if (name && $lastcolumn){
-                    blockPopupAdd({name:name}, $lastcolumn);
+                if (name && $lastcolumn) {
+                    blockPopupAdd({name: name}, $lastcolumn);
                 }
 
                 popupClose();
+
             });
 
             $editor.on('click', '.sp-x-lt-col-add-box', function (e) {
                 var $popup = $editor.find('.sp-x-editor-pp');
 
-                if ($popup.length <= 0){
-                    var popuphtml = sprint_editor.renderTemplate('pp'+params.uniqid,{});
+                if ($popup.length <= 0) {
+                    var popuphtml = sprint_editor.renderTemplate('pp' + params.uniqid, {});
                     $popup = $(popuphtml);
                 }
 
                 var showPopup = false;
 
-                if ($(this).hasClass('sp-active')){
-                    if ($popup.is(':hidden')){
+                if ($(this).hasClass('sp-active')) {
+                    if ($popup.is(':hidden')) {
                         showPopup = true;
                     }
                 } else {
                     showPopup = true;
                 }
 
-                if (showPopup){
+                if (showPopup) {
                     $editor.find('.sp-x-lt-col-add-box').not(this).removeClass('sp-active');
                     $(this).addClass('sp-active');
 
@@ -664,10 +664,9 @@ var sprint_editor = {
                 }
 
 
-
             });
 
-            $editor.on('click','.sp-x-lt-edit',function(e){
+            $editor.on('click', '.sp-x-lt-edit', function (e) {
                 var $title = $(this).closest('.sp-x-lt').find('.sp-x-lt-title');
                 layoutEditTitle($title);
             });
@@ -713,6 +712,12 @@ var sprint_editor = {
                 $span.addClass('sp-active');
             }
         });
+
+        function scrollTo($elem) {
+            if (!$editor.hasClass('sp-x-layout-mode')) {
+                $(document).scrollTop($elem.offset().top - 80);
+            }
+        }
 
         function popupClose() {
             $editor.find('.sp-x-lt-col-add-box').removeClass('sp-active');
@@ -808,14 +813,14 @@ var sprint_editor = {
 
         function checkLayoutButtons() {
             if ($editor.find('.sp-x-lt-col').length <= 0) {
-                $editor.find('.sp-x-layout-toggle').css('display','none');
+                $editor.find('.sp-x-layout-toggle').css('display', 'none');
             } else {
-                $editor.find('.sp-x-layout-toggle').css('display','inline-block');
+                $editor.find('.sp-x-layout-toggle').css('display', 'inline-block');
             }
         }
 
         function checkPackDelButton() {
-            if ($select.length > 0){
+            if ($select.length > 0) {
                 var name = $select.val();
                 if (name && name.indexOf('pack_') === 0) {
                     $editor.find('.sp-x-pack-del').show();
@@ -826,7 +831,7 @@ var sprint_editor = {
         }
 
         function blockPopupAdd(blockData, $column) {
-            if (!blockData || !blockData.name){
+            if (!blockData || !blockData.name) {
                 return false;
             }
 
@@ -836,7 +841,7 @@ var sprint_editor = {
 
             var uid = sprint_editor.makeUid();
             var blockSettings = getBlockSettings(blockData.name);
-            var html = renderBlock(blockData,blockSettings,uid);
+            var html = renderBlock(blockData, blockSettings, uid);
 
             // var head = $column.find('.sp-x-lt-settings');
             // if (head.length <= 0) {
@@ -853,10 +858,13 @@ var sprint_editor = {
             var entry = sprint_editor.initblock($, $el, blockData.name, blockData, blockSettings);
             sprint_editor.initblockAreas($, $el, entry);
             sprint_editor._entries[uid] = entry;
+
+
+            scrollTo($el);
         }
 
         function blockAdd(blockData) {
-            if (!blockData || !blockData.name){
+            if (!blockData || !blockData.name) {
                 return false;
             }
 
@@ -867,7 +875,7 @@ var sprint_editor = {
             var uid = sprint_editor.makeUid();
 
             var blockSettings = getBlockSettings(blockData.name);
-            var html = renderBlock(blockData,blockSettings, uid);
+            var html = renderBlock(blockData, blockSettings, uid);
 
             if ($editor.find('.sp-x-lt-col').length <= 0) {
                 layoutEmptyAdd(1);
@@ -997,7 +1005,7 @@ var sprint_editor = {
             return $editor.find('.sp-x-lt').length;
         }
 
-        function layoutEditTitle($title){
+        function layoutEditTitle($title) {
             var newtitle = prompt(BX.message('SPRINT_EDITOR_lt_change'), $title.text());
             newtitle = $.trim(newtitle);
 
@@ -1005,8 +1013,8 @@ var sprint_editor = {
                 $title.text(newtitle);
             }
         }
-        
-        function layoutEditColumnTitle($title){
+
+        function layoutEditColumnTitle($title) {
             var newtitle = prompt(BX.message('SPRINT_EDITOR_col_change'), $title.text());
             newtitle = $.trim(newtitle);
 
@@ -1232,12 +1240,20 @@ var sprint_editor = {
 
         function updateIndexes() {
             $editor.find('.sp-x-lt').each(function (gindex) {
-                $(this).find('.sp-x-lt-index').text(gindex+1);
+                $(this).find('.sp-x-lt-index').text(gindex + 1);
+
+                var lastindex = 0;
 
                 $(this).find('.sp-x-lt-col').each(function (cindex) {
-                    $(this).find('.sp-x-lt-col-index').text((gindex+1) + ':' + (cindex+1));
+                    $(this).find('.sp-x-lt-col-index').text((gindex + 1) + ':' + (cindex + 1));
+                    lastindex++;
                 });
 
+                if (lastindex > 3) {
+                    $(this).find('.sp-x-lt-add-col').hide();
+                } else {
+                    $(this).find('.sp-x-lt-add-col').show();
+                }
             });
         }
     }
