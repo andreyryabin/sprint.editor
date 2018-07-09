@@ -1,6 +1,4 @@
 <?/** @var $block array */?><?
-echo "<pre>";print_r($block);/*debug*/echo "</pre>";
-
 $image = Sprint\Editor\Blocks\Image::getImage($block, array(
     'width' => 1024,
     'height' => 768,
