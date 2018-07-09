@@ -34,9 +34,6 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
                 });
 
                 renderfiles();
-
-                $el.find('.sp-source').hide(250);
-                $el.removeClass('sp-show');
             },
             progressall: function (e, result) {
                 var progress = parseInt(result.loaded / result.total * 100, 10);
@@ -50,16 +47,6 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
         }).prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
-
-        $el.on('click', '.sp-toggle', function () {
-            if ($el.hasClass('sp-show')) {
-                $el.find('.sp-source').hide(250);
-                $el.removeClass('sp-show');
-            } else {
-                $el.find('.sp-source').show(250);
-                $el.addClass('sp-show');
-            }
-        });
 
         $el.find('.sp-download-url').bindWithDelay('input', function () {
             var $urltext = $(this);
@@ -91,9 +78,6 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
                     }
 
                     $urltext.val('');
-
-                    $el.find('.sp-source').hide(250);
-                    $el.removeClass('sp-show');
                 }
             });
         }, 500);
@@ -102,7 +86,6 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
             deletefiles();
 
             data.file = {};
-            data.desc = '';
 
             renderfiles();
         });

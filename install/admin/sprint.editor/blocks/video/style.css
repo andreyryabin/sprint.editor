@@ -1,4 +1,4 @@
-.sp-block-video input[type=text]{
+.sp-block-video .sp-url{
     width: 98%;
 
 }
@@ -28,22 +28,6 @@
     width: 100px;
 }
 
-.sp-block-video .sp-item {
-    width: 73px !important;
-    height: 73px !important;
-}
-
-.sp-block-video .sp-item img{
-    width: 73px !important;
-    height: 73px !important;
-}
-
-.sp-block-video .sp-item-panel{
-    top: 20px !important;
-    left: -120px !important;
-}
-
-.sp-block-video .sp-item-panel input[type=text]{
-    width: 300px;
-    margin-top: 30px;
+.sp-block-video .sp-area1-image{
+    display: none;
 }

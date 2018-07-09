@@ -1,11 +1,16 @@
 .sp-block-image {
     position: relative;
 }
-.sp-block-image .sp-col-item{
+
+.sp-block-image .sp-col-item {
     width: 210px;
 }
 
-.sp-block-image .sp-item {
+.sp-block-image .sp-col-item {
+    width: 200px;
+}
+
+.sp-block-image .sp-result {
     position: relative;
     width: 200px;
     height: 200px;
@@ -13,65 +18,32 @@
     border: 2px solid #ccc;
 }
 
-.sp-block-image .sp-item img{
+.sp-block-image .sp-result img {
     width: 200px;
     height: 200px;
 }
 
-.sp-block-image .sp-item-panel{
-    position: absolute;
-    top: 20px;
-    left: -75px;
-    height: 100px;
-    z-index: 15;
-    background: #eee;
-    border: 2px solid #ccc;
-    display: none;
-    padding: 8px;
-}
-
-
-.sp-block-image .sp-item:hover{
-    border: 2px solid #d00;
-}
-
-.sp-block-image .sp-item:hover .sp-item-panel{
-    display: block;
-}
-
-.sp-block-image .sp-item-panel input[type=text]{
-    width: 300px;
-    margin-top: 30px;
-}
-
-.sp-block-image .sp-item-buttons{
-    text-align: center;margin-top: 5px;
-}
-
-.sp-block-image .sp-source{
+.sp-block-image .sp-source {
     background: #FFEBC1;
-    display: none;
-    /*position: absolute;*/
-    /*z-index: 20;*/
-    width: 100%;
 }
 
-.sp-block-image.sp-show .sp-source{
+.sp-block-image.sp-show .sp-source {
     display: block;
 }
 
-.sp-block-image .sp-download-url{
+.sp-block-image .sp-download-url,
+.sp-block-image .sp-item-text {
     width: 80%;
 }
 
-.sp-block-image .sp-fields{
+.sp-block-image .sp-fields {
     padding: 10px;
 }
 
-.sp-block-image .sp-field{
+.sp-block-image .sp-field {
     margin-bottom: 10px;
 }
 
-.sp-block-image .sp-field:last-child{
+.sp-block-image .sp-field:last-child {
     margin-bottom: 0;
 }

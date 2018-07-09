@@ -34,9 +34,21 @@ sprint_editor.registerBlock('video', function($, $el, data) {
         var $input = $el.find('.sp-url');
 
         getVideo($input.val());
+
         $input.bindWithDelay('input', function () {
             getVideo($(this).val());
         }, 500);
+
+
+        $el.on('click', '.sp-toggle', function () {
+            if ($el.hasClass('sp-show')) {
+                $el.find('.sp-area1-image').hide(250);
+                $el.removeClass('sp-show');
+            } else {
+                $el.find('.sp-area1-image').show(250);
+                $el.addClass('sp-show');
+            }
+        });
     };
 
     function getVideo(youtubeUrl){
