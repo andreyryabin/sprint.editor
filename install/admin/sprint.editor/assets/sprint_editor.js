@@ -118,11 +118,19 @@ var sprint_editor = {
             for (var prop in areas) {
                 if (areas.hasOwnProperty(prop)) {
                     var area = areas[prop];
+
+                    var areaData = {};
+                    if (area.dataFrom){
+                        areaData[area.dataFrom] = entryData[area.dataKey];
+                    } else {
+                        areaData = entryData[area.dataKey];
+                    }
+
                     area.block = sprint_editor.initblock(
                         $,
                         $el.find(area.container),
                         area.blockName,
-                        entryData[area.dataKey]
+                        areaData
                     );
                 }
             }
@@ -177,7 +185,13 @@ var sprint_editor = {
         for (var prop in areas) {
             if (areas.hasOwnProperty(prop)) {
                 var area = areas[prop];
-                blockData[area.dataKey] = area.block.collectData();
+                var adata = area.block.collectData();
+                if (area.dataFrom){
+                    blockData[area.dataKey] = adata[area.dataFrom];
+                } else {
+                    blockData[area.dataKey] = adata;
+                }
+
             }
         }
 

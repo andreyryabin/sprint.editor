@@ -7,8 +7,8 @@ sprint_editor.registerBlock('complex_video_text', function ($, $el, data) {
         },
         {
             dataKey : 'preview',
-            blockName: 'image_simple',
-            container : '.sp-area1-image_simple'
+            blockName: 'image',
+            container : '.sp-area1-image'
         },
         {
             dataKey : 'text',

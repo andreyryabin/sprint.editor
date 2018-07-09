@@ -1,4 +1,4 @@
-sprint_editor.registerBlock('image', function($, $el, data) {
+sprint_editor.registerBlock('image', function ($, $el, data) {
 
     data = $.extend({
         file: {},
@@ -29,7 +29,7 @@ sprint_editor.registerBlock('image', function($, $el, data) {
             done: function (e, result) {
                 deletefiles();
 
-                $.each(result.result.file, function(index,file){
+                $.each(result.result.file, function (index, file) {
                     data.file = file;
                 });
 
@@ -40,7 +40,7 @@ sprint_editor.registerBlock('image', function($, $el, data) {
 
                 $label.text('Загрузка: ' + progress + '%');
 
-                if (progress>=100){
+                if (progress >= 100) {
                     $label.text(labeltext);
                 }
             }
@@ -48,7 +48,51 @@ sprint_editor.registerBlock('image', function($, $el, data) {
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
 
-        $el.on('click', '.sp-item-del', function(){
+        $el.on('click', '.sp-toggle', function () {
+            if ($el.hasClass('sp-show')) {
+                $el.find('.sp-source').hide(250);
+                $el.removeClass('sp-show');
+            } else {
+                $el.find('.sp-source').show(250);
+                $el.addClass('sp-show');
+            }
+        });
+
+        $el.find('.sp-download-url').bindWithDelay('input', function () {
+            var $urltext = $(this);
+
+            var urlvalue = $.trim(
+                $urltext.val()
+            );
+
+            if (urlvalue.length <= 0) {
+                return false;
+            }
+
+
+            $.ajax({
+                url: sprint_editor.getBlockWebPath('image') + '/download.php',
+                type: 'post',
+                data: {
+                    url: urlvalue
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.image) {
+
+                        deletefiles();
+
+                        data.file = result.image;
+
+                        renderfiles();
+                    }
+
+                    $urltext.val('');
+                }
+            });
+        }, 500);
+
+        $el.on('click', '.sp-item-del', function () {
             deletefiles();
 
             data.file = {};
@@ -58,13 +102,13 @@ sprint_editor.registerBlock('image', function($, $el, data) {
         });
     };
 
-    var renderfiles = function() {
+    var renderfiles = function () {
         $el.find('.sp-result').html(
             sprint_editor.renderTemplate('image-image', data)
         );
     };
 
-    var deletefiles = function(){
+    var deletefiles = function () {
         var uid = sprint_editor.makeUid();
         var items = {};
         items[uid] = {

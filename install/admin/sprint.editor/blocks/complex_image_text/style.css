@@ -1,11 +1,3 @@
-.sp-block-complex_image_text .sp-block-image_simple{
-  width: 140px;
-}
-
-.sp-block-complex_image_text .sp-block-text{
-  margin-top: 39px;
-}
-
 .sp-block-complex_image_text .sp-item{
   width: 130px;
   height: 130px;
@@ -18,10 +10,14 @@
 
 .sp-block-complex_image_text .sp-item-panel{
   top: 20px !important;
-  left: -100px !important;
+  left: -80px !important;
 }
 
 .sp-block-complex_image_text .sp-item-panel input[type=text]{
   width: 300px;
   margin-top: 30px;
+}
+
+.sp-block-complex_image_text .sp-area1{
+    margin-top: 10px;
 }
