@@ -1,4 +1,4 @@
-sprint_editor.registerBlock('image', function($, $el, data) {
+sprint_editor.registerBlock('image_simple', function($, $el, data) {
 
     data = $.extend({
         file: {},
@@ -24,7 +24,7 @@ sprint_editor.registerBlock('image', function($, $el, data) {
         var labeltext = $label.text();
 
         $btninput.fileupload({
-            url: sprint_editor.getBlockWebPath('image') + '/upload.php',
+            url: sprint_editor.getBlockWebPath('image_simple') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
                 deletefiles();

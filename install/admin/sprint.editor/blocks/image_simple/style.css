@@ -1,4 +1,4 @@
-.sp-block-image .sp-item {
+.sp-block-image_simple .sp-item {
     position: relative;
     width: 200px;
     height: 200px;
@@ -8,12 +8,12 @@
     border: 2px solid #ccc;
 }
 
-.sp-block-image .sp-item img{
+.sp-block-image_simple .sp-item img{
     width: 200px;
     height: 200px;
 }
 
-.sp-block-image .sp-item-panel{
+.sp-block-image_simple .sp-item-panel{
     position: absolute;
     top: 20px;
     left: -75px;
@@ -26,23 +26,23 @@
 }
 
 
-.sp-block-image .sp-item:hover{
+.sp-block-image_simple .sp-item:hover{
     border: 2px solid #d00;
 }
 
-.sp-block-image .sp-item:hover .sp-item-panel{
+.sp-block-image_simple .sp-item:hover .sp-item-panel{
     display: block;
 }
 
-.sp-block-image .sp-item-panel input[type=text]{
+.sp-block-image_simple .sp-item-panel input[type=text]{
     width: 300px;
     margin-top: 30px;
 }
 
-.sp-block-image .sp-item-buttons{
+.sp-block-image_simple .sp-item-buttons{
     text-align: center;margin-top: 5px;
 }
 
-.sp-block-image .sp-file{
+.sp-block-image_simple .sp-file{
     margin-bottom: 10px;
 }

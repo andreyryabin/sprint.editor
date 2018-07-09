@@ -28,22 +28,22 @@
     width: 100px;
 }
 
-.sp-block-video .sp-image_item {
+.sp-block-video .sp-item {
     width: 73px !important;
     height: 73px !important;
 }
 
-.sp-block-video .sp-image_item img{
+.sp-block-video .sp-item img{
     width: 73px !important;
     height: 73px !important;
 }
 
-.sp-block-video .sp-image_item-panel{
+.sp-block-video .sp-item-panel{
     top: 20px !important;
     left: -120px !important;
 }
 
-.sp-block-video .sp-image_item-panel input[type=text]{
+.sp-block-video .sp-item-panel input[type=text]{
     width: 300px;
     margin-top: 30px;
 }

@@ -2,7 +2,7 @@ sprint_editor.registerBlock('complex_image_text', function ($, $el, data) {
     var areas = [
         {
             dataKey : 'image',
-            blockName: 'image',
+            blockName: 'image_simple',
             container : '.sp-area1'
         },
         {
