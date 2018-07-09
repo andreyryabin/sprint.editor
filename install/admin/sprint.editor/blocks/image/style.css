@@ -1,4 +1,6 @@
-
+.sp-block-image {
+    position: relative;
+}
 .sp-block-image .sp-col-item{
     width: 210px;
 }
@@ -49,7 +51,9 @@
 .sp-block-image .sp-source{
     background: #FFEBC1;
     display: none;
-    margin-bottom: 10px;
+    /*position: absolute;*/
+    /*z-index: 20;*/
+    width: 100%;
 }
 
 .sp-block-image.sp-show .sp-source{
