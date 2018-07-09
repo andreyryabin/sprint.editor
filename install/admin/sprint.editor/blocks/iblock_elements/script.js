@@ -30,7 +30,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data) {
 
             Complete: function () {
                 var oldids = findElementIds();
-                var newids = $.extend([], oldids, popupIds);
+                var newids = $.merge(oldids, popupIds);
 
                 popupIds = [];
 
