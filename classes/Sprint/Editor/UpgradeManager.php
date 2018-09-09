@@ -21,17 +21,6 @@ class UpgradeManager
         }
     }
 
-    public static function executeTaskFromRequest($request){
-        $buttons = $obj->getButtonsForUpgradeManager();
-        foreach ($buttons as $buttonName => $button){
-            if (isset($request[$buttonName]) && method_exists($obj,$buttonName)){
-                $ok = $obj->$buttonName();
-            }
-        }
-
-
-    }
-
     public static function executeUpgrade($name, $action = 'execute'){
         $ok = self::doExecute($name,$action);
         self::markClass($name, $ok, 'upgrade');
@@ -137,7 +126,7 @@ class UpgradeManager
         return true;
     }
     
-    protected static function markClass($name, $asInstalled = true, $type){
+    protected static function markClass($name, $asInstalled, $type){
         $installed = Module::getDbOption('installed_' . $type, '');
         $installed = explode('|', $installed);
 

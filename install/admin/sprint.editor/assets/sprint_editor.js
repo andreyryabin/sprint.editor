@@ -331,7 +331,7 @@ var sprint_editor = {
         checkPackDelButton();
 
         $form.on('submit', function (e) {
-            sprint_editor.deleteImagesBeforeSubmit();
+            //sprint_editor.deleteImagesBeforeSubmit();
             var resultString = saveToString();
 
             $editor.find('input,textarea,select').removeAttr('name');
