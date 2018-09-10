@@ -843,24 +843,23 @@ var sprint_editor = {
             var blockSettings = getBlockSettings(blockData.name);
             var html = renderBlock(blockData, blockSettings, uid);
 
-            // var head = $column.find('.sp-x-lt-settings');
-            // if (head.length <= 0) {
-            //     head = $column.find('.sp-x-lt-col-head');
-            // }
+            var head = $column.find('.sp-x-lt-settings');
+            if (head.length <= 0) {
+                head = $column.find('.sp-x-lt-col-head');
+            }
 
-            // $(html).insertAfter(head);
+            $(html).insertAfter(head);
+            // $column.append(html);
 
-            $column.append(html);
-
-            // var $el = $column.find('.sp-x-box-block').first();
-            var $el = $column.find('.sp-x-box-block').last();
+            var $el = $column.find('.sp-x-box-block').first();
+            // var $el = $column.find('.sp-x-box-block').last();
 
             var entry = sprint_editor.initblock($, $el, blockData.name, blockData, blockSettings);
             sprint_editor.initblockAreas($, $el, entry);
             sprint_editor._entries[uid] = entry;
 
 
-            scrollTo($el);
+            //scrollTo($el);
         }
 
         function blockAdd(blockData) {

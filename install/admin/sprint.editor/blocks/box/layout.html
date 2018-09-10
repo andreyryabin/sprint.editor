@@ -3,14 +3,14 @@
         <span class="sp-x-lt-title">{{=it.title}}</span>
         <span class="sp-x-lt-index"></span>
 
-        <div class="sp-x-lt-buttons">
+        <div class="sp-x-buttons">
             {{?it.enableChange}}
             <span title="Добавить колонку" class="sp-x-btn sp-x-lt-add-col">+</span>
             <span title="Изменить название" class="sp-x-btn sp-x-lt-edit">&#128393;</span>
             {{?}}
 
             {{?it.enableChange && it.showSortButtons}}
-            <span class="sp-x-btn-group">
+            <span class="sp-x-buttons-move">
             <span title="Поднять вверх" class="sp-x-btn sp-x-lt-up">&uarr;</span>
             <span title="Опустить вниз" class="sp-x-btn sp-x-lt-dn">&darr;</span>
             </span>

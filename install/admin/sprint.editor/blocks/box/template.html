@@ -1,5 +1,5 @@
 <div class="sp-x-box" data-uid="{{=it.uid}}">
-    <div class="sp-x-box-panel">
+    <div class="sp-x-box-head">
 
         {{?it.enableChange}}
         <span title="{{=it.hint}}" class="sp-x-box-title sp-x-box-handle">{{=it.title}}</span>
@@ -7,7 +7,7 @@
         <span title="{{=it.hint}}" class="sp-x-box-title">{{=it.title}}</span>
         {{?}}
 
-        <div class="sp-x-box-buttons">
+        <div class="sp-x-buttons">
             {{?it.enableChange && it.showCopyButtons}}
             <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">&equiv;</span>
             {{?}}
