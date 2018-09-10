@@ -238,17 +238,15 @@
     top: 0;
 }
 
-
 .bx-core-adm-dialog .sp-x-lt-head div.sp-x-buttons,
-.sp-x-lt-head .sp-x-buttons,
+.sp-x-lt-head div.sp-x-buttons,
 .bx-core-adm-dialog .sp-x-lt-col-head div.sp-x-buttons,
-.sp-x-lt-col-head .sp-x-buttons
-{
+.sp-x-lt-col-head div.sp-x-buttons {
     top: -3px;
 }
 
 .bx-core-adm-dialog .sp-x-layout-mode div.sp-x-buttons,
-.sp-x-layout-mode .sp-x-buttons {
+.sp-x-layout-mode div.sp-x-buttons {
     /*display: block;*/
     position: inherit;
     right: inherit;
@@ -280,28 +278,21 @@
     padding: 5px 0;
 }
 
-.sp-x-lt-head .sp-x-buttons{
+
+span.sp-x-lt-add-col,
+span.sp-x-lt-col-del,
+span.sp-x-lt-col-copy
+{
     visibility: hidden;
 }
 
 
-
-.sp-x-lt-head .sp-x-buttons .sp-x-lt-del{
+.sp-x-layout-mode span.sp-x-lt-add-col,
+.sp-x-layout-mode span.sp-x-lt-col-del
+{
     visibility: visible;
 }
 
-
-.sp-x-layout-mode .sp-x-lt-head .sp-x-buttons{
-    visibility: visible;
-}
-
-.sp-x-lt-col-del{
-    visibility: hidden;
-}
-
-.sp-x-layout-mode .sp-x-lt-col-del{
-    visibility: visible;
-}
 
 .sp-x-box-handle,
 .sp-x-lt-handle {
@@ -384,10 +375,9 @@
     display: none;
 }
 
-.sp-x-layout-mode .sp-x-buttons-move {
+.sp-x-layout-mode div.sp-x-buttons-move {
     display: inline-block;
 }
-
 
 .sp-x-lt-settings span,
 .sp-x-box-settings span,
@@ -478,11 +468,10 @@
     position: absolute;
     border-radius: 4px;
 
-    box-shadow:
-    inset rgba(0,0,0,.5) 0 -1px 1px,
-    inset rgba(0,0,0,.2) 0 1px,
+    box-shadow: inset rgba(0, 0, 0, .5) 0 -1px 1px,
+    inset rgba(0, 0, 0, .2) 0 1px,
     inset #fff 0 2px,
-    rgba(0,0,0,.2) 0 1px 1px;
+    rgba(0, 0, 0, .2) 0 1px 1px;
 }
 
 .sp-x-editor-pp-group-title {
