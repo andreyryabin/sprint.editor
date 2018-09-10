@@ -326,7 +326,6 @@ var sprint_editor = {
         });
 
 
-        checkLayoutButtons();
         checkClipboardButtons();
         checkPackDelButton();
 
@@ -592,7 +591,6 @@ var sprint_editor = {
 
                 $grid.hide(250, function () {
                     $grid.remove();
-                    checkLayoutButtons();
                     updateIndexes();
                 });
 
@@ -659,7 +657,6 @@ var sprint_editor = {
                     $grid.hide(250, function () {
                         $grid.remove();
                         updateIndexes();
-                        checkLayoutButtons();
                     });
                 }
 
@@ -806,17 +803,8 @@ var sprint_editor = {
                 });
             }
 
-            checkLayoutButtons();
             checkClipboardButtons();
             updateIndexes();
-        }
-
-        function checkLayoutButtons() {
-            if ($editor.find('.sp-x-lt-col').length <= 0) {
-                $editor.find('.sp-x-layout-toggle').css('display', 'none');
-            } else {
-                $editor.find('.sp-x-layout-toggle').css('display', 'inline-block');
-            }
         }
 
         function checkPackDelButton() {
@@ -1238,12 +1226,18 @@ var sprint_editor = {
         }
 
         function updateIndexes() {
+            var rowcnt = 0;
+            var colcnt = 0;
+
             $editor.find('.sp-x-lt').each(function (gindex) {
+                rowcnt++;
+
                 $(this).find('.sp-x-lt-index').text(gindex + 1);
 
                 var lastindex = 0;
 
                 $(this).find('.sp-x-lt-col').each(function (cindex) {
+                    colcnt++;
                     $(this).find('.sp-x-lt-col-index').text((gindex + 1) + ':' + (cindex + 1));
                     lastindex++;
                 });
@@ -1254,6 +1248,15 @@ var sprint_editor = {
                     $(this).find('.sp-x-lt-add-col').show();
                 }
             });
+
+
+            if (colcnt){
+                $editor.find('.sp-x-layout-toggle').css('display', 'inline-block');
+                $editor.find('.sp-x-pack-save').css('display', 'inline-block');
+            } else {
+                $editor.find('.sp-x-layout-toggle').css('display', 'none');
+                $editor.find('.sp-x-pack-save').css('display', 'none');
+            }
         }
     }
 };
