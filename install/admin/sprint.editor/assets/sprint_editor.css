@@ -238,13 +238,21 @@
     top: 0;
 }
 
+
+.bx-core-adm-dialog .sp-x-lt-head div.sp-x-buttons,
+.sp-x-lt-head .sp-x-buttons,
+.bx-core-adm-dialog .sp-x-lt-col-head div.sp-x-buttons,
+.sp-x-lt-col-head .sp-x-buttons
+{
+    top: -3px;
+}
+
 .bx-core-adm-dialog .sp-x-layout-mode div.sp-x-buttons,
 .sp-x-layout-mode .sp-x-buttons {
     /*display: block;*/
     position: inherit;
     right: inherit;
     top: inherit;
-    visibility: visible;
 }
 
 .sp-x-lt-t {
@@ -267,14 +275,32 @@
 }
 
 .sp-x-lt-head {
-    border-bottom: 1px dashed #f00;
+    border-bottom: 1px dashed #ccc;
     margin-bottom: 10px;
-    padding-bottom: 10px;
-    display: none;
+    padding: 5px 0;
 }
 
-.sp-x-layout-mode .sp-x-lt-head{
-    display: inherit;
+.sp-x-lt-head .sp-x-buttons{
+    visibility: hidden;
+}
+
+
+
+.sp-x-lt-head .sp-x-buttons .sp-x-lt-del{
+    visibility: visible;
+}
+
+
+.sp-x-layout-mode .sp-x-lt-head .sp-x-buttons{
+    visibility: visible;
+}
+
+.sp-x-lt-col-del{
+    visibility: hidden;
+}
+
+.sp-x-layout-mode .sp-x-lt-col-del{
+    visibility: visible;
 }
 
 .sp-x-box-handle,
@@ -389,6 +415,7 @@
     /*background: linear-gradient(#ececeb, #eaeaea);*/
 
     border: 1px solid #ccc;
+    /*color: #333;*/
     /*box-shadow:*/
     /*inset rgba(0,0,0,.5) 0 -1px 1px,*/
     /*inset rgba(0,0,0,.2) 0 1px,*/
@@ -426,7 +453,6 @@
 .sp-x-lt-settings span:active,
 .sp-x-box-settings span:active,
 .sp-x-btn:active {
-
     /*border: none;*/
     background: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .1));
     /*box-shadow:*/

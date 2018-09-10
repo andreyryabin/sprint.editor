@@ -316,7 +316,6 @@ var sprint_editor = {
             blockAdd(block);
         });
 
-
         sprint_editor.listenEvent('focus', function () {
             checkClipboardButtons();
         });
@@ -325,7 +324,7 @@ var sprint_editor = {
             checkClipboardButtons();
         });
 
-
+        updateIndexes();
         checkClipboardButtons();
         checkPackDelButton();
 
@@ -1250,7 +1249,7 @@ var sprint_editor = {
             });
 
 
-            if (colcnt){
+            if (colcnt) {
                 $editor.find('.sp-x-layout-toggle').css('display', 'inline-block');
                 $editor.find('.sp-x-pack-save').css('display', 'inline-block');
             } else {
