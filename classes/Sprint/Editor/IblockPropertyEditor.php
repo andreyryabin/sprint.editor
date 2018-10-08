@@ -47,7 +47,7 @@ class IblockPropertyEditor
     }
 
     public function GetSearchContent($arProperty, $value, $strHTMLControlName) {
-        return AdminEditor::getSearchIndex($value["VALUE"]);
+        return Editor::getSearchIndex($value["VALUE"]);
     }
 
     public static function GetSettingsHTML($arProperty, $strHTMLControlName, &$arPropertyFields) {
@@ -58,9 +58,9 @@ class IblockPropertyEditor
 
         $settings = self::PrepareSettings($arProperty);
         $settings = $settings['USER_TYPE_SETTINGS'];
-        $userfiles = AdminEditor::getUserSettingsFiles();
+        $userfiles = Editor::getUserSettingsFiles();
 
-        return AdminEditor::renderFile(Module::getModuleDir() . '/templates/iblock_property.php', array(
+        return Editor::renderFile(Module::getModuleDir() . '/templates/iblock_property.php', array(
             'inputName' => $strHTMLControlName['NAME'],
             'settings' => $settings,
             'userfiles' => $userfiles,

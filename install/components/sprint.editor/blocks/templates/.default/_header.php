@@ -6,7 +6,7 @@
  */
 
 if ($this->arParams['USE_JQUERY'] == 'Y') {
-    $this->registerJs('/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js');
+    \CUtil::InitJSCore(Array("jquery"));
 }
 
 if ($this->arParams['USE_FANCYBOX'] == 'Y') {

@@ -130,7 +130,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $value = json_decode(Sprint\Editor\Locale::convertToUtf8IfNeed($value), true);
         $value = Sprint\Editor\Locale::convertToWin1251IfNeed($value);
         $value = (json_last_error() == JSON_ERROR_NONE) ? $value : array();
-        return Sprint\Editor\AdminEditor::prepareValueArray($value);
+        return Sprint\Editor\Editor::prepareValueArray($value);
     }
 
     protected function prepareBlocks($blocks) {
@@ -156,6 +156,16 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
         }
 
+        foreach ($value['blocks'] as &$block){
+            $block['uid'] = 'sp' . strtolower(randString(12));
+        }
+        unset($block);
+
+
+        $uniqId = 'sp'.strtolower(randString(12));
+
+        ?><div class="sp-p-editor<?= $uniqId ?>"><?
+
         $this->includeHeader($value['blocks'], $this->arParams);
         $this->prepareBlocks($value['blocks']);
 
@@ -166,6 +176,12 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
         $this->includeFooter($this->arParams);
 
+        echo \Sprint\Editor\PublicEditor::init(array(
+            'uniqId' => $uniqId,
+            'value' => $value
+        ));
+
+        ?></div><?
     }
 
     protected function includeLayoutBlocks($columnIndex) {
@@ -212,8 +228,12 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             return false;
         }
 
+        ?><div class="sp-p-box" data-uid="<?=$block['uid']?>"><?
+
         /** @noinspection PhpIncludeInspection */
         include($root . $path);
+
+        ?></div><?
 
         $this->includedBlocks++;
 

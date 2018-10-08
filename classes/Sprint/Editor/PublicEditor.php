@@ -3,8 +3,9 @@
 
 namespace Sprint\Editor;
 
-class AdminEditor extends Editor
+class PublicEditor extends Editor
 {
+
     public static function init($params) {
         self::$initCounts++;
 
@@ -29,16 +30,6 @@ class AdminEditor extends Editor
             'defaultValue' => '',
             'userSettings' => ''
         ), $params);
-
-        $value = self::prepareValue($params['value']);
-        if (empty($value)) {
-            $value = self::prepareValue($params['defaultValue']);
-        }
-
-        $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
-        foreach ($events as $aEvent) {
-            ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
-        }
 
         $enableChange = 0;
         if (empty($params['userSettings']['DISABLE_CHANGE'])) {
@@ -76,16 +67,15 @@ class AdminEditor extends Editor
             $localValues = self::$selectValues;
         }
 
-        return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
-            'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
+        return self::renderFile(Module::getModuleDir() . '/templates/public_editor.php', array(
             'selectValues' => $localValues,
             'templates' => self::$templates,
+            'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($params['value'])),
             'jsonParameters' => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
             'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
-            'showSortButtons' => $showSortButtons,
+            'showSortButtons' => 0,
             'enableChange' => $enableChange,
-            'showCopyButtons' => $showCopyButtons,
-            'inputName' => $params['inputName'],
+            'showCopyButtons' => 0,
             'uniqId' => $params['uniqId'],
             'firstRun' => (self::$initCounts == 1) ? 1 : 0,
         ));

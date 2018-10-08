@@ -105,7 +105,7 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
-        sprint_editor.create($, {
+        sprint_editor_admin.create($, {
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
             showSortButtons: <?=$showSortButtons?>,
