@@ -5,10 +5,6 @@ var sprint_editor_admin = {
         var $inputresult = $('.sp-x-result' + params.uniqid);
         var $form = $editor.closest('form').first();
 
-        var $select = $editor.find('.sp-x-box-select');
-
-        var $lastcolumn;
-
         $editor.on('keypress', 'input', function (e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
@@ -53,9 +49,7 @@ var sprint_editor_admin = {
             checkClipboardButtons();
         });
 
-        updateIndexes();
         checkClipboardButtons();
-        checkPackDelButton();
 
         $form.on('submit', function (e) {
             //sprint_editor.deleteImagesBeforeSubmit();
@@ -67,10 +61,6 @@ var sprint_editor_admin = {
 
         if (params.enableChange) {
 
-            $select.on('change', function () {
-                checkPackDelButton();
-            });
-
             $editor.on('click', '.sp-x-pack-save', function (e) {
                 var packname = prompt(BX.message('SPRINT_EDITOR_pack_change'));
                 if (packname) {
@@ -79,7 +69,7 @@ var sprint_editor_admin = {
             });
 
             $editor.on('click', '.sp-x-pack-del', function (e) {
-                var packname = $select.val();
+                var packname = '???';
                 if (packname.indexOf('pack_') === 0) {
                     packname = packname.substr(5);
 
@@ -90,19 +80,6 @@ var sprint_editor_admin = {
                 } else {
                     alert(BX.message('SPRINT_EDITOR_pack_del_error'))
                 }
-            });
-
-            $editor.on('click', '.sp-x-layout-toggle', function (e) {
-                if ($editor.hasClass('sp-x-layout-mode')) {
-                    $(this).removeClass('adm-btn-active');
-                    $editor.removeClass('sp-x-layout-mode');
-                } else {
-                    $(this).addClass('adm-btn-active');
-                    $editor.addClass('sp-x-layout-mode');
-                }
-
-                popupClose();
-                scrollTo($editor);
             });
 
             $editor.on('click', '.sp-x-lt-col-copy', function (e) {
@@ -134,8 +111,14 @@ var sprint_editor_admin = {
 
             $editor.on('click', '.sp-x-editor-pp .sp-x-btn', function (e) {
                 var name = $(this).data('name');
-                if (name && $lastcolumn) {
-                    blockPopupAdd({name: name}, $lastcolumn);
+                if (name.indexOf('layout_') === 0) {
+                    name = name.substr(7);
+                    layoutEmptyAdd(name);
+                } else if (name.indexOf('pack_') === 0) {
+                    name = name.substr(5);
+                    packLoad(name);
+                } else {
+                    blockAdd({name: name});
                 }
 
                 popupClose();
@@ -164,10 +147,9 @@ var sprint_editor_admin = {
                     $editor.find('.sp-x-lt-col-add-box').not(this).removeClass('sp-active');
                     $(this).addClass('sp-active');
 
-                    $lastcolumn = $(this).closest('.sp-x-lt-col');
                     $(this).after($popup);
 
-                    $popup.css({right: 0});
+                    $popup.css({left: 0});
                     $popup.show();
                 } else {
                     popupClose();
@@ -180,18 +162,11 @@ var sprint_editor_admin = {
                 sprint_editor.copyToClipboard($(this).closest('.sp-x-box').data('uid'));
             });
 
-            $editor.on('click', '.sp-x-box-add', function (e) {
-                var name = $select.val();
-                if (name.indexOf('layout_') === 0) {
-                    name = name.substr(7);
-                    layoutEmptyAdd(name);
-                } else if (name.indexOf('pack_') === 0) {
-                    name = name.substr(5);
-                    packLoad(name);
-                } else {
-                    blockAdd({name: name});
-                }
+
+            $editor.on('click', '.sp-x-lt-col-tab', function (e) {
+                selectColumn($(this).data('uid'));
             });
+
 
             $editor.on('click', '.sp-x-box-up', function (e) {
                 e.preventDefault();
@@ -319,7 +294,6 @@ var sprint_editor_admin = {
 
                 $grid.hide(250, function () {
                     $grid.remove();
-                    updateIndexes();
                 });
 
             });
@@ -328,17 +302,13 @@ var sprint_editor_admin = {
                 e.preventDefault();
                 var $grid = $(this).closest('.sp-x-lt');
 
-                var $row = $grid.find('.sp-x-lt-row');
-
-                var newcount = $row.find('.sp-x-lt-col').length + 1;
+                var newcount = $grid.find('.sp-x-lt-col').length + 1;
 
                 if (newcount > 4) {
                     return;
                 }
 
                 var ltname = 'type' + newcount;
-
-                $grid.attr('class', 'sp-x-lt').addClass('sp-x-lt-type' + newcount);
 
                 var html = sprint_editor.renderTemplate('box-layout-col', {
                     enableChange: params.enableChange,
@@ -350,7 +320,7 @@ var sprint_editor_admin = {
                     })
                 });
 
-                $row.append(html);
+                $grid.append(html);
 
                 $grid.find('.sp-x-lt-col').last().sortable({
                     items: ".sp-x-box",
@@ -360,7 +330,7 @@ var sprint_editor_admin = {
                 });
 
                 checkClipboardButtons();
-                updateIndexes();
+
             });
 
             $editor.on('click', '.sp-x-lt-col-del', function (e) {
@@ -378,13 +348,10 @@ var sprint_editor_admin = {
                 if (newcount > 0) {
                     $col.hide(250, function () {
                         $col.remove();
-                        $grid.attr('class', 'sp-x-lt').addClass('sp-x-lt-type' + newcount);
-                        updateIndexes();
                     });
                 } else {
                     $grid.hide(250, function () {
                         $grid.remove();
-                        updateIndexes();
                     });
                 }
 
@@ -439,9 +406,7 @@ var sprint_editor_admin = {
         });
 
         function scrollTo($elem) {
-            if (!$editor.hasClass('sp-x-layout-mode')) {
-                $(document).scrollTop($elem.offset().top - 80);
-            }
+            $(document).scrollTop($elem.offset().top - 80);
         }
 
         function popupClose() {
@@ -496,20 +461,23 @@ var sprint_editor_admin = {
         function layoutAdd(layout) {
             var ltname = 'type' + layout.columns.length;
 
-            var columnsHtml = [];
+            var columns = [];
 
             $.each(layout.columns, function (index, column) {
-                columnsHtml.push(
-                    sprint_editor.renderTemplate('box-layout-col', {
+                var columnUid = sprint_editor.makeUid();
+                columns.push({
+                    uid: columnUid,
+                    html: sprint_editor.renderTemplate('box-layout-col', {
                         enableChange: params.enableChange,
                         showSortButtons: params.showSortButtons,
                         showCopyButtons: params.showCopyButtons,
                         title: (column.title) ? column.title : BX.message('SPRINT_EDITOR_col_default'),
+                        uid: columnUid,
                         compiledHtml: sprint_editor.renderTemplate('box-layout-col-settings', {
                             compiled: compileClasses(ltname, column.css)
                         })
                     })
-                )
+                })
             });
 
             $editor.find('.sp-x-editor-lt').append(
@@ -517,7 +485,7 @@ var sprint_editor_admin = {
                     enableChange: params.enableChange,
                     showSortButtons: params.showSortButtons,
                     showCopyButtons: params.showCopyButtons,
-                    columnsHtml: columnsHtml,
+                    columns: columns,
                     title: (layout.title) ? layout.title : BX.message('SPRINT_EDITOR_lt_default')
                 })
             );
@@ -532,21 +500,9 @@ var sprint_editor_admin = {
             }
 
             checkClipboardButtons();
-            updateIndexes();
         }
 
-        function checkPackDelButton() {
-            if ($select.length > 0) {
-                var name = $select.val();
-                if (name && name.indexOf('pack_') === 0) {
-                    $editor.find('.sp-x-pack-del').show();
-                } else {
-                    $editor.find('.sp-x-pack-del').hide();
-                }
-            }
-        }
-
-        function blockPopupAdd(blockData, $column) {
+        function blockPopupAdd(blockData) {
             if (!blockData || !blockData.name) {
                 return false;
             }
@@ -555,20 +511,22 @@ var sprint_editor_admin = {
                 return false;
             }
 
+            var $column = $editor.find('.sp-x-lt-col').last();
+
             var uid = sprint_editor.makeUid();
-            var blockSettings = sprint_editor.getBlockSettings(blockData.name,params);
-            var html = sprint_editor.renderBlock(blockData, blockSettings, uid,params);
+            var blockSettings = sprint_editor.getBlockSettings(blockData.name, params);
+            var html = sprint_editor.renderBlock(blockData, blockSettings, uid, params);
 
-            var head = $column.find('.sp-x-lt-settings');
-            if (head.length <= 0) {
-                head = $column.find('.sp-x-lt-col-head');
-            }
+            // var head = $column.find('.sp-x-lt-settings');
+            // if (head.length <= 0) {
+            //     head = $column.find('.sp-x-lt-col-head');
+            // }
 
-            $(html).insertAfter(head);
-            // $column.append(html);
+            // $(html).insertAfter(head);
+            $column.append(html);
 
-            var $el = $column.find('.sp-x-box-block').first();
-            // var $el = $column.find('.sp-x-box-block').last();
+            // var $el = $column.find('.sp-x-box-block').first();
+            var $el = $column.find('.sp-x-box-block').last();
 
             var entry = sprint_editor.initblock($, $el, blockData.name, blockData, blockSettings);
             sprint_editor.initblockAreas($, $el, entry);
@@ -589,8 +547,8 @@ var sprint_editor_admin = {
 
             var uid = sprint_editor.makeUid();
 
-            var blockSettings = sprint_editor.getBlockSettings(blockData.name,params);
-            var html = sprint_editor.renderBlock(blockData, blockSettings, uid,params);
+            var blockSettings = sprint_editor.getBlockSettings(blockData.name, params);
+            var html = sprint_editor.renderBlock(blockData, blockSettings, uid, params);
 
             if ($editor.find('.sp-x-lt-col').length <= 0) {
                 layoutEmptyAdd(1);
@@ -614,23 +572,18 @@ var sprint_editor_admin = {
             sprint_editor.initblockAreas($, $el, entry);
             sprint_editor._entries[uid] = entry;
         }
+
         function packSave(packname) {
             $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
                 save: saveToString(packname)
             }, function (resp) {
-                $select.find('optgroup[data-type=packs]').remove();
 
                 if (resp && resp.select) {
-                    $select.prepend(
-                        sprint_editor.renderTemplate('box-select-pack', resp.select)
-                    );
+                    sprint_editor.renderTemplate('box-select-pack', resp.select)
                 }
 
                 if (resp && resp.current) {
-                    $select.val(resp.current)
                 }
-
-                checkPackDelButton();
             });
         }
 
@@ -638,19 +591,16 @@ var sprint_editor_admin = {
             $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
                 del: packname
             }, function (resp) {
-                $select.find('optgroup[data-type=packs]').remove();
+
 
                 if (resp && resp.select) {
-                    $select.prepend(
-                        sprint_editor.renderTemplate('box-select-pack', resp.select)
-                    );
+                    sprint_editor.renderTemplate('box-select-pack', resp.select)
                 }
 
                 if (resp && resp.current) {
-                    $select.val(resp.current)
+
                 }
 
-                checkPackDelButton();
             });
         }
 
@@ -693,6 +643,21 @@ var sprint_editor_admin = {
 
         function layoutCnt() {
             return $editor.find('.sp-x-lt').length;
+        }
+
+        function selectColumn(columnUid) {
+            var $column = $editor.find('[data-uid=' + columnUid + ']');
+            $column.each(function () {
+                if ($(this).hasClass('sp-x-lt-col-tab')) {
+                    $(this).siblings('.sp-x-lt-col-tab').removeClass('sp-active');
+                    $(this).addClass('sp-active');
+                }
+
+                if ($(this).hasClass('sp-x-lt-col')) {
+                    $(this).siblings('.sp-x-lt-col').hide();
+                    $(this).show();
+                }
+            });
         }
 
         function layoutEditTitle($title) {
@@ -888,39 +853,6 @@ var sprint_editor_admin = {
             return resultString;
         }
 
-        function updateIndexes() {
-            var rowcnt = 0;
-            var colcnt = 0;
-
-            $editor.find('.sp-x-lt').each(function (gindex) {
-                rowcnt++;
-
-                $(this).find('.sp-x-lt-index').text(gindex + 1);
-
-                var lastindex = 0;
-
-                $(this).find('.sp-x-lt-col').each(function (cindex) {
-                    colcnt++;
-                    $(this).find('.sp-x-lt-col-index').text((gindex + 1) + ':' + (cindex + 1));
-                    lastindex++;
-                });
-
-                if (lastindex > 3) {
-                    $(this).find('.sp-x-lt-add-col').hide();
-                } else {
-                    $(this).find('.sp-x-lt-add-col').show();
-                }
-            });
-
-
-            if (colcnt) {
-                $editor.find('.sp-x-layout-toggle').css('display', 'inline-block');
-                $editor.find('.sp-x-pack-save').css('display', 'inline-block');
-            } else {
-                $editor.find('.sp-x-layout-toggle').css('display', 'none');
-                $editor.find('.sp-x-pack-save').css('display', 'none');
-            }
-        }
     }
 };
 

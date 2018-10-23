@@ -1,31 +1,34 @@
-<div class="sp-x-lt sp-x-lt-type{{=it.columnsHtml.length}}">
+<div class="sp-x-lt">
+
     <div class="sp-x-lt-head">
-        <span class="sp-x-lt-title">{{=it.title}}</span>
-        <span class="sp-x-lt-index"></span>
+        <span title="Добавить блок" class="sp-x-btn sp-x-lt-col-add-box">+</span>
+
+        {{~it.columns :col}}
+        <span class="sp-x-btn sp-x-lt-col-tab" data-uid="{{=col.uid}}">Колонка</span>
+        {{~}}
 
         <div class="sp-x-buttons">
-            {{?it.enableChange}}
-            <span title="Добавить колонку" class="sp-x-btn sp-x-lt-add-col">+</span>
-            <span title="Изменить название" class="sp-x-btn sp-x-lt-edit">&#128393;</span>
+            {{?it.enableChange && it.showCopyButtons}}
+            <span title="Вставить блоки в колонку" class="sp-x-btn sp-x-lt-col-paste">&crarr;</span>
             {{?}}
+            {{?it.enableChange}}
 
-            {{?it.enableChange && it.showSortButtons}}
+            <span title="Изменить название" class="sp-x-btn sp-x-lt-col-edit">изм</span>
+
             <span class="sp-x-buttons-move">
-            <span title="Поднять вверх" class="sp-x-btn sp-x-lt-up">&uarr;</span>
-            <span title="Опустить вниз" class="sp-x-btn sp-x-lt-dn">&darr;</span>
+            <span title="Передвинуть влево" class="sp-x-btn sp-x-lt-col-left">&larr;</span>
+            <span title="Передвинуть вправо" class="sp-x-btn sp-x-lt-col-right">&rarr;</span>
             </span>
-            {{?}}
 
+            {{?}}
             {{?it.enableChange}}
-            <span title="Удалить сетку" class="sp-x-btn sp-x-lt-del">x</span>
+            <span title="Удалить колонку" class="sp-x-btn sp-x-lt-col-del">x</span>
             {{?}}
         </div>
     </div>
-    <div class="sp-x-lt-t">
-        <div class="sp-x-lt-row">
-            {{~it.columnsHtml :col}}
-                {{=col}}
-            {{~}}
-        </div>
-    </div>
+
+    {{~it.columns :col}}
+        {{=col.html}}
+    {{~}}
+
 </div>
