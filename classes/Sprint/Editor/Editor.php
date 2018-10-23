@@ -178,7 +178,6 @@ abstract class Editor
         }
 
         $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor.js');
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_admin.js');
 
         foreach (self::$js as $val) {
             $APPLICATION->AddHeadScript($val);
