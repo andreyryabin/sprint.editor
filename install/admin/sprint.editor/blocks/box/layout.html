@@ -1,6 +1,13 @@
 <div class="sp-x-lt">
 
     <div class="sp-x-buttons">
+
+    <span class="sp-x-lt-tabs">
+        {{~it.columns :col}}
+        {{=col.tab}}
+        {{~}}
+    </span>
+
         {{?it.enableChange && it.showCopyButtons}}
         <span title="Вставить блоки в колонку" class="sp-x-btn sp-x-lt-col-paste">&crarr;</span>
         <span title="Копировать блоки в колонке" class="sp-x-btn sp-x-lt-col-copy">&equiv;</span>
@@ -9,21 +16,11 @@
         {{?it.enableChange}}
         <span title="Добавить колонку" class="sp-x-btn sp-x-lt-add-col">+</span>
         <span title="Изменить название" class="sp-x-btn sp-x-lt-col-edit">изм</span>
-        <span title="Передвинуть влево" class="sp-x-btn sp-x-lt-col-left">&larr;</span>
-        <span title="Передвинуть вправо" class="sp-x-btn sp-x-lt-col-right">&rarr;</span>
         {{?}}
 
         {{?it.enableChange}}
         <span title="Удалить колонку" class="sp-x-btn sp-x-lt-col-del">x</span>
         {{?}}
-    </div>
-
-
-
-    <div class="sp-x-lt-tabs">
-        {{~it.columns :col}}
-        {{=col.tab}}
-        {{~}}
     </div>
 
 
@@ -34,7 +31,7 @@
     </div>
 
     {{?it.enableChange}}
-    <div style="margin-top: 10px;margin-bottom: 30px;">
+    <div style="text-align:center;margin-top: 10px;margin-bottom: 30px;">
         <span title="" class="sp-x-btn sp-x-lt-col-add-box">Добавить</span>
     </div>
     {{?}}
