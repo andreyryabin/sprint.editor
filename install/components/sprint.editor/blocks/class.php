@@ -130,7 +130,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $value = json_decode(Sprint\Editor\Locale::convertToUtf8IfNeed($value), true);
         $value = Sprint\Editor\Locale::convertToWin1251IfNeed($value);
         $value = (json_last_error() == JSON_ERROR_NONE) ? $value : array();
-        return Sprint\Editor\Editor::prepareValueArray($value);
+        return Sprint\Editor\AdminEditor::prepareValueArray($value);
     }
 
     protected function prepareBlocks($blocks) {
