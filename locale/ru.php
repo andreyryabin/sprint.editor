@@ -38,6 +38,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_layout_toggle" => "Переключить отображение колонок",
 
     "SPRINT_EDITOR_pack_save" => "Сохранить как макет",
+    "SPRINT_EDITOR_pack_save_title" => "Сохранить колонки с блоками в новый макет",
     "SPRINT_EDITOR_pack_del" => "Удалить макет",
 
     "SPRINT_EDITOR_pack_change" => "Укажите название макета",

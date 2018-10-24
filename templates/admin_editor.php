@@ -28,14 +28,16 @@
             <span class="sp-x-btn sp-x-btn-green sp-x-pp-main-open"><?= GetMessage('SPRINT_EDITOR_BTN_ACTIONS') ?></span>
             <div class="sp-x-pp-main">
 
-                <div class="sp-x-pp-group" data-type="actions">
-                    <span class="sp-x-btn" data-name="save_pack"><?= GetMessage('SPRINT_EDITOR_pack_save') ?></span>
+                <div class="sp-x-pp-group">
+                    <span class="sp-x-btn" data-name="save_pack" title="<?=GetMessage('SPRINT_EDITOR_pack_save_title')?>">
+                        <?= GetMessage('SPRINT_EDITOR_pack_save') ?>
+                    </span>
                 </div>
 
                 <div class="sp-x-packs-loader"></div>
 
                 <? if (!empty($selectValues['layouts'])): $aGroup = $selectValues['layouts'] ?>
-                    <div class="sp-x-pp-group" data-type="<?= $aGroup['type'] ?>">
+                    <div class="sp-x-pp-group">
                         <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
                         <? foreach ($aGroup['blocks'] as $aBlock): ?>
                             <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
@@ -51,7 +53,7 @@
 <script type="text/html" id="sp-x-template-pp-blocks<?= $uniqId ?>">
     <div class="sp-x-pp-blocks">
         <? foreach ($selectValues as $groupType => $aGroup): if (in_array($groupType, array('blocks_blocks', 'blocks_my'))): ?>
-            <div class="sp-x-pp-group" data-type="<?= $aGroup['type'] ?>">
+            <div class="sp-x-pp-group">
                 <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
                 <? foreach ($aGroup['blocks'] as $aBlock): ?>
                     <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
