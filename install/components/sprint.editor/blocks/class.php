@@ -165,6 +165,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
 
         $this->includeFooter($this->arParams);
+
     }
 
     protected function includeLayoutBlocks($columnIndex) {
