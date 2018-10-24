@@ -133,20 +133,15 @@
 .sp-x-buttons {
     text-align: left;
     position: relative;
-    /*display: inline-block;*/
-    /*display: block;*/
-    /*position: absolute;*/
-    /*right: 0;*/
-    /*top: 0;*/
-    /*float: right;*/
+
 }
 
 .sp-x-buttons-lt1{
-
+    text-align: center;
 }
 
 .sp-x-buttons-lt2 {
-    text-align: left;
+    text-align: center;
     margin-top: 10px;
     margin-bottom: 30px;
 }
@@ -155,7 +150,19 @@
 }
 
 .sp-x-buttons-ed {
+    /*background: #fff;*/
+    /*padding: 10px;*/
+    /*border: 1px solid;*/
+    /*border-color: #c4ced2 #dce7ed #dce7ed;*/
+}
 
+.sp-x-buttons-group{
+    display: inline-block;
+    /*display: block;*/
+    position: absolute;
+    right: 0;
+    /*top: 0;*/
+    /*float: right;*/
 }
 
 .sp-x-lt {

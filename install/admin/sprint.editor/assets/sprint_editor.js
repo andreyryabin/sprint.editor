@@ -469,10 +469,6 @@ var sprint_editor = {
                 popupToggle($(this));
             });
 
-            $editor.on('click', '.sp-x-pp-blocks-open', function (e) {
-                popupToggle($(this));
-            });
-
             $editor.on('click', '.sp-x-box-copy', function (e) {
                 e.preventDefault();
                 sprint_editor.copyToClipboard($(this).closest('.sp-x-box').data('uid'));
@@ -580,6 +576,7 @@ var sprint_editor = {
 
                 $grid.remove();
 
+                popupToggle();
             });
 
             $editor.on('click', '.sp-x-lt-col-del', function (e) {
@@ -625,6 +622,8 @@ var sprint_editor = {
                 } else {
                     $grid.remove();
                 }
+
+                popupToggle();
             });
 
             $editor.on('click', '.sp-x-lt-col-add', function (e) {
@@ -714,48 +713,61 @@ var sprint_editor = {
 
         function popupToggle($handler) {
 
-            $editor.find('.sp-x-pp-box').hide();
-            $editor.find('.sp-x-pp-lt').hide();
-            $editor.find('.sp-x-pp-blocks').hide();
-            $editor.find('.sp-x-pp-main').hide();
+            if (!$handler) {
+                $editor.find('.sp-x-pp-box').hide();
+                $editor.find('.sp-x-pp-lt').hide();
+                $editor.find('.sp-x-pp-blocks').hide();
+                $editor.find('.sp-x-pp-main').hide();
+                $editor.find('.sp-x-pp-box-open').removeClass('sp-active');
+                $editor.find('.sp-x-pp-lt-open').removeClass('sp-active');
+                $editor.find('.sp-x-pp-blocks-open').removeClass('sp-active');
+                $editor.find('.sp-x-pp-main-open').removeClass('sp-active');
 
-            $editor.find('.sp-x-pp-box-open').removeClass('sp-active');
-            $editor.find('.sp-x-pp-lt-open').removeClass('sp-active');
-            $editor.find('.sp-x-pp-blocks-open').removeClass('sp-active');
-            $editor.find('.sp-x-pp-main-open').removeClass('sp-active');
-
-            if ($handler) {
-
-                if ($handler.hasClass('sp-x-pp-lt-open')) {
-                    $handler.addClass('sp-active');
-                    var $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-lt');
-                    $popup.show();
-                }
-
-                if ($handler.hasClass('sp-x-pp-box-open')) {
-                    $handler.addClass('sp-active');
-                    var $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-box');
-                    $popup.show();
-                }
-
-                if ($handler.hasClass('sp-x-pp-main-open')) {
-                    $handler.addClass('sp-active');
-                    var $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-main');
-                    $popup.show();
-                }
-
-                if ($handler.hasClass('sp-x-pp-blocks-open')) {
-                    $handler.addClass('sp-active');
-                    var $popup = $editor.find('.sp-x-pp-blocks');
-                    if ($popup.length <= 0) {
-                        var popuphtml = sprint_editor.renderTemplate('pp-blocks' + params.uniqid, {});
-                        $popup = $(popuphtml);
-                    }
-
-                    $handler.after($popup);
-                    $popup.show();
-                }
+                return true;
             }
+
+            var $popup;
+
+            if ($handler.hasClass('sp-x-pp-lt-open')) {
+                $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-lt');
+            }
+
+            if ($handler.hasClass('sp-x-pp-box-open')) {
+                $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-box');
+            }
+
+            if ($handler.hasClass('sp-x-pp-main-open')) {
+                $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-main');
+            }
+
+            if ($handler.hasClass('sp-x-pp-blocks-open')) {
+                $popup = $editor.find('.sp-x-pp-blocks');
+                if (!$popup || $popup.length <= 0) {
+                    $popup = $(sprint_editor.renderTemplate('pp-blocks' + params.uniqid, {}));
+                }
+
+                $handler.after($popup);
+            }
+
+            if ($handler.hasClass('sp-active')) {
+                $handler.removeClass('sp-active');
+                $popup.hide();
+
+            } else {
+                $editor.find('.sp-x-pp-box').hide();
+                $editor.find('.sp-x-pp-lt').hide();
+                $editor.find('.sp-x-pp-blocks').hide();
+                $editor.find('.sp-x-pp-main').hide();
+                $editor.find('.sp-x-pp-box-open').removeClass('sp-active');
+                $editor.find('.sp-x-pp-lt-open').removeClass('sp-active');
+                $editor.find('.sp-x-pp-blocks-open').removeClass('sp-active');
+                $editor.find('.sp-x-pp-main-open').removeClass('sp-active');
+
+                $handler.addClass('sp-active');
+                $popup.show();
+            }
+
+
         }
 
         function addByName($handler) {
