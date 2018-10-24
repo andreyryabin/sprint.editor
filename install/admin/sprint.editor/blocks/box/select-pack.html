@@ -1,5 +1,7 @@
-<optgroup data-type="{{!it.type}}" label="{{!it.title}}">
+<div class="sp-x-pp-group" data-type="{{!it.type}}">
+    <div class="sp-x-pp-group-title">{{!it.title}}</div>
     {{~it.blocks :item}}
-    <option value="{{!item.name}}">{{!item.title}}</option>
+    <span class="sp-x-btn" data-name="{{!item.name}}">{{!item.title}}</span>
+    <span class="sp-x-btn" data-name="delete_pack" data-pack="{{!item.name}}" title="{{!item.mess_pack_del}}">x</span>
     {{~}}
-</optgroup>
+</div>

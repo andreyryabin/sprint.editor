@@ -276,7 +276,7 @@ abstract class Editor
 
         self::sortByNum($selectBlocks, 'sort');
 
-        self::$selectValues[] = array(
+        self::$selectValues['blocks_' . $groupname] = array(
             'title' => GetMessage('SPRINT_EDITOR_group_' . $groupname),
             'type' => 'blocks_' . $groupname,
             'blocks' => Locale::convertToWin1251IfNeed($selectBlocks)
@@ -293,7 +293,7 @@ abstract class Editor
             );
         }
 
-        self::$selectValues[] = array(
+        self::$selectValues['layouts'] = array(
             'title' => GetMessage('SPRINT_EDITOR_group_layout'),
             'type' => 'layouts',
             'blocks' => Locale::convertToWin1251IfNeed($selectLayouts)
@@ -341,7 +341,7 @@ abstract class Editor
             'blocks' => Locale::convertToWin1251IfNeed($packs)
         );
 
-        self::$selectValues[] = $result;
+        self::$selectValues['packs'] = $result;
 
         return $result;
     }

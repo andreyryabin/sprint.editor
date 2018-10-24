@@ -56,7 +56,7 @@ class AdminEditor extends Editor
 
         if (!empty($userSettings['block_enabled'])) {
             $localValues = [];
-            foreach (self::$selectValues as $groupIndex => $group) {
+            foreach (self::$selectValues as $groupType => $group) {
                 $localBlocks = [];
                 foreach ($group['blocks'] as $blockIndex => $block) {
                     if (in_array($block['name'], $userSettings['block_enabled'])) {
@@ -64,7 +64,7 @@ class AdminEditor extends Editor
                     }
                 }
                 if (!empty($localBlocks)) {
-                    $localValues[] = array(
+                    $localValues[ $groupType ] = array(
                         'title' => $group['title'],
                         'type' => $group['type'],
                         'blocks' => $localBlocks

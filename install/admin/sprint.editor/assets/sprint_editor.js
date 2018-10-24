@@ -397,26 +397,7 @@ var sprint_editor = {
 
         if (params.enableChange) {
 
-            $editor.on('click', '.sp-x-pack-save', function (e) {
-                var packname = prompt(BX.message('SPRINT_EDITOR_pack_change'));
-                if (packname) {
-                    packSave('' + packname);
-                }
-            });
-
-            $editor.on('click', '.sp-x-pack-del', function (e) {
-                var packname = '???';
-                if (packname.indexOf('pack_') === 0) {
-                    packname = packname.substr(5);
-
-                    if (confirm(BX.message('SPRINT_EDITOR_pack_del_confirm'))) {
-                        packDelete(packname);
-                    }
-
-                } else {
-                    alert(BX.message('SPRINT_EDITOR_pack_del_error'))
-                }
-            });
+            packShow();
 
             $editor.on('click', '.sp-x-lt-col-copy', function (e) {
                 e.preventDefault();
@@ -446,12 +427,10 @@ var sprint_editor = {
 
             $editor.on('click', '.sp-x-pp-blocks .sp-x-btn', function (e) {
                 addByName($(this));
-                popupToggle();
             });
 
             $editor.on('click', '.sp-x-pp-main .sp-x-btn', function (e) {
                 addByName($(this));
-                popupToggle();
             });
 
             $editor.on('click', '.sp-x-pp-lt-open', function (e) {
@@ -777,10 +756,31 @@ var sprint_editor = {
             if (name.indexOf('layout_') === 0) {
                 name = name.substr(7);
                 layoutEmptyAdd(name);
+                popupToggle();
 
             } else if (name.indexOf('pack_') === 0) {
                 name = name.substr(5);
                 packLoad(name);
+                popupToggle();
+
+            } else if (name === 'delete_pack') {
+                var packname = $handler.data('pack');
+                if (packname.indexOf('pack_') === 0) {
+                    packname = packname.substr(5);
+
+                    if (confirm(BX.message('SPRINT_EDITOR_pack_del_confirm'))) {
+                        packDelete(packname);
+                    }
+
+                } else {
+                    alert(BX.message('SPRINT_EDITOR_pack_del_error'))
+                }
+
+            } else if (name === 'save_pack') {
+                var packname = prompt(BX.message('SPRINT_EDITOR_pack_change'));
+                if (packname) {
+                    packSave('' + packname);
+                }
 
             } else if (name) {
                 var $grid = $handler.closest('.sp-x-lt');
@@ -788,6 +788,8 @@ var sprint_editor = {
                 if ($col.length > 0) {
                     blockAdd({name: name}, $col);
                 }
+
+                popupToggle();
             }
 
         }
@@ -943,12 +945,22 @@ var sprint_editor = {
             $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
                 save: saveToString(packname)
             }, function (resp) {
-
-                if (resp && resp.select) {
-                    sprint_editor.renderTemplate('box-select-pack', resp.select)
+                if (resp) {
+                    $editor.find('.sp-x-packs-loader').html(
+                        sprint_editor.renderTemplate('box-select-pack', resp)
+                    );
                 }
+            });
+        }
 
-                if (resp && resp.current) {
+        function packShow() {
+            $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
+                show: 1
+            }, function (resp) {
+                if (resp) {
+                    $editor.find('.sp-x-packs-loader').html(
+                        sprint_editor.renderTemplate('box-select-pack', resp)
+                    );
                 }
             });
         }
@@ -957,16 +969,11 @@ var sprint_editor = {
             $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
                 del: packname
             }, function (resp) {
-
-
-                if (resp && resp.select) {
-                    sprint_editor.renderTemplate('box-select-pack', resp.select)
+                if (resp) {
+                    $editor.find('.sp-x-packs-loader').html(
+                        sprint_editor.renderTemplate('box-select-pack', resp)
+                    );
                 }
-
-                if (resp && resp.current) {
-
-                }
-
             });
         }
 

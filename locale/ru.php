@@ -9,7 +9,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_LOAD_JQUERY" => "Подключить внешнюю jquery",
     "SPRINT_EDITOR_LOAD_JQUERY_UI" => "Подключить jquery ui *",
     "SPRINT_EDITOR_LOAD_DOTJS" => "Подключить шаблонизатор doT *",
-    "SPRINT_EDITOR_BTN_ADD" => "Добавить",
+    "SPRINT_EDITOR_BTN_ACTIONS" => "Действия",
     "SPRINT_EDITOR_BTN_SAVE" => "Сохранить",
     "SPRINT_EDITOR_BTN_PASTE" => "Вставить",
     "SPRINT_EDITOR_BTN_EXECUTE" => "Выполнить",
@@ -26,9 +26,9 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_SETTINGS_SETTINGS_NAME" => "Пользовательские настройки блоков",
     "SPRINT_EDITOR_SETTINGS_DEFAULT_VALUE" => "Значение по умолчанию",
     "SPRINT_EDITOR_SETTINGS_NAME_NO" => "нет",
-    "SPRINT_EDITOR_group_layout" => "Сетки",
-    "SPRINT_EDITOR_group_packs" => "Макеты",
-    "SPRINT_EDITOR_group_blocks" => "Блоки",
+    "SPRINT_EDITOR_group_layout" => "Добавить сетку",
+    "SPRINT_EDITOR_group_packs" => "Добавить макет",
+    "SPRINT_EDITOR_group_blocks" => "Добавить блоки",
     "SPRINT_EDITOR_group_my" => "Пользовательские",
 
     "SPRINT_EDITOR_layout_type1" => "Сетка из 1 колонки",
@@ -37,7 +37,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_layout_type4" => "Сетка из 4 колонок",
     "SPRINT_EDITOR_layout_toggle" => "Переключить отображение колонок",
 
-    "SPRINT_EDITOR_pack_save" => "Сохранить колонки с блоками в новый макет",
+    "SPRINT_EDITOR_pack_save" => "Сохранить как макет",
     "SPRINT_EDITOR_pack_del" => "Удалить макет",
 
     "SPRINT_EDITOR_pack_change" => "Укажите название макета",

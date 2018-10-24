@@ -20,7 +20,7 @@ global $DB;
 
 $result = [];
 
-if (\CModule::IncludeModule('sprint.editor')){
+if (\CModule::IncludeModule('sprint.editor')) {
 
     if (isset($_REQUEST['save'])) {
         $json = $_REQUEST['save'];
@@ -29,55 +29,38 @@ if (\CModule::IncludeModule('sprint.editor')){
 
         $dir = Sprint\Editor\Module::getPacksDir();
 
-        file_put_contents($dir. $packid . '.json', $json);
+        file_put_contents($dir . $packid . '.json', $json);
 
-        $packs = \Sprint\Editor\Editor::registerPacks();
+        $result = \Sprint\Editor\Editor::registerPacks();
+        $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
 
-        $current = 'pack_' . $packid;
-        
-        $result = array(
-            'current' => $current,
-            'select' => $packs,
-        );
-
-    }
-
-
-    if (isset($_REQUEST['load'])){
+    } elseif (isset($_REQUEST['load'])) {
         $packid = $_REQUEST['load'];
 
         $dir = Sprint\Editor\Module::getPacksDir();
 
-        $result = file_get_contents($dir. $packid . '.json', $json);
+        $result = file_get_contents($dir . $packid . '.json', $json);
 
         $result = json_decode($result, true);
 
-    }
-
-    if (isset($_REQUEST['del'])){
+    } elseif (isset($_REQUEST['del'])) {
         $packid = $_REQUEST['del'];
 
         $dir = Sprint\Editor\Module::getPacksDir();
 
-        $file = $dir. $packid . '.json';
+        $file = $dir . $packid . '.json';
 
-        if (is_file($file)){
+        if (is_file($file)) {
             unlink($file);
         }
 
-        $packs = \Sprint\Editor\Editor::registerPacks();
+        $result = \Sprint\Editor\Editor::registerPacks();
+        $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
 
-        $current = '';
+    } elseif (isset($_REQUEST['show'])) {
 
-        if (!empty($packs['blocks'])){
-            $current = $packs['blocks'][0]['name'];
-        }
-
-        $result = array(
-            'current' => $current,
-            'select' => $packs,
-
-        );
+        $result = \Sprint\Editor\Editor::registerPacks();
+        $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
 
     }
 
@@ -86,7 +69,6 @@ if (\CModule::IncludeModule('sprint.editor')){
 
 header('Content-type: application/json; charset=utf-8');
 echo json_encode($result);
-
 
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_after.php");
