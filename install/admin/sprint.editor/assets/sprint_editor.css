@@ -121,21 +121,6 @@
     /*border: 1px dotted #000;*/
 }
 
-.sp-x-box-head,
-.bx-core-adm-dialog div.sp-x-box-head {
-    position: relative;
-    text-align: center;
-    padding: 5px 0;
-}
-
-.sp-x-lt-col-head,
-.bx-core-adm-dialog div.sp-x-lt-col-head {
-    text-align: left;
-    /*border-bottom: 1px dashed #ccc;*/
-    padding: 5px 0;
-    position: relative;
-}
-
 .sp-x-box-title {
     font-weight: bold !important;
 }
@@ -167,7 +152,8 @@
 }
 
 .sp-x-box-handle,
-.sp-x-lt-handle {
+.sp-x-lt-handle,
+.sp-x-btn.sp-x-box-handle {
     cursor: move;
 }
 
@@ -251,8 +237,8 @@
 
 }
 
-.sp-x-btn.sp-x-lt-col-add-box,
-.bx-core-adm-dialog .sp-x-btn.sp-x-lt-col-add-box {
+.sp-x-btn.sp-x-editor-pp-open,
+.bx-core-adm-dialog .sp-x-btn.sp-x-editor-pp-open {
     background: #86ad00;
     border: solid 1px;
     border-color: #97c004 #7ea502 #648900;
@@ -263,16 +249,16 @@
     min-width: 80px;
 }
 
-.sp-x-btn.sp-x-lt-col-add-box:hover,
-.bx-core-adm-dialog .sp-x-btn.sp-x-lt-col-add-box:hover {
+.sp-x-btn.sp-x-editor-pp-open:hover,
+.bx-core-adm-dialog .sp-x-btn.sp-x-editor-pp-open:hover {
     background-color: #9ec710;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 0 #d5e71a inset;
     border-color: #97c004 #7ea502 #648900;
     text-decoration: none;
 }
 
-.sp-x-btn.sp-x-lt-col-add-box.sp-active,
-.bx-core-adm-dialog .sp-x-btn.sp-x-lt-col-add-box.sp-active {
+.sp-x-btn.sp-x-editor-pp-open.sp-active,
+.bx-core-adm-dialog .sp-x-btn.sp-x-editor-pp-open.sp-active {
     background: #698f00 !important;
     box-shadow: inset 0 2px 1px rgba(66, 84, 17, .71) !important;
     border-color: transparent #698f00 #698f00 !important;
@@ -313,22 +299,34 @@
     /*#fff 0 1px 1px;*/
 }
 
-.sp-x-editor-pp {
+.sp-x-editor-pp,
+.sp-x-box-pp,
+.sp-x-lt-pp {
     display: none;
 
-    /*width: 300px;*/
+    max-width: 500px;
 
     background: #f5f9f9;
     /*border: 1px solid #;*/
     padding: 10px;
     z-index: 30;
     position: absolute;
+    /*left: 0;*/
     border-radius: 4px;
 
     box-shadow: inset rgba(0, 0, 0, .5) 0 -1px 1px,
     inset rgba(0, 0, 0, .2) 0 1px,
     inset #fff 0 2px,
     rgba(0, 0, 0, .2) 0 1px 1px;
+}
+
+.sp-x-editor-pp {
+    left: 0;
+}
+
+.sp-x-box-pp,
+.sp-x-lt-pp {
+    right: 0;
 }
 
 .sp-x-editor-pp-group-title {
@@ -340,6 +338,11 @@
     text-align: left;
 }
 
-.sp-x-lt-tabs{
+.sp-x-lt-tabs {
+    display: inline-block;
     /*text-align: left;*/
+}
+
+.sp-x-lt-pp-group{
+    text-align: right;
 }

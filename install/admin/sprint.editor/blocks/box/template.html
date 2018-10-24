@@ -6,18 +6,27 @@
         <span title="{{=it.hint}}" class="sp-x-btn ">{{=it.title}}</span>
         {{?}}
 
-        {{?it.enableChange && it.showCopyButtons}}
-        <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">&equiv;</span>
-        {{?}}
+        <div style="float: right">
+            {{?it.enableChange && it.showCopyButtons}}
+            <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">&equiv;</span>
+            {{?}}
+            {{?it.enableChange}}
+            <span class="sp-x-btn sp-x-lt-pp-open">...</span>
+            {{?}}
+        </div>
 
-        {{?it.enableChange && it.showSortButtons}}
-        <span title="Поднять вверх" class="sp-x-btn sp-x-box-up">&uarr;</span>
-        <span title="Опустить вниз" class="sp-x-btn sp-x-box-dn">&darr;</span>
-        {{?}}
 
-        {{?it.enableChange}}
-        <span title="Удалить блок" class="sp-x-btn sp-x-box-del">x</span>
-        {{?}}
+        <div class="sp-x-lt-pp">
+            {{?it.enableChange && it.showSortButtons}}
+            <span title="Поднять вверх" class="sp-x-btn sp-x-box-up">&uarr;</span>
+            <span title="Опустить вниз" class="sp-x-btn sp-x-box-dn">&darr;</span>
+            {{?}}
+            {{?it.enableChange}}
+            <span title="Удалить блок" class="sp-x-btn sp-x-box-del">x</span>
+            {{?}}
+        </div>
+
+
     </div>
 
 
