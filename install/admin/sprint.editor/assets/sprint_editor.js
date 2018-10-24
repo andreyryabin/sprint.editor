@@ -462,7 +462,7 @@ var sprint_editor = {
                 } else {
                     var $grid = $(this).closest('.sp-x-lt');
                     blockAdd({name: name}, getActiveColumn($grid));
-                    // popupClose();
+                    popupClose();
                 }
             });
 

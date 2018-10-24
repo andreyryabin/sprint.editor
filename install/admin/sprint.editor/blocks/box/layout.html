@@ -1,12 +1,11 @@
 <div class="sp-x-lt">
 
-    <div class="sp-x-buttons">
-
-    <span class="sp-x-lt-tabs">
+    <div class="sp-x-buttons" style="text-align:left;">
+        <span class="sp-x-lt-tabs">
         {{~it.columns :col}}
         {{=col.tab}}
         {{~}}
-    </span>
+        </span>
 
         {{?it.enableChange && it.showCopyButtons}}
         <span title="Вставить блоки в колонку" class="sp-x-btn sp-x-lt-col-paste">&crarr;</span>
@@ -18,11 +17,15 @@
         <span title="Изменить название" class="sp-x-btn sp-x-lt-col-edit">изм</span>
         {{?}}
 
+        {{?it.enableChange && it.showSortButtons}}
+        <span title="Поднять вверх" class="sp-x-btn sp-x-lt-up">&uarr;</span>
+        <span title="Опустить вниз" class="sp-x-btn sp-x-lt-dn">&darr;</span>
+        {{?}}
+
         {{?it.enableChange}}
         <span title="Удалить колонку" class="sp-x-btn sp-x-lt-col-del">x</span>
         {{?}}
     </div>
-
 
     <div class="sp-x-lt-row">
         {{~it.columns :col}}
@@ -30,10 +33,10 @@
         {{~}}
     </div>
 
-    {{?it.enableChange}}
-    <div style="text-align:center;margin-top: 10px;margin-bottom: 30px;">
+    <div class="sp-x-buttons" style="text-align:left;margin-top:10px;margin-bottom: 30px;">
+        {{?it.enableChange}}
         <span title="" class="sp-x-btn sp-x-lt-col-add-box">Добавить</span>
+        {{?}}
     </div>
-    {{?}}
 
 </div>
