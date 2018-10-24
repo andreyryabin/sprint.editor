@@ -45,6 +45,12 @@ sprint_editor.registerBlock('yandex_map', function ($, $el, data) {
 
     this.afterRender = function () {
 
+        $.getScript("https://api-maps.yandex.ru/2.1/?lang=ru_RU&wizard=bitrix", function(){
+            afterLoad()
+        });
+    };
+
+    function afterLoad() {
         if (!window.ymaps) {
             return false;
         }
@@ -149,9 +155,7 @@ sprint_editor.registerBlock('yandex_map', function ($, $el, data) {
             });
 
         });
-
-
-    };
+    }
 
     function selectPlaceMark(placeMark, openBalloon) {
         if (myPlacemark) {

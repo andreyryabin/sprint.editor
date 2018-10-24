@@ -2,7 +2,6 @@
   "title": "Яндекс Карта",
   "sort": "340",
   "js": [
-    "https://api-maps.yandex.ru/2.1/?lang=ru_RU&wizard=bitrix",
     "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
   ],
   "templates": [

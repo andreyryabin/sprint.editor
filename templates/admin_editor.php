@@ -22,18 +22,34 @@
 ?>
 <div class="sp-x-editor<?= $uniqId ?>">
     <div class="sp-x-editor-lt"></div>
+
+    <div class="sp-x-buttons" style="text-align:left;margin-top:10px;margin-bottom: 30px;">
+        <? if ($enableChange): ?>
+            <span class="sp-x-btn sp-x-btn-green sp-x-pp-main-open">Добавить</span>
+            <div class="sp-x-pp-main">
+                <? foreach ($selectValues as $aGroup): if (!in_array($aGroup['type'], array('blocks_blocks', 'blocks_my'))):?>
+                    <div class="sp-x-pp-group" style="margin-bottom: 10px;" data-type="<?= $aGroup['type'] ?>">
+                        <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
+                        <? foreach ($aGroup['blocks'] as $aBlock): ?>
+                            <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
+                        <? endforeach; ?>
+                    </div>
+                <? endif;endforeach ?>
+            </div>
+        <? endif; ?>
+    </div>
 </div>
 
-<script type="text/html" id="sp-x-template-pp<?= $uniqId ?>">
-    <div class="sp-x-editor-pp">
-        <? foreach ($selectValues as $aGroup): ?>
-            <div class="sp-x-editor-pp-group" style="margin-bottom: 10px;" data-type="<?= $aGroup['type'] ?>">
-                <div class="sp-x-editor-pp-group-title"><?= $aGroup['title'] ?></div>
+<script type="text/html" id="sp-x-template-pp-blocks<?= $uniqId ?>">
+    <div class="sp-x-pp-blocks">
+        <? foreach ($selectValues as $aGroup): if (in_array($aGroup['type'], array('blocks_blocks', 'blocks_my'))):?>
+            <div class="sp-x-pp-group" style="margin-bottom: 10px;" data-type="<?= $aGroup['type'] ?>">
+                <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
                 <? foreach ($aGroup['blocks'] as $aBlock): ?>
                     <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
                 <? endforeach; ?>
             </div>
-        <? endforeach ?>
+        <? endif;endforeach ?>
     </div>
 </script>
 

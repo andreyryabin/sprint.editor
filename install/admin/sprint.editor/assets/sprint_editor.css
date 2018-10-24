@@ -133,6 +133,8 @@
 .sp-x-buttons {
     /*margin: 0 0 5px 0;*/
     text-align: center;
+    position: relative;
+
     /*display: inline-block;*/
     /*display: block;*/
     /*position: absolute;*/
@@ -142,7 +144,7 @@
 }
 
 .sp-x-lt {
-    position: relative;
+    /*position: relative;*/
 }
 
 .sp-x-lt:after {
@@ -237,8 +239,8 @@
 
 }
 
-.sp-x-btn.sp-x-editor-pp-open,
-.bx-core-adm-dialog .sp-x-btn.sp-x-editor-pp-open {
+.sp-x-btn.sp-x-btn-green,
+.bx-core-adm-dialog .sp-x-btn.sp-x-btn-green {
     background: #86ad00;
     border: solid 1px;
     border-color: #97c004 #7ea502 #648900;
@@ -249,16 +251,16 @@
     min-width: 80px;
 }
 
-.sp-x-btn.sp-x-editor-pp-open:hover,
-.bx-core-adm-dialog .sp-x-btn.sp-x-editor-pp-open:hover {
+.sp-x-btn.sp-x-btn-green:hover,
+.bx-core-adm-dialog .sp-x-btn.sp-x-btn-green:hover {
     background-color: #9ec710;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 0 #d5e71a inset;
     border-color: #97c004 #7ea502 #648900;
     text-decoration: none;
 }
 
-.sp-x-btn.sp-x-editor-pp-open.sp-active,
-.bx-core-adm-dialog .sp-x-btn.sp-x-editor-pp-open.sp-active {
+.sp-x-btn.sp-x-btn-green.sp-active,
+.bx-core-adm-dialog .sp-x-btn.sp-x-btn-green.sp-active {
     background: #698f00 !important;
     box-shadow: inset 0 2px 1px rgba(66, 84, 17, .71) !important;
     border-color: transparent #698f00 #698f00 !important;
@@ -299,9 +301,10 @@
     /*#fff 0 1px 1px;*/
 }
 
-.sp-x-editor-pp,
-.sp-x-box-pp,
-.sp-x-lt-pp {
+.sp-x-pp-box,
+.sp-x-pp-lt,
+.sp-x-pp-blocks,
+.sp-x-pp-main {
     display: none;
 
     max-width: 500px;
@@ -320,29 +323,23 @@
     rgba(0, 0, 0, .2) 0 1px 1px;
 }
 
-.sp-x-editor-pp {
+.sp-x-pp-blocks,
+.sp-x-pp-main {
     left: 0;
+    text-align: left;
 }
 
-.sp-x-box-pp,
-.sp-x-lt-pp {
+.sp-x-pp-box,
+.sp-x-pp-lt {
     right: 0;
+    text-align: right;
 }
 
-.sp-x-editor-pp-group-title {
+.sp-x-pp-group-title {
     font-weight: bold;
-    text-align: left;
-}
-
-.sp-x-editor-pp-group {
-    text-align: left;
 }
 
 .sp-x-lt-tabs {
     display: inline-block;
     /*text-align: left;*/
-}
-
-.sp-x-lt-pp-group{
-    text-align: right;
 }
