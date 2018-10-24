@@ -1,5 +1,5 @@
 <div class="sp-x-box" data-uid="{{=it.uid}}">
-    <div class="sp-x-buttons">
+    <div class="sp-x-buttons sp-x-buttons-box">
         {{?it.enableChange}}
         <span title="{{=it.hint}}" class="sp-x-btn sp-x-box-handle">{{=it.title}}</span>
         {{??}}
@@ -25,10 +25,7 @@
             <span title="Удалить блок" class="sp-x-btn sp-x-box-del">x</span>
             {{?}}
         </div>
-
-
     </div>
-
 
     {{?it.compiled}}
     <div class="sp-x-box-settings">

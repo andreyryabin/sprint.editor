@@ -369,16 +369,9 @@ var sprint_editor = {
             params.jsonUserSettings = {};
         }
 
-        var tmpcnt = 0;
-
         $.each(params.jsonValue.layouts, function (index, layout) {
             layoutAdd(layout);
-            tmpcnt++;
         });
-
-        if (!tmpcnt) {
-            layoutEmptyAdd(1);
-        }
 
         $.each(params.jsonValue.blocks, function (index, block) {
             blockAdd(block);
@@ -452,14 +445,12 @@ var sprint_editor = {
             });
 
             $editor.on('click', '.sp-x-pp-blocks .sp-x-btn', function (e) {
-                var name = $(this).data('name');
-                addByName(name);
+                addByName($(this));
                 popupToggle();
             });
 
             $editor.on('click', '.sp-x-pp-main .sp-x-btn', function (e) {
-                var name = $(this).data('name');
-                addByName(name);
+                addByName($(this));
                 popupToggle();
             });
 
@@ -589,10 +580,6 @@ var sprint_editor = {
 
                 $grid.remove();
 
-                if ($editor.find('.sp-x-lt').length <= 0) {
-                    layoutEmptyAdd(1);
-                }
-
             });
 
             $editor.on('click', '.sp-x-lt-col-del', function (e) {
@@ -637,10 +624,6 @@ var sprint_editor = {
 
                 } else {
                     $grid.remove();
-
-                    if ($editor.find('.sp-x-lt').length <= 0) {
-                        layoutEmptyAdd(1);
-                    }
                 }
             });
 
@@ -764,17 +747,21 @@ var sprint_editor = {
                 if ($handler.hasClass('sp-x-pp-blocks-open')) {
                     $handler.addClass('sp-active');
                     var $popup = $editor.find('.sp-x-pp-blocks');
-                    if ($popup.length <=0){
+                    if ($popup.length <= 0) {
                         var popuphtml = sprint_editor.renderTemplate('pp-blocks' + params.uniqid, {});
                         $popup = $(popuphtml);
-                        $handler.after($popup);
                     }
+
+                    $handler.after($popup);
                     $popup.show();
                 }
             }
         }
 
-        function addByName(name) {
+        function addByName($handler) {
+
+            var name = $handler.data('name');
+
             if (name.indexOf('layout_') === 0) {
                 name = name.substr(7);
                 layoutEmptyAdd(name);
@@ -783,9 +770,8 @@ var sprint_editor = {
                 name = name.substr(5);
                 packLoad(name);
 
-            } else {
-
-                var $grid = $(this).closest('.sp-x-lt');
+            } else if (name) {
+                var $grid = $handler.closest('.sp-x-lt');
                 var $col = getActiveColumn($grid);
                 if ($col.length > 0) {
                     blockAdd({name: name}, $col);
