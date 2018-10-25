@@ -49,7 +49,7 @@ if (\CModule::IncludeModule('sprint.editor')) {
             }
         }
 
-        $result = \Sprint\Editor\Editor::registerPacks();
+        $result = \Sprint\Editor\AdminEditor::registerPacks();
         $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
 
     }

@@ -31,7 +31,7 @@ class UserTypeEditor
     }
 
     public function OnSearchIndex($arUserField) {
-        return Editor::getSearchIndex($arUserField["VALUE"]);
+        return AdminEditor::getSearchIndex($arUserField["VALUE"]);
     }
 
     public function PrepareSettings($arUserField) {
@@ -47,7 +47,7 @@ class UserTypeEditor
 
     public function GetSettingsHTML($arUserField, $arHtmlControl, $bVarsFromForm){
         $settings = self::PrepareSettings($arUserField);
-        $userfiles = Editor::getUserSettingsFiles();
+        $userfiles = AdminEditor::getUserSettingsFiles();
 
         $defaultEditor = AdminEditor::init(array(
             'uniqId' => $arUserField['ID'],
@@ -60,7 +60,7 @@ class UserTypeEditor
             'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE']
         ));
 
-        return Editor::renderFile(Module::getModuleDir() . '/templates/user_type.php', array(
+        return AdminEditor::renderFile(Module::getModuleDir() . '/templates/user_type.php', array(
             'inputName' => $arHtmlControl['NAME'],
             'settings' => $settings,
             'userfiles' => $userfiles,
