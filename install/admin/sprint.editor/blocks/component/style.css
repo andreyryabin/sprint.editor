@@ -18,8 +18,12 @@
     width: 220px;
 }
 
+.sp-block-component .sp-reload{
+    margin-left: 10px;
+}
+
 .sp-block-component .sp-label-site{
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 .sp-block-component .sp-filter-site{

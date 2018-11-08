@@ -34,7 +34,7 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
         boxWidth = boxWidth ? boxWidth : 650;
 
         renderComponentParams();
-        renderFilters();
+        renderFilters(0);
 
         $elFilter.on('change', '.sp-component', function (e) {
             e.preventDefault();
@@ -54,6 +54,10 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
                 data.filter_site = selectedName;
                 renderComponentParams();
             }
+        });
+
+        $elFilter.on('click','.sp-reload',function(){
+            renderFilters(1);
         });
 
         function renderComponentParams() {
@@ -90,7 +94,9 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
             }]);
         }
 
-        function renderFilters() {
+        function renderFilters(clearCache) {
+            clearCache = clearCache || 0;
+
             $.ajax({
                 url: sprint_editor.getBlockWebPath('component') + '/ajax.php',
                 type: 'post',
@@ -99,7 +105,8 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
                     component_name: data.component_name,
                     filter_site: data.filter_site,
                     filter_include: data.filter_include,
-                    filter_exclude: data.filter_exclude
+                    filter_exclude: data.filter_exclude,
+                    clear_cache: clearCache
                 },
                 success: function (result) {
                     $elFilter.html(
