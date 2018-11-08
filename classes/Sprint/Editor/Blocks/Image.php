@@ -5,7 +5,7 @@ use Sprint\Editor\Tools\Image as ImageTools;
 class Image
 {
 
-    static public function getImage($block, $resizeParams = array()){
+    static public function getImage($block, $resizeParams = array(), $resizeDetail = array()){
         if (empty($block['file'])){
             return array();
         }
@@ -18,6 +18,12 @@ class Image
         $aItem = ImageTools::resizeImage2($block['file']['ID'],$resizeParams);
 
         $aItem['DESCRIPTION'] = htmlspecialchars($block['desc']);
+
+        if (!empty($resizeDetail)) {
+            $aDetail = ImageTools::resizeImage2($block['file']['ID'], $resizeDetail);
+            $aItem['DETAIL_SRC'] = $aDetail['SRC'];
+        }
+
         return $aItem;
     }
 
