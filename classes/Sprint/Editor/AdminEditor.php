@@ -139,10 +139,10 @@ class AdminEditor
             if ($item->isFile() && $item->getExtension() == 'php') {
                 $settingsName = $item->getBasename('.php');
                 $settings = self::loadSettings($settingsName);
-                $result[$settingsName] = $settings['title'];
+                $result[$settingsName] = Locale::convertToWin1251IfNeed($settings['title']);
             }
         }
-        return Locale::convertToWin1251IfNeed($result);
+        return $result;
     }
 
     public static function prepareValue($value) {
