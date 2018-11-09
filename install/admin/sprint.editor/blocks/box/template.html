@@ -8,13 +8,15 @@
 
         <div class="sp-x-buttons-group">
             {{?it.enableChange && it.showCopyButtons}}
+            <span title="Вставить блоки после этого блока" class="sp-x-btn sp-x-lt-block-paste">&crarr;</span>
+            {{?}}
+            {{?it.enableChange && it.showCopyButtons}}
             <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">&equiv;</span>
             {{?}}
             {{?it.enableChange}}
             <span class="sp-x-btn sp-x-pp-box-open">...</span>
             {{?}}
         </div>
-
 
         <div class="sp-x-pp-box">
             {{?it.enableChange && it.showSortButtons}}
