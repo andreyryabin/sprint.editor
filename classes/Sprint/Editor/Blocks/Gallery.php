@@ -30,7 +30,7 @@ class Gallery
                 $aItem['DETAIL_SRC'] = $aDetail['SRC'];
             }
 
-            $aItem['DESCRIPTION'] = htmlspecialchars($image['desc']);
+            $aItem['DESCRIPTION'] = htmlspecialcharsbxbx($image['desc']);
 
             $items[] = $aItem;
         }

@@ -17,7 +17,7 @@ class Image
 
         $aItem = ImageTools::resizeImage2($block['file']['ID'],$resizeParams);
 
-        $aItem['DESCRIPTION'] = htmlspecialchars($block['desc']);
+        $aItem['DESCRIPTION'] = htmlspecialcharsbx($block['desc']);
 
         if (!empty($resizeDetail)) {
             $aDetail = ImageTools::resizeImage2($block['file']['ID'], $resizeDetail);

@@ -31,7 +31,7 @@ class VideoGallery
                 $aItem['DETAIL_SRC'] = $aDetail['SRC'];
             }
 
-            $aItem['DESCRIPTION'] = htmlspecialchars($image['desc']);
+            $aItem['DESCRIPTION'] = htmlspecialcharsbx($image['desc']);
             $aItem['YOUTUBE_CODE'] = YoutubeTools::getVideoCode($image['video']);
 
 

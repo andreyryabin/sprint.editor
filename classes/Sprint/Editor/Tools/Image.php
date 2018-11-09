@@ -56,7 +56,7 @@ class Image
                     "SRC" => self::urlencodePath($resized["src"]),
                     "ORIGIN_SRC" => self::urlencodePath($image['SRC']),
                     "NAME" => $image['NAME'],
-                    "DESCRIPTION" => htmlspecialchars($image['DESCRIPTION']),
+                    "DESCRIPTION" => htmlspecialcharsbx($image['DESCRIPTION']),
                 );
             } else {
                 $image = array(
@@ -100,7 +100,7 @@ class Image
                     "SRC" => self::urlencodePath($resized["src"]),
                     "ORIGIN_SRC" => self::urlencodePath($aImage['SRC']),
                     "NAME" => $aImage['NAME'],
-                    "DESCRIPTION" => htmlspecialchars($aImage['DESCRIPTION']),
+                    "DESCRIPTION" => htmlspecialcharsbx($aImage['DESCRIPTION']),
                 );
             } else {
                 $aImage = array(
