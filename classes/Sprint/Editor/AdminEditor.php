@@ -42,7 +42,7 @@ class AdminEditor
         ), $params);
 
         $value = self::prepareValue($params['value']);
-        if (empty($value)) {
+        if (empty($value['blocks']) && empty($value['layouts'])) {
             $value = self::prepareValue($params['defaultValue']);
         }
 
@@ -75,7 +75,7 @@ class AdminEditor
                     }
                 }
                 if (!empty($localBlocks)) {
-                    $localValues[ $groupType ] = array(
+                    $localValues[$groupType] = array(
                         'title' => $group['title'],
                         'type' => $group['type'],
                         'blocks' => $localBlocks

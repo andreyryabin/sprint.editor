@@ -398,6 +398,7 @@
     /*text-align: left;*/
 }
 
-.sp-x-lastblock {
+.bx-core-adm-dialog .sp-x-btn.sp-x-lastblock,
+.sp-x-btn.sp-x-lastblock {
     display: none;
 }

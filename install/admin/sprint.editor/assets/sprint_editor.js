@@ -775,8 +775,10 @@ var sprint_editor = {
         }
 
         function addByName($handler) {
-
             var name = $handler.data('name');
+            if (!name) {
+                return false;
+            }
 
             if (name.indexOf('layout_') === 0) {
                 name = name.substr(7);
