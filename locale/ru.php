@@ -29,6 +29,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_group_layout" => "Добавить сетку",
     "SPRINT_EDITOR_group_packs" => "Добавить макет",
     "SPRINT_EDITOR_group_blocks" => "Добавить блоки",
+    "SPRINT_EDITOR_add" => "Добавить",
     "SPRINT_EDITOR_group_my" => "Пользовательские",
 
     "SPRINT_EDITOR_layout_type1" => "Сетка из 1 колонки",
@@ -52,4 +53,6 @@ Sprint\Editor\Locale::loadLocale(array(
 
     "SPRINT_EDITOR_USED_IBLOCKS" => "Инфоблоки с редактором",
     "SPRINT_EDITOR_USED_ENTITIES" => "Пользовательские поля",
+
+    "SPRINT_EDITOR_block_contents_title" => "Содержание:",
 ));

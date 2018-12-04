@@ -41,6 +41,14 @@ var sprint_editor = {
         return (this._parameters[name]) ? this._parameters[name] : false;
     },
 
+    getBlockTitle: function (name) {
+        var params = this.getBlockParams(name);
+        if (params && params['title']) {
+            return params['title'];
+        }
+        return '';
+    },
+
     getBlockWebPath: function (blockName) {
         var values = this.getBlockParams(blockName);
         if (values.islocal) {
@@ -442,6 +450,10 @@ var sprint_editor = {
                 addByName($(this));
             });
 
+            $editor.on('click', '.sp-x-lastblock', function (e) {
+                addByName($(this));
+            });
+
             $editor.on('click', '.sp-x-pp-main .sp-x-btn', function (e) {
                 addByName($(this));
             });
@@ -801,7 +813,14 @@ var sprint_editor = {
                 var $grid = $handler.closest('.sp-x-lt');
                 var $col = getActiveColumn($grid);
                 if ($col.length > 0) {
-                    blockAdd({name: name}, $col);
+                    var $box = blockAdd({name: name}, $col);
+
+                    if ($box && !$handler.hasClass('sp-x-lastblock')) {
+                        $box.closest('.sp-x-lt').find('.sp-x-lastblock').html(
+                            BX.message('SPRINT_EDITOR_add') + ' ' +
+                            sprint_editor.getBlockTitle(name)
+                        ).data('name', name).show();
+                    }
                 }
 
                 popupToggle();

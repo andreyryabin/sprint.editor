@@ -1,6 +1,6 @@
 <?/** @var $block array */?>
 <div class="sp-contents">
-    <div class="sp-contents_title">Содержание:</div>
+    <div class="sp-contents_title"><?=GetMessage('SPRINT_EDITOR_block_contents_title')?></div>
     <ul class="sp-contents_elements">
         <?foreach ($block['elements'] as $item):
             $cssclass = 'level' . $item['level'];

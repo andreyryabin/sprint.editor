@@ -394,3 +394,7 @@
     display: inline-block;
     /*text-align: left;*/
 }
+
+.sp-x-lastblock{
+    display: none;
+}
