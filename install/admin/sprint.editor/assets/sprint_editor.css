@@ -148,7 +148,7 @@
 }
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt1,
-.sp-x-buttons.sp-x-buttons-lt1{
+.sp-x-buttons.sp-x-buttons-lt1 {
 
 }
 
@@ -172,7 +172,7 @@
     border-color: #c4ced2 #dce7ed #dce7ed;
 }
 
-.sp-x-buttons-group{
+.sp-x-buttons-group {
     display: inline-block;
     /*display: block;*/
     position: absolute;
@@ -354,17 +354,23 @@
 .bx-core-adm-dialog div.sp-x-pp-blocks,
 .sp-x-pp-blocks,
 .bx-core-adm-dialog div.sp-x-pp-main,
-.sp-x-pp-main
-{
+.sp-x-pp-main {
     left: 0;
     text-align: left;
 }
 
+.bx-core-adm-dialog div.sp-x-pp-blocks,
+.sp-x-pp-blocks {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+
+
 .bx-core-adm-dialog div.sp-x-pp-box,
 .sp-x-pp-box,
 .bx-core-adm-dialog div.sp-x-pp-lt,
-.sp-x-pp-lt
-{
+.sp-x-pp-lt {
     right: 0;
     text-align: right;
 }
@@ -372,8 +378,7 @@
 .bx-core-adm-dialog div.sp-x-pp-box .sp-x-pp-group,
 .sp-x-pp-box .sp-x-pp-group,
 .bx-core-adm-dialog div.sp-x-pp-lt .sp-x-pp-group,
-.sp-x-pp-lt .sp-x-pp-group
-{
+.sp-x-pp-lt .sp-x-pp-group {
     text-align: right;
 }
 
@@ -383,18 +388,16 @@
 }
 
 .bx-core-adm-dialog div.sp-x-pp-group-title,
-.sp-x-pp-group-title
-{
+.sp-x-pp-group-title {
     font-weight: bold;
 }
 
 .bx-core-adm-dialog div.sp-x-lt-tabs,
-.sp-x-lt-tabs
-{
+.sp-x-lt-tabs {
     display: inline-block;
     /*text-align: left;*/
 }
 
-.sp-x-lastblock{
+.sp-x-lastblock {
     display: none;
 }
