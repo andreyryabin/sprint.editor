@@ -13,8 +13,6 @@
  * @var $selectValues
  *
  * @var $enableChange
- * @var $showSortButtons
- * @var $showCopyButtons
  * @var $jsonUserSettings
  *
  * @var $templates
@@ -23,13 +21,14 @@
 <div class="sp-x-editor<?= $uniqId ?>">
     <div class="sp-x-editor-lt"></div>
 
-    <div class="sp-x-buttons sp-x-buttons-ed">
-        <? if ($enableChange): ?>
+    <? if ($enableChange): ?>
+        <div class="sp-x-buttons sp-x-buttons-ed">
+
             <span class="sp-x-btn sp-x-btn-green sp-x-pp-main-open"><?= GetMessage('SPRINT_EDITOR_BTN_ACTIONS') ?></span>
             <div class="sp-x-pp-main">
 
                 <div class="sp-x-pp-group">
-                    <span class="sp-x-btn" data-name="save_pack" title="<?=GetMessage('SPRINT_EDITOR_pack_save_title')?>">
+                    <span class="sp-x-btn" data-name="save_pack" title="<?= GetMessage('SPRINT_EDITOR_pack_save_title') ?>">
                         <?= GetMessage('SPRINT_EDITOR_pack_save') ?>
                     </span>
                 </div>
@@ -44,10 +43,9 @@
                         <? endforeach; ?>
                     </div>
                 <? endif; ?>
-
             </div>
-        <? endif; ?>
-    </div>
+        </div>
+    <? endif; ?>
 </div>
 
 <script type="text/html" id="sp-x-template-pp-blocks<?= $uniqId ?>">
@@ -98,8 +96,6 @@
         sprint_editor.create($, {
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
-            showSortButtons: <?=$showSortButtons?>,
-            showCopyButtons: <?=$showCopyButtons?>,
             jsonUserSettings:<?=$jsonUserSettings?>,
             jsonValue: <?=$jsonValue?>
         });

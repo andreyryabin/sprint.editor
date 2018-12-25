@@ -283,8 +283,6 @@ var sprint_editor = {
         var renderVars = this.getBlockParams(blockData.name);
 
         renderVars.uid = uid;
-        renderVars.showSortButtons = params.showSortButtons;
-        renderVars.showCopyButtons = params.showCopyButtons;
         renderVars.enableChange = params.enableChange;
 
         renderVars.compiled = this.compileSettings(blockData, blockSettings);
@@ -332,18 +330,6 @@ var sprint_editor = {
         return compiled;
     },
 
-    getBlockSettings: function (name, params) {
-        var blockSettings = {};
-        if (params && params.jsonUserSettings && params.jsonUserSettings.block_settings) {
-            if (params.jsonUserSettings.block_settings[name]) {
-                blockSettings = params.jsonUserSettings.block_settings[name];
-            }
-        }
-
-        return blockSettings;
-    },
-
-
     create: function ($, params) {
         var $editor = $('.sp-x-editor' + params.uniqid);
         var $inputresult = $('.sp-x-result' + params.uniqid);
@@ -375,6 +361,21 @@ var sprint_editor = {
 
         if (!params.jsonUserSettings) {
             params.jsonUserSettings = {};
+        }
+
+        if (params.hasOwnProperty('enableChange')){
+            params.enableChange = !!params.enableChange;
+        } else {
+            params.enableChange = true;
+        }
+
+        if (params.jsonUserSettings.hasOwnProperty('enable_change')){
+            params.enableChange = !!params.jsonUserSettings.enable_change;
+        }
+
+        params.enableChangeColumns = true;
+        if (params.jsonUserSettings.hasOwnProperty('enable_change_columns')){
+            params.enableChangeColumns = !!params.jsonUserSettings.enable_change_columns;
         }
 
         $.each(params.jsonValue.layouts, function (index, layout) {
@@ -646,8 +647,6 @@ var sprint_editor = {
 
                 var html = sprint_editor.renderTemplate('box-layout-col', {
                     enableChange: params.enableChange,
-                    showSortButtons: params.showSortButtons,
-                    showCopyButtons: params.showCopyButtons,
                     title: BX.message('SPRINT_EDITOR_col_default'),
                     uid: columnUid,
                     compiledHtml: sprint_editor.renderTemplate('box-layout-col-settings', {
@@ -860,7 +859,7 @@ var sprint_editor = {
             var columns = [];
             var defaultclass = '';
 
-            if (params.jsonUserSettings && params.jsonUserSettings.layout_defaults) {
+            if (params.jsonUserSettings.layout_defaults) {
                 if (params.jsonUserSettings.layout_defaults[ltname]) {
                     defaultclass = params.jsonUserSettings.layout_defaults[ltname];
                 }
@@ -900,8 +899,6 @@ var sprint_editor = {
                     uid: columnUid,
                     html: sprint_editor.renderTemplate('box-layout-col', {
                         enableChange: params.enableChange,
-                        showSortButtons: params.showSortButtons,
-                        showCopyButtons: params.showCopyButtons,
                         title: columnTitle,
                         uid: columnUid,
                         compiledHtml: sprint_editor.renderTemplate('box-layout-col-settings', {
@@ -918,8 +915,7 @@ var sprint_editor = {
             $editor.find('.sp-x-editor-lt').append(
                 sprint_editor.renderTemplate('box-layout', {
                     enableChange: params.enableChange,
-                    showSortButtons: params.showSortButtons,
-                    showCopyButtons: params.showCopyButtons,
+                    enableChangeColumns: params.enableChangeColumns,
                     columns: columns,
                     title: layoutTitle
                 })
@@ -940,7 +936,6 @@ var sprint_editor = {
             updateIndexes($grid);
         }
 
-
         function blockAdd(blockData, $column) {
             if (!blockData || !blockData.name) {
                 return false;
@@ -951,7 +946,7 @@ var sprint_editor = {
             }
 
             var uid = sprint_editor.makeUid();
-            var blockSettings = sprint_editor.getBlockSettings(blockData.name, params);
+            var blockSettings = getBlockSettings(blockData.name);
             var $box = $(sprint_editor.renderBlock(blockData, blockSettings, uid, params));
 
             if (!$column || $column.length <= 0) {
@@ -1115,7 +1110,7 @@ var sprint_editor = {
         }
 
         function getClassTitle(cssname) {
-            if (params.jsonUserSettings && params.jsonUserSettings.layout_titles) {
+            if (params.jsonUserSettings.layout_titles) {
                 if (params.jsonUserSettings.layout_titles[cssname]) {
                     if (params.jsonUserSettings.layout_titles[cssname].length > 0) {
                         return params.jsonUserSettings.layout_titles[cssname];
@@ -1131,7 +1126,7 @@ var sprint_editor = {
             var selectedCss = cssstr.split(' ');
 
             var allclasses = {};
-            if (params.jsonUserSettings && params.jsonUserSettings.layout_classes) {
+            if (params.jsonUserSettings.layout_classes) {
                 if (params.jsonUserSettings.layout_classes[ltname]) {
                     if (params.jsonUserSettings.layout_classes[ltname].length > 0) {
                         allclasses = params.jsonUserSettings.layout_classes[ltname]
@@ -1295,6 +1290,21 @@ var sprint_editor = {
             $grid.find('.sp-x-lt-col-index').each(function (cindex) {
                 $(this).text(cindex + 1);
             });
+
+        }
+
+        function getBlockSettings(name) {
+            var blockSettings = {};
+
+            if (!params.jsonUserSettings.hasOwnProperty('block_settings')){
+                return blockSettings;
+            }
+
+            if (!params.jsonUserSettings.block_settings.hasOwnProperty(name)){
+                return blockSettings;
+            }
+
+            return params.jsonUserSettings.block_settings[name];
 
         }
     }

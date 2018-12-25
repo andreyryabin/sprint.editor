@@ -149,7 +149,7 @@
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt1,
 .sp-x-buttons.sp-x-buttons-lt1 {
-
+    border-bottom: 1px dashed #ccc;
 }
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt2,

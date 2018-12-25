@@ -56,8 +56,6 @@ class AdminEditor
             $enableChange = 1;
         }
 
-        $showSortButtons = 1;
-        $showCopyButtons = 1;
         $userSettings = array();
 
         if (!empty($params['userSettings']['SETTINGS_NAME'])) {
@@ -65,37 +63,13 @@ class AdminEditor
             $userSettings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
         }
 
-        if (!empty($userSettings['block_enabled'])) {
-            $localValues = [];
-            foreach (self::$selectValues as $groupType => $group) {
-                $localBlocks = [];
-                foreach ($group['blocks'] as $blockIndex => $block) {
-                    if (in_array($block['name'], $userSettings['block_enabled'])) {
-                        $localBlocks[] = $block;
-                    }
-                }
-                if (!empty($localBlocks)) {
-                    $localValues[$groupType] = array(
-                        'title' => $group['title'],
-                        'type' => $group['type'],
-                        'blocks' => $localBlocks
-
-                    );
-                }
-            }
-        } else {
-            $localValues = self::$selectValues;
-        }
-
         return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
             'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
-            'selectValues' => $localValues,
+            'selectValues' => self::filterSelect($userSettings),
             'templates' => Locale::convertToWin1251IfNeed(self::$templates),
             'jsonParameters' => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
             'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
-            'showSortButtons' => $showSortButtons,
             'enableChange' => $enableChange,
-            'showCopyButtons' => $showCopyButtons,
             'inputName' => $params['inputName'],
             'uniqId' => $params['uniqId'],
             'firstRun' => (self::$initCounts == 1) ? 1 : 0,
@@ -430,6 +404,52 @@ class AdminEditor
         self::$selectValues['packs'] = $result;
 
         return $result;
+    }
+
+    protected static function filterSelect($userSettings) {
+        $localValues = self::$selectValues;
+
+        if (!empty($userSettings['block_enabled'])) {
+            $localValues = [];
+            foreach (self::$selectValues as $groupType => $group) {
+                $localBlocks = [];
+                foreach ($group['blocks'] as $blockIndex => $block) {
+                    if (in_array($block['name'], $userSettings['block_enabled'])) {
+                        $localBlocks[] = $block;
+                    }
+                }
+                if (!empty($localBlocks)) {
+                    $localValues[$groupType] = array(
+                        'title' => $group['title'],
+                        'type' => $group['type'],
+                        'blocks' => $localBlocks
+
+                    );
+                }
+            }
+        }
+
+        if (!empty($userSettings['layout_enabled'])) {
+            foreach (self::$selectValues as $groupType => $group) {
+                if ($groupType == 'layouts') {
+                    $localBlocks = [];
+                    foreach ($group['blocks'] as $block) {
+                        if (in_array($block['name'], $userSettings['layout_enabled'])) {
+                            $localBlocks[] = $block;
+                        }
+                    }
+                    if (!empty($localBlocks)) {
+                        $localValues[$groupType] = array(
+                            'title' => $group['title'],
+                            'type' => $group['type'],
+                            'blocks' => $localBlocks
+                        );
+                    }
+                }
+            }
+        }
+
+        return $localValues;
     }
 
     public static function renderFile($file, $vars = array()) {

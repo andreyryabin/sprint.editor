@@ -5,20 +5,19 @@ if ($updater && $updater instanceof \CUpdater) {
 
     //тут нельзя использовать классы модуля, так как их может не быть в обновлении
 
-    if (!function_exists('sprint_remove_directory')) {
-        function sprint_remove_directory($dir) {
-            if ($objs = glob($dir . "/*")) {
-                foreach ($objs as $obj) {
-                    is_dir($obj) ? sprint_remove_directory($obj) : unlink($obj);
-                }
+    if (!function_exists('sprint_editor_rmdir')) {
+        function sprint_editor_rmdir($dir) {
+            $files = array_diff(scandir($dir), array('.', '..'));
+            foreach ($files as $file) {
+                (is_dir("$dir/$file")) ? sprint_editor_rmdir("$dir/$file") : unlink("$dir/$file");
             }
-            rmdir($dir);
+            return rmdir($dir);
         }
     }
 
 
     //example
-    //sprint_remove_directory($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/freemium/');
+    //sprint_editor_rmdir($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/freemium/');
 
     if (is_dir(__DIR__ . '/install/components/')) {
         $updater->CopyFiles("install/components/", "components/");
@@ -28,6 +27,6 @@ if ($updater && $updater instanceof \CUpdater) {
         $updater->CopyFiles("install/admin/", "admin/");
     }
 
-    //2.3.6
+    //2.3.7
 
 }

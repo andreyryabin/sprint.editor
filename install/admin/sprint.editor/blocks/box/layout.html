@@ -7,11 +7,8 @@
         </div>
 
         <div class="sp-x-buttons-group">
-            {{?it.enableChange && it.showCopyButtons}}
-            <span title="Вставить блоки в выбранную колонку" class="sp-x-btn sp-x-lt-col-paste">&crarr;</span>
-            {{?}}
-
             {{?it.enableChange}}
+            <span title="Вставить блоки в выбранную колонку" class="sp-x-btn sp-x-lt-col-paste">&crarr;</span>
             <span title="" class="sp-x-btn sp-x-pp-lt-open">...</span>
             {{?}}
         </div>
@@ -20,38 +17,28 @@
             <div class="sp-x-pp-group">
                 {{?it.enableChange}}
                 <span title="Изменить название выбранной колонки" class="sp-x-btn sp-x-lt-col-edit">изм</span>
-                {{?}}
-
-                {{?it.enableChange && it.showCopyButtons}}
                 <span title="Копировать блоки в выбранной колонке" class="sp-x-btn sp-x-lt-col-copy">&equiv;</span>
-                {{?}}
 
-                {{?it.enableChange}}
+                {{?it.enableChangeColumns}}
                 <span title="Добавить колонку" class="sp-x-btn sp-x-lt-col-add">+</span>
                 {{?}}
 
-                {{?it.enableChange && it.showSortButtons}}
                 <span title="Передвинуть колонку влево" class="sp-x-btn sp-x-lt-col-left">&larr;</span>
                 <span title="Передвинуть колонку вправо" class="sp-x-btn sp-x-lt-col-right">&rarr;</span>
-                {{?}}
 
-                {{?it.enableChange}}
+                {{?it.enableChangeColumns}}
                 <span title="Удалить выбранную колонку" class="sp-x-btn sp-x-lt-col-del">х</span>
                 {{?}}
 
+                {{?}}
             </div>
 
             <div class="sp-x-pp-group">
-
-                {{?it.enableChange && it.showSortButtons}}
+                {{?it.enableChange}}
                 <span title="Поднять сетку вверх" class="sp-x-btn sp-x-lt-up">&uarr;</span>
                 <span title="Опустить сетку вниз" class="sp-x-btn sp-x-lt-dn">&darr;</span>
-                {{?}}
-
-                {{?it.enableChange}}
                 <span title="Удалить сетку" class="sp-x-btn sp-x-lt-del">X</span>
                 {{?}}
-
             </div>
 
         </div>
@@ -65,7 +52,7 @@
 
     <div class="sp-x-buttons sp-x-buttons-lt2">
         {{?it.enableChange}}
-        <span class="sp-x-btn sp-x-btn-green sp-x-pp-blocks-open">Выбрать блок</span>
+        <span class="sp-x-btn sp-x-btn-green sp-x-pp-blocks-open">Добавить блок</span>
         <span class="sp-x-btn sp-x-lastblock">Добавить</span>
         {{?}}
     </div>
