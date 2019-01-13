@@ -9,7 +9,6 @@
     "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
   ],
   "templates": [
-    "images.html",
-    "edit.html"
+    "images.html"
   ]
 }

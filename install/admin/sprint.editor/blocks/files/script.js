@@ -41,28 +41,11 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
         var $label = $btn.find('strong');
         var labeltext = $label.text();
 
-        $el.find('.sp-item-desc').trumbowyg({
-            svgPath: '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',
-            lang: 'ru',
-            resetCss: true,
-            removeformatPasted: true,
-            autogrow: true,
-            btns: [
-                ['viewHTML'],
-                ['strong', 'em', 'underline', 'del'],
-                ['link'],
-                ['removeformat']
-            ],
-            plugins: []
-        });
-
-
-        $el.find('.sp-item-desc').trumbowyg().on('tbwchange', function () {
+        $el.find('.sp-item-desc').bindWithDelay('input', function () {
             if (globalUid && itemsCollection[globalUid]) {
-                itemsCollection[globalUid].desc = $(this).trumbowyg('html');
+                itemsCollection[globalUid].desc = $(this).val();
             }
-        });
-
+        }, 500);
 
         $btninput.fileupload({
             url: sprint_editor.getBlockWebPath('files') + '/upload.php',
@@ -102,17 +85,14 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
         });
 
         $el.on('click', '.sp-item-del', function () {
-            var $item = $el.find('.sp-active');
-            $item.remove();
+            $el.find('.sp-active').remove();
             closeedit();
         });
 
         $el.on('click', '.sp-item', function () {
             $el.find('.sp-item').removeClass('sp-active');
             $(this).addClass('sp-active');
-            openedit(
-                $(this).data('uid')
-            );
+            openedit($(this).data('uid'));
         });
 
         $el.find('.sp-download-url').bindWithDelay('input', function () {
@@ -199,13 +179,13 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
     var closeedit = function () {
         globalUid = false;
         $el.find('.sp-edit').hide(250);
-        $el.find('.sp-item-desc').trumbowyg('html', '');
+        $el.find('.sp-item-desc').val('');
     };
 
     var openedit = function (uid) {
         if (itemsCollection[uid]) {
             globalUid = uid;
-            $el.find('.sp-item-desc').trumbowyg('html', itemsCollection[uid].desc);
+            $el.find('.sp-item-desc').val(itemsCollection[uid].desc);
             $el.find('.sp-edit').show(250);
         }
     };

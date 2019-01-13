@@ -16,20 +16,7 @@
 }
 
 .sp-block-files .sp-item-desc {
-    min-height: 70px;
-}
-
-.sp-block-files .trumbowyg-textarea {
-    min-height: 70px;
-}
-
-.sp-block-files .trumbowyg-editor {
-    min-height: 70px;
-    padding: 5px;
-}
-
-.sp-block-files .trumbowyg-box {
-    min-height: 70px;
+    width: 80%;
 }
 
 .sp-block-files .sp-edit {

@@ -24,9 +24,9 @@
     width: 80%;
 }
 
-
 .sp-block-gallery .sp-edit{
     background: #ddd;
+    display: none;
 }
 
 .sp-block-gallery .sp-active{
