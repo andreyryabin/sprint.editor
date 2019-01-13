@@ -63,11 +63,8 @@ class UploadHandler
             'mkdir_mode' => BX_DIR_PERMISSIONS,
             'max_number_of_files' => 100,
 
-            'bitrix_resize' => array(
-                'width' => 100,
-                'height' => 100,
-                'exact' => 1
-            ),
+            'name_prefix' => 'img-',
+            'save_origin_name' => false,
 
             // Set the following option to 'POST', if your server does not support
 
@@ -308,13 +305,17 @@ class UploadHandler
     }
 
     protected function get_file_name($name, $content_range) {
-        $name = $this->bitrixTranslite($name);
+        $ts = microtime(true);
+        $ts = str_replace('.', '-', $ts);
+        $prefix = $this->options['name_prefix'] . $ts . '-' . mt_rand(99, 999);
 
-        if (!$name) {
-            $name = str_replace('.', '-', microtime(true));
+        if (!empty($name)) {
+            if (!$this->options['save_origin_name']) {
+                $name = $prefix . '-' . $this->bitrixTranslite($name);
+            }
+        } else {
+            $name = $prefix;
         }
-
-        $name = 'img-' . time() . '-' . mt_rand(99, 999) . '-' . $name;
 
         // Keep an existing filename if this is part of a chunked upload:
         $uploaded_bytes = $this->fix_integer_overflow((int)$content_range[1]);
@@ -592,16 +593,30 @@ class UploadHandler
 
     protected function bitrixSave($files) {
         $res = array();
+
         foreach ($files as $k => $file) {
             $aFile = \CFile::MakeFileArray($file->path);
             $aFile['MODULE_ID'] = 'sprint.editor';
-            $checkErr = \CFile::CheckImageFile($aFile, 0, 0, 0);
-            if (empty($checkErr)) {
-                $bitrixId = \CFile::SaveFile($aFile, 'sprint.editor');
-                if ($bitrixId) {
-                    $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+
+            if (!empty($this->options['bitrix_resize'])) {
+                $checkErr = \CFile::CheckImageFile($aFile, 0, 0, 0);
+                if (empty($checkErr)) {
+                    $bitrixId = \CFile::SaveFile($aFile, 'sprint.editor');
+                    if ($bitrixId) {
+                        $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+                    }
+                }
+            } else {
+                $checkErr = \CFile::CheckFile($aFile, 0, 0, 0);
+
+                if (empty($checkErr)) {
+                    $bitrixId = \CFile::SaveFile($aFile, 'sprint.editor');
+                    if ($bitrixId) {
+                        $res[] = \CFile::GetFileArray($bitrixId);
+                    }
                 }
             }
+
 
             unlink($file->path);
         }
@@ -609,33 +624,53 @@ class UploadHandler
     }
 
 
-    public function saveResource($url){
-        $imgurl = Youtube::getPreviewImg($url);
-        if ($imgurl){
-            return $this->generate_response(array(
-                'image' => $this->downloadImage($imgurl),
-                'video' => $url
-            ), true);
+    public function saveResource($url) {
+        if (!empty($this->options['bitrix_resize'])) {
+            $imgurl = Youtube::getPreviewImg($url);
+            if ($imgurl) {
+                return $this->generate_response(array(
+                    'image' => $this->downloadFile($imgurl),
+                    'video' => $url
+                ), true);
 
+            } else {
+                return $this->generate_response(array(
+                    'image' => $this->downloadFile($url),
+                ), true);
+            }
         } else {
             return $this->generate_response(array(
-                'image' => $this->downloadImage($url),
+                'file' => $this->downloadFile($url),
             ), true);
         }
     }
 
-    protected function downloadImage($url){
+    protected function downloadImage($url) {
         $aFile = \CFile::MakeFileArray($url);
         $checkErr = \CFile::CheckImageFile($aFile, 0, 0, 0);
-        $image = false;
+        $file = false;
         if (empty($checkErr)) {
             $bitrixId = \CFile::SaveFile($aFile, 'sprint.editor');
             if ($bitrixId) {
-                $image = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+                $file = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+            }
+        }
+        return $file;
+    }
+
+    protected function downloadFile($url) {
+        $aFile = \CFile::MakeFileArray($url);
+
+        $checkErr = \CFile::CheckFile($aFile, 0, 0, 0);
+        $file = false;
+        if (empty($checkErr)) {
+            $bitrixId = \CFile::SaveFile($aFile, 'sprint.editor');
+            if ($bitrixId) {
+                $file = \CFile::GetFileArray($bitrixId);
             }
         }
 
-        return $image;
+        return $file;
     }
 
 }
