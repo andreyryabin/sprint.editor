@@ -114,7 +114,7 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
                 },
                 dataType: 'json',
                 success: function (result) {
-                    if (result.image) {
+                    if (result.file) {
                         var uid = sprint_editor.makeUid();
 
                         itemsCollection[uid] = {
