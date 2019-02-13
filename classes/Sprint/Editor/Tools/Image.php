@@ -116,14 +116,14 @@ class Image
     }
 
     static protected function urlencodePath($path) {
-        $parts = explode(DIRECTORY_SEPARATOR, $path);
-        $len = count($parts);
-
-        if ($len > 0) {
-            $parts[$len - 1] = rawurlencode($parts[$len - 1]);
-            $path = implode(DIRECTORY_SEPARATOR, $parts);
+        $url = parse_url($path);
+        $path = str_replace("\\", "/", $url["path"]);
+        $parts = explode("/", $path);
+        $partsEncoded = array();
+        foreach ($parts as $part) {
+            array_push($partsEncoded, rawurlencode(urldecode($part)));
         }
+        $path = implode("/", $partsEncoded);
         return $path;
-
     }
 }
