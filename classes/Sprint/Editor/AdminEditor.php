@@ -187,7 +187,15 @@ class AdminEditor
         return $value;
     }
 
-    public static function getSearchIndex($jsonValue) {
+    /**
+     * Возвращает представление значения свойства для модуля поиска.
+     *
+     * @param string $jsonValue JSON-строка со значением свойства "Редактор блоков (sprint.editor)".
+     *
+     * @return string
+     */
+    public static function getSearchIndex($jsonValue)
+    {
         $value = self::prepareValue($jsonValue);
         $search = '';
         foreach ($value['blocks'] as $key => $val) {
@@ -198,6 +206,14 @@ class AdminEditor
                 $search .= ' ' . $val['value'];
             }
         }
+
+        foreach (GetModuleEvents('sprint.editor', 'OnGetSearchIndex', true) as $event) {
+            $modifiedSearch = ExecuteModuleEventEx($event, array($value, $search));
+            if (is_string($modifiedSearch)) {
+                $search = $modifiedSearch;
+            }
+        }
+
         return $search;
     }
 
