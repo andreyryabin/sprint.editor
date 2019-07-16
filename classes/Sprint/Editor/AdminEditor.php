@@ -57,7 +57,14 @@ class AdminEditor
             $enableChange = 1;
         }
 
-        $userSettings = [];
+        $userSettings = [
+            'block_disabled' => [
+                'layout_1',
+                'layout_2',
+                'layout_3',
+                'layout_4',
+            ],
+        ];
 
         if (!empty($params['userSettings']['SETTINGS_NAME'])) {
             self::registerSettingsAssets($params['userSettings']['SETTINGS_NAME']);
@@ -67,7 +74,7 @@ class AdminEditor
         $filteredSelect = self::filterSelect($userSettings);
 
         if (empty($filteredSelect['layouts'])) {
-            $file = '/templates/admin_editor_light.php';
+            $file = '/templates/admin_editor_simple.php';
         } else {
             $file = '/templates/admin_editor.php';
         }
@@ -96,7 +103,6 @@ class AdminEditor
 
         $settings = array_merge([
             'title' => $settingsName,
-            'enable_blocks' => [],
             'layout_classes' => [],
             'block_settings' => [],
         ], $settings);
@@ -269,7 +275,7 @@ class AdminEditor
         }
 
         $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor.js');
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_light.js');
+        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_simple.js');
         $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_full.js');
 
         foreach (self::$js as $val) {

@@ -1,4 +1,4 @@
-function sprint_editor_light($, params) {
+function sprint_editor_simple($, params) {
     var $editor = $('.sp-x-editor' + params.uniqid);
     var $inputresult = $('.sp-x-result' + params.uniqid);
     var $form = $editor.closest('form').first();

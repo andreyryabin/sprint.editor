@@ -6,73 +6,80 @@ namespace Sprint\Editor;
 class UserTypeEditor
 {
 
-    function GetUserTypeDescription() {
-        return array(
+    function GetUserTypeDescription()
+    {
+        return [
             "USER_TYPE_ID" => "sprint_editor",
             "CLASS_NAME" => "Sprint\\Editor\\UserTypeEditor",
             "DESCRIPTION" => GetMessage("SPRINT_EDITOR_TITLE"),
             "BASE_TYPE" => "string",
-        );
+        ];
     }
 
 
-    public function GetAdminListViewHTML($arUserField, $arHtmlControl) {
+    public function GetAdminListViewHTML($arUserField, $arHtmlControl)
+    {
         return 'text';
     }
 
-    public function GetEditFormHTML($arUserField, $arHtmlControl) {
-        return AdminEditor::init(array(
+    public function GetEditFormHTML($arUserField, $arHtmlControl)
+    {
+        return AdminEditor::init([
             'uniqId' => $arUserField['ID'],
             'value' => $arUserField['VALUE'],
             'inputName' => $arHtmlControl['NAME'],
             'userSettings' => $arUserField['SETTINGS'],
-            'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE']
-        ));
+            'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE'],
+        ]);
     }
 
-    public function OnSearchIndex($arUserField) {
+    public function OnSearchIndex($arUserField)
+    {
         return AdminEditor::getSearchIndex($arUserField["VALUE"]);
     }
 
-    public function PrepareSettings($arUserField) {
+    public function PrepareSettings($arUserField)
+    {
         $settings = $arUserField['SETTINGS'];
-        $newsettings = array();
+        $newsettings = [];
 
-        foreach (array('DEFAULT_VALUE','DISABLE_CHANGE','SETTINGS_NAME') as $val){
+        foreach (['DEFAULT_VALUE', 'DISABLE_CHANGE', 'SETTINGS_NAME'] as $val) {
             $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
         }
 
         return $newsettings;
     }
 
-    public function GetSettingsHTML($arUserField, $arHtmlControl, $bVarsFromForm){
+    public function GetSettingsHTML($arUserField, $arHtmlControl, $bVarsFromForm)
+    {
         $settings = self::PrepareSettings($arUserField);
         $userfiles = AdminEditor::getUserSettingsFiles();
 
-        $defaultEditor = AdminEditor::init(array(
+        $defaultEditor = AdminEditor::init([
             'uniqId' => $arUserField['ID'],
             'value' => $arUserField['VALUE'],
             'inputName' => $arHtmlControl['NAME'] . '[DEFAULT_VALUE]',
-            'userSettings' => array(
+            'userSettings' => [
                 'DISABLE_CHANGE' => '',
-                'SETTINGS_NAME' => ''
-            ),
-            'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE']
-        ));
+                'SETTINGS_NAME' => '',
+            ],
+            'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE'],
+        ]);
 
-        return AdminEditor::renderFile(Module::getModuleDir() . '/templates/user_type.php', array(
+        return AdminEditor::renderFile(Module::getModuleDir() . '/templates/user_type.php', [
             'inputName' => $arHtmlControl['NAME'],
             'settings' => $settings,
             'userfiles' => $userfiles,
             'defaultEditor' => $defaultEditor,
-        ));
+        ]);
     }
 
-    public function GetDBColumnType($arUserField) {
+    public function GetDBColumnType($arUserField)
+    {
         global $DB;
         switch (strtolower($DB->type)) {
             case "mysql":
-                return "mediumtext";
+                return "longtext";
             case "mssql":
                 return "varchar(max)";
         }

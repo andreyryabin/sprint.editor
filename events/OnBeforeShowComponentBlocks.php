@@ -10,16 +10,16 @@ AddEventHandler('sprint.editor', 'OnBeforeShowComponentBlocks', function (&$bloc
             sort($block['selectors']);
             $levels = array_flip($block['selectors']);
 
-            $block['elements'] = array();
+            $block['elements'] = [];
             foreach ($blocks as $htagblock) {
                 if ($htagblock['name'] == 'htag') {
                     $type = $htagblock['type'];
                     if (isset($levels[$type])) {
-                        $block['elements'][] = array(
+                        $block['elements'][] = [
                             'text' => $htagblock['value'],
                             'anchor' => $htagblock['anchor'],
                             'level' => $levels[$type] + 1,
-                        );
+                        ];
                     }
                 }
             }

@@ -10,41 +10,41 @@ AddEventHandler('sprint.editor', 'OnBeforeShowEditorBlocks', function (&$blocks)
         if ($block['name'] == 'gallery') {
             foreach ($block['images'] as $key => $aItem) {
                 if (!empty($aItem['file']['ID'])) {
-                    $aItem['file'] = Sprint\Editor\Tools\Image::resizeImage2($aItem['file']['ID'], array(
+                    $aItem['file'] = Sprint\Editor\Tools\Image::resizeImage2($aItem['file']['ID'], [
                         'width' => 98,
                         'height' => 55,
-                        'exact' => 1
-                    ));
+                        'exact' => 1,
+                    ]);
                     $block['images'][$key] = $aItem;
                 }
             }
         } elseif ($block['name'] == 'video_gallery') {
             foreach ($block['items'] as $key => $aItem) {
                 if (!empty($aItem['file']['ID'])) {
-                    $aItem['file'] = Sprint\Editor\Tools\Image::resizeImage2($aItem['file']['ID'], array(
+                    $aItem['file'] = Sprint\Editor\Tools\Image::resizeImage2($aItem['file']['ID'], [
                         'width' => 98,
                         'height' => 55,
-                        'exact' => 1
-                    ));
+                        'exact' => 1,
+                    ]);
                     $block['items'][$key] = $aItem;
                 }
             }
         } elseif ($block['name'] == 'video') {
             if (!empty($block['preview']['file']['ID'])) {
                 $block['preview']['file'] = Sprint\Editor\Tools\Image::resizeImage2($block['preview']['file']['ID'],
-                    array(
+                    [
                         'width' => 200,
                         'height' => 200,
-                        'exact' => 1
-                    ));
+                        'exact' => 1,
+                    ]);
             }
         } elseif ($block['name'] == 'image') {
             if (!empty($block['file']['ID'])) {
-                $block['file'] = Sprint\Editor\Tools\Image::resizeImage2($block['file']['ID'], array(
+                $block['file'] = Sprint\Editor\Tools\Image::resizeImage2($block['file']['ID'], [
                     'width' => 200,
                     'height' => 200,
-                    'exact' => 1
-                ));
+                    'exact' => 1,
+                ]);
             }
         }
     }

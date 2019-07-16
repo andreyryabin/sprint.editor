@@ -96,7 +96,7 @@
     margin: 10px 0 0;
 }
 
-.sp-x-editor-light .sp-x-box{
+.sp-x-editor-simple .sp-x-box{
     margin: 0 0 10px;
 }
 
@@ -385,8 +385,8 @@
     margin: 0 auto;
 }
 
-.bx-core-adm-dialog .sp-x-editor-light div.sp-x-pp-blocks,
-.sp-x-editor-light .sp-x-pp-blocks{
+.bx-core-adm-dialog .sp-x-editor-simple div.sp-x-pp-blocks,
+.sp-x-editor-simple .sp-x-pp-blocks{
     left: 0;
     right: 0;
     margin: 0;

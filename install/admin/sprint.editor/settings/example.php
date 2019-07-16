@@ -54,7 +54,7 @@ $settings = array(
                 'type' => 'select',
                 'value' => array(
                     'style1' => 'Цитата',
-                    'style2' => 'Сноска',
+                    //'style2' => 'Сноска',
                 )
             ),
 
@@ -67,18 +67,6 @@ $settings = array(
                 )
             ),
         ),
-
-        'image' => array(
-            'param1' => array(
-                'type' => 'select',
-                'value' => array(
-                    'style1' => 'Стиль 1',
-                    'style2' => 'Стиль 2',
-                    'style3' => 'Стиль 3',
-                )
-            ),
-        ),
-
     ),
 
     //Отключить указанные блоки (если используется, то block_enabled уже не обрабатывается)

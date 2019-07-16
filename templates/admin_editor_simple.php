@@ -18,8 +18,8 @@
  * @var $templates
  */
 ?>
-<div class="sp-x-editor<?= $uniqId ?> sp-x-editor-light">
-    <div class="sp-x-editor-lt sp-x-editor-light">
+<div class="sp-x-editor<?= $uniqId ?> sp-x-editor-simple">
+    <div class="sp-x-editor-lt">
         <div class="sp-x-lt">
             <div class="sp-x-lt-row">
                 <div class="sp-x-lt-col sp-active"></div>
@@ -79,7 +79,7 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
-        sprint_editor_light($, {
+        sprint_editor_simple($, {
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
             jsonUserSettings:<?=$jsonUserSettings?>,

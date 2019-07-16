@@ -25,7 +25,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_SETTINGS_DISABLE_CHANGE" => "Отключить добавление блоков",
     "SPRINT_EDITOR_SETTINGS_SETTINGS_NAME" => "Пользовательские настройки блоков",
     "SPRINT_EDITOR_SETTINGS_DEFAULT_VALUE" => "Значение по умолчанию",
-    "SPRINT_EDITOR_SETTINGS_NAME_NO" => "нет",
+    "SPRINT_EDITOR_SETTINGS_NAME_NO" => "Простой редактор",
     "SPRINT_EDITOR_group_layout" => "Добавить сетку",
     "SPRINT_EDITOR_group_packs" => "Добавить макет",
     "SPRINT_EDITOR_group_blocks" => "Добавить блоки",
