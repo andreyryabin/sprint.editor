@@ -1288,6 +1288,7 @@ var sprint_editor = {
                 };
 
                 resultString = JSON.stringify(post);
+
                 resultString = resultString.replace(/\\n/g, "\\n")
                     .replace(/\\'/g, "\\'")
                     .replace(/\\"/g, '\\"')
@@ -1295,7 +1296,8 @@ var sprint_editor = {
                     .replace(/\\r/g, "\\r")
                     .replace(/\\t/g, "\\t")
                     .replace(/\\b/g, "\\b")
-                    .replace(/\\f/g, "\\f");
+                    .replace(/\\f/g, "\\f")
+                    .replace(/([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
             }
 
             return resultString;
