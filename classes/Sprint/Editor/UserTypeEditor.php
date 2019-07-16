@@ -61,7 +61,7 @@ class UserTypeEditor
             'inputName' => $arHtmlControl['NAME'] . '[DEFAULT_VALUE]',
             'userSettings' => [
                 'DISABLE_CHANGE' => '',
-                'SETTINGS_NAME' => '',
+                'SETTINGS_NAME' => $settings['SETTINGS_NAME'],
             ],
             'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE'],
         ]);

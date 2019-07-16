@@ -33,7 +33,7 @@ class IblockPropertyEditor
 
         if (self::isSettingsPage()) {
             $settings['DISABLE_CHANGE'] = '';
-            $settings['SETTINGS_NAME'] = '';
+            //$settings['SETTINGS_NAME'] = '';
         }
 
         return AdminEditor::init([

@@ -24,12 +24,12 @@
             <div class="sp-x-lt-row">
                 <div class="sp-x-lt-col sp-active"></div>
             </div>
+            <?if ($enableChange):?>
             <div class="sp-x-buttons sp-x-buttons-ed">
-                <?if ($enableChange):?>
                 <span class="sp-x-btn sp-x-btn-green sp-x-pp-blocks-open"><?= GetMessage('SPRINT_EDITOR_add_block') ?></span>
                 <span class="sp-x-btn sp-x-lastblock"><?= GetMessage('SPRINT_EDITOR_add') ?></span>
-                <?endif;?>
             </div>
+            <?endif;?>
         </div>
     </div>
 </div>
