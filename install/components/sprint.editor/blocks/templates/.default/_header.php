@@ -14,5 +14,9 @@ if ($this->arParams['USE_FANCYBOX'] == 'Y') {
     $this->registerJs('/bitrix/admin/sprint.editor/assets/fancybox3/jquery.fancybox.min.js');
 }
 
+if ($this->arParams['USE_GRID'] == 'Y') {
+    $this->registerCss($this->findResource('_grid.css'));
+}
+
 $this->registerCss($this->findResource('_style.css'));
 $this->registerJs($this->findResource('_script.js'));

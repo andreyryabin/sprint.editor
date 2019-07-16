@@ -14,6 +14,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
     {
         $arParams['USE_JQUERY'] = (!empty($arParams['USE_JQUERY']) && $arParams['USE_JQUERY'] == 'Y') ? 'Y' : 'N';
         $arParams['USE_FANCYBOX'] = (!empty($arParams['USE_FANCYBOX']) && $arParams['USE_FANCYBOX'] == 'Y') ? 'Y' : 'N';
+        $arParams['USE_GRID'] = (!empty($arParams['USE_GRID']) && $arParams['USE_GRID'] == 'Y') ? 'Y' : 'N';
         $arParams['SHOW_AREAS'] = (!empty($arParams['SHOW_AREAS']) && $arParams['SHOW_AREAS'] == 'Y') ? 'Y' : 'N';
         return $arParams;
     }
