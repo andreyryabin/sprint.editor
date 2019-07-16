@@ -18,34 +18,20 @@
  * @var $templates
  */
 ?>
-<div class="sp-x-editor<?= $uniqId ?>">
-    <div class="sp-x-editor-lt"></div>
-
-    <? if ($enableChange): ?>
-        <div class="sp-x-buttons sp-x-buttons-ed">
-
-            <span class="sp-x-btn sp-x-btn-green sp-x-pp-main-open"><?= GetMessage('SPRINT_EDITOR_BTN_ACTIONS') ?></span>
-            <div class="sp-x-pp-main">
-
-                <div class="sp-x-pp-group">
-                    <span class="sp-x-btn" data-name="save_pack" title="<?= GetMessage('SPRINT_EDITOR_pack_save_title') ?>">
-                        <?= GetMessage('SPRINT_EDITOR_pack_save') ?>
-                    </span>
-                </div>
-
-                <div class="sp-x-packs-loader"></div>
-
-                <? if (!empty($selectValues['layouts'])): $aGroup = $selectValues['layouts'] ?>
-                    <div class="sp-x-pp-group">
-                        <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
-                        <? foreach ($aGroup['blocks'] as $aBlock): ?>
-                            <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
-                        <? endforeach; ?>
-                    </div>
-                <? endif; ?>
+<div class="sp-x-editor<?= $uniqId ?> sp-x-editor-light">
+    <div class="sp-x-editor-lt sp-x-editor-light">
+        <div class="sp-x-lt">
+            <div class="sp-x-lt-row">
+                <div class="sp-x-lt-col sp-active"></div>
+            </div>
+            <div class="sp-x-buttons sp-x-buttons-ed">
+                <?if ($enableChange):?>
+                <span class="sp-x-btn sp-x-btn-green sp-x-pp-blocks-open"><?= GetMessage('SPRINT_EDITOR_add_block') ?></span>
+                <span class="sp-x-btn sp-x-lastblock"><?= GetMessage('SPRINT_EDITOR_add') ?></span>
+                <?endif;?>
             </div>
         </div>
-    <? endif; ?>
+    </div>
 </div>
 
 <script type="text/html" id="sp-x-template-pp-blocks<?= $uniqId ?>">
@@ -93,7 +79,7 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
-        sprint_editor_full($, {
+        sprint_editor_light($, {
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
             jsonUserSettings:<?=$jsonUserSettings?>,

@@ -8,15 +8,16 @@ class AdminEditor
 
     protected static $initCounts = 0;
 
-    protected static $css = array();
-    protected static $js = array();
+    protected static $css = [];
+    protected static $js = [];
 
-    protected static $parameters = array();
-    protected static $templates = array();
+    protected static $parameters = [];
+    protected static $templates = [];
 
-    protected static $selectValues = array();
+    protected static $selectValues = [];
 
-    public static function init($params) {
+    public static function init($params)
+    {
         self::$initCounts++;
 
         if (self::$initCounts == 1) {
@@ -33,13 +34,13 @@ class AdminEditor
 
         }
 
-        $params = array_merge(array(
+        $params = array_merge([
             'uniqId' => '',
             'value' => '',
             'inputName' => '',
             'defaultValue' => '',
-            'userSettings' => ''
-        ), $params);
+            'userSettings' => '',
+        ], $params);
 
         $value = self::prepareValue($params['value']);
         if (empty($value['blocks']) && empty($value['layouts'])) {
@@ -48,7 +49,7 @@ class AdminEditor
 
         $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
         foreach ($events as $aEvent) {
-            ExecuteModuleEventEx($aEvent, array(&$value['blocks']));
+            ExecuteModuleEventEx($aEvent, [&$value['blocks']]);
         }
 
         $enableChange = 0;
@@ -56,16 +57,24 @@ class AdminEditor
             $enableChange = 1;
         }
 
-        $userSettings = array();
+        $userSettings = [];
 
         if (!empty($params['userSettings']['SETTINGS_NAME'])) {
             self::registerSettingsAssets($params['userSettings']['SETTINGS_NAME']);
             $userSettings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
         }
 
-        return self::renderFile(Module::getModuleDir() . '/templates/admin_editor.php', array(
+        $filteredSelect = self::filterSelect($userSettings);
+
+        if (empty($filteredSelect['layouts'])) {
+            $file = '/templates/admin_editor_light.php';
+        } else {
+            $file = '/templates/admin_editor.php';
+        }
+
+        return self::renderFile(Module::getModuleDir() . $file, [
             'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
-            'selectValues' => self::filterSelect($userSettings),
+            'selectValues' => $filteredSelect,
             'templates' => Locale::convertToWin1251IfNeed(self::$templates),
             'jsonParameters' => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
             'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
@@ -73,28 +82,30 @@ class AdminEditor
             'inputName' => $params['inputName'],
             'uniqId' => $params['uniqId'],
             'firstRun' => (self::$initCounts == 1) ? 1 : 0,
-        ));
+        ]);
     }
 
-    protected static function loadSettings($settingsName) {
+    protected static function loadSettings($settingsName)
+    {
         $settingsFile = Module::getSettingsDir() . $settingsName . '.php';
 
-        $settings = array();
+        $settings = [];
         if ($settingsName && is_file($settingsFile)) {
             include $settingsFile;
         }
 
-        $settings = array_merge(array(
+        $settings = array_merge([
             'title' => $settingsName,
-            'enable_blocks' => array(),
-            'layout_classes' => array(),
-            'block_settings' => array(),
-        ), $settings);
+            'enable_blocks' => [],
+            'layout_classes' => [],
+            'block_settings' => [],
+        ], $settings);
 
         return $settings;
     }
 
-    public static function registerSettingsAssets($settingsName) {
+    public static function registerSettingsAssets($settingsName)
+    {
         global $APPLICATION;
         $cssFile = Module::getSettingsDir() . $settingsName . '.css';
         if (is_file($cssFile)) {
@@ -103,8 +114,9 @@ class AdminEditor
         }
     }
 
-    public static function getUserSettingsFiles() {
-        $result = array('' => GetMessage('SPRINT_EDITOR_SETTINGS_NAME_NO'));
+    public static function getUserSettingsFiles()
+    {
+        $result = ['' => GetMessage('SPRINT_EDITOR_SETTINGS_NAME_NO')];
 
         $dir = Module::getSettingsDir();
 
@@ -119,16 +131,18 @@ class AdminEditor
         return $result;
     }
 
-    public static function prepareValue($value) {
+    public static function prepareValue($value)
+    {
         $value = str_replace("\xe2\x80\xa8", '\\u2028', $value);
         $value = str_replace("\xe2\x80\xa9", '\\u2029', $value);
 
         $value = json_decode(Locale::convertToUtf8IfNeed($value), true);
-        $value = (json_last_error() == JSON_ERROR_NONE && is_array($value)) ? $value : array();
+        $value = (json_last_error() == JSON_ERROR_NONE && is_array($value)) ? $value : [];
         return self::prepareValueArray($value);
     }
 
-    public static function prepareValueArray($value) {
+    public static function prepareValueArray($value)
+    {
 
         /* convert to version 1 */
         if (!empty($value) && !isset($value['layouts'])) {
@@ -137,51 +151,51 @@ class AdminEditor
                 $value[$index] = $block;
             }
 
-            $value = array(
+            $value = [
                 'blocks' => $value,
-                'layouts' => array(
-                    array(''),
-                )
-            );
+                'layouts' => [
+                    [''],
+                ],
+            ];
         }
 
         /* convert to version 2 */
         if (!empty($value) && !isset($value['version'])) {
 
-            $newlayots = array();
+            $newlayots = [];
 
             foreach ($value['layouts'] as $index => $layout) {
 
-                $newcolumns = array();
+                $newcolumns = [];
                 foreach ($layout as $column) {
-                    $newcolumns[] = array(
-                        'css' => $column
-                    );
+                    $newcolumns[] = [
+                        'css' => $column,
+                    ];
                 }
 
-                $newlayots[] = array(
-                    'columns' => $newcolumns
-                );
+                $newlayots[] = [
+                    'columns' => $newcolumns,
+                ];
 
             }
 
 
-            $value = array(
+            $value = [
                 'packname' => '',
                 'version' => 2,
                 'blocks' => $value['blocks'],
-                'layouts' => $newlayots
-            );
+                'layouts' => $newlayots,
+            ];
 
         }
 
 
         if (!isset($value['blocks'])) {
-            $value['blocks'] = array();
+            $value['blocks'] = [];
         }
 
         if (!isset($value['layouts'])) {
-            $value['layouts'] = array();
+            $value['layouts'] = [];
         }
 
         return $value;
@@ -208,7 +222,7 @@ class AdminEditor
         }
 
         foreach (GetModuleEvents('sprint.editor', 'OnGetSearchIndex', true) as $event) {
-            $modifiedSearch = ExecuteModuleEventEx($event, array($value, $search));
+            $modifiedSearch = ExecuteModuleEventEx($event, [$value, $search]);
             if (is_string($modifiedSearch)) {
                 $search = $modifiedSearch;
             }
@@ -217,16 +231,17 @@ class AdminEditor
         return $search;
     }
 
-    protected static function registerAssets() {
+    protected static function registerAssets()
+    {
         global $APPLICATION;
 
         if (Module::getDbOption('load_jquery') == 'yes') {
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js');
         } else {
-            \CUtil::InitJSCore(Array("jquery"));
+            \CUtil::InitJSCore(["jquery"]);
         }
 
-        \CUtil::InitJSCore(array('translit'));
+        \CUtil::InitJSCore(['translit']);
 
         if (Module::getDbOption('load_jquery_ui') == 'yes') {
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-ui-1.12.1.custom/jquery-ui.min.js');
@@ -254,13 +269,16 @@ class AdminEditor
         }
 
         $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor.js');
+        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_light.js');
+        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_full.js');
 
         foreach (self::$js as $val) {
             $APPLICATION->AddHeadScript($val);
         }
     }
 
-    protected static function registerBlocks($groupname, $islocal = false, $checkname = true) {
+    protected static function registerBlocks($groupname, $islocal = false, $checkname = true)
+    {
         if ($islocal) {
             $webpath = '/local/admin/sprint.editor/' . $groupname . '/';
             $rootpath = Module::getDocRoot() . $webpath;
@@ -273,7 +291,7 @@ class AdminEditor
             return false;
         }
 
-        $selectBlocks = array();
+        $selectBlocks = [];
 
         $iterator = new \DirectoryIterator($rootpath);
         foreach ($iterator as $item) {
@@ -289,7 +307,7 @@ class AdminEditor
                 }
             }
 
-            $param = array();
+            $param = [];
             if (is_file($rootpath . $blockName . '/config.json')) {
                 $param = file_get_contents($rootpath . $blockName . '/config.json');
                 $param = json_decode($param, true);
@@ -352,32 +370,34 @@ class AdminEditor
 
         self::sortByNum($selectBlocks, 'sort');
 
-        self::$selectValues['blocks_' . $groupname] = array(
+        self::$selectValues['blocks_' . $groupname] = [
             'title' => GetMessage('SPRINT_EDITOR_group_' . $groupname),
             'type' => 'blocks_' . $groupname,
-            'blocks' => Locale::convertToWin1251IfNeed($selectBlocks)
-        );
+            'blocks' => Locale::convertToWin1251IfNeed($selectBlocks),
+        ];
 
     }
 
-    protected static function registerLayouts() {
-        $selectLayouts = array();
+    protected static function registerLayouts()
+    {
+        $selectLayouts = [];
         for ($num = 1; $num <= 4; $num++) {
-            $selectLayouts[] = array(
+            $selectLayouts[] = [
                 'title' => GetMessage('SPRINT_EDITOR_layout_type' . $num),
                 'name' => 'layout_' . $num,
-            );
+            ];
         }
 
-        self::$selectValues['layouts'] = array(
+        self::$selectValues['layouts'] = [
             'title' => GetMessage('SPRINT_EDITOR_group_layout'),
             'type' => 'layouts',
-            'blocks' => Locale::convertToWin1251IfNeed($selectLayouts)
-        );
+            'blocks' => Locale::convertToWin1251IfNeed($selectLayouts),
+        ];
     }
 
-    public static function registerPacks() {
-        $packs = array();
+    public static function registerPacks()
+    {
+        $packs = [];
 
         $dir = Module::getPacksDir();
 
@@ -396,10 +416,10 @@ class AdminEditor
 
                 $packname = !empty($content['packname']) ? $content['packname'] : $packuid;
 
-                $packs[] = array(
+                $packs[] = [
                     'name' => 'pack_' . $packuid,
                     'title' => $packname,
-                );
+                ];
 
             }
 
@@ -411,18 +431,19 @@ class AdminEditor
 
         self::sortByStr($packs, 'title');
 
-        $result = array(
+        $result = [
             'title' => GetMessage('SPRINT_EDITOR_group_packs'),
             'type' => 'packs',
-            'blocks' => Locale::convertToWin1251IfNeed($packs)
-        );
+            'blocks' => Locale::convertToWin1251IfNeed($packs),
+        ];
 
         self::$selectValues['packs'] = $result;
 
         return $result;
     }
 
-    protected static function filterSelect($userSettings) {
+    protected static function filterSelect($userSettings)
+    {
         $localValues = self::$selectValues;
 
         if (!empty($userSettings['block_disabled'])) {
@@ -435,12 +456,12 @@ class AdminEditor
                     }
                 }
                 if (!empty($localBlocks)) {
-                    $localValues[$groupType] = array(
+                    $localValues[$groupType] = [
                         'title' => $group['title'],
                         'type' => $group['type'],
-                        'blocks' => $localBlocks
+                        'blocks' => $localBlocks,
 
-                    );
+                    ];
                 }
             }
         } elseif (!empty($userSettings['block_enabled'])) {
@@ -453,12 +474,12 @@ class AdminEditor
                     }
                 }
                 if (!empty($localBlocks)) {
-                    $localValues[$groupType] = array(
+                    $localValues[$groupType] = [
                         'title' => $group['title'],
                         'type' => $group['type'],
-                        'blocks' => $localBlocks
+                        'blocks' => $localBlocks,
 
-                    );
+                    ];
                 }
             }
         }
@@ -473,11 +494,11 @@ class AdminEditor
                         }
                     }
                     if (!empty($localBlocks)) {
-                        $localValues[$groupType] = array(
+                        $localValues[$groupType] = [
                             'title' => $group['title'],
                             'type' => $group['type'],
-                            'blocks' => $localBlocks
-                        );
+                            'blocks' => $localBlocks,
+                        ];
                     }
                 }
             }
@@ -486,7 +507,8 @@ class AdminEditor
         return $localValues;
     }
 
-    public static function renderFile($file, $vars = array()) {
+    public static function renderFile($file, $vars = [])
+    {
         if (is_array($vars)) {
             extract($vars, EXTR_SKIP);
         }
@@ -499,7 +521,8 @@ class AdminEditor
         return $html;
     }
 
-    protected static function sortByNum(&$input = array(), $key = 'sort') {
+    protected static function sortByNum(&$input = [], $key = 'sort')
+    {
         usort($input, function ($a, $b) use ($key) {
             if ($a[$key] == $b[$key]) {
                 return 0;
@@ -508,7 +531,8 @@ class AdminEditor
         });
     }
 
-    protected static function sortByStr(&$input = array(), $key = 'title') {
+    protected static function sortByStr(&$input = [], $key = 'title')
+    {
         usort($input, function ($a, $b) use ($key) {
             return strcmp($a[$key], $b[$key]);
         });

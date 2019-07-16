@@ -96,6 +96,10 @@
     margin: 10px 0 0;
 }
 
+.sp-x-editor-light .sp-x-box{
+    margin: 0 0 10px;
+}
+
 .sp-x-lt-placeholder {
     border: 1px dotted black;
     height: 100px;
@@ -108,7 +112,7 @@
     margin: 10px 0 10px;
 }
 
-.sp-x-box-copied{
+.sp-x-box-copied {
     background: #FFEBC1;
     border: 2px solid #FDBF3B;
     padding: 5px 5px 10px;
@@ -129,6 +133,10 @@
     /*min-height: 84px;*/
     /*margin-bottom: 20px;*/
     display: none;
+}
+
+.sp-x-lt-col.sp-active {
+    display: block;
 }
 
 .sp-x-lt-dock {
@@ -168,6 +176,7 @@
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-box,
 .sp-x-buttons.sp-x-buttons-box {
     text-align: center;
+    margin-bottom: 5px;
 }
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-ed,
@@ -200,7 +209,7 @@
 }
 
 .sp-x-box-settings {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     text-align: left;
 }
 
@@ -218,7 +227,7 @@
     padding: 8px;
 
     /*border-radius: 4px;*/
-    margin: 4px 1px 10px;
+    margin: 2px 2px 0 0;
     background: #eee;
 
     /*margin-bottom: 8px;*/
@@ -374,6 +383,13 @@
     left: 0;
     right: 0;
     margin: 0 auto;
+}
+
+.bx-core-adm-dialog .sp-x-editor-light div.sp-x-pp-blocks,
+.sp-x-editor-light .sp-x-pp-blocks{
+    left: 0;
+    right: 0;
+    margin: 0;
 }
 
 

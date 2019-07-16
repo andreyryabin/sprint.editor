@@ -30,6 +30,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_group_packs" => "Добавить макет",
     "SPRINT_EDITOR_group_blocks" => "Добавить блоки",
     "SPRINT_EDITOR_add" => "Добавить",
+    "SPRINT_EDITOR_add_block" => "Добавить блок",
     "SPRINT_EDITOR_group_my" => "Пользовательские",
 
     "SPRINT_EDITOR_layout_type1" => "Сетка из 1 колонки",
