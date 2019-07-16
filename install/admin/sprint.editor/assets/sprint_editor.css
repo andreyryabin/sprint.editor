@@ -176,6 +176,7 @@
     padding: 10px;
     border: 1px solid;
     border-color: #c4ced2 #dce7ed #dce7ed;
+    border-radius: 4px;
 }
 
 .sp-x-buttons-group {
@@ -254,12 +255,14 @@
     -o-user-select: none;
 
     outline: none;
-    /*border-radius: 4px;*/
+    border-radius: 4px;
     /*color: #333;*/
 
     /*background: linear-gradient(#ececeb, #eaeaea);*/
 
     border: 1px solid #ccc;
+
+    /*background: #ffae00;*/
     /*color: #333;*/
     /*box-shadow:*/
     /*inset rgba(0,0,0,.5) 0 -1px 1px,*/
@@ -349,7 +352,7 @@
     z-index: 30;
     position: absolute;
     /*left: 0;*/
-    /*border-radius: 4px;*/
+    border-radius: 4px;
 
     box-shadow: inset rgba(0, 0, 0, .5) 0 -1px 1px,
     inset rgba(0, 0, 0, .2) 0 1px,
