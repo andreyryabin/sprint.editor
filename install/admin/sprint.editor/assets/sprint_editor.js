@@ -344,11 +344,6 @@ var sprint_editor = {
         var $inputresult = $('.sp-x-result' + params.uniqid);
         var $form = $editor.closest('form').first();
 
-        // $editor.on('click', function (e) {
-        //     console.log(e.target);
-        //     popupToggle($(e.target));
-        // });
-
         $editor.on('keypress', 'input', function (e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
@@ -677,12 +672,7 @@ var sprint_editor = {
                 $grid.find('.sp-x-lt-tabs').append(tab);
                 $grid.find('.sp-x-lt-row').append(html);
 
-                $grid.find('.sp-x-lt-col').last().sortable({
-                    items: ".sp-x-box",
-                    connectWith: ".sp-x-lt-col",
-                    handle: ".sp-x-box-handle",
-                    placeholder: "sp-x-box-placeholder"
-                });
+                sortableBlocks($grid.find('.sp-x-lt-col').last());
 
                 checkClipboardButtons();
 
@@ -932,16 +922,35 @@ var sprint_editor = {
             var $grid = $editor.find('.sp-x-lt').last();
 
             if (params.enableChange) {
-                $grid.find('.sp-x-lt-col').sortable({
-                    items: ".sp-x-box",
-                    connectWith: ".sp-x-lt-col",
-                    handle: ".sp-x-box-handle",
-                    placeholder: "sp-x-box-placeholder"
-                });
+                sortableBlocks($grid.find('.sp-x-lt-col'));
             }
 
             selectColumn(firstUid);
             updateIndexes($grid);
+        }
+
+        function sortableBlocks($column) {
+            var removeIntent = false;
+
+            $column.sortable({
+                items: ".sp-x-box",
+                connectWith: ".sp-x-lt-col",
+                handle: ".sp-x-box-handle",
+                placeholder: "sp-x-box-placeholder",
+                over: function () {
+                    removeIntent = false;
+                },
+                out: function () {
+                    removeIntent = true;
+                },
+                beforeStop: function (event, ui) {
+                    if (removeIntent) {
+                        var uid = ui.item.data('uid');
+                        sprint_editor.beforeDelete(uid);
+                        ui.item.remove();
+                    }
+                }
+            })
         }
 
         function blockAdd(blockData, $column) {
