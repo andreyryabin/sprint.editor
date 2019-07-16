@@ -2,27 +2,29 @@
 $module_id = "sprint.editor";
 CModule::IncludeModule($module_id);
 
+use Sprint\Editor\Module;
+use Sprint\Editor\UpgradeManager;
+
 global $APPLICATION;
-$MODULE_RIGHT = $APPLICATION->GetGroupRight($module_id);
-if (!($MODULE_RIGHT >= "R")) {
+if ($APPLICATION->GetGroupRight($module_id) == 'D') {
     $APPLICATION->AuthForm("ACCESS_DENIED");
 }
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && check_bitrix_sessid()) {
 
     if (isset($_REQUEST['opts_save'])) {
-        $optionsConfig = \Sprint\Editor\Module::getOptionsConfig();
+        $optionsConfig = Module::getOptionsConfig();
         foreach ($optionsConfig as $name => $aOption) {
             if (!empty($_REQUEST[$name])) {
-                \Sprint\Editor\Module::setDbOption($name, 'yes');
+                Module::setDbOption($name, 'yes');
             } else {
-                \Sprint\Editor\Module::setDbOption($name, 'no');
+                Module::setDbOption($name, 'no');
             }
         }
     }
 
     if (isset($_REQUEST['task_name']) && isset($_REQUEST['task_action'])) {
-        \Sprint\Editor\UpgradeManager::executeTask(
+        UpgradeManager::executeTask(
             $_REQUEST['task_name'],
             $_REQUEST['task_action']
         );
@@ -30,55 +32,56 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && check_bitrix_sessid()) {
 
 }
 
-$editorEntities = array();
-if (\CModule::IncludeModule('main')) {
-    $dbres = \CUserTypeEntity::GetList(array(), array('USER_TYPE_ID' => 'sprint_editor'));
+$editorEntities = [];
+if (CModule::IncludeModule('main')) {
+    $dbres = CUserTypeEntity::GetList([], ['USER_TYPE_ID' => 'sprint_editor']);
     while ($item = $dbres->Fetch()) {
 
         $entityId = $item['ENTITY_ID'];
         if (!isset($editorEntities[$entityId])) {
-            $editorEntities[$entityId] = array(
+            $editorEntities[$entityId] = [
                 'entity' => $item,
-                'props' => array()
-            );
+                'props' => [],
+            ];
 
         }
 
-        $editorEntities[$entityId]['props'][] = array(
-            'FIELD_NAME' => $item['FIELD_NAME']
-        );
+        $editorEntities[$entityId]['props'][] = [
+            'FIELD_NAME' => $item['FIELD_NAME'],
+        ];
     }
 }
 
 
-$editorIblocks = array();
-if (\CModule::IncludeModule('iblock')) {
+$editorIblocks = [];
+if (CModule::IncludeModule('iblock')) {
 
-    $dbres = \CIBlockProperty::GetList(array('SORT' => 'ASC'), array(
-        'USER_TYPE' => 'sprint_editor'
-    ));
+    $dbres = CIBlockProperty::GetList(['SORT' => 'ASC'], [
+        'USER_TYPE' => 'sprint_editor',
+    ]);
 
     while ($item = $dbres->Fetch()) {
         $iblockId = $item['IBLOCK_ID'];
         if (!isset($editorIblocks[$iblockId])) {
-            $iblock = \CIBlock::GetList(array('SORT' => 'ASC'), array(
-                'ID' => $iblockId
-            ))->Fetch();
-            $iblock['URL'] = "/bitrix/admin/iblock_edit.php?" . http_build_query(array(
+            $iblock = CIBlock::GetList(['SORT' => 'ASC'], [
+                'ID' => $iblockId,
+            ])->Fetch();
+            $iblock['URL'] = "/bitrix/admin/iblock_edit.php?" . http_build_query([
                     'ID' => $iblock['ID'],
                     'admin' => 'Y',
                     'type' => $iblock['IBLOCK_TYPE_ID'],
-                    'lang' => LANGUAGE_ID
-                ));
-            $editorIblocks[$iblockId] = array(
+                    'lang' => LANGUAGE_ID,
+                ]);
+            $editorIblocks[$iblockId] = [
                 'iblock' => $iblock,
-                'props' => array()
-            );
+                'props' => [],
+            ];
         }
 
         $editorIblocks[$iblockId]['props'][] = $item;
     }
 }
+
 ?>
 <style type="text/css">
     .c-result {
@@ -94,9 +97,9 @@ if (\CModule::IncludeModule('iblock')) {
 
 <form method="post">
     <?
-    $optionsConfig = \Sprint\Editor\Module::getOptionsConfig();
+    $optionsConfig = Module::getOptionsConfig();
     foreach ($optionsConfig as $name => $aOption):
-        $value = \Sprint\Editor\Module::getDbOption($name) ?>
+        $value = Module::getDbOption($name) ?>
         <label>
             <input <? if ($value == 'yes'): ?>checked="checked"<? endif ?>
                    type="checkbox"
@@ -115,39 +118,39 @@ if (\CModule::IncludeModule('iblock')) {
 <br/>
 
 <?
-$taskList = \Sprint\Editor\UpgradeManager::getTasks();
+$taskList = UpgradeManager::getTasks();
 ?>
 
 <h2><?= GetMessage('SPRINT_EDITOR_TASKS') ?></h2>
 
-<?foreach ($taskList as $aItem):?>
+<? foreach ($taskList as $aItem): ?>
 
-<div style="margin-bottom: 20px;">
-    <? \Sprint\Editor\UpgradeManager::outMessages($aItem['name']) ?>
+    <div style="margin-bottom: 20px;">
+        <? UpgradeManager::outMessages($aItem['name']) ?>
 
-    <?foreach ($aItem['buttons'] as $button):?>
-        <form method="post" style="display: inline">
-            <? if ($aItem['installed'] == 'yes'): ?>
-                <input type="submit" disabled="disabled" value="<?=$button['title']?>">
-            <? else:?>
-                <input type="submit" value="<?=$button['title']?>">
-            <? endif; ?>
+        <? foreach ($aItem['buttons'] as $button): ?>
+            <form method="post" style="display: inline">
+                <? if ($aItem['installed'] == 'yes'): ?>
+                    <input type="submit" disabled="disabled" value="<?= $button['title'] ?>">
+                <? else: ?>
+                    <input type="submit" value="<?= $button['title'] ?>">
+                <? endif; ?>
 
-            <input type="hidden" name="task_name" value="<?= $aItem['name'] ?>">
-            <input type="hidden" name="task_action" value="<?= $button['name'] ?>">
-            <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
-            <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
-            <?= bitrix_sessid_post(); ?>
-        </form>
-    <?endforeach?>
+                <input type="hidden" name="task_name" value="<?= $aItem['name'] ?>">
+                <input type="hidden" name="task_action" value="<?= $button['name'] ?>">
+                <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
+                <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
+                <?= bitrix_sessid_post(); ?>
+            </form>
+        <? endforeach ?>
 
-    <? if ($aItem['installed'] == 'yes'): ?>
-        <strike><?= $aItem['description'] ?></strike>
-    <? else: ?>
-        <?= nl2br($aItem['description']) ?>
-    <? endif; ?>
+        <? if ($aItem['installed'] == 'yes'): ?>
+            <strike><?= $aItem['description'] ?></strike>
+        <? else: ?>
+            <?= nl2br($aItem['description']) ?>
+        <? endif; ?>
 
-</div>
+    </div>
 
 <? endforeach; ?>
 

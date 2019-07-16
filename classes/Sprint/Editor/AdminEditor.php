@@ -425,7 +425,25 @@ class AdminEditor
     protected static function filterSelect($userSettings) {
         $localValues = self::$selectValues;
 
-        if (!empty($userSettings['block_enabled'])) {
+        if (!empty($userSettings['block_disabled'])) {
+            $localValues = [];
+            foreach (self::$selectValues as $groupType => $group) {
+                $localBlocks = [];
+                foreach ($group['blocks'] as $blockIndex => $block) {
+                    if (!in_array($block['name'], $userSettings['block_disabled'])) {
+                        $localBlocks[] = $block;
+                    }
+                }
+                if (!empty($localBlocks)) {
+                    $localValues[$groupType] = array(
+                        'title' => $group['title'],
+                        'type' => $group['type'],
+                        'blocks' => $localBlocks
+
+                    );
+                }
+            }
+        } elseif (!empty($userSettings['block_enabled'])) {
             $localValues = [];
             foreach (self::$selectValues as $groupType => $group) {
                 $localBlocks = [];

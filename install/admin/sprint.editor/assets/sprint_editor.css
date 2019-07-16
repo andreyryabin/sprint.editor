@@ -108,6 +108,12 @@
     margin: 10px 0 10px;
 }
 
+.sp-x-box-copied{
+    background: #FFEBC1;
+    border: 2px solid #FDBF3B;
+    padding: 5px 5px 10px;
+}
+
 .sp-x-lt {
 
     /*position: relative;*/

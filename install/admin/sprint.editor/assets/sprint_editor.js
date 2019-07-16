@@ -25,6 +25,15 @@ var sprint_editor = {
         this._templates[name] = html;
     },
 
+    registerEntry: function (uid, entry) {
+        this._entries[uid] = entry;
+    },
+    hasEntry: function (uid) {
+        return !!this._entries[uid];
+    },
+    getEntry: function (uid) {
+        return (this._entries[uid]) ? this._entries[uid] : false;
+    },
     hasBlockMethod: function (name) {
         return !!this._registered[name];
     },
@@ -146,11 +155,11 @@ var sprint_editor = {
     },
 
     beforeDelete: function (uid) {
-        if (!sprint_editor._entries[uid]) {
+        if (!sprint_editor.hasEntry(uid)) {
             return;
         }
 
-        var entry = sprint_editor._entries[uid];
+        var entry = sprint_editor.getEntry(uid);
 
         if (typeof entry.beforeDelete === 'function') {
             entry.beforeDelete();
@@ -173,11 +182,11 @@ var sprint_editor = {
 
     collectData: function (uid) {
         var blockData = {};
-        if (!sprint_editor._entries[uid]) {
+        if (!sprint_editor.hasEntry(uid)) {
             return blockData;
         }
 
-        var entry = sprint_editor._entries[uid];
+        var entry = sprint_editor.getEntry(uid);
 
         if (typeof entry.collectData !== 'function') {
             return blockData;
@@ -229,7 +238,7 @@ var sprint_editor = {
     },
 
     copyToClipboard: function (uid) {
-        if (window.localStorage && sprint_editor._entries[uid]) {
+        if (window.localStorage && sprint_editor.hasEntry(uid)) {
 
             var blockData = sprint_editor.collectData(uid);
             var val = JSON.parse(
@@ -335,6 +344,11 @@ var sprint_editor = {
         var $inputresult = $('.sp-x-result' + params.uniqid);
         var $form = $editor.closest('form').first();
 
+        // $editor.on('click', function (e) {
+        //     console.log(e.target);
+        //     popupToggle($(e.target));
+        // });
+
         $editor.on('keypress', 'input', function (e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
@@ -363,18 +377,18 @@ var sprint_editor = {
             params.jsonUserSettings = {};
         }
 
-        if (params.hasOwnProperty('enableChange')){
+        if (params.hasOwnProperty('enableChange')) {
             params.enableChange = !!params.enableChange;
         } else {
             params.enableChange = true;
         }
 
-        if (params.jsonUserSettings.hasOwnProperty('enable_change')){
+        if (params.jsonUserSettings.hasOwnProperty('enable_change')) {
             params.enableChange = !!params.jsonUserSettings.enable_change;
         }
 
         params.enableChangeColumns = true;
-        if (params.jsonUserSettings.hasOwnProperty('enable_change_columns')){
+        if (params.jsonUserSettings.hasOwnProperty('enable_change_columns')) {
             params.enableChangeColumns = !!params.jsonUserSettings.enable_change_columns;
         }
 
@@ -477,6 +491,7 @@ var sprint_editor = {
             $editor.on('click', '.sp-x-box-copy', function (e) {
                 e.preventDefault();
                 sprint_editor.copyToClipboard($(this).closest('.sp-x-box').data('uid'));
+                popupToggle();
             });
 
             $editor.on('click', '.sp-x-box-up', function (e) {
@@ -628,7 +643,7 @@ var sprint_editor = {
                     $grid.remove();
                 }
 
-                popupToggle();
+                //popupToggle();
             });
 
             $editor.on('click', '.sp-x-lt-col-add', function (e) {
@@ -716,7 +731,7 @@ var sprint_editor = {
 
         function popupToggle($handler) {
 
-            if (!$handler) {
+            function popupHide() {
                 $editor.find('.sp-x-pp-box').hide();
                 $editor.find('.sp-x-pp-lt').hide();
                 $editor.find('.sp-x-pp-blocks').hide();
@@ -725,7 +740,11 @@ var sprint_editor = {
                 $editor.find('.sp-x-pp-lt-open').removeClass('sp-active');
                 $editor.find('.sp-x-pp-blocks-open').removeClass('sp-active');
                 $editor.find('.sp-x-pp-main-open').removeClass('sp-active');
+            }
 
+
+            if (!$handler) {
+                popupHide();
                 return true;
             }
 
@@ -733,17 +752,11 @@ var sprint_editor = {
 
             if ($handler.hasClass('sp-x-pp-lt-open')) {
                 $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-lt');
-            }
-
-            if ($handler.hasClass('sp-x-pp-box-open')) {
+            } else if ($handler.hasClass('sp-x-pp-box-open')) {
                 $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-box');
-            }
-
-            if ($handler.hasClass('sp-x-pp-main-open')) {
+            } else if ($handler.hasClass('sp-x-pp-main-open')) {
                 $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-main');
-            }
-
-            if ($handler.hasClass('sp-x-pp-blocks-open')) {
+            } else if ($handler.hasClass('sp-x-pp-blocks-open')) {
                 $popup = $editor.find('.sp-x-pp-blocks');
                 if (!$popup || $popup.length <= 0) {
                     $popup = $(sprint_editor.renderTemplate('pp-blocks' + params.uniqid, {}));
@@ -752,25 +765,19 @@ var sprint_editor = {
                 $handler.after($popup);
             }
 
+            if (!$popup) {
+                popupHide();
+                return true;
+            }
+
             if ($handler.hasClass('sp-active')) {
                 $handler.removeClass('sp-active');
                 $popup.hide();
-
             } else {
-                $editor.find('.sp-x-pp-box').hide();
-                $editor.find('.sp-x-pp-lt').hide();
-                $editor.find('.sp-x-pp-blocks').hide();
-                $editor.find('.sp-x-pp-main').hide();
-                $editor.find('.sp-x-pp-box-open').removeClass('sp-active');
-                $editor.find('.sp-x-pp-lt-open').removeClass('sp-active');
-                $editor.find('.sp-x-pp-blocks-open').removeClass('sp-active');
-                $editor.find('.sp-x-pp-main-open').removeClass('sp-active');
-
+                popupHide();
                 $handler.addClass('sp-active');
                 $popup.show();
             }
-
-
         }
 
         function addByName($handler) {
@@ -834,12 +841,13 @@ var sprint_editor = {
             var clipboardData = sprint_editor.getClipboard();
 
             var cntBlocks = 0;
-            $editor.find('.sp-x-box-copy').removeClass('sp-active');
+            $editor.find('.sp-x-box').removeClass('sp-x-box-copied');
+
 
             $.each(clipboardData, function (blockUid, blockData) {
                 var $block = $editor.find('.sp-x-box[data-uid=' + blockUid + ']');
                 if ($block.length > 0) {
-                    $block.find('.sp-x-box-copy').addClass('sp-active');
+                    $block.addClass('sp-x-box-copied');
                 }
                 cntBlocks++;
             });
@@ -971,8 +979,7 @@ var sprint_editor = {
             var entry = sprint_editor.initblock($, $el, blockData.name, blockData, blockSettings);
 
             sprint_editor.initblockAreas($, $el, entry);
-            sprint_editor._entries[uid] = entry;
-
+            sprint_editor.registerEntry(uid, entry);
 
             return $box;
             // scrollTo($el);
@@ -1218,7 +1225,7 @@ var sprint_editor = {
 
                         var uid = $(this).data('uid');
 
-                        if (!sprint_editor._entries[uid]) {
+                        if (!sprint_editor.hasEntry(uid)) {
                             return true;
                         }
 
@@ -1296,11 +1303,11 @@ var sprint_editor = {
         function getBlockSettings(name) {
             var blockSettings = {};
 
-            if (!params.jsonUserSettings.hasOwnProperty('block_settings')){
+            if (!params.jsonUserSettings.hasOwnProperty('block_settings')) {
                 return blockSettings;
             }
 
-            if (!params.jsonUserSettings.block_settings.hasOwnProperty(name)){
+            if (!params.jsonUserSettings.block_settings.hasOwnProperty(name)) {
                 return blockSettings;
             }
 
@@ -1309,6 +1316,3 @@ var sprint_editor = {
         }
     }
 };
-
-
-
