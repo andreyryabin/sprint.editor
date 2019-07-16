@@ -57,6 +57,7 @@ class AdminEditor
             $enableChange = 1;
         }
 
+        //default setings (simple editor)
         $userSettings = [
             'block_disabled' => [
                 'layout_1',
