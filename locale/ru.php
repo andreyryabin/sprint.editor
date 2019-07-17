@@ -22,6 +22,8 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_HELP_WIKI" => "Документация",
     "SPRINT_EDITOR_HELP_TRACKER" => "Форма для вопросов и предложений ",
     "SPRINT_EDITOR_HELP_MARKETPLACE" => "Страничка модуля в маркетплейсе",
+    "SPRINT_EDITOR_HELP_DONATE" => "Поддержать разработку",
+    "SPRINT_EDITOR_HELP_TELEGRAM" => "Группа в телеграме",
     "SPRINT_EDITOR_SETTINGS_DISABLE_CHANGE" => "Отключить добавление блоков",
     "SPRINT_EDITOR_SETTINGS_SETTINGS_NAME" => "Пользовательские настройки блоков",
     "SPRINT_EDITOR_SETTINGS_DEFAULT_VALUE" => "Значение по умолчанию",

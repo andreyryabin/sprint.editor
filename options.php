@@ -229,3 +229,15 @@ $taskList = UpgradeManager::getTasks();
     <a target="_blank" href="http://marketplace.1c-bitrix.ru/solutions/sprint.editor/">
         http://marketplace.1c-bitrix.ru/solutions/sprint.editor/
     </a></p>
+
+
+<p><?= GetMessage('SPRINT_EDITOR_HELP_TELEGRAM') ?> <br/>
+    <a target="_blank" href="https://t-do.ru/sprint_editor">
+        https://t-do.ru/sprint_editor
+    </a></p>
+
+<p><?= GetMessage('SPRINT_EDITOR_HELP_DONATE') ?> <br/>
+    <a target="_blank" href="https://money.yandex.ru/to/410012104240288/500">
+        https://money.yandex.ru/to/410012104240288/500
+    </a></p>
+
