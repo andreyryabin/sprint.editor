@@ -42,6 +42,11 @@ function sprint_editor_simple($, params) {
         params.enableChangeColumns = !!params.jsonUserSettings.enable_change_columns;
     }
 
+    params.deleteBlockAfterSortOut = true;
+    if (params.jsonUserSettings.hasOwnProperty('delete_block_after_sort_out')) {
+        params.deleteBlockAfterSortOut = !!params.jsonUserSettings.delete_block_after_sort_out;
+    }
+
     layoutAdd();
 
     $.each(params.jsonValue.blocks, function (index, block) {
@@ -125,11 +130,13 @@ function sprint_editor_simple($, params) {
             var $nblock = $block.prev('.sp-x-box');
             if ($nblock.length > 0) {
                 $block.insertBefore($nblock);
+                sprint_editor.afterSort($block.data('uid'));
             } else {
                 var $ngrid = $grid.prev('.sp-x-lt');
                 if ($ngrid.length > 0) {
                     var $ncol = getActiveColumn($ngrid);
                     $block.appendTo($ncol);
+                    sprint_editor.afterSort($block.data('uid'));
                 }
             }
         });
@@ -143,6 +150,8 @@ function sprint_editor_simple($, params) {
             var $nblock = $block.next('.sp-x-box');
             if ($nblock.length > 0) {
                 $block.insertAfter($nblock);
+                sprint_editor.afterSort($block.data('uid'));
+
             } else {
                 var $ngrid = $grid.next('.sp-x-lt');
                 if ($ngrid.length > 0) {
@@ -152,6 +161,7 @@ function sprint_editor_simple($, params) {
                         $ncol = $head;
                     }
                     $block.insertAfter($ncol);
+                    sprint_editor.afterSort($block.data('uid'));
                 }
             }
         });
@@ -241,36 +251,13 @@ function sprint_editor_simple($, params) {
         }
 
         if (name.indexOf('layout_') === 0) {
-            name = name.substr(7);
-            layoutEmptyAdd(name);
-            popupToggle();
-            checkClipboardButtons();
-
+            console.log('not work in simple version');
         } else if (name.indexOf('pack_') === 0) {
-            name = name.substr(5);
-            packLoad(name);
-            popupToggle();
-            checkClipboardButtons();
-
+            console.log('not work in simple version');
         } else if (name === 'delete_pack') {
-            var packname = $handler.data('pack');
-            if (packname.indexOf('pack_') === 0) {
-                packname = packname.substr(5);
-
-                if (confirm(BX.message('SPRINT_EDITOR_pack_del_confirm'))) {
-                    packDelete(packname);
-                }
-
-            } else {
-                alert(BX.message('SPRINT_EDITOR_pack_del_error'))
-            }
-
+            console.log('not work in simple version');
         } else if (name === 'save_pack') {
-            var packname = prompt(BX.message('SPRINT_EDITOR_pack_change'));
-            if (packname) {
-                packSave('' + packname);
-            }
-
+            console.log('not work in simple version');
         } else if (name) {
             var $grid = $handler.closest('.sp-x-lt');
             var $col = getActiveColumn($grid);
@@ -284,11 +271,9 @@ function sprint_editor_simple($, params) {
                     ).data('name', name).show();
                 }
             }
-
             popupToggle();
             checkClipboardButtons();
         }
-
     }
 
     function checkClipboardButtons() {
@@ -336,10 +321,12 @@ function sprint_editor_simple($, params) {
                 removeIntent = true;
             },
             beforeStop: function (event, ui) {
-                if (removeIntent) {
-                    var uid = ui.item.data('uid');
+                var uid = ui.item.data('uid');
+                if (removeIntent && params.deleteBlockAfterSortOut) {
                     sprint_editor.beforeDelete(uid);
                     ui.item.remove();
+                } else {
+                    sprint_editor.afterSort(uid);
                 }
             }
         })

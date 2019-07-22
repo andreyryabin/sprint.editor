@@ -179,10 +179,30 @@ var sprint_editor = {
                 }
             }
         }
-
-
     },
+    afterSort: function (uid) {
+        if (!sprint_editor.hasEntry(uid)) {
+            return;
+        }
 
+        var entry = sprint_editor.getEntry(uid);
+
+        if (typeof entry.afterSort === 'function') {
+            entry.afterSort();
+        }
+
+        if (typeof entry.getAreas === 'function') {
+            var areas = entry.getAreas();
+            for (var prop in areas) {
+                if (areas.hasOwnProperty(prop)) {
+                    var area = areas[prop];
+                    if (typeof area.block.afterSort === 'function') {
+                        area.block.afterSort();
+                    }
+                }
+            }
+        }
+    },
     collectData: function (uid) {
         var blockData = {};
         if (!sprint_editor.hasEntry(uid)) {

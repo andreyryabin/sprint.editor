@@ -6,12 +6,7 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
             value: ''
         }, data);
 
-        //var parser = new HtmlWhitelistedSanitizer();
-
         this.getData = function () {
-            // data.value = parser.sanitizeString(
-            //     escapeHtml(data.value)
-            // );
             return data;
         };
 
@@ -19,10 +14,6 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
             if (!$.fn.trumbowyg) {
                 return data;
             }
-
-            // data.value = parser.sanitizeString(
-            //     $el.find('.sp-text').val()
-            // );
 
             data.value = $el.find('.sp-text').val();
 
@@ -81,20 +72,5 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
             });
 
         };
-
-
-        function escapeHtml(text) {
-            var map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-
-            return text.replace(/[&<>"']/g, function (m) {
-                return map[m];
-            });
-        }
     }
 );

@@ -13,6 +13,11 @@ $settings = array(
     //Разрешить изменение числа колонок в сетке, работает если настройка enable_change включена
     //'enable_change_columns' => false,
 
+    //'enable_change_columns' => false,
+
+    //Удалять блок при перемещении его за пределы редактора
+    'delete_block_after_sort_out' => false,
+
     //Доступные классы колонок для сеток
     'layout_classes' => array(
         'type1' => array(

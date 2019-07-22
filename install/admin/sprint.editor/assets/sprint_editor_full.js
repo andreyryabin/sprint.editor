@@ -46,6 +46,11 @@ function sprint_editor_full($, params) {
         params.enableChangeColumns = !!params.jsonUserSettings.enable_change_columns;
     }
 
+    params.deleteBlockAfterSortOut = true;
+    if (params.jsonUserSettings.hasOwnProperty('delete_block_after_sort_out')) {
+        params.deleteBlockAfterSortOut = !!params.jsonUserSettings.delete_block_after_sort_out;
+    }
+
     $.each(params.jsonValue.layouts, function (index, layout) {
         layoutAdd(layout);
     });
@@ -157,11 +162,13 @@ function sprint_editor_full($, params) {
             var $nblock = $block.prev('.sp-x-box');
             if ($nblock.length > 0) {
                 $block.insertBefore($nblock);
+                sprint_editor.afterSort($block.data('uid'));
             } else {
                 var $ngrid = $grid.prev('.sp-x-lt');
                 if ($ngrid.length > 0) {
                     var $ncol = getActiveColumn($ngrid);
                     $block.appendTo($ncol);
+                    sprint_editor.afterSort($block.data('uid'));
                 }
             }
         });
@@ -175,6 +182,7 @@ function sprint_editor_full($, params) {
             var $nblock = $block.next('.sp-x-box');
             if ($nblock.length > 0) {
                 $block.insertAfter($nblock);
+                sprint_editor.afterSort($block.data('uid'));
             } else {
                 var $ngrid = $grid.next('.sp-x-lt');
                 if ($ngrid.length > 0) {
@@ -184,6 +192,7 @@ function sprint_editor_full($, params) {
                         $ncol = $head;
                     }
                     $block.insertAfter($ncol);
+                    sprint_editor.afterSort($block.data('uid'));
                 }
             }
         });
@@ -603,10 +612,12 @@ function sprint_editor_full($, params) {
                 removeIntent = true;
             },
             beforeStop: function (event, ui) {
-                if (removeIntent) {
-                    var uid = ui.item.data('uid');
+                var uid = ui.item.data('uid');
+                if (removeIntent && params.deleteBlockAfterSortOut) {
                     sprint_editor.beforeDelete(uid);
                     ui.item.remove();
+                } else {
+                    sprint_editor.afterSort(uid);
                 }
             }
         })
