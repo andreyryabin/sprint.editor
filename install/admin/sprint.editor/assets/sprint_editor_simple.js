@@ -373,68 +373,6 @@ function sprint_editor_simple($, params) {
         // scrollTo($el);
     }
 
-    function getClassTitle(cssname) {
-        if (params.jsonUserSettings.layout_titles) {
-            if (params.jsonUserSettings.layout_titles[cssname]) {
-                if (params.jsonUserSettings.layout_titles[cssname].length > 0) {
-                    return params.jsonUserSettings.layout_titles[cssname];
-                }
-            }
-        }
-
-        return cssname;
-    }
-
-    function compileClasses(ltname, cssstr) {
-
-        var selectedCss = cssstr.split(' ');
-
-        var allclasses = {};
-        if (params.jsonUserSettings.layout_classes) {
-            if (params.jsonUserSettings.layout_classes[ltname]) {
-                if (params.jsonUserSettings.layout_classes[ltname].length > 0) {
-                    allclasses = params.jsonUserSettings.layout_classes[ltname]
-                }
-            }
-        }
-
-        var compiled = [];
-
-        if (!allclasses) {
-            return compiled;
-        }
-
-        $.each(allclasses, function (groupIndex, groupClasses) {
-
-            if (!$.isArray(groupClasses)) {
-                return true;
-            }
-
-            var value = [];
-            var valSel = 0;
-
-            $.each(groupClasses, function (cssIndex, cssName) {
-
-                valSel = (
-                    $.inArray(cssName, selectedCss) >= 0
-                ) ? 1 : 0;
-
-                value.push({
-                    title: getClassTitle(cssName),
-                    value: cssName,
-                    selected: valSel
-                })
-            });
-
-
-            compiled.push({
-                options: value
-            })
-        });
-
-        return compiled;
-    }
-
     function saveToString(packname) {
         packname = packname || '';
 
