@@ -9,7 +9,6 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_LOAD_JQUERY" => "Подключить внешнюю jquery",
     "SPRINT_EDITOR_LOAD_JQUERY_UI" => "Подключить jquery ui *",
     "SPRINT_EDITOR_LOAD_DOTJS" => "Подключить шаблонизатор doT *",
-    "SPRINT_EDITOR_TRUMBOWYG_CHROME_FIX" => "Подключить trumbowyg с исправленной вставкой span",
     "SPRINT_EDITOR_BTN_ACTIONS" => "Действия",
     "SPRINT_EDITOR_BTN_SAVE" => "Сохранить",
     "SPRINT_EDITOR_BTN_PASTE" => "Вставить",

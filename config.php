@@ -14,10 +14,4 @@
         'DEFAULT' => 'yes',
         'TYPE' => 'checkbox',
     ],
-
-    'trumbowyg_chrome_fix' => [
-        'TITLE' => GetMessage('SPRINT_EDITOR_TRUMBOWYG_CHROME_FIX'),
-        'DEFAULT' => 'yes',
-        'TYPE' => 'checkbox',
-    ],
 ];

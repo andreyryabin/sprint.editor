@@ -549,9 +549,13 @@ body.trumbowyg-body-fullscreen {
 .trumbowyg-editor img {
     cursor: move;
 }
+/**
+* reset css chrome fix
+ */
+
 
 .trumbowyg-editor.trumbowyg-reset-css {
-    background: #FEFEFE !important;
+    /*background: #FEFEFE !important;*/
     font-family: "Trebuchet MS", Helvetica, Verdana, sans-serif !important;
     font-size: 14px !important;
     line-height: 1.45em !important;
@@ -568,8 +572,8 @@ body.trumbowyg-body-fullscreen {
 .trumbowyg-editor.trumbowyg-reset-css ul,
 .trumbowyg-editor.trumbowyg-reset-css ol,
 .trumbowyg-editor.trumbowyg-reset-css blockquote {
-    box-shadow: none !important;
-    background: none !important;
+    /*box-shadow: none !important;*/
+    /*background: none !important;*/
     margin: 0 !important;
     margin-bottom: 15px !important;
     line-height: 1.4em !important;
@@ -625,7 +629,7 @@ body.trumbowyg-body-fullscreen {
 .trumbowyg-editor.trumbowyg-reset-css h3,
 .trumbowyg-editor.trumbowyg-reset-css h4 {
     color: #111;
-    background: none;
+    /*background: none;*/
     margin: 0 !important;
     padding: 0 !important;
     font-weight: bold;
@@ -654,6 +658,7 @@ body.trumbowyg-body-fullscreen {
     line-height: 22px !important;
     margin-bottom: 7px !important;
 }
+
 
 /*
  * Dark theme
