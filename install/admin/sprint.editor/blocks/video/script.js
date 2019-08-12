@@ -1,4 +1,4 @@
-sprint_editor.registerBlock('video', function($, $el, data) {
+sprint_editor.registerBlock('video', function ($, $el, data) {
 
     data = $.extend({
         url: '',
@@ -8,18 +8,17 @@ sprint_editor.registerBlock('video', function($, $el, data) {
 
     var areas = [
         {
-            dataKey : 'preview',
+            dataKey: 'preview',
             blockName: 'image',
-            container : '.sp-area1-image'
+            container: '.sp-area1-image'
         }
-
     ];
 
     this.getData = function () {
         return data;
     };
 
-    this.getAreas = function (){
+    this.getAreas = function () {
         return areas;
     };
 
@@ -39,7 +38,6 @@ sprint_editor.registerBlock('video', function($, $el, data) {
             getVideo($(this).val());
         }, 500);
 
-
         $el.on('click', '.sp-toggle', function () {
             if ($el.hasClass('sp-show')) {
                 $el.find('.sp-area1-image').hide(250);
@@ -51,21 +49,16 @@ sprint_editor.registerBlock('video', function($, $el, data) {
         });
     };
 
-    function getVideo(youtubeUrl){
-        var youtubeCode = '';
-        if (youtubeUrl){
-            var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            var match = youtubeUrl.match(regExp);
-            youtubeCode = (match && match[2].length == 11) ? match[2] : false;
-        }
-
-        if (youtubeCode){
-            $el.find('.sp-preview').html(
-                sprint_editor.renderTemplate('video-iframe', {youtubeCode: youtubeCode})
-            );
-        } else {
-            $el.find('.sp-preview').html('');
-        }
+    function getVideo(someUrl) {
+        $.ajax({
+            url: sprint_editor.getBlockWebPath('video') + '/ajax.php',
+            type: 'post',
+            data: {url: someUrl},
+            dataType: 'json',
+            success: function (result) {
+                $el.find('.sp-preview').html(result.html);
+            }
+        });
     }
 
 });

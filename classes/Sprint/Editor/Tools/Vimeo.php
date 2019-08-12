@@ -2,28 +2,24 @@
 
 namespace Sprint\Editor\Tools;
 
-class Youtube
+class Vimeo
 {
 
     static public function getVideoCode($url, $default = '')
     {
         $matches = [];
         if (preg_match(
-            '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
+            '%(https?://)?(www\.)?(player\.)?vimeo\.com/([a-z]*/)*([0-9]{6,11})[?]?.*%',
             $url,
             $matches
         )) {
-            return $matches[1];
+            return $matches[5];
         }
         return $default;
     }
 
     static public function getPreviewImg($url)
     {
-        $code = self::getVideoCode($url);
-        if ($code) {
-            return sprintf('http://img.youtube.com/vi/%s/0.jpg', $code);
-        }
         return '';
     }
 
@@ -32,7 +28,7 @@ class Youtube
         $code = self::getVideoCode($url);
         if ($code) {
             return sprintf(
-                '<iframe width="%s" height="%s" src="https://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>',
+                '<iframe width="%s" height="%s" src="https://player.vimeo.com/video/%s" frameborder="0" allowfullscreen></iframe>',
                 $width,
                 $height,
                 $code
