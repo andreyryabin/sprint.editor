@@ -135,6 +135,7 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
 
 
         $btninput.fileupload({
+            dropZone: $el,
             url: sprint_editor.getBlockWebPath('video_gallery') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {

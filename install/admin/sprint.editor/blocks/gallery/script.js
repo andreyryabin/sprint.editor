@@ -48,6 +48,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         });
 
         $btninput.fileupload({
+            dropZone: $el,
             url: sprint_editor.getBlockWebPath('gallery') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
