@@ -30,15 +30,15 @@ sprint_editor.registerBlock('instagram', function ($, $el, data) {
         var inputUrl = $input.val();
         if (inputUrl.length > 0){
             $.ajax({
-                url: "https://api.instagram.com/oembed",
+                url: sprint_editor.getBlockWebPath('instagram') + '/ajax.php',
                 data: {
                     url: inputUrl
                 },
-                dataType: "jsonp",
+                dataType: "html",
                 success: function(result) {
-                    if (result && result.html) {
-                        $preview.html(result.html);
-                        if (instgrm){
+                    if (result) {
+                        $preview.html(result);
+                        if (typeof instgrm !== 'undefined') {
                             instgrm.Embeds.process();
                         }
                     }

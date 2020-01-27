@@ -1,7 +1,7 @@
 <input placeholder="Заголовок" type="text" value="{{!it.value}}"/>
 <select>
     {{~it.types :item}}
-    <option {{?item.selected}}selected="selected"{{?}}value="{{=item.value}}">{{=item.value}}</option>
+    <option {{?it.type==item.id}}selected="selected"{{?}}value="{{=item.id}}">{{=item.title}}</option>
     {{~}}
 </select>
 <br/>

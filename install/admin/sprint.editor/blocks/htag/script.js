@@ -1,4 +1,6 @@
-sprint_editor.registerBlock('htag', function($, $el, data) {
+sprint_editor.registerBlock('htag', function ($, $el, data, settings) {
+
+    settings = settings || {};
 
     data = $.extend({
         type: 'h1',
@@ -6,45 +8,32 @@ sprint_editor.registerBlock('htag', function($, $el, data) {
         anchor: ''
     }, data);
 
-    var types = [
-        {
-            value: 'h1',
-            selected: false
-        },
-        {
-            value: 'h2',
-            selected: false
-        },
-        {
-            value: 'h3',
-            selected: false
-        },
-        {
-            value: 'h4',
-            selected: false
-        },
-        {
-            value: 'h5',
-            selected: false
-        }
-
-    ];
-
-    $.each(types, function (index, item) {
-        if (item.value == data.type) {
-            item.selected = true;
-        }
-    });
 
     this.getData = function () {
+        var types = [
+            {id: 'h1', title: 'h1'},
+            {id: 'h2', title: 'h2'},
+            {id: 'h3', title: 'h3'},
+            {id: 'h4', title: 'h4'},
+            {id: 'h5', title: 'h5'},
+        ];
+
+        if (settings.taglist && settings.taglist.value) {
+            types = [];
+            $.each(settings.taglist.value, function (index, val) {
+                types.push({id: index, title: val})
+            });
+        }
+
         data['types'] = types;
+
         return data;
     };
 
     this.collectData = function () {
         data.value = $el.find('input[type=text]').val();
         data.type = $el.find('select').val();
-        if (data.value){
+        if (data.value) {
             data.anchor = translite(data.value);
         } else {
             data.anchor = '';
@@ -67,12 +56,12 @@ sprint_editor.registerBlock('htag', function($, $el, data) {
 
     function translite(val) {
         return BX.translit(val, {
-            max_len : 100,
-            change_case : 'L',
-            replace_space : '-',
-            replace_other : '-',
-            delete_repeat_replace : true,
-            use_google : false
+            max_len: 100,
+            change_case: 'L',
+            replace_space: '-',
+            replace_other: '-',
+            delete_repeat_replace: true,
+            use_google: false
         });
     }
 

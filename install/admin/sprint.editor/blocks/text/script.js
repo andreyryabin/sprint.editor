@@ -44,7 +44,7 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
                     ['myCss'],
                     ['strong', 'em', 'underline', 'del'],
                     ['link'],
-                    ['justifyLeft', 'justifyCenter', 'justifyRight'],
+                    ['justifyLeft', 'justifyCenter', 'justifyRight','justifyFull'],
                     ['unorderedList', 'orderedList'],
                     ['removeformat']
                 ];
@@ -54,7 +54,7 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
                     ['viewHTML'],
                     ['strong', 'em', 'underline', 'del'],
                     ['link'],
-                    ['justifyLeft', 'justifyCenter', 'justifyRight'],
+                    ['justifyLeft', 'justifyCenter', 'justifyRight','justifyFull'],
                     ['unorderedList', 'orderedList'],
                     ['removeformat']
                 ]
