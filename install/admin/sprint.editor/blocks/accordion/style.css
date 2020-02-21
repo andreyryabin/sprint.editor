@@ -1,41 +1,71 @@
 .sp-block-accordion .sp-acc-tab {
-    /*padding: 10px;*/
     border: 1px solid #ccc;
     margin-bottom: 10px;
+}
+
+.sp-block-accordion .sp-acc-tab-container {
 
 }
 
-.sp-block-accordion .sp-acc-tab-container{
-    /*padding: 10px;*/
-}
-
-.sp-block-accordion .sp-acc-tab-title {
+.sp-block-accordion .sp-acc-buttons {
     background: #eee;
     border-bottom: 1px dashed #ccc;
-    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.sp-block-accordion .sp-acc-box-buttons {
+    position: relative;
     text-align: center;
 }
 
 .sp-block-accordion .sp-acc-tab-buttons {
     border-top: 1px dashed #ccc;
     text-align: center;
-    padding: 10px;
     background: #eee;
+    font-size: 0;
 }
 
-.sp-block-accordion .sp-acc-del{
+.sp-block-accordion .sp-acc-tab-buttons span {
+    font-size: 13px;
+}
+
+.sp-block-accordion .sp-x-pp-box,
+.sp-block-accordion .sp-x-buttons-group {
+    position: absolute;
+    right: 10px;
+}
+
+.sp-block-accordion .sp-acc-del {
     float: right;
 }
 
-.sp-block-accordion .sp-acc-tab-title input {
+.sp-block-accordion input.sp-acc-tab-value {
     width: 70%;
 }
 
 .sp-block-accordion .sp-acc-box {
-    padding: 10px;
+    margin: 0 0 10px;
 }
 
-.sp-block-accordion .sp-acc-box-buttons {
-    text-align: right;
-    margin-bottom: 10px;
+.sp-block-accordion .sp-acc-footer {
+
+}
+
+
+.sp-block-accordion .sp-acc-buttons,
+.sp-block-accordion .sp-acc-tab-buttons {
+    padding: 5px 0;
+}
+
+.sp-block-accordion .sp-acc-box-block {
+    padding: 0 5px;
+}
+
+.sp-block-accordion .sp-acc-tab-container {
+}
+
+.sp-block-accordion .sp-acc-box-handle,
+.sp-block-accordion .sp-acc-tab-handle {
+    cursor: move;
 }

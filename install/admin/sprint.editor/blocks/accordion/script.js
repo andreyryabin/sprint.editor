@@ -72,8 +72,84 @@ sprint_editor.registerBlock('accordion', function ($, $el, data) {
             );
         });
 
+        $el.sortable({
+            items: ".sp-acc-tab",
+            handle: ".sp-acc-tab-handle",
+        });
 
-        $el.on('click', '.sp-acc-add-tab', function () {
+        $el.find('.sp-acc-container').sortable({
+            items: ".sp-acc-box",
+            handle: ".sp-acc-box-handle",
+            connectWith: ".sp-acc-tab-container",
+        });
+
+        $el.on('click', '.sp-acc-up', function (e) {
+            e.preventDefault();
+            var $block = $(this).closest('.sp-acc-tab');
+            var $nblock = $block.prev('.sp-acc-tab');
+            if ($nblock.length > 0) {
+                $block.insertBefore($nblock);
+            }
+        });
+
+        $el.on('click', '.sp-acc-dn', function (e) {
+            e.preventDefault();
+            var block = $(this).closest('.sp-acc-tab');
+            var nblock = block.next('.sp-acc-tab');
+            if (nblock.length > 0) {
+                block.insertAfter(nblock);
+            }
+        });
+
+        $el.on('click', '.sp-acc-box-up', function (e) {
+            e.preventDefault();
+
+            var $block = $(this).closest('.sp-acc-box');
+            var $grid = $(this).closest('.sp-acc-tab');
+
+            var $nblock = $block.prev('.sp-acc-box');
+            if ($nblock.length > 0) {
+                $block.insertBefore($nblock);
+                sprint_editor.afterSort($block.data('uid'));
+            } else {
+                var $ngrid = $grid.prev('.sp-acc-tab');
+                if ($ngrid.length > 0) {
+                    $block.appendTo(
+                        $ngrid.find('.sp-acc-tab-container')
+                    );
+                    sprint_editor.afterSort(
+                        $block.data('uid')
+                    );
+                }
+            }
+        });
+
+        $el.on('click', '.sp-acc-box-dn', function (e) {
+            e.preventDefault();
+
+            var $block = $(this).closest('.sp-acc-box');
+            var $grid = $(this).closest('.sp-acc-tab');
+
+            var $nblock = $block.next('.sp-acc-box');
+            if ($nblock.length > 0) {
+                $block.insertAfter($nblock);
+                sprint_editor.afterSort(
+                    $block.data('uid')
+                );
+            } else {
+                var $ngrid = $grid.next('.sp-acc-tab');
+                if ($ngrid.length > 0) {
+                    $block.insertAfter(
+                        $ngrid.find('.sp-acc-tab-container')
+                    );
+                    sprint_editor.afterSort(
+                        $block.data('uid')
+                    );
+                }
+            }
+        });
+
+        $el.on('click', '.sp-acc-add-tab', function (e) {
             addTab({
                 title: '',
                 blocks: []
@@ -89,16 +165,18 @@ sprint_editor.registerBlock('accordion', function ($, $el, data) {
 
             var $tabcontainer = $tab.find('.sp-acc-tab-container');
 
-            $.each(tabData.blocks, function (index, item) {
-                addblock(item, $tabcontainer)
+            $.each(tabData.blocks, function (index, blockData) {
+                addblock(blockData, $tabcontainer)
             });
+
 
         }
 
         function addblock(blockData, $tabcontainer) {
             var uid = sprint_editor.makeUid('sp-acc');
             var $box = $(sprint_editor.renderTemplate('accordion-box', {
-                uid: uid
+                uid: uid,
+                title: sprint_editor.getBlockTitle(blockData.name)
             }));
 
             $tabcontainer.append($box);

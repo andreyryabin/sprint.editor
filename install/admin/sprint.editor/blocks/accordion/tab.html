@@ -1,15 +1,20 @@
 <div class="sp-acc-tab">
-    <div class="sp-acc-tab-title">
+    <div class="sp-x-buttons sp-acc-buttons">
+        <span class="sp-x-btn sp-acc-tab-handle">Вкладка</span>
         <input class="sp-acc-tab-value" placeholder="Заголовок вкладки" type="text" value="{{!it.title}}"/>
-        <span title="Удалить вкладку" class="sp-x-btn sp-acc-del">x</span>
+        <div class="sp-x-buttons-group">
+            <span class="sp-x-btn sp-x-pp-box-open">...</span>
+        </div>
+        <div class="sp-x-pp-box">
+            <span title="Поднять вверх" class="sp-x-btn sp-acc-up">&uarr;</span>
+            <span title="Опустить вниз" class="sp-x-btn sp-acc-dn">&darr;</span>
+            <span title="Удалить вкладку" class="sp-x-btn sp-acc-del">x</span>
+        </div>
     </div>
-
     <div class="sp-acc-tab-container"></div>
-
     <div class="sp-acc-tab-buttons">
-        Добавить:
+        <span>Добавить:</span>
         <span class="sp-x-btn" data-name="text">текст</span>
         <span class="sp-x-btn" data-name="image">картинку</span>
     </div>
-
 </div>
