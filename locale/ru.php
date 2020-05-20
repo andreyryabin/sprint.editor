@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/../lib/locale.php";
 
 Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_MODULE_NAME" => "Редактор для контент-менеджеров",
