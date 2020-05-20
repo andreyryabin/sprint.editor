@@ -1,27 +1,25 @@
 <?php
 
-
 namespace Sprint\Editor\Structure;
-
 
 class Block
 {
-
     private $params = [];
 
     public function __construct($params = [])
     {
-        $this->params = array_merge([
-            'name' => '',
-            'layout' => '0,0',
-        ], $params);
+        $this->params = array_merge(
+            [
+                'name'   => '',
+                'layout' => '0,0',
+            ], $params
+        );
     }
 
     public function toArray()
     {
         return $this->params;
     }
-
 
     /**
      * @return string
@@ -41,6 +39,7 @@ class Block
 
     /**
      * @param $name
+     *
      * @return $this
      */
     public function setName($name)
@@ -52,6 +51,7 @@ class Block
     /**
      * @param $layoutIndex int
      * @param $columnIndex int
+     *
      * @return $this
      */
     public function setPosition($layoutIndex, $columnIndex)

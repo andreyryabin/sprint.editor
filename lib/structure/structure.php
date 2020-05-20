@@ -17,6 +17,7 @@ class Structure
 
     /**
      * @param array $params
+     *
      * @throws StructureException
      * @return $this
      */
@@ -30,6 +31,7 @@ class Structure
 
     /**
      * @param array $params
+     *
      * @throws StructureException
      * @return $this
      */
@@ -54,9 +56,9 @@ class Structure
     {
         $data = [
             'packname' => '',
-            'version' => 2,
-            'blocks' => [],
-            'layouts' => [],
+            'version'  => 2,
+            'blocks'   => [],
+            'layouts'  => [],
         ];
 
         foreach ($this->layouts as $lindex => $layout) {
@@ -79,17 +81,20 @@ class Structure
      * Load structure from array
      *
      * @param array $data
+     *
      * @throws StructureException
      * @return Structure
      */
     public function fromArray($data = [])
     {
-        $data = array_merge([
-            'packname' => '',
-            'version' => 2,
-            'blocks' => [],
-            'layouts' => [],
-        ], $data);
+        $data = array_merge(
+            [
+                'packname' => '',
+                'version'  => 2,
+                'blocks'   => [],
+                'layouts'  => [],
+            ], $data
+        );
 
         $this->layouts = [];
 
@@ -111,6 +116,7 @@ class Structure
 
     /**
      * @param string $json
+     *
      * @throws StructureException
      * @return Structure
      */
@@ -130,7 +136,6 @@ class Structure
             $this->toArray()
         );
     }
-
 
     /**
      * @throws StructureException

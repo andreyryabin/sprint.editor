@@ -1,84 +1,94 @@
 <?php
 
 namespace Sprint\Editor\AdminBlocks;
+
+use CIblock;
+use CIBlockSection;
+use CModule;
 use Sprint\Editor\Locale;
 
 class IblockSections
 {
+    protected $params = [];
 
-    protected $params = array();
+    public function __construct()
+    {
+        CModule::IncludeModule('iblock');
 
-    public function __construct() {
-        \CModule::IncludeModule('iblock');
-
-
-        $ids = !empty($_REQUEST['section_ids']) ? $_REQUEST['section_ids'] : array();
-        $ids = array_map(function ($val) {
-            return intval($val);
-        }, $ids);
+        $ids = !empty($_REQUEST['section_ids']) ? $_REQUEST['section_ids'] : [];
+        $ids = array_map(
+            function ($val) {
+                return intval($val);
+            }, $ids
+        );
 
         $ids = array_unique($ids);
 
         $ibid = !empty($_REQUEST['iblock_id']) ? intval($_REQUEST['iblock_id']) : 0;
 
-        $this->params = array(
-            'iblock_id' => $ibid,
+        $this->params = [
+            'iblock_id'   => $ibid,
             'section_ids' => $ids,
-        );
+        ];
     }
 
-    public function execute() {
-        $iblocks = array();
-        $dbResult = \CIblock::GetList(array('SORT' => 'ASC'), array('ACTIVE' => 'Y'));
+    public function execute()
+    {
+        $iblocks = [];
+        $dbResult = CIblock::GetList(['SORT' => 'ASC'], ['ACTIVE' => 'Y']);
         while ($aItem = $dbResult->Fetch()) {
-            $iblocks[] = array(
+            $iblocks[] = [
                 'title' => Locale::truncateText($aItem['NAME']),
-                'id' => $aItem['ID'],
-            );
+                'id'    => $aItem['ID'],
+            ];
         }
 
-        $elements = array();
-        if ($this->params['iblock_id'] > 0 && !empty($this->params['section_ids'])){
-            $dbRes = \CIBlockSection::GetList(array(
-                'ID' => 'DESC'
-            ),
-            array(
-                'IBLOCK_ID' => $this->params['iblock_id'],
-                'ACTIVE' => 'Y',
-                'ID' => $this->params['section_ids']
-            ),
-    false,
-            array(
-                'ID',
-                'IBLOCK_ID',
-                'NAME',
-                'ACTIVE',
-                'SORT'
-            ));
+        $elements = [];
+        if ($this->params['iblock_id'] > 0 && !empty($this->params['section_ids'])) {
+            $dbRes = CIBlockSection::GetList(
+                [
+                    'ID' => 'DESC',
+                ],
+                [
+                    'IBLOCK_ID' => $this->params['iblock_id'],
+                    'ACTIVE'    => 'Y',
+                    'ID'        => $this->params['section_ids'],
+                ],
+                false,
+                [
+                    'ID',
+                    'IBLOCK_ID',
+                    'NAME',
+                    'ACTIVE',
+                    'SORT',
+                ]
+            );
 
-            $unsorted = array();
+            $unsorted = [];
             while ($aItem = $dbRes->Fetch()) {
-                $unsorted[ $aItem['ID'] ] = array(
+                $unsorted[$aItem['ID']] = [
                     'title' => Locale::truncateText($aItem['NAME']),
-                    'id' => $aItem['ID'],
-                );
+                    'id'    => $aItem['ID'],
+                ];
             }
 
-            foreach ($this->params['section_ids'] as $id){
-                if (isset($unsorted[$id])){
+            foreach ($this->params['section_ids'] as $id) {
+                if (isset($unsorted[$id])) {
                     $elements[] = $unsorted[$id];
                 }
             }
         }
 
         header('Content-type: application/json; charset=utf-8');
-        echo json_encode(Locale::convertToUtf8IfNeed(array(
-            'iblocks' => $iblocks,
-            'elements' => $elements,
-            'iblock_id' => $this->params['iblock_id'],
-            'section_ids' => $this->params['section_ids'],
-        )));
+        echo json_encode(
+            Locale::convertToUtf8IfNeed(
+                [
+                    'iblocks'     => $iblocks,
+                    'elements'    => $elements,
+                    'iblock_id'   => $this->params['iblock_id'],
+                    'section_ids' => $this->params['section_ids'],
+                ]
+            )
+        );
     }
-
-
 }

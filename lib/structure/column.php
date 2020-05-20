@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Sprint\Editor\Structure;
-
 
 class Column
 {
@@ -10,14 +8,15 @@ class Column
      * @var array|Block[]
      */
     private $blocks = [];
-
     private $params = [];
 
     public function __construct($params = [])
     {
-        $this->params = array_merge([
-            'css' => '',
-        ], $params);
+        $this->params = array_merge(
+            [
+                'css' => '',
+            ], $params
+        );
     }
 
     public function toArray()
@@ -25,9 +24,9 @@ class Column
         return $this->params;
     }
 
-
     /**
      * @param Block $block
+     *
      * @return $this
      */
     public function addBlock(Block $block)
@@ -54,6 +53,7 @@ class Column
 
     /**
      * @param string $css
+     *
      * @return Column
      */
     public function setCss($css)
@@ -61,6 +61,4 @@ class Column
         $this->params['css'] = $css;
         return $this;
     }
-
-
 }

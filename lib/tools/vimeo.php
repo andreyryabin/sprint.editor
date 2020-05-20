@@ -4,7 +4,6 @@ namespace Sprint\Editor\Tools;
 
 class Vimeo
 {
-
     static public function getVideoCode($url, $default = '')
     {
         $matches = [];

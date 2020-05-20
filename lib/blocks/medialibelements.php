@@ -1,34 +1,36 @@
 <?php
+
 namespace Sprint\Editor\Blocks;
+
 use Sprint\Editor\Tools\Medialib;
 
 class MedialibElements
 {
-
-    static public function getImages($block, $resizePreview = array(), $resizeDetail = array()){
-        if (empty($block['element_ids']) || empty($block['collection_id'])){
-            return array();
+    static public function getImages($block, $resizePreview = [], $resizeDetail = [])
+    {
+        if (empty($block['element_ids']) || empty($block['collection_id'])) {
+            return [];
         }
 
-        $dbresult = Medialib::GetElements(array(
-            'collection_id' => $block['collection_id'],
-            'id' => $block['element_ids']
-        ), array(), $resizePreview, $resizeDetail);
+        $dbresult = Medialib::GetElements(
+            [
+                'collection_id' => $block['collection_id'],
+                'id'            => $block['element_ids'],
+            ], [], $resizePreview, $resizeDetail
+        );
 
-
-        $unsorted = array();
+        $unsorted = [];
         foreach ($dbresult['items'] as $aItem) {
-            $unsorted[ $aItem['ID'] ] = $aItem;
+            $unsorted[$aItem['ID']] = $aItem;
         }
 
-        $elements = array();
-        foreach ($block['element_ids'] as $id){
-            if (isset($unsorted[$id])){
+        $elements = [];
+        foreach ($block['element_ids'] as $id) {
+            if (isset($unsorted[$id])) {
                 $elements[] = $unsorted[$id];
             }
         }
 
         return $elements;
     }
-
 }

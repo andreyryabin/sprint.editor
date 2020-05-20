@@ -2,22 +2,28 @@
 
 namespace Sprint\Editor\Tools;
 
+use CMedialib;
+use CMedialibCollection;
+use CModule;
+use COption;
+
 class Medialib
 {
-
     private static $once = 0;
 
-    private static function initialize() {
+    private static function initialize()
+    {
         if (!self::$once) {
-            \CModule::IncludeModule('fileman');
-            \CMedialib::Init();
+            CModule::IncludeModule('fileman');
+            CMedialib::Init();
             self::$once = 1;
         }
     }
 
-    public static function GetCollections($filter = array()) {
+    public static function GetCollections($filter = [])
+    {
         self::initialize();
-        $mltypes = \CMedialib::GetTypes();
+        $mltypes = CMedialib::GetTypes();
 
         $filter['type'] = isset($filter['type']) ? $filter['type'] : 'image';
 
@@ -30,37 +36,40 @@ class Medialib
         }
 
         if ($typeid > 0) {
-            return \CMedialibCollection::GetList(array(
-                'arFilter' => array(
-                    'TYPES' => array($typeid)
-                )
-            ));
+            return CMedialibCollection::GetList(
+                [
+                    'arFilter' => [
+                        'TYPES' => [$typeid],
+                    ],
+                ]
+            );
         } else {
-            return array();
+            return [];
         }
     }
 
-    public static function GetElements($filter, $navParams = array(), $resizePreview = array(), $resizeDetail = array()) {
+    public static function GetElements($filter, $navParams = [], $resizePreview = [], $resizeDetail = [])
+    {
         self::initialize();
 
         global $DB;
 
-        $arResult = array(
-            'items' => array(),
+        $arResult = [
+            'items'      => [],
             'page_count' => 1,
-            'page_num' => 1,
-        );
+            'page_num'   => 1,
+        ];
 
-        $whereQuery = array();
+        $whereQuery = [];
         if (!empty($filter['collection_id'])) {
             if (is_array($filter['collection_id'])) {
-
-                $filter['collection_id'] = array_map(function ($val) {
-                    return intval($val);
-                }, $filter['collection_id']);
+                $filter['collection_id'] = array_map(
+                    function ($val) {
+                        return intval($val);
+                    }, $filter['collection_id']
+                );
 
                 $whereQuery[] = 'MCI.COLLECTION_ID in (' . implode(',', $filter['collection_id']) . ')';
-
             } elseif (intval($filter['collection_id']) > 0) {
                 $whereQuery[] = 'MCI.COLLECTION_ID=' . intval($filter['collection_id']);
             }
@@ -68,13 +77,13 @@ class Medialib
 
         if (!empty($filter['id'])) {
             if (is_array($filter['id'])) {
-
-                $filter['id'] = array_map(function ($val) {
-                    return intval($val);
-                }, $filter['id']);
+                $filter['id'] = array_map(
+                    function ($val) {
+                        return intval($val);
+                    }, $filter['id']
+                );
 
                 $whereQuery[] = 'MI.ID in (' . implode(',', $filter['id']) . ')';
-
             } elseif (intval($filter['id']) > 0) {
                 $whereQuery[] = 'MI.ID=' . intval($filter['id']);
             }
@@ -88,7 +97,6 @@ class Medialib
         $whereQuery = implode(' AND ', $whereQuery);
 
         if (isset($navParams['page_size'])) {
-
             $q = "SELECT COUNT(*) cnt
                 FROM 
                     b_medialib_collection_item MCI
@@ -114,12 +122,13 @@ class Medialib
             $limitQuery = 'LIMIT ' . $navoffsset . ',' . $pagesize;
         }
 
-        $resizePreview = array_merge(array(
-            'width' => \COption::GetOptionInt('fileman', "ml_thumb_width", 140),
-            'height' => \COption::GetOptionInt('fileman', "ml_thumb_height", 105),
-            'exact' => 0,
-        ), $resizePreview);
-
+        $resizePreview = array_merge(
+            [
+                'width'  => COption::GetOptionInt('fileman', "ml_thumb_width", 140),
+                'height' => COption::GetOptionInt('fileman', "ml_thumb_height", 105),
+                'exact'  => 0,
+            ], $resizePreview
+        );
 
         $q = "SELECT MI.*,MCI.COLLECTION_ID, F.HEIGHT, F.WIDTH, F.FILE_SIZE, F.CONTENT_TYPE, F.SUBDIR, F.FILE_NAME, F.HANDLER_ID
             FROM 
@@ -133,11 +142,11 @@ class Medialib
         $dbResult = $DB->Query($q);
 
         while ($aImage = $dbResult->Fetch()) {
-            $aItem = Image::resizeImage2($aImage,$resizePreview);
+            $aItem = Image::resizeImage2($aImage, $resizePreview);
             $aItem['DETAIL_SRC'] = $aItem['SRC'];
 
-            if (!empty($resizeDetail)){
-                $aDetail = Image::resizeImage2($aImage,$resizeDetail);
+            if (!empty($resizeDetail)) {
+                $aDetail = Image::resizeImage2($aImage, $resizeDetail);
                 $aItem['DETAIL_SRC'] = $aDetail['SRC'];
             }
 

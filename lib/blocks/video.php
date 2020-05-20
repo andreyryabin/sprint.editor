@@ -7,20 +7,21 @@ use Sprint\Editor\Tools\Youtube;
 
 class Video
 {
-
     static public function getHtml($block, $params = [])
     {
         if (empty($block['url'])) {
             return '';
         }
-        $block = array_merge([
-            'width' => '100%',
-            'height' => 480,
-        ], $block, $params);
+        $block = array_merge(
+            [
+                'width'  => '100%',
+                'height' => 480,
+            ], $block, $params
+        );
 
         $services = [
             'youtube' => Youtube::class,
-            'vimeo' => Vimeo::class,
+            'vimeo'   => Vimeo::class,
         ];
 
         $videoHtml = '';
@@ -32,6 +33,5 @@ class Video
         }
 
         return $videoHtml;
-
     }
 }

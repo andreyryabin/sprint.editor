@@ -5,33 +5,37 @@ namespace Sprint\Editor;
 class Locale
 {
     private static $localeLoaded = false;
+    private static $messages = [];
 
-    private static $messages = array();
-
-    public static function isWin1251() {
+    public static function isWin1251()
+    {
         return (defined('BX_UTF') && BX_UTF === true) ? 0 : 1;
     }
 
-    public static function convertToWin1251IfNeed($msg) {
+    public static function convertToWin1251IfNeed($msg)
+    {
         if (self::isWin1251() && self::detectUtf8($msg)) {
             $msg = self::deepConvert('utf-8', 'windows-1251//IGNORE', $msg);
         }
         return $msg;
     }
 
-    public static function convertToUtf8IfNeed($msg) {
+    public static function convertToUtf8IfNeed($msg)
+    {
         if (self::isWin1251() && !self::detectUtf8($msg)) {
             $msg = self::deepConvert('windows-1251', 'utf-8//IGNORE', $msg);
         }
         return $msg;
     }
 
-    protected static function detectUtf8($msg) {
+    protected static function detectUtf8($msg)
+    {
         $msg = is_array($msg) ? serialize($msg) : $msg;
         return (md5($msg) == md5(iconv('utf-8', 'utf-8', $msg))) ? 1 : 0;
     }
 
-    public static function loadLocale($loc) {
+    public static function loadLocale($loc)
+    {
         global $MESS;
 
         if (!self::$localeLoaded) {
@@ -41,31 +45,33 @@ class Locale
                 $MESS[$key] = $msg;
             }
         }
-
     }
 
-    public static function GetLangMessages(){
+    public static function GetLangMessages()
+    {
         return self::$messages;
     }
 
-    public static function truncateText($strText, $intLen = 60){
+    public static function truncateText($strText, $intLen = 60)
+    {
         $strText = strip_tags($strText);
-        if (self::isWin1251()){
-            if(strlen($strText) > $intLen){
-                return rtrim(substr($strText, 0, $intLen), ".")."...";
+        if (self::isWin1251()) {
+            if (strlen($strText) > $intLen) {
+                return rtrim(substr($strText, 0, $intLen), ".") . "...";
             } else {
                 return $strText;
             }
         } else {
-            if(mb_strlen($strText, 'UTF-8') > $intLen){
-                return rtrim(mb_substr($strText, 0, $intLen, 'UTF-8'), ".")."...";
+            if (mb_strlen($strText, 'UTF-8') > $intLen) {
+                return rtrim(mb_substr($strText, 0, $intLen, 'UTF-8'), ".") . "...";
             } else {
                 return $strText;
             }
         }
     }
 
-    protected static function deepConvert($from, $to, $target) {
+    protected static function deepConvert($from, $to, $target)
+    {
         if (is_array($target)) {
             foreach ($target as &$val) {
                 $val = self::deepConvert($from, $to, $val);

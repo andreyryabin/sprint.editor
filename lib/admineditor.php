@@ -1,19 +1,17 @@
 <?php
 
-
 namespace Sprint\Editor;
+
+use CUtil;
+use DirectoryIterator;
 
 class AdminEditor
 {
-
     protected static $initCounts = 0;
-
     protected static $css = [];
-    protected static $js = [];
-
+    protected static $js  = [];
     protected static $parameters = [];
-    protected static $templates = [];
-
+    protected static $templates  = [];
     protected static $selectValues = [];
 
     public static function init($params)
@@ -21,7 +19,6 @@ class AdminEditor
         self::$initCounts++;
 
         if (self::$initCounts == 1) {
-
             self::registerPacks();
 
             self::registerBlocks('blocks', false, false);
@@ -31,16 +28,17 @@ class AdminEditor
 
             self::registerLayouts();
             self::registerAssets();
-
         }
 
-        $params = array_merge([
-            'uniqId' => '',
-            'value' => '',
-            'inputName' => '',
-            'defaultValue' => '',
-            'userSettings' => '',
-        ], $params);
+        $params = array_merge(
+            [
+                'uniqId'       => '',
+                'value'        => '',
+                'inputName'    => '',
+                'defaultValue' => '',
+                'userSettings' => '',
+            ], $params
+        );
 
         $value = self::prepareValue($params['value']);
         if (empty($value['blocks']) && empty($value['layouts'])) {
@@ -80,17 +78,19 @@ class AdminEditor
             $file = '/templates/admin_editor.php';
         }
 
-        return self::renderFile(Module::getModuleDir() . $file, [
-            'jsonValue' => json_encode(Locale::convertToUtf8IfNeed($value)),
-            'selectValues' => $filteredSelect,
-            'templates' => Locale::convertToWin1251IfNeed(self::$templates),
-            'jsonParameters' => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
+        return self::renderFile(
+            Module::getModuleDir() . $file, [
+            'jsonValue'        => json_encode(Locale::convertToUtf8IfNeed($value)),
+            'selectValues'     => $filteredSelect,
+            'templates'        => Locale::convertToWin1251IfNeed(self::$templates),
+            'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
             'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
-            'enableChange' => $enableChange,
-            'inputName' => $params['inputName'],
-            'uniqId' => $params['uniqId'],
-            'firstRun' => (self::$initCounts == 1) ? 1 : 0,
-        ]);
+            'enableChange'     => $enableChange,
+            'inputName'        => $params['inputName'],
+            'uniqId'           => $params['uniqId'],
+            'firstRun'         => (self::$initCounts == 1) ? 1 : 0,
+        ]
+        );
     }
 
     protected static function loadSettings($settingsName)
@@ -102,11 +102,13 @@ class AdminEditor
             include $settingsFile;
         }
 
-        $settings = array_merge([
-            'title' => $settingsName,
-            'layout_classes' => [],
-            'block_settings' => [],
-        ], $settings);
+        $settings = array_merge(
+            [
+                'title'          => $settingsName,
+                'layout_classes' => [],
+                'block_settings' => [],
+            ], $settings
+        );
 
         return $settings;
     }
@@ -127,7 +129,7 @@ class AdminEditor
 
         $dir = Module::getSettingsDir();
 
-        $directory = new \DirectoryIterator($dir);
+        $directory = new DirectoryIterator($dir);
         foreach ($directory as $item) {
             if ($item->isFile() && $item->getExtension() == 'php') {
                 $settingsName = $item->getBasename('.php');
@@ -150,7 +152,6 @@ class AdminEditor
 
     public static function prepareValueArray($value)
     {
-
         /* convert to version 1 */
         if (!empty($value) && !isset($value['layouts'])) {
             foreach ($value as $index => $block) {
@@ -159,7 +160,7 @@ class AdminEditor
             }
 
             $value = [
-                'blocks' => $value,
+                'blocks'  => $value,
                 'layouts' => [
                     [''],
                 ],
@@ -168,11 +169,9 @@ class AdminEditor
 
         /* convert to version 2 */
         if (!empty($value) && !isset($value['version'])) {
-
             $newlayots = [];
 
             foreach ($value['layouts'] as $index => $layout) {
-
                 $newcolumns = [];
                 foreach ($layout as $column) {
                     $newcolumns[] = [
@@ -183,19 +182,15 @@ class AdminEditor
                 $newlayots[] = [
                     'columns' => $newcolumns,
                 ];
-
             }
-
 
             $value = [
                 'packname' => '',
-                'version' => 2,
-                'blocks' => $value['blocks'],
-                'layouts' => $newlayots,
+                'version'  => 2,
+                'blocks'   => $value['blocks'],
+                'layouts'  => $newlayots,
             ];
-
         }
-
 
         if (!isset($value['blocks'])) {
             $value['blocks'] = [];
@@ -245,10 +240,10 @@ class AdminEditor
         if (Module::getDbOption('load_jquery') == 'yes') {
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js');
         } else {
-            \CUtil::InitJSCore(["jquery"]);
+            CUtil::InitJSCore(["jquery"]);
         }
 
-        \CUtil::InitJSCore(['translit']);
+        CUtil::InitJSCore(['translit']);
 
         if (Module::getDbOption('load_jquery_ui') == 'yes') {
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-ui-1.12.1.custom/jquery-ui.min.js');
@@ -300,7 +295,7 @@ class AdminEditor
 
         $selectBlocks = [];
 
-        $iterator = new \DirectoryIterator($rootpath);
+        $iterator = new DirectoryIterator($rootpath);
         foreach ($iterator as $item) {
             if (!$item->isDir() || $item->isDot()) {
                 continue;
@@ -378,11 +373,10 @@ class AdminEditor
         self::sortByNum($selectBlocks, 'sort');
 
         self::$selectValues['blocks_' . $groupname] = [
-            'title' => GetMessage('SPRINT_EDITOR_group_' . $groupname),
-            'type' => 'blocks_' . $groupname,
+            'title'  => GetMessage('SPRINT_EDITOR_group_' . $groupname),
+            'type'   => 'blocks_' . $groupname,
             'blocks' => Locale::convertToWin1251IfNeed($selectBlocks),
         ];
-
     }
 
     protected static function registerLayouts()
@@ -391,13 +385,13 @@ class AdminEditor
         for ($num = 1; $num <= 4; $num++) {
             $selectLayouts[] = [
                 'title' => GetMessage('SPRINT_EDITOR_layout_type' . $num),
-                'name' => 'layout_' . $num,
+                'name'  => 'layout_' . $num,
             ];
         }
 
         self::$selectValues['layouts'] = [
-            'title' => GetMessage('SPRINT_EDITOR_group_layout'),
-            'type' => 'layouts',
+            'title'  => GetMessage('SPRINT_EDITOR_group_layout'),
+            'type'   => 'layouts',
             'blocks' => Locale::convertToWin1251IfNeed($selectLayouts),
         ];
     }
@@ -408,7 +402,7 @@ class AdminEditor
 
         $dir = Module::getPacksDir();
 
-        $iterator = new \DirectoryIterator($dir);
+        $iterator = new DirectoryIterator($dir);
         foreach ($iterator as $item) {
             if ($item->getExtension() != 'json') {
                 continue;
@@ -420,16 +414,13 @@ class AdminEditor
             $content = json_decode($content, true);
 
             if ($content && isset($content['blocks']) && $content['layouts']) {
-
                 $packname = !empty($content['packname']) ? $content['packname'] : $packuid;
 
                 $packs[] = [
-                    'name' => 'pack_' . $packuid,
+                    'name'  => 'pack_' . $packuid,
                     'title' => $packname,
                 ];
-
             }
-
         }
 
         if (empty($packs)) {
@@ -439,8 +430,8 @@ class AdminEditor
         self::sortByStr($packs, 'title');
 
         $result = [
-            'title' => GetMessage('SPRINT_EDITOR_group_packs'),
-            'type' => 'packs',
+            'title'  => GetMessage('SPRINT_EDITOR_group_packs'),
+            'type'   => 'packs',
             'blocks' => Locale::convertToWin1251IfNeed($packs),
         ];
 
@@ -464,8 +455,8 @@ class AdminEditor
                 }
                 if (!empty($localBlocks)) {
                     $localValues[$groupType] = [
-                        'title' => $group['title'],
-                        'type' => $group['type'],
+                        'title'  => $group['title'],
+                        'type'   => $group['type'],
                         'blocks' => $localBlocks,
 
                     ];
@@ -482,8 +473,8 @@ class AdminEditor
                 }
                 if (!empty($localBlocks)) {
                     $localValues[$groupType] = [
-                        'title' => $group['title'],
-                        'type' => $group['type'],
+                        'title'  => $group['title'],
+                        'type'   => $group['type'],
                         'blocks' => $localBlocks,
 
                     ];
@@ -502,8 +493,8 @@ class AdminEditor
                     }
                     if (!empty($localBlocks)) {
                         $localValues[$groupType] = [
-                            'title' => $group['title'],
-                            'type' => $group['type'],
+                            'title'  => $group['title'],
+                            'type'   => $group['type'],
                             'blocks' => $localBlocks,
                         ];
                     }
@@ -530,18 +521,22 @@ class AdminEditor
 
     protected static function sortByNum(&$input = [], $key = 'sort')
     {
-        usort($input, function ($a, $b) use ($key) {
+        usort(
+            $input, function ($a, $b) use ($key) {
             if ($a[$key] == $b[$key]) {
                 return 0;
             }
             return ($a[$key] < $b[$key]) ? -1 : 1;
-        });
+        }
+        );
     }
 
     protected static function sortByStr(&$input = [], $key = 'title')
     {
-        usort($input, function ($a, $b) use ($key) {
+        usort(
+            $input, function ($a, $b) use ($key) {
             return strcmp($a[$key], $b[$key]);
-        });
+        }
+        );
     }
 }

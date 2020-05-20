@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Sprint\Editor\Structure;
-
 
 class Layout
 {
@@ -10,7 +8,7 @@ class Layout
      * @var array|Column[]
      */
     private $columns = [];
-    private $params = [];
+    private $params  = [];
 
     public function __construct($params = [])
     {
@@ -39,6 +37,7 @@ class Layout
 
     /**
      * @param Column $column
+     *
      * @return Layout
      */
     public function addColumn(Column $column)
@@ -46,5 +45,4 @@ class Layout
         $this->columns[] = $column;
         return $this;
     }
-
 }

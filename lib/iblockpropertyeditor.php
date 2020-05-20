@@ -1,23 +1,21 @@
 <?php
 
-
 namespace Sprint\Editor;
 
 class IblockPropertyEditor
 {
-
     public function GetUserTypeDescription()
     {
         return [
-            "PROPERTY_TYPE" => "S",
-            "USER_TYPE" => "sprint_editor",
-            "DESCRIPTION" => GetMessage('SPRINT_EDITOR_TITLE'),
+            "PROPERTY_TYPE"        => "S",
+            "USER_TYPE"            => "sprint_editor",
+            "DESCRIPTION"          => GetMessage('SPRINT_EDITOR_TITLE'),
             'GetAdminListViewHTML' => [__CLASS__, 'GetAdminListViewHTML'],
             'GetPropertyFieldHtml' => [__CLASS__, 'GetPropertyFieldHtml'],
-            "GetSearchContent" => [__CLASS__, "GetSearchContent"],
-            "GetSettingsHTML" => [__CLASS__, "GetSettingsHTML"],
-            "PrepareSettings" => [__CLASS__, "PrepareSettings"],
-            "GetPublicEditHTML" => [__CLASS__, "GetPublicEditHTML"],
+            "GetSearchContent"     => [__CLASS__, "GetSearchContent"],
+            "GetSettingsHTML"      => [__CLASS__, "GetSettingsHTML"],
+            "PrepareSettings"      => [__CLASS__, "PrepareSettings"],
+            "GetPublicEditHTML"    => [__CLASS__, "GetPublicEditHTML"],
         ];
     }
 
@@ -36,13 +34,15 @@ class IblockPropertyEditor
             //$settings['SETTINGS_NAME'] = '';
         }
 
-        return AdminEditor::init([
-            'uniqId' => $arProperty['ID'],
-            'value' => $value['VALUE'],
-            'inputName' => $strHTMLControlName['VALUE'],
-            'defaultValue' => $arProperty['~DEFAULT_VALUE'],
-            'userSettings' => $settings,
-        ]);
+        return AdminEditor::init(
+            [
+                'uniqId'       => $arProperty['ID'],
+                'value'        => $value['VALUE'],
+                'inputName'    => $strHTMLControlName['VALUE'],
+                'defaultValue' => $arProperty['~DEFAULT_VALUE'],
+                'userSettings' => $settings,
+            ]
+        );
     }
 
     public function GetPublicEditHTML($arProperty, $value, $strHTMLControlName)
@@ -69,11 +69,11 @@ class IblockPropertyEditor
                 "MULTIPLE",
                 "IS_REQUIRED",
             ],
-            "SET" => [
-                "FILTRABLE" => "N",
-                "SMART_FILTER" => "N",
-                "IS_REQUIRED" => "N",
-                "MULTIPLE" => "N",
+            "SET"  => [
+                "FILTRABLE"        => "N",
+                "SMART_FILTER"     => "N",
+                "IS_REQUIRED"      => "N",
+                "MULTIPLE"         => "N",
                 "SECTION_PROPERTY" => "Y",
             ],
         ];
@@ -82,11 +82,13 @@ class IblockPropertyEditor
         $settings = $settings['USER_TYPE_SETTINGS'];
         $userfiles = AdminEditor::getUserSettingsFiles();
 
-        return AdminEditor::renderFile(Module::getModuleDir() . '/templates/iblock_property.php', [
+        return AdminEditor::renderFile(
+            Module::getModuleDir() . '/templates/iblock_property.php', [
             'inputName' => $strHTMLControlName['NAME'],
-            'settings' => $settings,
+            'settings'  => $settings,
             'userfiles' => $userfiles,
-        ]);
+        ]
+        );
     }
 
     public static function PrepareSettings($arProperty)

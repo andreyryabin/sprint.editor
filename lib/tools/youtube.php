@@ -4,7 +4,6 @@ namespace Sprint\Editor\Tools;
 
 class Youtube
 {
-
     static public function getVideoCode($url, $default = '')
     {
         $matches = [];

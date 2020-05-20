@@ -1,21 +1,25 @@
 <?php
+
 namespace Sprint\Editor\Blocks;
+
 use Sprint\Editor\Tools\Image as ImageTools;
 
 class Image
 {
-
-    static public function getImage($block, $resizeParams = array(), $resizeDetail = array()){
-        if (empty($block['file'])){
-            return array();
+    static public function getImage($block, $resizeParams = [], $resizeDetail = [])
+    {
+        if (empty($block['file'])) {
+            return [];
         }
-        $resizeParams = array_merge(array(
-            'width' => 1024,
-            'height' => 768,
-            'exact' => 0,
-        ), $resizeParams);
+        $resizeParams = array_merge(
+            [
+                'width'  => 1024,
+                'height' => 768,
+                'exact'  => 0,
+            ], $resizeParams
+        );
 
-        $aItem = ImageTools::resizeImage2($block['file']['ID'],$resizeParams);
+        $aItem = ImageTools::resizeImage2($block['file']['ID'], $resizeParams);
 
         $aItem['DESCRIPTION'] = htmlspecialcharsbx($block['desc']);
 
@@ -26,5 +30,4 @@ class Image
 
         return $aItem;
     }
-
 }

@@ -4,7 +4,6 @@ namespace Sprint\Editor\Blocks;
 
 class Component
 {
-
     static public function initializeParams($block)
     {
         foreach ($block['component_params'] as $paramKey => $paramVal) {
@@ -23,7 +22,6 @@ class Component
         return $block;
     }
 
-
     static protected function hasArrayExpression($str)
     {
         return strpos($str, '={array(') === 0 && substr($str, -2, 2) == ')}';
@@ -39,7 +37,6 @@ class Component
         return strpos($str, '={$_GET[') === 0 && substr($str, -2, 2) == ']}';
     }
 
-
     static protected function hasExpression($str)
     {
         return (substr($str, 0, 2) == "={" && substr($str, -1, 1) == "}" && strlen($str) > 3);
@@ -49,12 +46,11 @@ class Component
     {
         $str = substr($str, 8, -2);
         $str = explode(',', $str);
-        foreach ($str as $key => $val){
+        foreach ($str as $key => $val) {
             $str[$key] = trim($val, ' \'"');
         }
         return $str;
     }
-
 
     static protected function calcRequestExpression($str)
     {
@@ -71,7 +67,6 @@ class Component
         $str = isset($_GET[$str]) ? $_GET[$str] : '';
         return $str;
     }
-
 
     static protected function calcExpression($str)
     {

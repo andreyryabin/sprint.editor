@@ -6,17 +6,18 @@ use Sprint\Editor\Tools\Medialib;
 
 class MedialibCollections
 {
-
-    static public function getImages($block, $resizePreview = array(), $resizeDetail = array()) {
+    static public function getImages($block, $resizePreview = [], $resizeDetail = [])
+    {
         if (empty($block['collections'])) {
-            return array();
+            return [];
         }
 
-        $result = Medialib::GetElements(array(
-            'collection_id' => $block['collections']
-        ), array(), $resizePreview, $resizeDetail);
+        $result = Medialib::GetElements(
+            [
+                'collection_id' => $block['collections'],
+            ], [], $resizePreview, $resizeDetail
+        );
 
         return $result['items'];
     }
-
 }
