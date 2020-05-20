@@ -45,7 +45,7 @@ sprint_editor.registerBlock('yandex_map', function ($, $el, data) {
 
     this.afterRender = function () {
 
-        $.getScript("https://api-maps.yandex.ru/2.1/?lang=ru_RU&wizard=bitrix", function(){
+        $.getScript("https://api-maps.yandex.ru/2.1/?lang=ru_RU&wizard=bitrix", function () {
             afterLoad()
         });
     };

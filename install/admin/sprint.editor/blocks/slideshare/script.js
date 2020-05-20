@@ -1,8 +1,8 @@
-sprint_editor.registerBlock('slideshare', function($, $el, data) {
+sprint_editor.registerBlock('slideshare', function ($, $el, data) {
 
     data = $.extend({
         url: '',
-        embed_url : '',
+        embed_url: '',
         width: '510',
         height: '420'
     }, data);
@@ -22,7 +22,7 @@ sprint_editor.registerBlock('slideshare', function($, $el, data) {
         var $preview = $el.find('.sp-preview');
         var $input = $el.find('.sp-url');
 
-        if (data.embed_url){
+        if (data.embed_url) {
             renderPreview($preview, data.embed_url)
         } else {
             getPost($input, $preview);
@@ -37,7 +37,7 @@ sprint_editor.registerBlock('slideshare', function($, $el, data) {
         $preview.empty();
 
         var inputUrl = $input.val();
-        if (inputUrl.length > 0){
+        if (inputUrl.length > 0) {
             $.ajax({
                 url: "http://www.slideshare.net/api/oembed/2",
                 data: {
@@ -45,18 +45,18 @@ sprint_editor.registerBlock('slideshare', function($, $el, data) {
                     format: 'jsonp'
                 },
                 dataType: "jsonp",
-                success: function(result) {
+                success: function (result) {
                     if (result && result.html) {
 
                         var embedUrl = $('<div>' + result.html + '</div>').find('iframe').attr('src');
 
-                        if (embedUrl && embedUrl.length > 0){
+                        if (embedUrl && embedUrl.length > 0) {
                             data.embed_url = embedUrl;
                             renderPreview($preview, embedUrl);
                         }
                     }
                 },
-                error: function (xhr, ajaxOptions, thrownError){
+                error: function (xhr, ajaxOptions, thrownError) {
                 }
             });
         }
@@ -64,7 +64,7 @@ sprint_editor.registerBlock('slideshare', function($, $el, data) {
 
     function renderPreview($preview, embedUrl) {
         $preview.html(
-            '<iframe width="320" height="180" src="'+embedUrl+'" frameborder="0" allowfullscreen></iframe>'
+            '<iframe width="320" height="180" src="' + embedUrl + '" frameborder="0" allowfullscreen></iframe>'
         );
     }
 

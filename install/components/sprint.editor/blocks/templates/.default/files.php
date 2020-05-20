@@ -1,6 +1,6 @@
 <? /**
  * @var $block array
- * @var $this \SprintEditorBlocksComponent
+ * @var $this  SprintEditorBlocksComponent
  */ ?><?
 ?><? if (!empty($block['files'])): ?>
     <ol>

@@ -1,3 +1,3 @@
-<?/** @var $block array */
-?><?=$block['value']?>
+<? /** @var $block array */
+?><?= $block['value'] ?>
 

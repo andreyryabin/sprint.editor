@@ -12,7 +12,7 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
     var pmanager = new BXComponentParamsManager({
         'requestUrl': '/bitrix/admin/fileman_component_params.php',
         'relPath': '/',
-        'id': getRandomInt(100,9999)
+        'id': getRandomInt(100, 9999)
     });
 
     this.getData = function () {
@@ -56,7 +56,7 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
             }
         });
 
-        $elFilter.on('click','.sp-reload',function(){
+        $elFilter.on('click', '.sp-reload', function () {
             renderFilters(1);
         });
 
@@ -127,7 +127,6 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
             }
         }
     };
-
 
 
     function getRandomInt(min, max) {

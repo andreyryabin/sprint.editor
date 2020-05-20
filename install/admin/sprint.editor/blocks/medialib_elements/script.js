@@ -11,7 +11,7 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
         page_num: 1
     };
 
-    if (data.page_num && data.page_num >= 1){
+    if (data.page_num && data.page_num >= 1) {
         navparams.page_num = data.page_num;
     }
 
@@ -54,7 +54,7 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
         sendrequest({
             collection_id: data.collection_id,
             element_ids: data.element_ids,
-            page:navparams.page_num
+            page: navparams.page_num
         });
 
     };
@@ -80,9 +80,9 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
         return values;
     };
 
-    var intval = function(val){
+    var intval = function (val) {
         val = (val) ? val : 0;
-        val = parseInt(val,10);
+        val = parseInt(val, 10);
         return isNaN(val) ? 0 : val;
     };
 
@@ -128,7 +128,7 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
                         removeIntent = true;
                     },
                     beforeStop: function (event, ui) {
-                        if(removeIntent){
+                        if (removeIntent) {
                             ui.item.remove();
                         } else {
                             ui.item.removeAttr('style');
@@ -137,7 +137,7 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
                     },
                     receive: function (event, ui) {
                         var uiIndex = ui.item.attr('data-id');
-                        var item =  $(this).find('[data-id=' + uiIndex + ']');
+                        var item = $(this).find('[data-id=' + uiIndex + ']');
                         if (item.length > 1) {
                             item.last().remove();
                         }
@@ -148,7 +148,7 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
                     connectToSortable: $elem,
                     helper: "clone",
                     revert: "invalid"
-                  });
+                });
             },
             error: function () {
 

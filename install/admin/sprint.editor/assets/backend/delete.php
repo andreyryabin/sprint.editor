@@ -1,7 +1,6 @@
 <?php
 define("PUBLIC_AJAX_MODE", true);
 
-
 define("NO_KEEP_STATISTIC", true);
 define("NO_AGENT_STATISTIC", true);
 define("NO_AGENT_CHECK", true);
@@ -17,12 +16,11 @@ global $APPLICATION;
 global $USER;
 global $DB;
 
-
-if (\CModule::IncludeModule('sprint.editor')) {
+if (CModule::IncludeModule('sprint.editor')) {
     if (!empty($_REQUEST['items']) && is_array($_REQUEST['items'])) {
         foreach ($_REQUEST['items'] as $item) {
             if (isset($item['file']) && isset($item['file']['ID'])) {
-                \CFile::Delete($item['file']['ID']);
+                CFile::Delete($item['file']['ID']);
             }
         }
     }

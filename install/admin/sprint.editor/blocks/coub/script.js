@@ -1,4 +1,4 @@
-sprint_editor.registerBlock('coub', function($, $el, data) {
+sprint_editor.registerBlock('coub', function ($, $el, data) {
 
     data = $.extend({
         url: '',
@@ -28,15 +28,15 @@ sprint_editor.registerBlock('coub', function($, $el, data) {
         }, 500);
     };
 
-    function getPreview($preview, $input){
+    function getPreview($preview, $input) {
         var inputUrl = $input.val();
         var regExp = /^.*coub.com\/view\/(\w+)/;
         var match = inputUrl.match(regExp);
-        var coubCode = (match && match[1])? match[1] : '';
+        var coubCode = (match && match[1]) ? match[1] : '';
 
-        if (coubCode){
+        if (coubCode) {
             $preview.html(
-                '<iframe src="//coub.com/embed/'+coubCode+'?muted=false&autostart=false&originalSize=false&startWithHD=false" allowfullscreen="true" frameborder="0" width="320" height="180"></iframe>'
+                '<iframe src="//coub.com/embed/' + coubCode + '?muted=false&autostart=false&originalSize=false&startWithHD=false" allowfullscreen="true" frameborder="0" width="320" height="180"></iframe>'
             );
         } else {
             $preview.html('');

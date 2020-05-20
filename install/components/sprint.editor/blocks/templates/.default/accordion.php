@@ -1,6 +1,6 @@
 <? /**
  * @var $block array
- * @var $this \SprintEditorBlocksComponent
+ * @var $this  SprintEditorBlocksComponent
  */ ?>
 <div class="sp-accordion">
     <? foreach ($block['items'] as $item): ?>

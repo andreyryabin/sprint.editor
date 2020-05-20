@@ -24,12 +24,12 @@
     width: 80%;
 }
 
-.sp-block-gallery .sp-edit{
+.sp-block-gallery .sp-edit {
     background: #ddd;
     display: none;
 }
 
-.sp-block-gallery .sp-active{
+.sp-block-gallery .sp-active {
     border: 2px solid #d00;
 }
 
@@ -40,23 +40,24 @@
     padding: 5px;
 }
 
-.sp-block-gallery .sp-source{
+.sp-block-gallery .sp-source {
     background: #FFEBC1;
     display: none;
 }
 
-.sp-block-gallery.sp-show .sp-source{
+.sp-block-gallery.sp-show .sp-source {
     display: block;
 }
 
-.sp-block-gallery .sp-download-url{
+.sp-block-gallery .sp-download-url {
     width: 80%;
 }
 
 
-.sp-block-gallery .sp-fields{
+.sp-block-gallery .sp-fields {
     padding: 10px;
 }
-.sp-block-gallery .sp-field{
+
+.sp-block-gallery .sp-field {
     margin-bottom: 10px;
 }

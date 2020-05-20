@@ -1,4 +1,4 @@
-<?/** @var $block array */?><?
+<? /** @var $block array */ ?><?
 
 /*
 $preview = Sprint\Editor\Blocks\Image::getImage($block['preview'], array(
@@ -11,13 +11,15 @@ $preview = Sprint\Editor\Blocks\Image::getImage($block['preview'], array(
 
 $text = Sprint\Editor\Blocks\Text::getValue($block['text']);
 
-$video = Sprint\Editor\Blocks\Video::getHtml($block['video'], array(
-    'width' => 640,
-    'height' => 480
-));
+$video = Sprint\Editor\Blocks\Video::getHtml(
+    $block['video'], [
+    'width'  => 640,
+    'height' => 480,
+]
+);
 
 ?>
 <div class="sp-video-text">
-    <div><?=$video?></div>
-    <div><?=$text?></div>
+    <div><?= $video ?></div>
+    <div><?= $text ?></div>
 </div>

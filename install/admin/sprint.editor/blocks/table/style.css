@@ -5,7 +5,7 @@
     border: 1px solid #aaa !important;
 }
 
-.sp-block-table td{
+.sp-block-table td {
     border: 1px solid #aaa;
     padding: 5px;
     min-width: 24px;
@@ -17,19 +17,19 @@
     padding: 0;
 }
 
-.sp-block-table .active{
+.sp-block-table .active {
     background: #FFEBC1;
 }
 
-.sp-block-table .bold{
+.sp-block-table .bold {
     font-weight: bold;
 }
 
-.sp-block-table .center{
+.sp-block-table .center {
     text-align: center;
 }
 
-.sp-block-table .right{
+.sp-block-table .right {
     text-align: right;
 }
 

@@ -1,5 +1,7 @@
 <?php
 
+use Sprint\Editor\UploadHandler;
+
 define("NO_KEEP_STATISTIC", true);
 define("NO_AGENT_STATISTIC", true);
 define("NO_AGENT_CHECK", true);
@@ -15,12 +17,13 @@ global $APPLICATION;
 global $USER;
 global $DB;
 
-
-if (\CModule::IncludeModule('sprint.editor')) {
+if (CModule::IncludeModule('sprint.editor')) {
     if (!empty($_REQUEST['url'])) {
-        $handler = new \Sprint\Editor\UploadHandler(array(
-            'save_origin_name' => true,
-        ), false);
+        $handler = new UploadHandler(
+            [
+                'save_origin_name' => true,
+            ], false
+        );
         $handler->saveResource($_REQUEST['url']);
     }
 }

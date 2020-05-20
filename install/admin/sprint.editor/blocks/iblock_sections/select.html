@@ -2,7 +2,7 @@
     <select class="sp-select-iblock">
         <option value="">нет</option>
         {{~it.iblocks :item:index}}
-        <option {{?item.id == it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}</option>
+        <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}</option>
         {{~}}
     </select>
     {{?it.iblock_id}}

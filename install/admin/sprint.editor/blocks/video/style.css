@@ -1,33 +1,34 @@
-.sp-block-video .sp-url{
+.sp-block-video .sp-url {
     width: 98%;
 
 }
 
-.sp-block-video .sp-table{
+.sp-block-video .sp-table {
     margin-top: 10px;
 }
 
-.sp-block-video .sp-preview{
+.sp-block-video .sp-preview {
     /*float: left;*/
     width: 320px;
     height: 180px;
     background: #ccc;
 }
 
-.sp-block-video .sp-col-preview{
+.sp-block-video .sp-col-preview {
     width: 330px;
     text-align: center;
 
 }
-.sp-block-video .sp-col-sizes{
+
+.sp-block-video .sp-col-sizes {
     text-align: left;
 }
 
-.sp-block-video .sp-col-sizes input[type=text]{
+.sp-block-video .sp-col-sizes input[type=text] {
     margin-bottom: 5px;
     width: 100px;
 }
 
-.sp-block-video .sp-area1-image{
+.sp-block-video .sp-area1-image {
     display: none;
 }

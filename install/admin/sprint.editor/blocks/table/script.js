@@ -2,8 +2,8 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
     data = $.extend({
         rows: [
-            [{text:''}, {text:''},{text:''}, {text:''}],
-            [{text:''}, {text:''},{text:''}, {text:''}]
+            [{text: ''}, {text: ''}, {text: ''}, {text: ''}],
+            [{text: ''}, {text: ''}, {text: ''}, {text: ''}]
         ]
 
     }, data);
@@ -114,7 +114,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 }
             });
 
-            colCount = (colCount > 0 ) ? colCount : 1;
+            colCount = (colCount > 0) ? colCount : 1;
 
             var newtr = '';
             for (var index = 1; index <= colCount; index++) {

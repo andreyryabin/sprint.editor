@@ -1,8 +1,8 @@
 .sp-block-text .trumbowyg-textarea {
-    min-height:70px;
+    min-height: 70px;
 }
 
-.sp-block-text .trumbowyg-editor{
+.sp-block-text .trumbowyg-editor {
     min-height: 70px;
     padding: 5px;
 }

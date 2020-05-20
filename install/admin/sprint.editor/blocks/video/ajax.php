@@ -15,14 +15,13 @@ global $APPLICATION;
 global $USER;
 global $DB;
 
-
 if (CModule::IncludeModule('sprint.editor')) {
     $url = !empty($_REQUEST['url']) ? trim($_REQUEST['url']) : '';
 
     $videoHtml = '';
     $services = [
         'youtube' => Sprint\Editor\Tools\Youtube::class,
-        'vimeo' => Sprint\Editor\Tools\Vimeo::class,
+        'vimeo'   => Sprint\Editor\Tools\Vimeo::class,
     ];
 
     foreach ($services as $code => $service) {
@@ -32,10 +31,12 @@ if (CModule::IncludeModule('sprint.editor')) {
         }
     }
 
-    echo json_encode([
-        'url' => $url,
-        'html' => $videoHtml,
-    ]);
+    echo json_encode(
+        [
+            'url'  => $url,
+            'html' => $videoHtml,
+        ]
+    );
 }
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_after.php");

@@ -2,11 +2,11 @@
     position: relative;
 }
 
-.sp-block-iblock_elements .sp-filter{
+.sp-block-iblock_elements .sp-filter {
     display: block;
 }
 
-.sp-block-iblock_elements.sp-show .sp-filter{
+.sp-block-iblock_elements.sp-show .sp-filter {
     display: block;
 }
 

@@ -1,6 +1,7 @@
-.sp-block-lists .sp-item{
+.sp-block-lists .sp-item {
     padding-bottom: 6px;
 }
-.sp-block-lists .sp-item input{
+
+.sp-block-lists .sp-item input {
     width: 90%;
 }

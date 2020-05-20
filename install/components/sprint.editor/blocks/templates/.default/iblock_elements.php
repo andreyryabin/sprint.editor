@@ -1,12 +1,15 @@
-<?/** @var $block array */?><?
-$elements = Sprint\Editor\Blocks\IblockElements::getList($block, array(
+<? /** @var $block array */ ?><?
+$elements = Sprint\Editor\Blocks\IblockElements::getList(
+    $block, [
     'NAME',
-    'DETAIL_PAGE_URL'
-));
-?><div class="sp-iblock-elements">
-    <?foreach ($elements as $aItem):?>
+    'DETAIL_PAGE_URL',
+]
+);
+?>
+<div class="sp-iblock-elements">
+    <? foreach ($elements as $aItem): ?>
         <div>
-            <a href="<?=$aItem['DETAIL_PAGE_URL']?>"><?=$aItem['NAME']?></a> <br/>
+            <a href="<?= $aItem['DETAIL_PAGE_URL'] ?>"><?= $aItem['NAME'] ?></a> <br/>
         </div>
-    <?endforeach;?>
+    <? endforeach; ?>
 </div>

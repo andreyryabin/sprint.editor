@@ -1,12 +1,13 @@
 <?php /**
  * Подключается перед выводом всех блоков
- * @var $this \SprintEditorBlocksComponent
- * @var $blocks array - массив со всеми блоками, можно модифицировать
+ *
+ * @var $this     SprintEditorBlocksComponent
+ * @var $blocks   array - массив со всеми блоками, можно модифицировать
  * @var $arParams array - массив с параметрами компонента
  */
 
 if ($this->arParams['USE_JQUERY'] == 'Y') {
-    \CUtil::InitJSCore(Array("jquery"));
+    CUtil::InitJSCore(["jquery"]);
 }
 
 if ($this->arParams['USE_FANCYBOX'] == 'Y') {

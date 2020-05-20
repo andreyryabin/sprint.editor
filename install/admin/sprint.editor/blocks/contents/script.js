@@ -1,4 +1,4 @@
-sprint_editor.registerBlock('contents', function($, $el, data) {
+sprint_editor.registerBlock('contents', function ($, $el, data) {
 
     data = $.extend({
         selectors: [],
@@ -8,7 +8,7 @@ sprint_editor.registerBlock('contents', function($, $el, data) {
     var all = ['h1', 'h2', 'h3', 'h4', 'h5'];
 
     var checked = [];
-    $.each(all, function(index, val){
+    $.each(all, function (index, val) {
         var selected = ($.inArray(val, data.selectors) >= 0);
         checked.push({
             id: val,
@@ -29,7 +29,7 @@ sprint_editor.registerBlock('contents', function($, $el, data) {
             var $obj = $(this);
             if ($obj.is(':checked')) {
                 var val = $obj.val();
-                if (jQuery.inArray(val, all) >=0 ){
+                if (jQuery.inArray(val, all) >= 0) {
                     data.selectors.push($obj.val());
                 }
             }

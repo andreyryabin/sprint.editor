@@ -14,14 +14,14 @@
 
 <label class="sp-label-site">
     Шаблон сайта
-<select class="sp-filter-site">
-    <option value="">нет</option>
-    {{~it.sitetemplates :item:index}}
-    <option {{?item.value== it.filter_site}}selected="selected" {{?}} value="{{!item.value}}">
-        {{=item.name}}
-    </option>
-    {{~}}
-</select>
+    <select class="sp-filter-site">
+        <option value="">нет</option>
+        {{~it.sitetemplates :item:index}}
+        <option {{?item.value== it.filter_site}}selected="selected" {{?}} value="{{!item.value}}">
+            {{=item.name}}
+        </option>
+        {{~}}
+    </select>
 </label>
 
 <input title="Обновить список компонентов" type="button" class="sp-reload" value="Обновить">

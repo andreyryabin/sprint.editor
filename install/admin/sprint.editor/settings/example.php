@@ -5,7 +5,7 @@
  */
 
 $settings = [
-    'title' => 'Редактор с колонками',
+    'title'           => 'Редактор с колонками',
 
     //Разрешить изменение структуры материала, перекрывает настройку "Отключить добавление блоков"
     //'enable_change' => true,
@@ -19,7 +19,7 @@ $settings = [
     //'delete_block_after_sort_out' => false,
 
     //Доступные классы колонок для сеток
-    'layout_classes' => [
+    'layout_classes'  => [
         'type1' => [
             ['col-md-3', 'col-md-4', 'col-md-6', 'col-md-8', 'col-md-9', 'col-md-12'],
         ],
@@ -43,21 +43,21 @@ $settings = [
     ],
 
     //Названия классов для колонок
-    'layout_titles' => [
+    'layout_titles'   => [
         'col-md-12' => '100%',
-        'col-md-9' => '75%',
-        'col-md-8' => '66.66%',
-        'col-md-6' => '50%',
-        'col-md-4' => '33.33%',
-        'col-md-3' => '25%',
+        'col-md-9'  => '75%',
+        'col-md-8'  => '66.66%',
+        'col-md-6'  => '50%',
+        'col-md-4'  => '33.33%',
+        'col-md-3'  => '25%',
     ],
 
     //Настройки блоков
-    'block_settings' => [
+    'block_settings'  => [
 
-        'htag' =>[
+        'htag' => [
             'taglist' => [
-                'type' => 'hidden',
+                'type'  => 'hidden',
                 'value' => [
                     'h1' => 'h1',
                     'h2' => 'h2',
@@ -69,7 +69,7 @@ $settings = [
         ],
         'text' => [
             'param1' => [
-                'type' => 'select',
+                'type'  => 'select',
                 'value' => [
                     'style1' => 'Цитата',
                     //'style2' => 'Сноска',
@@ -77,7 +77,7 @@ $settings = [
             ],
 
             'csslist' => [
-                'type' => 'hidden',
+                'type'  => 'hidden',
                 'value' => [
                     'sp-text-1' => 'Стиль 1',
                     'sp-text-2' => 'Стиль 2',
@@ -88,25 +88,23 @@ $settings = [
     ],
 
     //Отключить указанные блоки (если используется, то block_enabled уже не обрабатывается)
-    'block_disabled' => [
+    'block_disabled'  => [
         //'slideshare'
     ],
 
     //Разрешить добавление указанных блоков
-    'block_enabled' => [
-//        'htag',
-//        'text',
-//        'gallery'
+    'block_enabled'   => [
+        //        'htag',
+        //        'text',
+        //        'gallery'
     ],
-
 
     //Разрешить добавление указанных сеток
-    'layout_enabled' => [
-//        'layout_1',
-//        'layout_2',
-//        'layout_3',
-//        'layout_4',
+    'layout_enabled'  => [
+        //        'layout_1',
+        //        'layout_2',
+        //        'layout_3',
+        //        'layout_4',
     ],
-
 
 ];

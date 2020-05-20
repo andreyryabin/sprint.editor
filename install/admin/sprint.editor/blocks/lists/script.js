@@ -1,7 +1,7 @@
-sprint_editor.registerBlock('lists', function($, $el, data) {
+sprint_editor.registerBlock('lists', function ($, $el, data) {
 
     data = $.extend({
-        elements: [{text:''},{text:''}]
+        elements: [{text: ''}, {text: ''}]
     }, data);
 
     this.getData = function () {
@@ -10,14 +10,14 @@ sprint_editor.registerBlock('lists', function($, $el, data) {
 
     this.collectData = function () {
         var trimed = [];
-        $el.find('.sp-item-text').each(function(){
+        $el.find('.sp-item-text').each(function () {
             var text = $.trim(
                 $(this).val()
             );
 
             if (text) {
                 trimed.push({
-                    text : text
+                    text: text
                 });
             }
         });
@@ -33,7 +33,7 @@ sprint_editor.registerBlock('lists', function($, $el, data) {
             sprint_editor.renderTemplate('lists-items', data)
         );
 
-        $el.on('click', '.sp-lists-add', function(){
+        $el.on('click', '.sp-lists-add', function () {
             $res.append(
                 sprint_editor.renderTemplate('lists-items', {
                     elements: [

@@ -28,19 +28,19 @@ sprint_editor.registerBlock('twitter', function ($, $el, data) {
         $preview.empty();
 
         var inputUrl = $input.val();
-        if (inputUrl.length > 0){
+        if (inputUrl.length > 0) {
             $.ajax({
                 url: "https://publish.twitter.com/oembed",
                 data: {
                     url: inputUrl
                 },
                 dataType: "jsonp",
-                success: function(result) {
+                success: function (result) {
                     if (result && result.html) {
                         $preview.html(result.html);
                     }
                 },
-                error: function (xhr, ajaxOptions, thrownError){
+                error: function (xhr, ajaxOptions, thrownError) {
                 }
             });
         }

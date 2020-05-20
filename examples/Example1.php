@@ -18,24 +18,32 @@ $json = (new Structure())
     //->fromArray()
 
     ->addLayout()
-    ->addColumn([
-        'css' => 'col-md-3',
-    ])
-    ->addBlock([
-        'name' => 'htag',
-        'value' => 'Заголовок 1',
-    ])
+    ->addColumn(
+        [
+            'css' => 'col-md-3',
+        ]
+    )
+    ->addBlock(
+        [
+            'name'  => 'htag',
+            'value' => 'Заголовок 1',
+        ]
+    )
     ->addColumn()
-    ->addBlock([
-        'name' => 'text',
-        'value' => 'Текст на второй колонке',
-    ])
+    ->addBlock(
+        [
+            'name'  => 'text',
+            'value' => 'Текст на второй колонке',
+        ]
+    )
     ->addLayout()
     ->addColumn()
-    ->addBlock([
-        'name' => 'text',
-        'value' => 'Текст 2',
-    ])
+    ->addBlock(
+        [
+            'name'  => 'text',
+            'value' => 'Текст 2',
+        ]
+    )
     //->toArray()
     ->toJson();
 
@@ -44,9 +52,10 @@ $json = (new Structure())
  * cодержимое редактора в свойство с кодом EDITOR1
  *
  */
-\CIBlockElement::SetPropertyValuesEx(200, 16, [
+CIBlockElement::SetPropertyValuesEx(
+    200, 16, [
     'EDITOR1' => $json,
-]);
-
+]
+);
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");

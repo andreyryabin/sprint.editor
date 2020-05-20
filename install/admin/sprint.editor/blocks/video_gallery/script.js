@@ -170,22 +170,22 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
             $item.replaceWith(sprint_editor.renderTemplate('video_gallery-item', {
                 item: item,
                 uid: uid,
-                active:1
+                active: 1
             }));
 
         } else {
             $el.find('.sp-result').append(sprint_editor.renderTemplate('video_gallery-item', {
                 item: item,
                 uid: uid,
-                active:0
+                active: 0
             }));
         }
     };
 
-    var deletefiles = function(uid){
-        if (uid && itemsCollection[uid]){
+    var deletefiles = function (uid) {
+        if (uid && itemsCollection[uid]) {
             var items = {};
-            items[uid] =  itemsCollection[uid];
+            items[uid] = itemsCollection[uid];
 
             sprint_editor.markImagesForDelete(items);
         }

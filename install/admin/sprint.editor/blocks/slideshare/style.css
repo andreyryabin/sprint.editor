@@ -1,4 +1,4 @@
-.sp-block-slideshare input[type=text]{
+.sp-block-slideshare input[type=text] {
     width: 98%;
 }
 
@@ -10,27 +10,28 @@
 }
 
 
-.sp-block-slideshare .sp-table{
+.sp-block-slideshare .sp-table {
     margin-top: 10px;
 }
 
-.sp-block-slideshare .sp-preview{
+.sp-block-slideshare .sp-preview {
     /*float: left;*/
     width: 320px;
     height: 180px;
     background: #ccc;
 }
 
-.sp-block-slideshare .sp-col-preview{
+.sp-block-slideshare .sp-col-preview {
     width: 330px;
     text-align: center;
 
 }
-.sp-block-slideshare .sp-col-sizes{
+
+.sp-block-slideshare .sp-col-sizes {
     text-align: left;
 }
 
-.sp-block-slideshare .sp-col-sizes input[type=text]{
+.sp-block-slideshare .sp-col-sizes input[type=text] {
     margin-bottom: 5px;
     width: 100px;
 }

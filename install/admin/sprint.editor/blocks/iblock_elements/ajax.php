@@ -1,5 +1,7 @@
 <?php
 
+use Sprint\Editor\AdminBlocks\IblockElements;
+
 define("NO_KEEP_STATISTIC", true);
 define("NO_AGENT_STATISTIC", true);
 define("NO_AGENT_CHECK", true);
@@ -15,9 +17,8 @@ global $APPLICATION;
 global $USER;
 global $DB;
 
-
-if (\CModule::IncludeModule('sprint.editor')) {
-    $handler = new \Sprint\Editor\AdminBlocks\IblockElements();
+if (CModule::IncludeModule('sprint.editor')) {
+    $handler = new IblockElements();
     $handler->execute();
 }
 

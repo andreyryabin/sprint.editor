@@ -29,11 +29,11 @@
 }
 
 
-.sp-block-video_gallery .sp-edit{
+.sp-block-video_gallery .sp-edit {
     background: #ddd;
 }
 
-.sp-block-video_gallery .sp-active{
+.sp-block-video_gallery .sp-active {
     border: 2px solid #d00;
 }
 
@@ -44,31 +44,32 @@
     padding: 5px;
 }
 
-.sp-block-video_gallery .sp-source{
+.sp-block-video_gallery .sp-source {
     background: #FFEBC1;
     display: none;
 }
 
-.sp-block-video_gallery .sp-is-video::after{
+.sp-block-video_gallery .sp-is-video::after {
     background-image: url(/bitrix/admin/sprint.editor/assets/video-gallery/img/white-play-icon.png);
     background-position: center;
     background-repeat: no-repeat;
     content: '';
     display: block;
     height: 30px;
-    right:5px;
+    right: 5px;
     position: absolute;
-    top:5px;
+    top: 5px;
     width: 30px;
 }
 
-.sp-block-video_gallery .sp-download-url{
+.sp-block-video_gallery .sp-download-url {
     width: 80%;
 }
 
-.sp-block-video_gallery .sp-fields{
+.sp-block-video_gallery .sp-fields {
     padding: 10px;
 }
-.sp-block-video_gallery .sp-field{
+
+.sp-block-video_gallery .sp-field {
     margin-bottom: 10px;
 }

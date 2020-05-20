@@ -1,4 +1,4 @@
-<?/** @var $block array */?><?
+<? /** @var $block array */ ?><?
 
 /*
 $preview = Sprint\Editor\Blocks\Image::getImage($block['preview'], array(
@@ -9,6 +9,7 @@ $preview = Sprint\Editor\Blocks\Image::getImage($block['preview'], array(
 ));
 */
 
-?><div class="sp-video">
-<?=Sprint\Editor\Blocks\Video::getHtml($block) ?>
+?>
+<div class="sp-video">
+    <?= Sprint\Editor\Blocks\Video::getHtml($block) ?>
 </div>

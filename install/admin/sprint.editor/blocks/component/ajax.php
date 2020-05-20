@@ -15,18 +15,18 @@ global $APPLICATION;
 global $USER;
 global $DB;
 
-if (\CModule::IncludeModule('sprint.editor')) {
+if (CModule::IncludeModule('sprint.editor')) {
     header('Content-type: application/json; charset=utf-8');
 
-    \CModule::IncludeModule('fileman');
+    CModule::IncludeModule('fileman');
 
     $clearCache = (!empty($_REQUEST['clear_cache']));
 
-    $sitetemplates = \CHTMLEditor::GetSiteTemplates();
-    $allcomponents = \CHTMLEditor::GetComponents(array(), $clearCache, array());
+    $sitetemplates = CHTMLEditor::GetSiteTemplates();
+    $allcomponents = CHTMLEditor::GetComponents([], $clearCache, []);
 
-    $filtered = array();
-    $nslist = array();
+    $filtered = [];
+    $nslist = [];
 
     $maskInc = !empty($_REQUEST['filter_include']) ? trim($_REQUEST['filter_include']) : '';
     $maskExc = !empty($_REQUEST['filter_exclude']) ? trim($_REQUEST['filter_exclude']) : '';
@@ -57,23 +57,23 @@ if (\CModule::IncludeModule('sprint.editor')) {
         $index = array_search($ns, $nslist);
 
         if (!isset($filtered[$index])) {
-            $filtered[$index] = array(
-                'name' => $ns,
-                'items' => array()
-            );
+            $filtered[$index] = [
+                'name'  => $ns,
+                'items' => [],
+            ];
         }
 
         $filtered[$index]['items'][] = $item;
     }
 
-    $result = array(
-        'components' => $filtered,
-        'sitetemplates' => $sitetemplates,
+    $result = [
+        'components'     => $filtered,
+        'sitetemplates'  => $sitetemplates,
         'component_name' => $curComp,
-        'filter_site' => $curSite,
+        'filter_site'    => $curSite,
         'filter_include' => $maskInc,
         'filter_exclude' => $maskExc,
-    );
+    ];
 
     echo json_encode(\Sprint\Editor\Locale::convertToUtf8IfNeed($result));
 }

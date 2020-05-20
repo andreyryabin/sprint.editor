@@ -28,14 +28,14 @@ sprint_editor.registerBlock('instagram', function ($, $el, data) {
         $preview.empty();
 
         var inputUrl = $input.val();
-        if (inputUrl.length > 0){
+        if (inputUrl.length > 0) {
             $.ajax({
                 url: sprint_editor.getBlockWebPath('instagram') + '/ajax.php',
                 data: {
                     url: inputUrl
                 },
                 dataType: "html",
-                success: function(result) {
+                success: function (result) {
                     if (result) {
                         $preview.html(result);
                         if (typeof instgrm !== 'undefined') {
@@ -43,7 +43,7 @@ sprint_editor.registerBlock('instagram', function ($, $el, data) {
                         }
                     }
                 },
-                error: function (xhr, ajaxOptions, thrownError){
+                error: function (xhr, ajaxOptions, thrownError) {
                 }
             });
         }

@@ -1,19 +1,19 @@
 sprint_editor.registerBlock('complex_video_text', function ($, $el, data) {
     var areas = [
         {
-            dataKey : 'video',
+            dataKey: 'video',
             blockName: 'video',
-            container : '.sp-area1'
+            container: '.sp-area1'
         },
         {
-            dataKey : 'preview',
+            dataKey: 'preview',
             blockName: 'image',
-            container : '.sp-area1-image'
+            container: '.sp-area1-image'
         },
         {
-            dataKey : 'text',
+            dataKey: 'text',
             blockName: 'text',
-            container : '.sp-area2'
+            container: '.sp-area2'
         }
     ];
 
@@ -25,7 +25,7 @@ sprint_editor.registerBlock('complex_video_text', function ($, $el, data) {
         return data;
     };
 
-    this.getAreas = function(){
+    this.getAreas = function () {
         return areas;
     };
 });

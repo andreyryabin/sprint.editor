@@ -1,14 +1,16 @@
 
-.sp-block-button_link .sp-field-row{
+.sp-block-button_link .sp-field-row {
     margin-bottom: 10px;
 }
-.sp-block-button_link .sp-title{
+
+.sp-block-button_link .sp-title {
     width: 90%;
 }
 
-.sp-block-button_link .sp-type{
+.sp-block-button_link .sp-type {
     width: 180px;
 }
-.sp-block-button_link .sp-url{
+
+.sp-block-button_link .sp-url {
     width: 80%;
 }
