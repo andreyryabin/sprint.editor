@@ -16,17 +16,17 @@ if ($updater && $updater instanceof \CUpdater) {
     }
 
 
-    //example
-    //sprint_editor_rmdir($_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/freemium/');
+    //v 2.9.1 remove classes dir
+    sprint_editor_rmdir(__DIR__ . '/install/classes/');
 
     if (is_dir(__DIR__ . '/install/components/')) {
-        //$updater->CopyFiles("install/components/", "components/");
+        $updater->CopyFiles("install/components/", "components/");
     }
 
     if (is_dir(__DIR__ . '/install/admin/')) {
         $updater->CopyFiles("install/admin/", "admin/");
     }
 
-    //2.8.2
+    //2.9.1
 
 }

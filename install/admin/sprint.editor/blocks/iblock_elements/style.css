@@ -1,4 +1,4 @@
-.sp-block-iblock_elements .sp-iblock-result {
+.sp-block-iblock_elements .sp-result {
     position: relative;
 }
 
@@ -17,6 +17,7 @@
     white-space: nowrap;
     width: 95%;
     overflow: hidden;
+    border-bottom: 1px solid #ccc;
 }
 
 .sp-block-iblock_elements .sp-placeholder {
@@ -30,10 +31,6 @@
     background: #eee;
     min-height: 100px;
     padding: 5px 5px 10px;
-}
-
-.sp-block-iblock_elements .sp-elements .sp-item {
-    border-bottom: 1px solid #ccc;
 }
 
 .sp-block-iblock_elements .sp-item.ui-draggable-dragging {

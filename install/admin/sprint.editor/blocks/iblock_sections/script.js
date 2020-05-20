@@ -117,7 +117,7 @@ sprint_editor.registerBlock('iblock_sections', function ($, $el, data) {
 
     var sendrequest = function (requestParams, callback) {
 
-        var $jresult = $el.find('.sp-iblock-result');
+        var $jresult = $el.find('.sp-result');
 
         $.ajax({
             url: sprint_editor.getBlockWebPath('iblock_sections') + '/ajax.php',
