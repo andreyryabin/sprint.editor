@@ -1,11 +1,11 @@
 <?php
 namespace Sprint\Editor\Blocks;
 
-class IblockElements
+class IblockSections
 {
 
     static public function getList($block, $select = array()){
-        if (empty($block['iblock_id']) || empty($block['element_ids'])){
+        if (empty($block['iblock_id']) || empty($block['section_ids'])){
             return array();
         }
 
@@ -17,23 +17,21 @@ class IblockElements
             'NAME',
             'SORT',
             'ACTIVE',
-            'DETAIL_PAGE_URL',
-            'PREVIEW_TEXT'
+            'SECTION_PAGE_URL',
         ), $select);
 
-        $dbRes = \CIBlockElement::GetList(array(), array(
+        $dbRes = \CIBlockSection::GetList(array(), array(
             'IBLOCK_ID' => $block['iblock_id'],
-            'ID' => $block['element_ids']
-        ),false,false,$select);
+            'ID' => $block['section_ids']
+        ),false,$select);
 
         $unsorted = array();
         while ($aItem = $dbRes->GetNext()){
             $unsorted[ $aItem['ID'] ] = $aItem;
         }
 
-
         $result = array();
-        foreach ($block['element_ids'] as $id){
+        foreach ($block['section_ids'] as $id){
             if (isset($unsorted[$id])){
                 $result[] = $unsorted[$id];
             }

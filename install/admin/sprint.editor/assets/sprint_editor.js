@@ -138,6 +138,7 @@ var sprint_editor = {
             for (var prop in areas) {
                 if (areas.hasOwnProperty(prop)) {
                     var area = areas[prop];
+                    area.blockSettings = area.blockSettings || {};
 
                     var areaData = {};
                     if (area.dataFrom) {
@@ -150,7 +151,8 @@ var sprint_editor = {
                         $,
                         $el.find(area.container),
                         area.blockName,
-                        areaData
+                        areaData,
+                        area.blockSettings
                     );
                 }
             }
@@ -313,13 +315,15 @@ var sprint_editor = {
 
     renderBlock: function (blockData, blockSettings, uid, params) {
         var renderVars = this.getBlockParams(blockData.name);
+        if (renderVars) {
 
-        renderVars.uid = uid;
-        renderVars.enableChange = params.enableChange;
+            renderVars['uid'] = uid;
+            renderVars['enableChange'] = params.enableChange;
+            renderVars['compiled'] = this.compileSettings(blockData, blockSettings);
 
-        renderVars.compiled = this.compileSettings(blockData, blockSettings);
-
-        return this.renderTemplate('box', renderVars);
+            return this.renderTemplate('box', renderVars);
+        }
+        return '';
     },
 
     compileSettings: function (blockData, settings) {

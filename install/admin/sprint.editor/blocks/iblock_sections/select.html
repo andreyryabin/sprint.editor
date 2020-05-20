@@ -1,0 +1,19 @@
+<div class="sp-filter">
+    <select class="sp-select-iblock">
+        <option value="">нет</option>
+        {{~it.iblocks :item:index}}
+        <option {{?item.id == it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}</option>
+        {{~}}
+    </select>
+    {{?it.iblock_id}}
+    <input type="button" class="sp-open" value="Добавить">
+    {{?}}
+</div>
+
+<div class="sp-elements">
+    {{~it.elements :item:index}}
+    <div data-id="{{!item.id}}" class="sp-item">
+        {{!item.id}} - {{!item.title}}
+    </div>
+    {{~}}
+</div>
