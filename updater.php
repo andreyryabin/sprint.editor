@@ -28,6 +28,6 @@ if ($updater && $updater instanceof \CUpdater) {
     if (is_dir(__DIR__ . '/install/admin/')) {
         $updater->CopyFiles("install/admin/", "admin/");
     }
-    //3.1.1
+    //3.1.2
 
 }

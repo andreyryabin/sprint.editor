@@ -51,6 +51,16 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
             });
         });
 
+        $el.on('click', '.sp-toggle', function () {
+            if ($el.hasClass('sp-show')) {
+                $el.find('.sp-source').hide(250);
+                $el.removeClass('sp-show');
+            } else {
+                $el.find('.sp-source').show(250);
+                $el.addClass('sp-show');
+            }
+        });
+
         sendrequest({
             collection_id: data.collection_id,
             element_ids: data.element_ids,
