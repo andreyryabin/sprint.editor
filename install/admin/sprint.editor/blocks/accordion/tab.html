@@ -14,7 +14,8 @@
     <div class="sp-acc-tab-container"></div>
     <div class="sp-acc-tab-buttons">
         <span>Добавить:</span>
-        <span class="sp-x-btn" data-name="text">текст</span>
-        <span class="sp-x-btn" data-name="image">картинку</span>
+        {{~it.blocks :item}}
+        <span class="sp-x-btn" data-name="{{=item.id}}">{{=item.title}}</span>
+        {{~}}
     </div>
 </div>

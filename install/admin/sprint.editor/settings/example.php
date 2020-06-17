@@ -56,6 +56,7 @@ $settings = [
     'block_settings'  => [
 
         'htag' => [
+            //список тегов для заголовка
             'taglist' => [
                 'type'  => 'hidden',
                 'value' => [
@@ -64,6 +65,18 @@ $settings = [
                     'h3' => 'h3',
                     'h4' => 'h4',
                     'h5' => 'h5',
+                ],
+            ],
+
+        ],
+        'accordion' => [
+            //подключаемые блоки к аккордеону
+            'blocks' => [
+                'type'  => 'hidden',
+                'value' => [
+                    'text'  => 'текст',
+                    'image' => 'картинку',
+                    'video' => 'видео',
                 ],
             ],
         ],

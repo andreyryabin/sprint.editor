@@ -1,9 +1,23 @@
-sprint_editor.registerBlock('accordion', function ($, $el, data) {
+sprint_editor.registerBlock('accordion', function ($, $el, data, settings) {
+
+    settings = settings || {};
 
     data = $.extend({
         items: [],
     }, data);
 
+    var blocks = [
+        {id: 'text', title: 'текст'},
+        {id: 'image', title: 'картинку'},
+        {id: 'video', title: 'видео'},
+    ];
+
+    if (settings.blocks && settings.blocks.value) {
+        blocks = [];
+        $.each(settings.blocks.value, function (index, val) {
+            blocks.push({id: index, title: val})
+        });
+    }
 
     this.getData = function () {
         return data;
@@ -158,7 +172,8 @@ sprint_editor.registerBlock('accordion', function ($, $el, data) {
 
         function addTab(tabData) {
             var $tab = $(sprint_editor.renderTemplate('accordion-tab', {
-                title: tabData.title
+                title: tabData.title,
+                blocks: blocks
             }));
 
             $el.find('.sp-acc-container').append($tab);
@@ -181,12 +196,16 @@ sprint_editor.registerBlock('accordion', function ($, $el, data) {
 
             $tabcontainer.append($box);
 
-            sprint_editor.registerEntry(uid, sprint_editor.initblock(
+            var $elBlock = $box.find('.sp-acc-box-block');
+            var elEntry = sprint_editor.initblock(
                 $,
-                $box.find('.sp-acc-box-block'),
+                $elBlock,
                 blockData.name,
                 blockData
-            ));
+            );
+
+            sprint_editor.initblockAreas($, $elBlock, elEntry);
+            sprint_editor.registerEntry(uid, elEntry);
         }
     };
 });

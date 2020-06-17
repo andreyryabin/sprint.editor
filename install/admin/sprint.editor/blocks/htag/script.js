@@ -10,7 +10,7 @@ sprint_editor.registerBlock('htag', function ($, $el, data, settings) {
 
 
     this.getData = function () {
-        var types = [
+        var taglist = [
             {id: 'h1', title: 'h1'},
             {id: 'h2', title: 'h2'},
             {id: 'h3', title: 'h3'},
@@ -19,13 +19,13 @@ sprint_editor.registerBlock('htag', function ($, $el, data, settings) {
         ];
 
         if (settings.taglist && settings.taglist.value) {
-            types = [];
+            taglist = [];
             $.each(settings.taglist.value, function (index, val) {
-                types.push({id: index, title: val})
+                taglist.push({id: index, title: val})
             });
         }
 
-        data['types'] = types;
+        data['taglist'] = taglist;
 
         return data;
     };
@@ -38,7 +38,7 @@ sprint_editor.registerBlock('htag', function ($, $el, data, settings) {
         } else {
             data.anchor = '';
         }
-        delete data['types'];
+        delete data['taglist'];
         return data;
     };
 
