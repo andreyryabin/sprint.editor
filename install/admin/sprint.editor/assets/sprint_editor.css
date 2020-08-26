@@ -201,7 +201,7 @@
     border: 1px solid #ccc;
 }
 
-.sp-x-box:last-child .sp-x-buttons-outside{
+.sp-x-box:last-child .sp-x-separator{
     display: none;
 }
 

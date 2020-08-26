@@ -102,22 +102,14 @@ function sprint_editor_simple($, params) {
         });
 
         $editor.on('click', '.sp-x-pp-blocks .sp-x-btn', function (e) {
-            addByName($(this));
+            addByNameBlock($(this));
         });
 
         $editor.on('click', '.sp-x-lastblock', function (e) {
-            addByName($(this));
-        });
-
-        $editor.on('click', '.sp-x-pp-main .sp-x-btn', function (e) {
-            addByName($(this));
+            addByNameBlock($(this));
         });
 
         $editor.on('click', '.sp-x-pp-lt-open', function (e) {
-            popupToggle($(this));
-        });
-
-        $editor.on('click', '.sp-x-pp-main-open', function (e) {
             popupToggle($(this));
         });
 
@@ -215,11 +207,9 @@ function sprint_editor_simple($, params) {
             $editor.find('.sp-x-pp-box').hide();
             $editor.find('.sp-x-pp-lt').hide();
             $editor.find('.sp-x-pp-blocks').hide();
-            $editor.find('.sp-x-pp-main').hide();
             $editor.find('.sp-x-pp-box-open').removeClass('sp-active');
             $editor.find('.sp-x-pp-lt-open').removeClass('sp-active');
             $editor.find('.sp-x-pp-blocks-open').removeClass('sp-active');
-            $editor.find('.sp-x-pp-main-open').removeClass('sp-active');
         }
 
 
@@ -234,8 +224,6 @@ function sprint_editor_simple($, params) {
             $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-lt');
         } else if ($handler.hasClass('sp-x-pp-box-open')) {
             $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-box');
-        } else if ($handler.hasClass('sp-x-pp-main-open')) {
-            $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-main');
         } else if ($handler.hasClass('sp-x-pp-blocks-open')) {
             $popup = $editor.find('.sp-x-pp-blocks');
             if (!$popup || $popup.length <= 0) {
@@ -260,36 +248,30 @@ function sprint_editor_simple($, params) {
         }
     }
 
-    function addByName($handler) {
+    function addByNameBlock($handler) {
         var name = $handler.data('name');
         if (!name) {
             return false;
         }
-
-        if (name.indexOf('layout_') === 0) {
-            console.log('not work in simple version');
-        } else if (name.indexOf('pack_') === 0) {
-            console.log('not work in simple version');
-        } else if (name === 'delete_pack') {
-            console.log('not work in simple version');
-        } else if (name === 'save_pack') {
-            console.log('not work in simple version');
-        } else if (name) {
-            var $grid = $handler.closest('.sp-x-lt');
-            var $col = getActiveColumn($grid);
-            if ($col.length > 0) {
-                var $box = blockAdd({name: name}, $col);
-
-                if ($box && !$handler.hasClass('sp-x-lastblock')) {
-                    $box.closest('.sp-x-lt').find('.sp-x-lastblock').html(
-                        BX.message('SPRINT_EDITOR_add') + ' ' +
-                        sprint_editor.getBlockTitle(name)
-                    ).data('name', name).show();
-                }
-            }
-            popupToggle();
-            checkClipboardButtons();
+        var $container = $handler.closest('.sp-x-box');
+        if ($container.length <= 0) {
+            $container = getActiveColumn(
+                $handler.closest('.sp-x-lt')
+            );
         }
+        if ($container.length > 0) {
+            var $box = blockAdd({name: name}, $container);
+            if ($box && !$handler.hasClass('sp-x-lastblock')) {
+                $box.closest('.sp-x-lt').find('.sp-x-lastblock').html(
+                    BX.message('SPRINT_EDITOR_add') + ' ' +
+                    sprint_editor.getBlockTitle(name)
+                ).data('name', name).show();
+            }
+        }
+
+        popupToggle();
+        checkClipboardButtons();
+
     }
 
     function checkClipboardButtons() {
@@ -364,7 +346,7 @@ function sprint_editor_simple($, params) {
         });
     }
 
-    function blockAdd(blockData, $column) {
+    function blockAdd(blockData, $container) {
         if (!blockData || !blockData.name) {
             return false;
         }
@@ -377,22 +359,22 @@ function sprint_editor_simple($, params) {
         var blockSettings = sprint_editor.getBlockSettings(blockData.name, params);
         var $box = $(sprint_editor.renderBlock(blockData, blockSettings, uid, params));
 
-        if (!$column || $column.length <= 0) {
+        if (!$container || $container.length <= 0) {
             if (blockData.layout) {
                 var pos = blockData.layout.split(',');
                 var $grid = $editor.find('.sp-x-lt').eq(pos[0]);
-                $column = $grid.find('.sp-x-lt-col').eq(pos[1]);
+                $container = $grid.find('.sp-x-lt-col').eq(pos[1]);
             }
         }
 
-        if (!$column || $column.length <= 0) {
+        if (!$container || $container.length <= 0) {
             return false;
         }
 
-        if ($column.hasClass('sp-x-box')) {
-            $box.insertAfter($column);
+        if ($container.hasClass('sp-x-box')) {
+            $box.insertAfter($container);
         } else {
-            $column.append($box);
+            $container.append($box);
         }
 
         var $el = $box.find('.sp-x-box-block');
