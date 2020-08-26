@@ -169,9 +169,6 @@
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt1,
 .sp-x-buttons.sp-x-buttons-lt1 {
-    border-bottom: 2px dashed #ccc;
-    margin-bottom: 5px;
-    padding-bottom: 5px;
 }
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt2,
@@ -181,20 +178,30 @@
     margin-bottom: 30px;
 }
 
-.bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-afterbox,
-.sp-x-buttons.sp-x-buttons-afterbox {
+.bx-core-adm-dialog div.sp-x-separator,
+.sp-x-separator {
     border-bottom: 2px dashed #ccc;
-    padding-bottom: 10px;
-    margin-top: 10px
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
 }
-.bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-afterbox .sp-x-pp-blocks-open,
-.sp-x-buttons-afterbox .sp-x-pp-blocks-open {
+.bx-core-adm-dialog .sp-x-separator-handle,
+.sp-x-separator-handle
+{
     position: absolute;
     left: -40px;
-    top: -5px;
+    top: -15px;
 }
 
-.sp-x-box:last-child .sp-x-buttons-afterbox{
+.sp-x-separator-handle-grid{
+    border-radius: 20px;
+    width: 30px;
+    height: 30px;
+    display: block;
+    border: 1px solid #ccc;
+}
+
+.sp-x-box:last-child .sp-x-buttons-outside{
     display: none;
 }
 
