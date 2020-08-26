@@ -42,6 +42,7 @@
 
 .sp-block-accordion input.sp-acc-tab-value {
     width: 70%;
+    margin-right:90px;
 }
 
 .sp-block-accordion .sp-acc-box {

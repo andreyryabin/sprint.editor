@@ -118,6 +118,12 @@
     padding: 5px 5px 10px;
 }
 
+.sp-x-box-cutted {
+    background: #fee;
+    border: 2px solid #d00;
+    padding: 5px 5px 10px;
+}
+
 .sp-x-lt {
 
     /*position: relative;*/
@@ -163,7 +169,9 @@
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt1,
 .sp-x-buttons.sp-x-buttons-lt1 {
-    border-bottom: 1px dashed #ccc;
+    border-bottom: 2px dashed #ccc;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
 }
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt2,
@@ -171,6 +179,23 @@
     text-align: center;
     margin-top: 10px;
     margin-bottom: 30px;
+}
+
+.bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-afterbox,
+.sp-x-buttons.sp-x-buttons-afterbox {
+    border-bottom: 2px dashed #ccc;
+    padding-bottom: 10px;
+    margin-top: 10px
+}
+.bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-afterbox .sp-x-pp-blocks-open,
+.sp-x-buttons-afterbox .sp-x-pp-blocks-open {
+    position: absolute;
+    left: -40px;
+    top: -5px;
+}
+
+.sp-x-box:last-child .sp-x-buttons-afterbox{
+    display: none;
 }
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-box,
@@ -382,7 +407,7 @@
 .sp-x-pp-blocks {
     left: 0;
     right: 0;
-    margin: 0 auto;
+    margin: 0;
 }
 
 .bx-core-adm-dialog .sp-x-editor-simple div.sp-x-pp-blocks,

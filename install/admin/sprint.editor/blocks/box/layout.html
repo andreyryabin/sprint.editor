@@ -1,4 +1,21 @@
 <div class="sp-x-lt">
+
+    {{?it.compiled}}
+    <div class="sp-x-lt-settings">
+        {{~it.compiled :item}}
+        <div data-name="{{!item.name}}" class="sp-x-lt-settings-group">
+            {{~item.options :option}}
+            {{?option.selected}}
+            <span class="sp-active" data-value="{{!option.value}}">{{=option.title}}</span>
+            {{??}}
+            <span data-value="{{!option.value}}">{{=option.title}}</span>
+            {{?}}
+            {{~}}
+        </div>
+        {{~}}
+    </div>
+    {{?}}
+
     <div class="sp-x-buttons sp-x-buttons-lt1">
         <div class="sp-x-lt-tabs">
             {{~it.columns :col}}
@@ -8,35 +25,34 @@
 
         <div class="sp-x-buttons-group">
             {{?it.enableChange}}
-            <span title="Вставить блоки в выбранную колонку" class="sp-x-btn sp-x-lt-col-paste">&crarr;</span>
-            <span title="" class="sp-x-btn sp-x-pp-lt-open">...</span>
+            <span title="Вставить блоки в выбранную колонку" class="sp-x-btn sp-x-lt-col-paste">&crarr; Вставить</span>
+            <span title="" class="sp-x-btn sp-x-pp-lt-open">... Действия</span>
             {{?}}
         </div>
 
         <div class="sp-x-pp-lt">
+            {{?it.enableChange}}
             <div class="sp-x-pp-group">
-                {{?it.enableChange}}
-                <span title="Изменить название выбранной колонки" class="sp-x-btn sp-x-lt-col-edit">изм</span>
-                <span title="Копировать блоки в выбранной колонке" class="sp-x-btn sp-x-lt-col-copy">&equiv;</span>
-
+                <span title="Изменить название выбранной колонки" class="sp-x-btn sp-x-lt-col-edit">Изменить</span>
                 {{?it.enableChangeColumns}}
-                <span title="Добавить колонку" class="sp-x-btn sp-x-lt-col-add">+</span>
-                {{?}}
-                {{?it.enableChangeColumns}}
-                <span title="Удалить выбранную колонку" class="sp-x-btn sp-x-lt-col-del">х</span>
-                {{?}}
-                <span title="Передвинуть колонку влево" class="sp-x-btn sp-x-lt-col-left">&larr;</span>
-                <span title="Передвинуть колонку вправо" class="sp-x-btn sp-x-lt-col-right">&rarr;</span>
+                <span title="Добавить колонку" class="sp-x-btn sp-x-lt-col-add">+ Добавить колонку</span>
                 {{?}}
             </div>
-
             <div class="sp-x-pp-group">
-                {{?it.enableChange}}
-                <span title="Поднять сетку вверх" class="sp-x-btn sp-x-lt-up">&uarr;</span>
-                <span title="Опустить сетку вниз" class="sp-x-btn sp-x-lt-dn">&darr;</span>
-                {{?}}
+                <span title="Копировать блоки в выбранной колонке" class="sp-x-btn sp-x-lt-col-copy">&equiv; Копировать</span>
             </div>
-
+            <div class="sp-x-pp-group">
+                <span title="Передвинуть колонку влево" class="sp-x-btn sp-x-lt-col-left">&larr; Влево</span>
+                <span title="Передвинуть колонку вправо" class="sp-x-btn sp-x-lt-col-right">&rarr; Вправо</span>
+            </div>
+            <div class="sp-x-pp-group">
+                <span title="Поднять сетку вверх" class="sp-x-btn sp-x-lt-up">&uarr; Поднять</span>
+                <span title="Опустить сетку вниз" class="sp-x-btn sp-x-lt-dn">&darr; Опустить</span>
+            </div>
+            <div class="sp-x-pp-group">
+                <span title="Удалить выбранную колонку" class="sp-x-btn sp-x-lt-col-del">х Удалить</span>
+            </div>
+            {{?}}
         </div>
     </div>
 

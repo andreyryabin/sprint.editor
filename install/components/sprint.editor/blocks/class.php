@@ -5,9 +5,7 @@ use Sprint\Editor\Module;
 
 class SprintEditorBlocksComponent extends CBitrixComponent
 {
-    protected $preparedBlocks = [];
     protected $includedBlocks = 0;
-    protected $layoutIndex    = 0;
     protected $resourcesCache = [];
 
     public function onPrepareComponentParams($arParams)
@@ -38,9 +36,9 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         ) {
             $iblock = CIBlock::GetList(
                 [], [
-                '=TYPE' => $this->arParams['IBLOCK_TYPE'],
-                '=CODE' => $this->arParams['IBLOCK_CODE'],
-            ]
+                    '=TYPE' => $this->arParams['IBLOCK_TYPE'],
+                    '=CODE' => $this->arParams['IBLOCK_CODE'],
+                ]
             )->Fetch();
 
             $this->arParams['IBLOCK_ID'] = $iblock['ID'];
@@ -90,10 +88,10 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         if (empty($this->arParams['PROPERTY_CODE'])) {
             $dbRes = CIBlockProperty::GetList(
                 ['SORT' => 'ASC'], [
-                'CHECK_PERMISSIONS' => 'N',
-                'USER_TYPE'         => 'sprint_editor',
-                'IBLOCK_ID'         => $filter['IBLOCK_ID'],
-            ]
+                    'CHECK_PERMISSIONS' => 'N',
+                    'USER_TYPE'         => 'sprint_editor',
+                    'IBLOCK_ID'         => $filter['IBLOCK_ID'],
+                ]
             );
             while ($aProp = $dbRes->Fetch()) {
                 $aPropertyCodes[] = 'PROPERTY_' . $aProp['CODE'];
@@ -116,7 +114,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             ], $aPropertyCodes
         );
 
-        /** @noinspection PhpDynamicAsStaticMethodCallInspection */
         $item = CIBlockElement::GetList(
             ['SORT' => 'ASC'],
             $filter,
@@ -175,7 +172,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             ], $aPropertyCodes
         );
 
-        /** @noinspection PhpDynamicAsStaticMethodCallInspection */
         $item = CIBlockSection::GetList(
             ['SORT' => 'ASC'], [
             'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
@@ -203,21 +199,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return Sprint\Editor\AdminEditor::prepareValueArray($value);
     }
 
-    protected function prepareBlocks($blocks)
-    {
-        $this->preparedBlocks = [];
-
-        foreach ($blocks as $block) {
-            $pos = $block['layout'];
-
-            if (!isset($this->preparedBlocks[$pos])) {
-                $this->preparedBlocks[$pos] = [];
-            }
-
-            $this->preparedBlocks[$pos][] = $block;
-        }
-    }
-
     protected function outJson($value)
     {
         $value = $this->prepareValue($value);
@@ -228,24 +209,30 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
 
         $this->includeHeader($value['blocks'], $this->arParams);
-        $this->prepareBlocks($value['blocks']);
 
-        $this->layoutIndex = 0;
-        foreach ($value['layouts'] as $layout) {
+        $blocksMap = [];
+        foreach ($value['blocks'] as $block) {
+            $pos = $block['layout'];
+            if (!isset($blocksMap[$pos])) {
+                $blocksMap[$pos] = [];
+            }
+            $blocksMap[$pos][] = $block;
+        }
+
+        foreach ($value['layouts'] as $layoutIndex => $layout) {
+            foreach ($layout['columns'] as $columnIndex => $column) {
+                $pos = $layoutIndex . ',' . $columnIndex;
+                if (isset($blocksMap[$pos])) {
+                    $column['blocks'] = $blocksMap[$pos];
+                } else {
+                    $column['blocks'] = [];
+                }
+                $layout['columns'][$columnIndex] = $column;
+            }
             $this->includeLayout($layout);
         }
 
         $this->includeFooter($this->arParams);
-    }
-
-    protected function includeLayoutBlocks($columnIndex)
-    {
-        $pos = $this->layoutIndex . ',' . $columnIndex;
-        if (isset($this->preparedBlocks[$pos])) {
-            foreach ($this->preparedBlocks[$pos] as $block) {
-                $this->includeBlock($block);
-            }
-        }
     }
 
     protected function registerJs($path)
@@ -258,6 +245,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         if ($this->getParent()) {
             $this->getParent()->addChildJS($path);
         }
+        return true;
     }
 
     protected function registerCss($path)
@@ -270,6 +258,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         if ($this->getParent()) {
             $this->getParent()->addChildCSS($path);
         }
+        return true;
     }
 
     protected function includeBlock($block)
@@ -297,15 +286,15 @@ class SprintEditorBlocksComponent extends CBitrixComponent
     protected function includeLayout($layout)
     {
         $root = Module::getDocRoot();
+
         $path = $this->findResource('_grid.php');
+
         if (!$path) {
             return false;
         }
 
         /** @noinspection PhpIncludeInspection */
         include($root . $path);
-
-        $this->layoutIndex++;
 
         return true;
     }

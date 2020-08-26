@@ -3,6 +3,12 @@ function sprint_editor_simple($, params) {
     var $inputresult = $('.sp-x-result' + params.uniqid);
     var $form = $editor.closest('form').first();
 
+    $(document).keyup(function (e) {
+        if (e.keyCode === 27) {
+            popupToggle();
+        }
+    });
+
     $editor.on('keypress', 'input', function (e) {
         var keyCode = e.keyCode || e.which;
         if (keyCode === 13) {
@@ -11,9 +17,12 @@ function sprint_editor_simple($, params) {
         }
     });
 
-    $('form input').on('keypress', function (e) {
-        return e.which !== 13;
+    $form.on('click', function (e) {
+        if (!$(e.target).hasClass('sp-x-btn')) {
+            popupToggle();
+        }
     });
+
 
     if (!params.jsonValue) {
         params.jsonValue = {};
@@ -81,7 +90,12 @@ function sprint_editor_simple($, params) {
             var $box = $(this).closest('.sp-x-box');
 
             $.each(clipboardData, function (blockUid, blockData) {
-                $box = blockAdd(blockData, $box);
+                blockAdd(blockData.block, $box);
+                if (blockData.deleteAfterPaste) {
+                    boxDelete(
+                        $editor.find('.sp-x-box[data-uid=' + blockUid + ']')
+                    );
+                }
             });
 
             sprint_editor.clearClipboard();
@@ -117,7 +131,15 @@ function sprint_editor_simple($, params) {
 
         $editor.on('click', '.sp-x-box-copy', function (e) {
             e.preventDefault();
-            sprint_editor.copyToClipboard($(this).closest('.sp-x-box').data('uid'));
+            var $box = $(this).closest('.sp-x-box');
+            sprint_editor.copyToClipboard($box.data('uid'), false);
+            popupToggle();
+        });
+
+        $editor.on('click', '.sp-x-box-cut', function (e) {
+            e.preventDefault();
+            var $box = $(this).closest('.sp-x-box');
+            sprint_editor.copyToClipboard($box.data('uid'), true);
             popupToggle();
         });
 
@@ -168,14 +190,8 @@ function sprint_editor_simple($, params) {
 
         $editor.on('click', '.sp-x-box-del', function (e) {
             e.preventDefault();
-            var $target = $(this).closest('.sp-x-box');
-
-            var uid = $target.data('uid');
-            sprint_editor.beforeDelete(uid);
-
-            $target.hide(250, function () {
-                $target.remove();
-            });
+            var $box = $(this).closest('.sp-x-box');
+            boxDelete($box);
         });
     }
 
@@ -280,13 +296,20 @@ function sprint_editor_simple($, params) {
         var clipboardData = sprint_editor.getClipboard();
 
         var cntBlocks = 0;
-        $editor.find('.sp-x-box').removeClass('sp-x-box-copied');
 
+        $editor.find('.sp-x-box')
+            .removeClass('sp-x-box-copied')
+            .removeClass('sp-x-box-cutted')
+        ;
 
         $.each(clipboardData, function (blockUid, blockData) {
-            var $block = $editor.find('.sp-x-box[data-uid=' + blockUid + ']');
-            if ($block.length > 0) {
-                $block.addClass('sp-x-box-copied');
+            var $box = $editor.find('.sp-x-box[data-uid=' + blockUid + ']');
+            if ($box.length > 0) {
+                if (blockData.deleteAfterPaste) {
+                    $box.addClass('sp-x-box-cutted');
+                } else {
+                    $box.addClass('sp-x-box-copied');
+                }
             }
             cntBlocks++;
         });
@@ -332,6 +355,15 @@ function sprint_editor_simple($, params) {
         })
     }
 
+    function boxDelete($box) {
+        var uid = $box.data('uid');
+        sprint_editor.beforeDelete(uid);
+
+        $box.hide(250, function () {
+            $box.remove();
+        });
+    }
+
     function blockAdd(blockData, $column) {
         if (!blockData || !blockData.name) {
             return false;
@@ -342,7 +374,7 @@ function sprint_editor_simple($, params) {
         }
 
         var uid = sprint_editor.makeUid();
-        var blockSettings = getBlockSettings(blockData.name);
+        var blockSettings = sprint_editor.getBlockSettings(blockData.name, params);
         var $box = $(sprint_editor.renderBlock(blockData, blockSettings, uid, params));
 
         if (!$column || $column.length <= 0) {
@@ -436,21 +468,6 @@ function sprint_editor_simple($, params) {
         }
 
         return resultString;
-    }
-
-    function getBlockSettings(name) {
-        var blockSettings = {};
-
-        if (!params.jsonUserSettings.hasOwnProperty('block_settings')) {
-            return blockSettings;
-        }
-
-        if (!params.jsonUserSettings.block_settings.hasOwnProperty(name)) {
-            return blockSettings;
-        }
-
-        return params.jsonUserSettings.block_settings[name];
-
     }
 
     function getActiveColumn($grid) {
