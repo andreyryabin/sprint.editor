@@ -191,12 +191,12 @@ function sprint_editor_simple($, params) {
     $editor.on('click', '.sp-x-box-settings span', function (e) {
         var $span = $(this);
 
-        $span.siblings('span').removeClass('sp-active');
+        $span.siblings('span').removeClass('sp-x-active');
 
-        if ($span.hasClass('sp-active')) {
-            $span.removeClass('sp-active');
+        if ($span.hasClass('sp-x-active')) {
+            $span.removeClass('sp-x-active');
         } else {
-            $span.addClass('sp-active');
+            $span.addClass('sp-x-active');
         }
     });
 
@@ -207,9 +207,9 @@ function sprint_editor_simple($, params) {
             $editor.find('.sp-x-pp-box').hide();
             $editor.find('.sp-x-pp-lt').hide();
             $editor.find('.sp-x-pp-blocks').hide();
-            $editor.find('.sp-x-pp-box-open').removeClass('sp-active');
-            $editor.find('.sp-x-pp-lt-open').removeClass('sp-active');
-            $editor.find('.sp-x-pp-blocks-open').removeClass('sp-active');
+            $editor.find('.sp-x-pp-box-open').removeClass('sp-x-active');
+            $editor.find('.sp-x-pp-lt-open').removeClass('sp-x-active');
+            $editor.find('.sp-x-pp-blocks-open').removeClass('sp-x-active');
         }
 
 
@@ -238,12 +238,12 @@ function sprint_editor_simple($, params) {
             return true;
         }
 
-        if ($handler.hasClass('sp-active')) {
-            $handler.removeClass('sp-active');
+        if ($handler.hasClass('sp-x-active')) {
+            $handler.removeClass('sp-x-active');
             $popup.hide();
         } else {
             popupHide();
-            $handler.addClass('sp-active');
+            $handler.addClass('sp-x-active');
             $popup.show();
         }
     }
@@ -409,7 +409,7 @@ function sprint_editor_simple($, params) {
                     var $boxsett = $(this).find('.sp-x-box-settings');
                     $boxsett.find('.sp-x-box-settings-group').each(function () {
                         var name = $(this).data('name');
-                        var $val = $(this).find('.sp-active').first();
+                        var $val = $(this).find('.sp-x-active').first();
 
                         if ($val.length > 0) {
                             settval[name] = $val.data('value');
@@ -453,6 +453,6 @@ function sprint_editor_simple($, params) {
     }
 
     function getActiveColumn($grid) {
-        return $grid.find('.sp-x-lt-col.sp-active');
+        return $grid.find('.sp-x-lt-col.sp-x-active');
     }
 }

@@ -6,7 +6,7 @@
         <div data-name="{{!item.name}}" class="sp-x-lt-settings-group">
             {{~item.options :option}}
             {{?option.selected}}
-            <span class="sp-active" data-value="{{!option.value}}">{{=option.title}}</span>
+            <span class="sp-x-active" data-value="{{!option.value}}">{{=option.title}}</span>
             {{??}}
             <span data-value="{{!option.value}}">{{=option.title}}</span>
             {{?}}
@@ -57,7 +57,7 @@
     </div>
 
     <div class="sp-x-separator">
-        <span title="Начало сетки" class="sp-x-separator-handle sp-x-separator-handle-grid"></span>
+        <span title="Показать\скрыть блоки в сетке" class="sp-x-separator-handle sp-x-btn sp-x-lt-toggle">...</span>
     </div>
 
     <div class="sp-x-lt-row">

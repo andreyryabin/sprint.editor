@@ -141,7 +141,7 @@
     display: none;
 }
 
-.sp-x-lt-col.sp-active {
+.sp-x-lt-col.sp-x-active {
     display: block;
 }
 
@@ -185,23 +185,20 @@
     margin-bottom: 10px;
     position: relative;
 }
+
 .bx-core-adm-dialog .sp-x-separator-handle,
-.sp-x-separator-handle
-{
+.sp-x-separator-handle {
     position: absolute;
     left: -40px;
     top: -15px;
 }
 
-.sp-x-separator-handle-grid{
-    border-radius: 20px;
-    width: 30px;
-    height: 30px;
-    display: block;
-    border: 1px solid #ccc;
+.sp-x-lt.sp-x-hidden .sp-x-lt-row,
+.sp-x-lt.sp-x-hidden .sp-x-buttons-lt2 {
+    display: none;
 }
 
-.sp-x-box:last-child .sp-x-separator{
+.sp-x-box:last-child .sp-x-separator {
     display: none;
 }
 
@@ -338,8 +335,8 @@
     text-decoration: none;
 }
 
-.sp-x-btn.sp-x-btn-green.sp-active,
-.bx-core-adm-dialog .sp-x-btn.sp-x-btn-green.sp-active {
+.sp-x-btn.sp-x-btn-green.sp-x-active,
+.bx-core-adm-dialog .sp-x-btn.sp-x-btn-green.sp-x-active {
     background: #698f00 !important;
     box-shadow: inset 0 2px 1px rgba(66, 84, 17, .71) !important;
     border-color: transparent #698f00 #698f00 !important;
@@ -366,9 +363,9 @@
     /*rgba(0,0,0,.2) 0 1px 1px;*/
 }
 
-.sp-x-lt-settings span.sp-active,
-.sp-x-box-settings span.sp-active,
-.sp-x-btn.sp-active,
+.sp-x-lt-settings span.sp-x-active,
+.sp-x-box-settings span.sp-x-active,
+.sp-x-btn.sp-x-active,
 .sp-x-lt-settings span:active,
 .sp-x-box-settings span:active,
 .sp-x-btn:active {

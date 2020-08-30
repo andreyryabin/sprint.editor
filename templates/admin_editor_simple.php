@@ -22,7 +22,7 @@
     <div class="sp-x-editor-lt">
         <div class="sp-x-lt">
             <div class="sp-x-lt-row">
-                <div class="sp-x-lt-col sp-active"></div>
+                <div class="sp-x-lt-col sp-x-active"></div>
             </div>
             <?if ($enableChange):?>
             <div class="sp-x-buttons sp-x-buttons-ed">

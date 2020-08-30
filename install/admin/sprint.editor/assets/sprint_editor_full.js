@@ -283,6 +283,18 @@ function sprint_editor_full($, params) {
             popupToggle();
         });
 
+        $editor.on('click', '.sp-x-lt-toggle', function (e) {
+            e.preventDefault();
+            var $grid = $(this).closest('.sp-x-lt');
+            if ($grid.hasClass('sp-x-hidden')) {
+                $grid.removeClass('sp-x-hidden');
+                $(this).removeClass('sp-x-active');
+            } else {
+                $grid.addClass('sp-x-hidden');
+                $(this).addClass('sp-x-active');
+            }
+        });
+
         $editor.on('click', '.sp-x-lt-col-del', function (e) {
             e.preventDefault();
 
@@ -383,24 +395,24 @@ function sprint_editor_full($, params) {
     $editor.on('click', '.sp-x-box-settings span', function (e) {
         var $span = $(this);
 
-        $span.siblings('span').removeClass('sp-active');
+        $span.siblings('span').removeClass('sp-x-active');
 
-        if ($span.hasClass('sp-active')) {
-            $span.removeClass('sp-active');
+        if ($span.hasClass('sp-x-active')) {
+            $span.removeClass('sp-x-active');
         } else {
-            $span.addClass('sp-active');
+            $span.addClass('sp-x-active');
         }
     });
 
     $editor.on('click', '.sp-x-lt-settings span', function (e) {
         var $span = $(this);
 
-        $span.siblings('span').removeClass('sp-active');
+        $span.siblings('span').removeClass('sp-x-active');
 
-        if ($span.hasClass('sp-active')) {
-            $span.removeClass('sp-active');
+        if ($span.hasClass('sp-x-active')) {
+            $span.removeClass('sp-x-active');
         } else {
-            $span.addClass('sp-active');
+            $span.addClass('sp-x-active');
         }
     });
 
@@ -415,10 +427,10 @@ function sprint_editor_full($, params) {
             $editor.find('.sp-x-pp-lt').hide();
             $editor.find('.sp-x-pp-blocks').hide();
             $editor.find('.sp-x-pp-main').hide();
-            $editor.find('.sp-x-pp-box-open').removeClass('sp-active');
-            $editor.find('.sp-x-pp-lt-open').removeClass('sp-active');
-            $editor.find('.sp-x-pp-blocks-open').removeClass('sp-active');
-            $editor.find('.sp-x-pp-main-open').removeClass('sp-active');
+            $editor.find('.sp-x-pp-box-open').removeClass('sp-x-active');
+            $editor.find('.sp-x-pp-lt-open').removeClass('sp-x-active');
+            $editor.find('.sp-x-pp-blocks-open').removeClass('sp-x-active');
+            $editor.find('.sp-x-pp-main-open').removeClass('sp-x-active');
         }
 
 
@@ -449,12 +461,12 @@ function sprint_editor_full($, params) {
             return true;
         }
 
-        if ($handler.hasClass('sp-active')) {
-            $handler.removeClass('sp-active');
+        if ($handler.hasClass('sp-x-active')) {
+            $handler.removeClass('sp-x-active');
             $popup.hide();
         } else {
             popupHide();
-            $handler.addClass('sp-active');
+            $handler.addClass('sp-x-active');
             $popup.show();
         }
     }
@@ -792,11 +804,11 @@ function sprint_editor_full($, params) {
     }
 
     function getActiveColumn($grid) {
-        return $grid.find('.sp-x-lt-col.sp-active');
+        return $grid.find('.sp-x-lt-col.sp-x-active');
     }
 
     function getActiveTab($grid) {
-        return $grid.find('.sp-x-lt-col-tab.sp-active');
+        return $grid.find('.sp-x-lt-col-tab.sp-x-active');
     }
 
     function getActiveColumnUid($grid) {
@@ -817,12 +829,12 @@ function sprint_editor_full($, params) {
         var $column = getColumn(columnUid);
 
         if ($tab.length > 0) {
-            $tab.siblings('.sp-x-lt-col-tab').removeClass('sp-active');
-            $tab.addClass('sp-active');
+            $tab.siblings('.sp-x-lt-col-tab').removeClass('sp-x-active');
+            $tab.addClass('sp-x-active');
         }
         if ($column.length > 0) {
-            $column.siblings('.sp-x-lt-col').removeClass('sp-active');
-            $column.addClass('sp-active');
+            $column.siblings('.sp-x-lt-col').removeClass('sp-x-active');
+            $column.addClass('sp-x-active');
         }
     }
 
@@ -868,7 +880,7 @@ function sprint_editor_full($, params) {
                 var coltitle = $title.text();
 
                 var colclasses = [];
-                $col.find('.sp-x-lt-settings .sp-active').each(function () {
+                $col.find('.sp-x-lt-settings .sp-x-active').each(function () {
                     var cssname = $(this).data('value');
                     colclasses.push(
                         $.trim(cssname)
@@ -901,7 +913,7 @@ function sprint_editor_full($, params) {
                     var $boxsett = $(this).find('.sp-x-box-settings');
                     $boxsett.find('.sp-x-box-settings-group').each(function () {
                         var name = $(this).data('name');
-                        var $val = $(this).find('.sp-active').first();
+                        var $val = $(this).find('.sp-x-active').first();
 
                         if ($val.length > 0) {
                             settval[name] = $val.data('value');
