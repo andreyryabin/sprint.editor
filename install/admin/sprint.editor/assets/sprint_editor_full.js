@@ -54,7 +54,7 @@ function sprint_editor_full($, params) {
         params.enableChangeColumns = !!params.jsonUserSettings.enable_change_columns;
     }
 
-    params.deleteBlockAfterSortOut = true;
+    params.deleteBlockAfterSortOut = false;
     if (params.jsonUserSettings.hasOwnProperty('delete_block_after_sort_out')) {
         params.deleteBlockAfterSortOut = !!params.jsonUserSettings.delete_block_after_sort_out;
     }

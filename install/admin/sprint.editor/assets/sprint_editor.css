@@ -175,7 +175,7 @@
 .sp-x-buttons.sp-x-buttons-lt2 {
     text-align: center;
     margin-top: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .bx-core-adm-dialog div.sp-x-separator,
@@ -191,6 +191,10 @@
     position: absolute;
     left: -40px;
     top: -15px;
+}
+
+.sp-x-lt.sp-x-hidden{
+    margin-bottom: 10px;
 }
 
 .sp-x-lt.sp-x-hidden .sp-x-box,
