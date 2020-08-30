@@ -135,13 +135,13 @@
     clear: both;
 }
 
-.sp-x-lt-col {
+.sp-x-col {
     /*min-height: 84px;*/
     /*margin-bottom: 20px;*/
     display: none;
 }
 
-.sp-x-lt-col.sp-x-active {
+.sp-x-col.sp-x-active {
     display: block;
 }
 
@@ -193,7 +193,7 @@
     top: -15px;
 }
 
-.sp-x-lt.sp-x-hidden .sp-x-lt-row,
+.sp-x-lt.sp-x-hidden .sp-x-box,
 .sp-x-lt.sp-x-hidden .sp-x-buttons-lt2 {
     display: none;
 }
@@ -237,21 +237,23 @@
     padding: 10px 10px 20px;
 }
 
-.sp-x-box-settings {
-    margin-bottom: 5px;
-    text-align: left;
-}
-
+.sp-x-col-settings,
+.sp-x-box-settings,
 .sp-x-lt-settings {
     /*text-align: center;*/
     text-align: left;
 }
+.sp-x-lt-settings {
+    margin-bottom: 10px;
+}
+.sp-x-box-settings {
+    margin-bottom: 10px;
+}
 
-.sp-x-box-settings-group,
-.sp-x-lt-settings-group {
+.sp-x-settings-group {
     /*display: none;*/
     /*padding: 8px;*/
-
+    display: inline-block;
     border-radius: 4px;
     padding: 8px;
 
@@ -264,20 +266,12 @@
 
 }
 
-.sp-x-box-settings-group {
-    display: inline-block;
-    /*display: none;*/
-}
-
-.sp-x-lt-settings-group {
-    display: inline-block;
-    /*display: none;*/
-}
-
 .sp-x-lt-settings span,
+.sp-x-col-settings span,
 .sp-x-box-settings span,
 .sp-x-btn,
 .bx-core-adm-dialog .sp-x-lt-settings span,
+.bx-core-adm-dialog .sp-x-col-settings span,
 .bx-core-adm-dialog .sp-x-box-settings span,
 .bx-core-adm-dialog .sp-x-btn {
     display: inline-block;
@@ -345,6 +339,7 @@
 }
 
 .sp-x-lt-settings span:before,
+.sp-x-col-settings span:before,
 .sp-x-box-settings span:before,
 .sp-x-btn:before {
     display: inline-block;
@@ -353,6 +348,7 @@
 }
 
 .sp-x-lt-settings span:hover,
+.sp-x-col-settings span:hover,
 .sp-x-box-settings span:hover,
 .sp-x-btn:hover {
     background: #ededed;
@@ -364,9 +360,11 @@
 }
 
 .sp-x-lt-settings span.sp-x-active,
+.sp-x-col-settings span.sp-x-active,
 .sp-x-box-settings span.sp-x-active,
 .sp-x-btn.sp-x-active,
 .sp-x-lt-settings span:active,
+.sp-x-col-settings span:active,
 .sp-x-box-settings span:active,
 .sp-x-btn:active {
     /*border: none;*/

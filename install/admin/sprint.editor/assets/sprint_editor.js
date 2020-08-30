@@ -272,13 +272,14 @@ var sprint_editor = {
             );
 
             val = (val) ? val : {};
+            deleteAfterPaste = !!deleteAfterPaste;
 
-            if (val[uid]) {
+            if (val[uid] && val[uid].deleteAfterPaste === deleteAfterPaste) {
                 delete val[uid];
             } else {
                 val[uid] = {
                     block: sprint_editor.collectData(uid),
-                    deleteAfterPaste: !!deleteAfterPaste
+                    deleteAfterPaste: deleteAfterPaste
                 };
             }
 
@@ -492,5 +493,21 @@ var sprint_editor = {
             .replace(/([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD10-\uDDFF])/g, '');
 
         return data;
+    },
+    collectSettings($settings) {
+        var settcnt = 0;
+        var settval = {};
+
+        $settings.find('.sp-x-settings-group').each(function () {
+            var name = $(this).data('name');
+            var $val = $(this).find('.sp-x-active').first();
+
+            if ($val.length > 0) {
+                settval[name] = $val.data('value');
+                settcnt++;
+            }
+        });
+
+        return settval;
     }
 };

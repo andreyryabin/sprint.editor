@@ -46,7 +46,7 @@ function sprint_editor_simple($, params) {
         params.enableChange = !!params.jsonUserSettings.enable_change;
     }
 
-    params.enableChangeColumns = true;
+    params.enableChangeColumns = false;
     if (params.jsonUserSettings.hasOwnProperty('enable_change_columns')) {
         params.enableChangeColumns = !!params.jsonUserSettings.enable_change_columns;
     }
@@ -170,7 +170,7 @@ function sprint_editor_simple($, params) {
                 var $ngrid = $grid.next('.sp-x-lt');
                 if ($ngrid.length > 0) {
                     var $ncol = getActiveColumn($ngrid);
-                    var $head = $ncol.find('.sp-x-lt-settings');
+                    var $head = $ncol.find('.sp-x-col-settings');
                     if ($head.length > 0) {
                         $ncol = $head;
                     }
@@ -190,14 +190,8 @@ function sprint_editor_simple($, params) {
 
     $editor.on('click', '.sp-x-box-settings span', function (e) {
         var $span = $(this);
-
         $span.siblings('span').removeClass('sp-x-active');
-
-        if ($span.hasClass('sp-x-active')) {
-            $span.removeClass('sp-x-active');
-        } else {
-            $span.addClass('sp-x-active');
-        }
+        $span.toggleClass('sp-x-active');
     });
 
 
@@ -297,17 +291,17 @@ function sprint_editor_simple($, params) {
         });
 
         if (cntBlocks > 0) {
-            $editor.find('.sp-x-lt-col-paste').show();
+            $editor.find('.sp-x-col-paste').show();
             $editor.find('.sp-x-lt-block-paste').show();
         } else {
-            $editor.find('.sp-x-lt-col-paste').hide();
+            $editor.find('.sp-x-col-paste').hide();
             $editor.find('.sp-x-lt-block-paste').hide();
         }
     }
 
     function layoutAdd() {
         if (params.enableChange) {
-            sortableBlocks($editor.find('.sp-x-lt-col').last());
+            sortableBlocks($editor.find('.sp-x-col').last());
         }
     }
 
@@ -316,7 +310,7 @@ function sprint_editor_simple($, params) {
 
         $column.sortable({
             items: ".sp-x-box",
-            connectWith: ".sp-x-lt-col",
+            connectWith: ".sp-x-col",
             handle: ".sp-x-box-handle",
             placeholder: "sp-x-box-placeholder",
             over: function () {
@@ -363,7 +357,7 @@ function sprint_editor_simple($, params) {
             if (blockData.layout) {
                 var pos = blockData.layout.split(',');
                 var $grid = $editor.find('.sp-x-lt').eq(pos[0]);
-                $container = $grid.find('.sp-x-lt-col').eq(pos[1]);
+                $container = $grid.find('.sp-x-col').eq(pos[1]);
             }
         }
 
@@ -393,7 +387,7 @@ function sprint_editor_simple($, params) {
         var blocks = [];
 
         $editor.find('.sp-x-lt').each(function (gindex) {
-            $(this).find('.sp-x-lt-col').each(function (cindex) {
+            $(this).find('.sp-x-col').each(function (cindex) {
                 $(this).find('.sp-x-box').each(function () {
 
                     var uid = $(this).data('uid');
@@ -404,24 +398,9 @@ function sprint_editor_simple($, params) {
 
                     var blockData = sprint_editor.collectData(uid);
 
-                    var settcnt = 0;
-                    var settval = {};
-                    var $boxsett = $(this).find('.sp-x-box-settings');
-                    $boxsett.find('.sp-x-box-settings-group').each(function () {
-                        var name = $(this).data('name');
-                        var $val = $(this).find('.sp-x-active').first();
-
-                        if ($val.length > 0) {
-                            settval[name] = $val.data('value');
-                            settcnt++;
-                        }
-                    });
-
-                    if (settcnt > 0) {
-                        blockData.settings = settval;
-                    } else {
-                        delete blockData.settings;
-                    }
+                    blockData.settings = sprint_editor.collectSettings(
+                        $(this).find('.sp-x-box-settings')
+                    );
 
                     blockData.layout = '0,0';
                     blocks.push(blockData);
@@ -453,6 +432,6 @@ function sprint_editor_simple($, params) {
     }
 
     function getActiveColumn($grid) {
-        return $grid.find('.sp-x-lt-col.sp-x-active');
+        return $grid.find('.sp-x-col.sp-x-active');
     }
 }

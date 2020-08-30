@@ -16,8 +16,8 @@
         <div class="sp-x-pp-box">
             {{?it.enableChange}}
             <div class="sp-x-pp-group">
-                <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">&equiv; Копировать</span>
-                <span title="Вырезать блок" class="sp-x-btn sp-x-box-cut">&equiv; Вырезать</span>
+                <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">Копировать</span>
+                <span title="Вырезать блок" class="sp-x-btn sp-x-box-cut">Вырезать</span>
             </div>
             <div class="sp-x-pp-group">
                 <span title="Поднять вверх" class="sp-x-btn sp-x-box-up">&uarr; Поднять</span>
@@ -31,7 +31,7 @@
     {{?it.compiled}}
     <div class="sp-x-box-settings">
         {{~it.compiled :item}}
-        <div data-name="{{!item.name}}" class="sp-x-box-settings-group">
+        <div data-name="{{!item.name}}" class="sp-x-settings-group">
             {{~item.options :option}}
             {{?option.selected}}
             <span class="sp-x-active" data-value="{{!option.value}}">{{=option.title}}</span>
