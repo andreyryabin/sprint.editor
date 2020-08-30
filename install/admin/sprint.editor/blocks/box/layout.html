@@ -49,7 +49,7 @@
         <span title="Показать\скрыть блоки в сетке" class="sp-x-separator-handle sp-x-btn sp-x-lt-toggle">&equiv;</span>
     </div>
 
-    {{?it.compiled}}
+    {{?it.compiled.length > 0}}
     <div class="sp-x-lt-settings">
         {{~it.compiled :item}}
         <div data-name="{{!item.name}}" class="sp-x-settings-group">

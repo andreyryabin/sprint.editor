@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    {{?it.compiled}}
+    {{?it.compiled.length > 0}}
     <div class="sp-x-box-settings">
         {{~it.compiled :item}}
         <div data-name="{{!item.name}}" class="sp-x-settings-group">
