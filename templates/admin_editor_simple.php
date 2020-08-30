@@ -71,7 +71,7 @@
         sprint_editor.registerParameters(<?=$jsonParameters?>);
 
         jQuery(window).focus(function () {
-            sprint_editor.fireEvent('focus');
+            sprint_editor.fireEvent('window:focus');
         });
 
     </script>

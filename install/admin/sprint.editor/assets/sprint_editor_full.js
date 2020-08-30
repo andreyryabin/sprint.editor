@@ -67,12 +67,24 @@ function sprint_editor_full($, params) {
         blockAdd(block);
     });
 
-    sprint_editor.listenEvent('focus', function () {
+    sprint_editor.listenEvent('window:focus', function () {
         checkClipboardButtons();
     });
 
-    sprint_editor.listenEvent('copy', function () {
+    sprint_editor.listenEvent('clipboard:change', function () {
         checkClipboardButtons();
+    });
+
+    sprint_editor.listenEvent('clipboard:paste', function () {
+        var clipboardData = sprint_editor.getClipboard();
+
+        $.each(clipboardData, function (blockUid, blockData) {
+            if (blockData.deleteAfterPaste) {
+                boxDelete(
+                    $editor.find('.sp-x-box[data-uid=' + blockUid + ']')
+                );
+            }
+        });
     });
 
     checkClipboardButtons();
@@ -122,17 +134,13 @@ function sprint_editor_full($, params) {
 
             $.each(clipboardData, function (blockUid, blockData) {
                 blockAdd(blockData.block, $col);
-                if (blockData.deleteAfterPaste) {
-                    boxDelete(
-                        $editor.find('.sp-x-box[data-uid=' + blockUid + ']')
-                    );
-                }
             });
 
+            sprint_editor.fireEvent('clipboard:paste');
             sprint_editor.clearClipboard();
         });
 
-        $editor.on('click', '.sp-x-lt-block-paste', function (e) {
+        $editor.on('click', '.sp-x-box-paste', function (e) {
             e.preventDefault();
 
             var clipboardData = sprint_editor.getClipboard();
@@ -140,13 +148,9 @@ function sprint_editor_full($, params) {
 
             $.each(clipboardData, function (blockUid, blockData) {
                 blockAdd(blockData.block, $box);
-                if (blockData.deleteAfterPaste) {
-                    boxDelete(
-                        $editor.find('.sp-x-box[data-uid=' + blockUid + ']')
-                    );
-                }
             });
 
+            sprint_editor.fireEvent('clipboard:paste');
             sprint_editor.clearClipboard();
         });
 
@@ -565,10 +569,10 @@ function sprint_editor_full($, params) {
 
         if (cntBlocks > 0) {
             $editor.find('.sp-x-col-paste').show();
-            $editor.find('.sp-x-lt-block-paste').show();
+            $editor.find('.sp-x-box-paste').show();
         } else {
             $editor.find('.sp-x-col-paste').hide();
-            $editor.find('.sp-x-lt-block-paste').hide();
+            $editor.find('.sp-x-box-paste').hide();
         }
     }
 

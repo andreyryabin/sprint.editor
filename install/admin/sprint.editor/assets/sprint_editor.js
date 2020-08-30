@@ -287,7 +287,7 @@ var sprint_editor = {
                 sprint_editor._clipboardUid,
                 JSON.stringify(val)
             );
-            this.fireEvent('copy');
+            this.fireEvent('clipboard:change');
         }
     },
 
@@ -296,9 +296,8 @@ var sprint_editor = {
             localStorage.removeItem(
                 sprint_editor._clipboardUid
             );
-            this.fireEvent('copy');
+            this.fireEvent('clipboard:change');
         }
-
     },
 
     getClipboard: function () {
