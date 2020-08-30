@@ -169,6 +169,7 @@
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt1,
 .sp-x-buttons.sp-x-buttons-lt1 {
+    margin-bottom: 10px;
 }
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt2,
@@ -198,6 +199,8 @@
 }
 
 .sp-x-lt.sp-x-hidden .sp-x-box,
+.sp-x-lt.sp-x-hidden .sp-x-lt-settings,
+.sp-x-lt.sp-x-hidden .sp-x-col-settings,
 .sp-x-lt.sp-x-hidden .sp-x-buttons-lt2 {
     display: none;
 }
@@ -322,7 +325,7 @@
     box-shadow: 0 1px 1px rgba(0, 0, 0, .25), inset 0 1px 0 #cbdc00;
     text-shadow: 0 1px rgba(0, 0, 0, 0.1);
     font-weight: bold;
-    min-width: 80px;
+    /*min-width: 80px;*/
 }
 
 .sp-x-btn.sp-x-btn-green:hover,
