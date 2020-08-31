@@ -374,9 +374,7 @@ function sprint_editor_full($, params) {
                 enableChange: params.enableChange,
                 title: BX.message('SPRINT_EDITOR_col_default'),
                 uid: columnUid,
-                compiledHtml: sprint_editor.renderTemplate('box-layout-col-settings', {
-                    compiled: sprint_editor.compileClasses(ltname, '', params)
-                })
+                compiled: sprint_editor.compileClasses(ltname, '', params),
             });
 
             var tab = sprint_editor.renderTemplate('box-layout-col-tab', {
@@ -624,9 +622,7 @@ function sprint_editor_full($, params) {
                     enableChange: params.enableChange,
                     title: columnTitle,
                     uid: columnUid,
-                    compiledHtml: sprint_editor.renderTemplate('box-layout-col-settings', {
-                        compiled: sprint_editor.compileClasses(ltname, column.css, params)
-                    })
+                    compiled: sprint_editor.compileClasses(ltname, column.css, params)
                 }),
                 tab: sprint_editor.renderTemplate('box-layout-col-tab', {
                     uid: columnUid,

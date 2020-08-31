@@ -280,7 +280,7 @@
 .bx-core-adm-dialog .sp-x-lt-settings span,
 .bx-core-adm-dialog .sp-x-col-settings span,
 .bx-core-adm-dialog .sp-x-box-settings span,
-.bx-core-adm-dialog .sp-x-btn {
+.bx-core-adm-dialog .sp-x-btn{
     display: inline-block;
     cursor: pointer;
     font-size: 13px;
@@ -450,6 +450,10 @@
 .bx-core-adm-dialog div.sp-x-pp-group-title,
 .sp-x-pp-group-title {
     font-weight: bold;
+    font-size: 13px;
+    padding: 4px;
+    margin: 2px;
+    min-width: 18px;
 }
 
 .bx-core-adm-dialog div.sp-x-lt-tabs,
