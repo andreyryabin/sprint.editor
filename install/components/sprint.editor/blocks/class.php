@@ -6,7 +6,9 @@ use Sprint\Editor\Module;
 class SprintEditorBlocksComponent extends CBitrixComponent
 {
     protected $includedBlocks = 0;
+    protected $layoutIndex    = 0;
     protected $resourcesCache = [];
+    protected $preparedBlocks = [];
 
     public function onPrepareComponentParams($arParams)
     {
@@ -201,6 +203,10 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
     protected function outJson($value)
     {
+        $this->includedBlocks = 0;
+        $this->layoutIndex = 0;
+        $this->preparedBlocks = [];
+
         $value = $this->prepareValue($value);
 
         $events = GetModuleEvents("sprint.editor", "OnBeforeShowComponentBlocks", true);
@@ -210,20 +216,20 @@ class SprintEditorBlocksComponent extends CBitrixComponent
 
         $this->includeHeader($value['blocks'], $this->arParams);
 
-        $blocksMap = [];
+
         foreach ($value['blocks'] as $block) {
             $pos = $block['layout'];
-            if (!isset($blocksMap[$pos])) {
-                $blocksMap[$pos] = [];
+            if (!isset($this->preparedBlocks[$pos])) {
+                $this->preparedBlocks[$pos] = [];
             }
-            $blocksMap[$pos][] = $block;
+            $this->preparedBlocks[$pos][] = $block;
         }
 
         foreach ($value['layouts'] as $layoutIndex => $layout) {
             foreach ($layout['columns'] as $columnIndex => $column) {
                 $pos = $layoutIndex . ',' . $columnIndex;
-                if (isset($blocksMap[$pos])) {
-                    $column['blocks'] = $blocksMap[$pos];
+                if (isset($this->preparedBlocks[$pos])) {
+                    $column['blocks'] = $this->preparedBlocks[$pos];
                 } else {
                     $column['blocks'] = [];
                 }
@@ -296,12 +302,19 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         /** @noinspection PhpIncludeInspection */
         include($root . $path);
 
+        $this->layoutIndex++;
+
         return true;
     }
 
     protected function includeLayoutBlocks($columnIndex)
     {
-        //не используется, оставлено для совместимости
+        $pos = $this->layoutIndex . ',' . $columnIndex;
+        if (isset($this->preparedBlocks[$pos])) {
+            foreach ($this->preparedBlocks[$pos] as $block) {
+                $this->includeBlock($block);
+            }
+        }
     }
 
     protected function includeHeader(&$blocks, $arParams)
