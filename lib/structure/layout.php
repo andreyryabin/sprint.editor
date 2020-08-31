@@ -8,16 +8,17 @@ class Layout
      * @var array|Column[]
      */
     private $columns = [];
-    private $params  = [];
+    private $settings = [];
 
-    public function __construct($params = [])
+    public function __construct($settings = [])
     {
-        $this->params = $params;
+        $this->settings = $settings;
     }
 
     public function toArray()
     {
         $layout = [
+            'settings'=> $this->settings,
             'columns' => [],
         ];
 

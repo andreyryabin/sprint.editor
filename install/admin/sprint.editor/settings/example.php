@@ -5,7 +5,7 @@
  */
 
 $settings = [
-    'title'           => 'Редактор с колонками',
+    'title' => 'Редактор с колонками',
 
     //Разрешить изменение структуры материала, перекрывает настройку "Отключить добавление блоков"
     //'enable_change' => true,
@@ -13,10 +13,32 @@ $settings = [
     //Разрешить изменение числа колонок в сетке, работает если настройка enable_change включена
     //'enable_change_columns' => false,
 
-    //'enable_change_columns' => false,
-
     //Удалять блок при перемещении его за пределы редактора
     //'delete_block_after_sort_out' => false,
+
+    //Пример пользовательских настроек для сеток
+    'layout_settings' => [
+        'type1' => [],
+        'type2' => [
+//            'param1' => [
+//                'type'    => 'select',
+//                'default' => 'style1',
+//                'value'   => [
+//                    'style1' => 'style1',
+//                    'style2' => 'style2',
+//                ],
+//            ],
+//            'param2' => [
+//                'type'  => 'select',
+//                'value' => [
+//                    'style3' => 'style3',
+//                    'style4' => 'style4',
+//                ],
+//            ],
+        ],
+        'type3' => [],
+        'type4' => [],
+    ],
 
     //Доступные классы колонок для сеток
     'layout_classes'  => [
@@ -55,7 +77,7 @@ $settings = [
     //Настройки блоков
     'block_settings'  => [
 
-        'htag' => [
+        'htag'      => [
             //список тегов для заголовка
             'taglist' => [
                 'type'  => 'hidden',
@@ -80,7 +102,7 @@ $settings = [
                 ],
             ],
         ],
-        'text' => [
+        'text'      => [
             'param1' => [
                 'type'  => 'select',
                 'value' => [

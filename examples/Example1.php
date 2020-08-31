@@ -17,7 +17,9 @@ $json = (new Structure())
     //->fromJson()
     //->fromArray()
 
-    ->addLayout()
+    ->addLayout([
+        'param1'=>'value1'
+    ])
     ->addColumn(
         [
             'css' => 'col-md-3',
