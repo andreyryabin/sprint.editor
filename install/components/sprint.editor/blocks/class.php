@@ -299,6 +299,11 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return true;
     }
 
+    protected function includeLayoutBlocks($columnIndex)
+    {
+        //не используется, оставлено для совместимости
+    }
+
     protected function includeHeader(&$blocks, $arParams)
     {
         $root = Module::getDocRoot();
