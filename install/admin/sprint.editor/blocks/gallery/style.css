@@ -29,7 +29,7 @@
     display: none;
 }
 
-.sp-block-gallery .sp-active {
+.sp-block-gallery .sp-x-active {
     border: 2px solid #d00;
 }
 

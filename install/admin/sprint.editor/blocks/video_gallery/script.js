@@ -37,7 +37,7 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
 
 
         $el.on('click', '.sp-item-del', function () {
-            var $image = $el.find('.sp-active');
+            var $image = $el.find('.sp-x-active');
             deletefiles($image.data('uid'));
             $image.remove();
             closeedit();
@@ -57,8 +57,8 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
         });
 
         $el.on('click', '.sp-item', function () {
-            $el.find('.sp-item').removeClass('sp-active');
-            $(this).addClass('sp-active');
+            $el.find('.sp-item').removeClass('sp-x-active');
+            $(this).addClass('sp-x-active');
             var uid = $(this).data('uid');
 
             openedit(uid);

@@ -21,13 +21,13 @@ if ($updater && $updater instanceof \CUpdater) {
     //        unlink(__DIR__ . '/loader.php');
     //    }
 
-//    if (is_dir(__DIR__ . '/install/components/')) {
-//        $updater->CopyFiles("install/components/", "components/");
-//    }
+    if (is_dir(__DIR__ . '/install/components/')) {
+        $updater->CopyFiles("install/components/", "components/");
+    }
 
     if (is_dir(__DIR__ . '/install/admin/')) {
         $updater->CopyFiles("install/admin/", "admin/");
     }
-    //3.1.2
+    //3.2.2
 
 }

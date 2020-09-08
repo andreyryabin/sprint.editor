@@ -9,9 +9,9 @@ class Structure
      */
     private $layouts = [];
 
-    public function addLayout($params = [])
+    public function addLayout($settings = [])
     {
-        $this->layouts[] = new Layout($params);
+        $this->layouts[] = new Layout($settings);
         return $this;
     }
 

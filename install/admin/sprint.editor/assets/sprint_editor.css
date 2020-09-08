@@ -112,9 +112,15 @@
     margin: 10px 0 10px;
 }
 
-.sp-x-box-copied {
+.sp-x-box-copied .sp-x-box-block {
     background: #FFEBC1;
     border: 2px solid #FDBF3B;
+    padding: 5px 5px 10px;
+}
+
+.sp-x-box-cutted .sp-x-box-block{
+    background: #fee;
+    border: 2px solid #d00;
     padding: 5px 5px 10px;
 }
 
@@ -129,13 +135,13 @@
     clear: both;
 }
 
-.sp-x-lt-col {
+.sp-x-col {
     /*min-height: 84px;*/
     /*margin-bottom: 20px;*/
     display: none;
 }
 
-.sp-x-lt-col.sp-active {
+.sp-x-col.sp-x-active {
     display: block;
 }
 
@@ -163,14 +169,44 @@
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt1,
 .sp-x-buttons.sp-x-buttons-lt1 {
-    border-bottom: 1px dashed #ccc;
+    margin-bottom: 10px;
 }
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt2,
 .sp-x-buttons.sp-x-buttons-lt2 {
     text-align: center;
     margin-top: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+}
+
+.bx-core-adm-dialog div.sp-x-separator,
+.sp-x-separator {
+    border-bottom: 2px dashed #ccc;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.bx-core-adm-dialog .sp-x-separator-handle,
+.sp-x-separator-handle {
+    position: absolute;
+    left: -40px;
+    top: -15px;
+}
+
+.sp-x-lt.sp-x-hidden{
+    margin-bottom: 10px;
+}
+
+.sp-x-lt.sp-x-hidden .sp-x-box,
+.sp-x-lt.sp-x-hidden .sp-x-lt-settings,
+.sp-x-lt.sp-x-hidden .sp-x-col-settings,
+.sp-x-lt.sp-x-hidden .sp-x-buttons-lt2 {
+    display: none;
+}
+
+.sp-x-box:last-child .sp-x-separator {
+    display: none;
 }
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-box,
@@ -208,21 +244,23 @@
     padding: 10px 10px 20px;
 }
 
-.sp-x-box-settings {
-    margin-bottom: 5px;
-    text-align: left;
-}
-
+.sp-x-col-settings,
+.sp-x-box-settings,
 .sp-x-lt-settings {
     /*text-align: center;*/
     text-align: left;
 }
+.sp-x-lt-settings {
+    margin-bottom: 10px;
+}
+.sp-x-box-settings {
+    margin-bottom: 10px;
+}
 
-.sp-x-box-settings-group,
-.sp-x-lt-settings-group {
+.sp-x-settings-group {
     /*display: none;*/
     /*padding: 8px;*/
-
+    display: inline-block;
     border-radius: 4px;
     padding: 8px;
 
@@ -235,22 +273,14 @@
 
 }
 
-.sp-x-box-settings-group {
-    display: inline-block;
-    /*display: none;*/
-}
-
-.sp-x-lt-settings-group {
-    display: inline-block;
-    /*display: none;*/
-}
-
 .sp-x-lt-settings span,
+.sp-x-col-settings span,
 .sp-x-box-settings span,
 .sp-x-btn,
 .bx-core-adm-dialog .sp-x-lt-settings span,
+.bx-core-adm-dialog .sp-x-col-settings span,
 .bx-core-adm-dialog .sp-x-box-settings span,
-.bx-core-adm-dialog .sp-x-btn {
+.bx-core-adm-dialog .sp-x-btn{
     display: inline-block;
     cursor: pointer;
     font-size: 13px;
@@ -295,7 +325,7 @@
     box-shadow: 0 1px 1px rgba(0, 0, 0, .25), inset 0 1px 0 #cbdc00;
     text-shadow: 0 1px rgba(0, 0, 0, 0.1);
     font-weight: bold;
-    min-width: 80px;
+    /*min-width: 80px;*/
 }
 
 .sp-x-btn.sp-x-btn-green:hover,
@@ -306,8 +336,8 @@
     text-decoration: none;
 }
 
-.sp-x-btn.sp-x-btn-green.sp-active,
-.bx-core-adm-dialog .sp-x-btn.sp-x-btn-green.sp-active {
+.sp-x-btn.sp-x-btn-green.sp-x-active,
+.bx-core-adm-dialog .sp-x-btn.sp-x-btn-green.sp-x-active {
     background: #698f00 !important;
     box-shadow: inset 0 2px 1px rgba(66, 84, 17, .71) !important;
     border-color: transparent #698f00 #698f00 !important;
@@ -316,6 +346,7 @@
 }
 
 .sp-x-lt-settings span:before,
+.sp-x-col-settings span:before,
 .sp-x-box-settings span:before,
 .sp-x-btn:before {
     display: inline-block;
@@ -324,6 +355,7 @@
 }
 
 .sp-x-lt-settings span:hover,
+.sp-x-col-settings span:hover,
 .sp-x-box-settings span:hover,
 .sp-x-btn:hover {
     background: #ededed;
@@ -334,10 +366,12 @@
     /*rgba(0,0,0,.2) 0 1px 1px;*/
 }
 
-.sp-x-lt-settings span.sp-active,
-.sp-x-box-settings span.sp-active,
-.sp-x-btn.sp-active,
+.sp-x-lt-settings span.sp-x-active,
+.sp-x-col-settings span.sp-x-active,
+.sp-x-box-settings span.sp-x-active,
+.sp-x-btn.sp-x-active,
 .sp-x-lt-settings span:active,
+.sp-x-col-settings span:active,
 .sp-x-box-settings span:active,
 .sp-x-btn:active {
     /*border: none;*/
@@ -382,7 +416,7 @@
 .sp-x-pp-blocks {
     left: 0;
     right: 0;
-    margin: 0 auto;
+    margin: 0;
 }
 
 .bx-core-adm-dialog .sp-x-editor-simple div.sp-x-pp-blocks,
@@ -416,6 +450,10 @@
 .bx-core-adm-dialog div.sp-x-pp-group-title,
 .sp-x-pp-group-title {
     font-weight: bold;
+    font-size: 13px;
+    padding: 4px;
+    margin: 2px;
+    min-width: 18px;
 }
 
 .bx-core-adm-dialog div.sp-x-lt-tabs,

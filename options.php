@@ -232,8 +232,8 @@ $taskList = UpgradeManager::getTasks();
 
 
 <p><?= GetMessage('SPRINT_EDITOR_HELP_TELEGRAM') ?> <br/>
-    <a target="_blank" href="https://t-do.ru/sprint_editor">
-        https://t-do.ru/sprint_editor
+    <a target="_blank" href="https://t.me/sprint_editor">
+        https://t.me/sprint_editor
     </a></p>
 
 <p><?= GetMessage('SPRINT_EDITOR_HELP_DONATE') ?> <br/>

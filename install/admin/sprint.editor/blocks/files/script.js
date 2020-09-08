@@ -86,13 +86,13 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
         });
 
         $el.on('click', '.sp-item-del', function () {
-            $el.find('.sp-active').remove();
+            $el.find('.sp-x-active').remove();
             closeedit();
         });
 
         $el.on('click', '.sp-item', function () {
-            $el.find('.sp-item').removeClass('sp-active');
-            $(this).addClass('sp-active');
+            $el.find('.sp-item').removeClass('sp-x-active');
+            $(this).addClass('sp-x-active');
             openedit($(this).data('uid'));
         });
 

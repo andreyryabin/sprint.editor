@@ -8,6 +8,7 @@ var sprint_editor = {
     _uidcounter: 0,
     _imagesdelete: {},
     _submitcnt: 0,
+    _clipboardUid: 'sprint-editor-cb02',
 
     registerBlock: function (name, method) {
         this._registered[name] = method;
@@ -262,42 +263,50 @@ var sprint_editor = {
         this._events[type].push(callback);
     },
 
-    copyToClipboard: function (uid) {
+    copyToClipboard: function (uid, deleteAfterPaste) {
         if (window.localStorage && sprint_editor.hasEntry(uid)) {
-
-            var blockData = sprint_editor.collectData(uid);
             var val = JSON.parse(
-                localStorage.getItem('sprint-editor-cb01')
+                localStorage.getItem(
+                    sprint_editor._clipboardUid
+                )
             );
 
             val = (val) ? val : {};
+            deleteAfterPaste = !!deleteAfterPaste;
 
-            if (val[uid]) {
+            if (val[uid] && val[uid].deleteAfterPaste === deleteAfterPaste) {
                 delete val[uid];
             } else {
-                val[uid] = blockData;
+                val[uid] = {
+                    block: sprint_editor.collectData(uid),
+                    deleteAfterPaste: deleteAfterPaste
+                };
             }
 
-            localStorage.setItem("sprint-editor-cb01", JSON.stringify(val));
-            this.fireEvent('copy');
+            localStorage.setItem(
+                sprint_editor._clipboardUid,
+                JSON.stringify(val)
+            );
+            this.fireEvent('clipboard:change');
         }
-
-
     },
 
     clearClipboard: function () {
         if (window.localStorage) {
-            localStorage.removeItem('sprint-editor-cb01');
-            this.fireEvent('copy');
+            localStorage.removeItem(
+                sprint_editor._clipboardUid
+            );
+            this.fireEvent('clipboard:change');
         }
-
     },
 
     getClipboard: function () {
         var val = {};
         if (window.localStorage) {
             val = JSON.parse(
-                localStorage.getItem('sprint-editor-cb01')
+                localStorage.getItem(
+                    sprint_editor._clipboardUid
+                )
             );
         }
 
@@ -341,29 +350,132 @@ var sprint_editor = {
             }
 
             var value = [];
-            var valSel = 0;
+            var nothingSelected = true;
 
             jQuery.each(setSet.value, function (valVal, valTitle) {
-
-                valSel = (
+                var isSelected = (
                     blockData.settings &&
                     blockData.settings[setName] &&
                     blockData.settings[setName] == valVal
                 ) ? 1 : 0;
 
+                if (isSelected) {
+                    nothingSelected = false;
+                }
+
                 value.push({
                     title: valTitle,
                     value: valVal,
+                    selected: isSelected
+                })
+            });
+
+            if (nothingSelected && setSet.hasOwnProperty('default')) {
+                jQuery.each(value, function (index, valItem) {
+                    if (valItem.value == setSet.default) {
+                        valItem.selected = 1;
+                    }
+                });
+            }
+
+            compiled.push({
+                name: setName,
+                options: value
+            })
+
+        });
+
+        return compiled;
+    },
+    compileClasses: function (ltname, cssstr, params) {
+
+        var selectedCss = cssstr.split(' ');
+
+        var allclasses = {};
+        if (params.jsonUserSettings.layout_classes) {
+            if (params.jsonUserSettings.layout_classes[ltname]) {
+                if (params.jsonUserSettings.layout_classes[ltname].length > 0) {
+                    allclasses = params.jsonUserSettings.layout_classes[ltname]
+                }
+            }
+        }
+
+        var compiled = [];
+
+        if (!allclasses) {
+            return compiled;
+        }
+
+        jQuery.each(allclasses, function (groupIndex, groupClasses) {
+
+            if (!jQuery.isArray(groupClasses)) {
+                return true;
+            }
+
+            var value = [];
+            var valSel = 0;
+
+            jQuery.each(groupClasses, function (cssIndex, cssName) {
+
+                valSel = (
+                    jQuery.inArray(cssName, selectedCss) >= 0
+                ) ? 1 : 0;
+
+                value.push({
+                    title: sprint_editor.getClassTitle(cssName, params),
+                    value: cssName,
                     selected: valSel
                 })
             });
+
+
             compiled.push({
-                name: setName,
                 options: value
             })
         });
 
         return compiled;
+    },
+    getClassTitle: function (cssname, params) {
+        if (params.jsonUserSettings.layout_titles) {
+            if (params.jsonUserSettings.layout_titles[cssname]) {
+                if (params.jsonUserSettings.layout_titles[cssname].length > 0) {
+                    return params.jsonUserSettings.layout_titles[cssname];
+                }
+            }
+        }
+
+        return cssname;
+    },
+
+    getBlockSettings: function (name, params) {
+        var blockSettings = {};
+
+        if (!params.jsonUserSettings.hasOwnProperty('block_settings')) {
+            return blockSettings;
+        }
+
+        if (!params.jsonUserSettings.block_settings.hasOwnProperty(name)) {
+            return blockSettings;
+        }
+
+        return params.jsonUserSettings.block_settings[name];
+
+    },
+
+    getLayoutSettings: function (name, params) {
+        var layoutSettings = {};
+
+        if (!params.jsonUserSettings.hasOwnProperty('layout_settings')) {
+            return layoutSettings;
+        }
+
+        if (!params.jsonUserSettings.layout_settings.hasOwnProperty(name)) {
+            return layoutSettings;
+        }
+
+        return params.jsonUserSettings.layout_settings[name];
+
     },
 
     safeStringify: function (data) {
@@ -380,5 +492,21 @@ var sprint_editor = {
             .replace(/([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD10-\uDDFF])/g, '');
 
         return data;
+    },
+    collectSettings($settings) {
+        var settcnt = 0;
+        var settval = {};
+
+        $settings.find('.sp-x-settings-group').each(function () {
+            var name = $(this).data('name');
+            var $val = $(this).find('.sp-x-active').first();
+
+            if ($val.length > 0) {
+                settval[name] = $val.data('value');
+                settcnt++;
+            }
+        });
+
+        return settval;
     }
 };
