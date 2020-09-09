@@ -1,0 +1,94 @@
+.sp-block-my_mp3player .bx-bb{
+   box-sizing: border-box;
+}
+.sp-block-my_mp3player .audiojs {
+   height: 22px;
+   background: #404040;
+   background-image: -moz-linear-gradient(center top, #444 0%, #555 50%, #444 51%, #444 100%);
+   -o-box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
+   box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
+   }
+ .sp-block-my_mp3player .audiojs .play-pause { width: 15px; height: 20px; padding: 0px 8px 0px 0px; }
+ .sp-block-my_mp3player .audiojs p { width: 25px; height: 20px; margin: -3px 0px 0px -1px; }
+ .sp-block-my_mp3player .audiojs .scrubber { background: #5a5a5a; width: 310px; height: 10px; margin: 5px; }
+ .sp-block-my_mp3player .audiojs .progress { height: 10px; width: 0px; background: #ccc;
+   background-image: -moz-linear-gradient(center top, #ccc 0%, #ddd 50%, #ccc 51%, #ccc 100%); }
+ .sp-block-my_mp3player .audiojs .loaded {
+   height: 10px;
+   background: #000;
+   background-image: -moz-linear-gradient(center top, #222 0%, #333 50%, #222 51%, #222 100%);
+   }
+ .sp-block-my_mp3player .audiojs .time { float: left; height: 25px; line-height: 25px; }
+ .sp-block-my_mp3player .audiojs .error-message { height: 24px;line-height: 24px; }
+
+/* track-details */
+ .track-details {
+	clear: both;
+	height: 20px;
+	width: 454px;
+	padding: 1px 0px 1px 6px;
+	background: #eee;
+	color: #222;
+	font-family: monospace;
+	font-size: 11px;
+	line-height: 20px;
+	-webkit-box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.15);
+}
+
+.sp-block-my_mp3player .track-details:before {
+	content: '♬ ';
+}
+.sp-block-my_mp3player .track-details:after {
+   float: right;
+   color: wheat;
+   width: 20px;
+   height: 21px;
+   text-align: center;
+   margin-top: -1px;
+}
+.sp-block-my_mp3player .track-details.error:after{
+   background-color: red;
+   content: '\2716';
+}
+.sp-block-my_mp3player .track-details.success:after{
+   content: '\2714';
+   background: limegreen;
+}
+
+/* Кнопка выбрать файл */
+.sp-block-my_mp3player  .fl_upld{
+   width: 460px;
+   overflow: hidden;
+}
+.sp-block-my_mp3player .fl_inp{display:none;}
+.sp-block-my_mp3player .fl_upld label{
+   
+   float: left;
+cursor:pointer;
+background:#36c;
+border-top-left-radius: 3px;
+padding: 5px 10px;
+color:#fff;
+font-weight:bold;
+text-align: center;
+width: 35%;
+}
+.sp-block-my_mp3player .fl_upld label:hover{
+   background:#fc0;
+}
+.sp-block-my_mp3player .fl_nm{
+   width: 65%;
+   float: left;
+   color:#fff;
+   background:#36c;
+padding: 5px 10px;
+font-weight: bold;
+border-top-right-radius: 3px;
+}
+
+.sp-block-my_mp3player .load{
+   color: red;
+    font-size: 14px;
+    font-weight: bold;
+}

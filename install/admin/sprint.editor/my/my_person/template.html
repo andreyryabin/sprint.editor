@@ -1,0 +1,23 @@
+
+<div class="sp-field">
+   <input type="button" class="sp-toggle" value="Выбрать">
+</div>
+<div class="sp-source">
+   <div class="sp-fields">
+      <form action="">
+         <input type="file" name="" id="" accept=".JPEG,.PNG,.WebP,.jpg">
+         <textarea class="sp-text" placeholder="Текст"></textarea>
+         <input type="submit" value="">
+      </form>
+   </div>
+</div>
+
+
+<ul>
+{{~it.array :item:index}}
+<li>
+   <img src="{{=item.img}}" alt="">
+   <span>{{=item.text}}</span>
+</li>
+{{~}}
+</ul>

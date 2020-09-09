@@ -1,0 +1,7 @@
+{
+   "title": "HRAG",
+   "sort": "10",
+   "js": [
+    "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
+  ]
+}

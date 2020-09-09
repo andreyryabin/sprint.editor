@@ -1,0 +1,20 @@
+<div class="status"></div>
+<div class="fl_upld">
+   <label class="bx-bb">
+      <input class="fl_inp " type="file" name="file" accept=".mp3,.wav">
+      Выберите файл
+   </label>
+   <div class="fl_nm bx-bb">
+      {{?it.mp3}}{{!it.mp3.split('/').pop()}}{{??}}Файл не выбран{{?}}
+   </div>
+</div>
+<div class="load" style="display: none;">
+Загрузка файла
+</div>
+
+<div class="audio_box">
+   <audio src="{{!it.mp3}}"></audio>
+   <div class="track-details {{?it.mp3}}success{{??}}error{{?}}">
+      {{!it.mp3.split('/').pop()}}
+   </div>
+</div>

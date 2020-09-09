@@ -1,0 +1,10 @@
+{
+    "title": "mp3player",
+    "hint": "Загрузите несколько файлов с компьютера",
+    "sort": "50",
+    "js": [
+       "https://cdnjs.cloudflare.com/ajax/libs/audiojs/1.0.1/audio.min.js"
+    ],
+    "templates": [
+    ]
+}

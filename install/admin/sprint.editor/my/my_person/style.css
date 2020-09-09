@@ -1,0 +1,71 @@
+.sp-block-my_person .trumbowyg-textarea {
+   min-height: 70px;
+}
+.sp-block-my_person .trumbowyg-fullscreen{
+  height: 95%;
+}
+.sp-block-my_person .trumbowyg-editor {
+   min-height: 70px;
+   padding: 5px;
+   background-color: white;
+}
+.sp-block-my_person .trumbowyg-editor  {
+  min-height: 70px;
+  padding: 5px;
+  background-color: white;
+}
+
+.sp-block-my_person .trumbowyg-box {
+   min-height: 70px;
+}
+
+.sp-block-my_person p{
+   margin: 0;
+}
+.sp-block-my_person blockquote{
+  padding: 0px 0 18px 36px;
+  margin: 0 18px;
+   position: relative;
+}
+.sp-block-my_person blockquote:before{
+   color: #a5a58c;
+   font-family: "FontAwesome";
+   content: "\f10d";
+   font-size: 24px;
+   position: absolute;
+   left: 0;
+}
+.sp-block-my_person img{
+   width: 9%;
+   float: left;
+   margin: 0 2px 0px 0;
+}
+.sp-block-my_person li{
+   overflow: hidden;
+   margin: 2px 0;
+}
+
+
+
+
+.sp-block-my_person .sp-source {
+   background: #FFEBC1;
+   display: none;
+}
+
+.sp-block-my_person.sp-show .sp-source {
+   display: block;
+}
+
+.sp-block-my_person .sp-download-url {
+   width: 80%;
+}
+
+
+.sp-block-my_person .sp-fields {
+   padding: 10px;
+}
+
+.sp-block-my_person .sp-field {
+   margin-bottom: 10px;
+}

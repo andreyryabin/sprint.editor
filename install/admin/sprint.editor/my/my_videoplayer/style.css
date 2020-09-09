@@ -1,0 +1,7 @@
+.my_videoplayer video{
+   width: 100%;
+}
+.my_videoplayer .status{
+   font-weight: bold;
+   font-size: 14px;
+} 

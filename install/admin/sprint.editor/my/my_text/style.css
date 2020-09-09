@@ -1,0 +1,37 @@
+.sp-block-my_text .trumbowyg-textarea {
+    min-height: 70px;
+}
+.sp-block-my_text .trumbowyg-fullscreen{
+   height: 95%;
+}
+.sp-block-my_text .trumbowyg-editor {
+    min-height: 70px;
+    padding: 5px;
+    background-color: white;
+}
+.sp-block-my_text .trumbowyg-editor  {
+   min-height: 70px;
+   padding: 5px;
+   background-color: white;
+}
+
+.sp-block-my_text .trumbowyg-box {
+    min-height: 70px;
+}
+
+.sp-block-my_text p{
+   margin: 8px 0;
+}
+.sp-block-my_text blockquote{
+   padding: 0px 0 18px 36px;
+   margin: 0 18px;
+    position: relative;
+}
+.sp-block-my_text blockquote:before{
+    color: #a5a58c;
+    font-family: "FontAwesome";
+    content: "\f10d";
+    font-size: 24px;
+    position: absolute;
+    left: 0;
+}

@@ -693,7 +693,8 @@ function sprint_editor_full($, params) {
         }
 
         if (!sprint_editor.hasBlockParams(blockData.name)) {
-            return false;
+            blockData['nameold'] = blockData.name;
+            blockData.name = 'dump';
         }
 
         var uid = sprint_editor.makeUid();

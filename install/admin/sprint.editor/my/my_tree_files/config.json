@@ -1,0 +1,10 @@
+{
+    "title": "Дерево документов",
+    "sort": "920",
+    "js" : [
+        "/bitrix/admin/sprint.editor/assets/my_tree_files/jquery-sortable-lists.js"
+    ],
+    "templates": [
+        "item.html"
+      ]
+}

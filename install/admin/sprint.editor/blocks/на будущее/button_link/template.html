@@ -1,0 +1,15 @@
+<div class="sp-field-row">
+    <input class="sp-title" placeholder="Текст кнопки" type="text" value="{{!it.title}}"/>
+</div>
+
+<div class="sp-field-row">
+    <input class="sp-url" placeholder="Ссылка" type="text" value="{{!it.url}}"/>
+</div>
+
+<div class="sp-field-row">
+    <select class="sp-target">
+        {{~it.targets :item}}
+        <option {{?item.selected}}selected="selected" {{?}}value="{{=item.value}}">{{=item.name}}</option>
+        {{~}}
+    </select>
+</div>

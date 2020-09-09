@@ -1,0 +1,127 @@
+.editor_altspu{
+   overflow: hidden;
+   margin-bottom: 5px;
+}
+/* my_image */
+.editor_altspu .sp-image img {
+    width: 100%;
+}
+
+.editor_altspu .sp-image-text .text p:nth-child(1) {
+   margin-top: 0;
+}
+.editor_altspu blockquote{
+   overflow: hidden;
+    padding: 18px 0 18px 36px;
+    position: relative;
+    width: 100%;
+    margin: 0;
+}
+.editor_altspu blockquote:before{
+    color: #a5a58c;
+    font-family: "FontAwesome";
+    content: "\f10d";
+    font-size: 24px;
+    position: absolute;
+    left: 0;
+}
+/* my_complex_image_text */
+.sp-image-text img {
+   overflow: hidden;
+    float: left;
+    margin: 0 10px 9px 0;
+}
+.sp-image-text ul{
+    width: 100%;
+    overflow: auto;
+}
+/* my_button_link */
+
+.sp-button_link,
+.sp-button_link:link,
+.sp-button_link:visited {
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 3px;
+    text-decoration: none;
+    background: #dcecf6;
+    color: #157fc4;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    text-align: center;
+}
+
+.sp-button_link:hover {
+    text-decoration: none;
+    background: #157fc4;
+    color: #ffffff;
+}
+
+/* my_person */
+.my_person ul{
+   margin-top: 0;
+   margin-bottom: 0;
+}
+.my_person > li{
+   margin: 5px 0px;
+   overflow:hidden;
+}
+.my_person img{
+   width: 8%;
+   min-width: 60px;
+    float: left;
+    margin: 0 5px 0 0;
+}
+.my_person p{
+   margin-top: 0;
+}
+
+/* my_complex_video_text */
+.editor_altspu .video {
+    position:relative;
+    padding: 0 0 56.25% 0;
+    height:0;
+    overflow:hidden;
+    }
+.editor_altspu .video iframe {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+
+/* my_htag */
+.editor_altspu .htag{
+    text-transform: lowercase;
+}
+.editor_altspu .htag:first-letter{
+    text-transform: uppercase;
+}
+.editor_altspu .htag_h2{
+    font-size: 22px;
+}
+.editor_altspu .htag_h3{
+    font-size: 20px;
+}
+.editor_altspu .htag_h4{
+    font-size: 18px;
+}
+.editor_altspu .htag_h5{
+    font-size: 16px;
+}
+
+/* my_files */
+.editor_altspu .my_files a{
+    display: block;
+    padding: .375rem .75rem;
+    color: #495057;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}

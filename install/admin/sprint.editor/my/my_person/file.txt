@@ -1,0 +1,12 @@
+Array
+(
+    [0] => Array
+        (
+            [name] => anime_devushka_art_glaza_koshka_98722_1920x1080 (1).jpg
+            [type] => image/jpeg
+            [tmp_name] => A:\tmp\phpDD71.tmp
+            [error] => 0
+            [size] => 154570
+        )
+
+)

@@ -1,0 +1,7 @@
+{
+    "title": "Слайдер",
+    "sort": "920",
+    "templates": [
+        "field.html"
+    ]
+}

@@ -1,0 +1,17 @@
+.sp-block-my_lists .sp-item {
+    padding-bottom: 6px;
+}
+
+.sp-block-my_lists .sp-item input {
+    width: 90%;
+}
+.sp-block-my_lists .sp-item span
+{
+    font-weight: bold;
+    height: 100%;
+    display: inline-block;
+    width: 7%;
+    text-align: center;
+    font-size: 18px;
+    cursor: grab;
+}
