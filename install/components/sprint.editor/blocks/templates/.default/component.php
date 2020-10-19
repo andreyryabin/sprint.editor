@@ -1,4 +1,7 @@
-<? /** @var $block array */
+<? /**
+ * @var $block array
+ * @var $this SprintEditorBlocksComponent
+ */
 global $APPLICATION;
 if (!empty($block['component_name'])) {
     $block = Sprint\Editor\Blocks\Component::initializeParams($block);
@@ -7,7 +10,7 @@ if (!empty($block['component_name'])) {
         $block['component_name'],
         $block['component_template'],
         $block['component_params'],
-        false,
+        $this->getParent(),
         [
             'HIDE_ICONS' => 'Y',
         ]

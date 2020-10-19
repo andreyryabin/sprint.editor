@@ -1,2 +1,7 @@
+<div class="sp-lists-type">Вид списка: <select>
+    {{~it.taglist :item}}
+    <option {{?it.type==item.id}}selected="selected"{{?}}value="{{=item.id}}">{{=item.title}}</option>
+    {{~}}
+</select></div>
 <div class="sp-lists-result"></div>
 <input class="sp-lists-add" type="button" value="Добавить">

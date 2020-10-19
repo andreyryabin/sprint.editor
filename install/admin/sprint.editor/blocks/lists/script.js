@@ -1,10 +1,26 @@
-sprint_editor.registerBlock('lists', function ($, $el, data) {
+sprint_editor.registerBlock('lists', function ($, $el, data, settings) {
 
     data = $.extend({
+        type: 'ul',
         elements: [{text: ''}, {text: ''}]
     }, data);
 
     this.getData = function () {
+
+        var taglist = [
+            {id: 'ol', title: 'Нумерованный'},
+            {id: 'ul', title: 'Маркированный'},
+        ];
+
+        if (settings.taglist && settings.taglist.value) {
+            taglist = [];
+            $.each(settings.taglist.value, function (index, val) {
+                taglist.push({id: index, title: val})
+            });
+        }
+
+        data['taglist'] = taglist;
+
         return data;
     };
 
@@ -21,7 +37,8 @@ sprint_editor.registerBlock('lists', function ($, $el, data) {
                 });
             }
         });
-
+        delete data['taglist'];
+        data.type = $el.find('select').val();
         data.elements = trimed;
         return data;
     };
@@ -44,6 +61,4 @@ sprint_editor.registerBlock('lists', function ($, $el, data) {
 
         });
     }
-
-
 });
