@@ -10,7 +10,7 @@
  * @var $formName
  *
  * @var $firstRun
- * @var $selectValues
+ * @var $blocksToolbar
  *
  * @var $enableChange
  * @var $jsonUserSettings
@@ -24,26 +24,25 @@
             <div class="sp-x-lt-row">
                 <div class="sp-x-col sp-x-active"></div>
             </div>
-            <?if ($enableChange):?>
-            <div class="sp-x-buttons sp-x-buttons-ed">
-                <span class="sp-x-btn sp-x-btn-green sp-x-pp-blocks-open"><?= GetMessage('SPRINT_EDITOR_add_block') ?></span>
-                <span class="sp-x-btn sp-x-lastblock"><?= GetMessage('SPRINT_EDITOR_add') ?></span>
-            </div>
-            <?endif;?>
+            <? if ($enableChange) { ?>
+                <div class="sp-x-buttons sp-x-buttons-lt2">
+                    <span class="sp-x-btn sp-x-btn-green sp-x-pp-blocks-open"><?= GetMessage('SPRINT_EDITOR_add_block') ?></span>
+                    <span class="sp-x-btn sp-x-lastblock"><?= GetMessage('SPRINT_EDITOR_add') ?></span>
+                </div>
+            <? } ?>
         </div>
     </div>
 </div>
-
 <script type="text/html" id="sp-x-template-pp-blocks<?= $uniqId ?>">
     <div class="sp-x-pp-blocks">
-        <? foreach ($selectValues as $groupType => $aGroup): if (in_array($groupType, array('blocks_blocks', 'blocks_my'))): ?>
+        <? foreach ($blocksToolbar as $aGroup) { ?>
             <div class="sp-x-pp-group">
                 <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
-                <? foreach ($aGroup['blocks'] as $aBlock): ?>
+                <? foreach ($aGroup['blocks'] as $aBlock) { ?>
                     <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
-                <? endforeach; ?>
+                <? } ?>
             </div>
-        <? endif;endforeach ?>
+        <? } ?>
     </div>
 </script>
 
@@ -82,7 +81,7 @@
         sprint_editor_simple($, {
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
-            jsonUserSettings:<?=$jsonUserSettings?>,
+            jsonUserSettings: <?=$jsonUserSettings?>,
             jsonValue: <?=$jsonValue?>
         });
     });

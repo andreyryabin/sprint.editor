@@ -10,8 +10,8 @@
     color: #3f4b54;
     padding: 6px 15px 5px;
     line-height: 16px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
+    /*-webkit-border-radius: 4px;*/
+    /*border-radius: 4px;*/
     border: 0;
     -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .11), 0 1px 1px rgba(0, 0, 0, .3), inset 0 1px #fff, inset 0 0 1px rgba(255, 255, 255, .5);
     box-shadow: 0 0 1px rgba(0, 0, 0, .3), 0 1px 1px rgba(0, 0, 0, .3), inset 0 1px 0 #fff, inset 0 0 1px rgba(255, 255, 255, .5);
@@ -93,11 +93,11 @@
 /* editor */
 
 .sp-x-box {
-    margin: 10px 0 0;
+    /*margin: 10px 0 0;*/
 }
 
 .sp-x-editor-simple .sp-x-box {
-    margin: 0 0 10px;
+    /*margin: 0 0 10px;*/
 }
 
 .sp-x-lt-placeholder {
@@ -118,21 +118,44 @@
     padding: 5px 5px 10px;
 }
 
-.sp-x-box-cutted .sp-x-box-block{
+.sp-x-box-cutted .sp-x-box-block {
     background: #fee;
     border: 2px solid #d00;
     padding: 5px 5px 10px;
 }
 
-.sp-x-lt {
-
-    /*position: relative;*/
+.sp-x-editor-buttons {
+    padding: 10px;
 }
 
-.sp-x-lt:after {
+.sp-x-lt,
+.sp-x-editor-buttons {
+    background: #fff;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+.sp-x-lt:after,
+.sp-x-container:after {
     content: '';
     display: block;
     clear: both;
+}
+
+.sp-x-lt-row {
+    /*margin: 0 10px;*/
+}
+
+.sp-x-box-block,
+.sp-x-box-settings{
+    margin: 0 10px;
+}
+
+.bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt2,
+.sp-x-buttons.sp-x-buttons-lt2 {
+    margin: 10px;
+    /*background: #ccc;*/
+    text-align: center;
 }
 
 .sp-x-col {
@@ -172,18 +195,11 @@
     margin-bottom: 10px;
 }
 
-.bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-lt2,
-.sp-x-buttons.sp-x-buttons-lt2 {
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
 .bx-core-adm-dialog div.sp-x-separator,
 .sp-x-separator {
     border-bottom: 2px dashed #ccc;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     position: relative;
 }
 
@@ -194,7 +210,8 @@
     top: -15px;
 }
 
-.sp-x-lt.sp-x-hidden{
+
+.sp-x-lt.sp-x-hidden {
     margin-bottom: 10px;
 }
 
@@ -213,15 +230,6 @@
 .sp-x-buttons.sp-x-buttons-box {
     text-align: center;
     margin-bottom: 5px;
-}
-
-.bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-ed,
-.sp-x-buttons.sp-x-buttons-ed {
-    background: #fff;
-    padding: 10px;
-    border: 1px solid;
-    border-color: #c4ced2 #dce7ed #dce7ed;
-    border-radius: 4px;
 }
 
 .sp-x-buttons-group {
@@ -250,9 +258,11 @@
     /*text-align: center;*/
     text-align: left;
 }
+
 .sp-x-lt-settings {
     margin-bottom: 10px;
 }
+
 .sp-x-box-settings {
     margin-bottom: 10px;
 }
@@ -261,7 +271,7 @@
     /*display: none;*/
     /*padding: 8px;*/
     display: inline-block;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     padding: 8px;
 
     /*border-radius: 4px;*/
@@ -280,7 +290,7 @@
 .bx-core-adm-dialog .sp-x-lt-settings span,
 .bx-core-adm-dialog .sp-x-col-settings span,
 .bx-core-adm-dialog .sp-x-box-settings span,
-.bx-core-adm-dialog .sp-x-btn{
+.bx-core-adm-dialog .sp-x-btn {
     display: inline-block;
     cursor: pointer;
     font-size: 13px;
@@ -295,7 +305,7 @@
     -o-user-select: none;
 
     outline: none;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     /*color: #333;*/
 
     /*background: linear-gradient(#ececeb, #eaeaea);*/
@@ -310,8 +320,8 @@
     /*inset #fff 0 2px,*/
     /*rgba(0,0,0,.2) 0 1px 1px;*/
 
-    padding: 4px;
-    margin: 2px;
+    padding: 6px;
+    /*margin: 2px;*/
     min-width: 18px;
 
 }
@@ -351,7 +361,7 @@
 .sp-x-btn:before {
     display: inline-block;
     vertical-align: middle;
-    padding-right: 5px;
+    /*padding-right: 5px;*/
 }
 
 .sp-x-lt-settings span:hover,
@@ -396,7 +406,7 @@
     z-index: 40;
     position: absolute;
     /*left: 0;*/
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     font-size: 0;
     box-shadow: inset rgba(0, 0, 0, .5) 0 -1px 1px,
     inset rgba(0, 0, 0, .2) 0 1px,
@@ -465,4 +475,11 @@
 .bx-core-adm-dialog .sp-x-btn.sp-x-lastblock,
 .sp-x-btn.sp-x-lastblock {
     display: none;
+}
+
+.bx-core-adm-dialog div.sp-x-settings-group,
+.sp-x-settings-group,
+.sp-x-lt-tabs,
+.bx-core-adm-dialog div.sp-x-lt-tabs {
+    font-size: 0;
 }

@@ -49,11 +49,6 @@ function sprint_editor_full($, params) {
         params.enableChange = !!params.jsonUserSettings.enable_change;
     }
 
-    params.enableChangeColumns = false;
-    if (params.jsonUserSettings.hasOwnProperty('enable_change_columns')) {
-        params.enableChangeColumns = !!params.jsonUserSettings.enable_change_columns;
-    }
-
     params.deleteBlockAfterSortOut = false;
     if (params.jsonUserSettings.hasOwnProperty('delete_block_after_sort_out')) {
         params.deleteBlockAfterSortOut = !!params.jsonUserSettings.delete_block_after_sort_out;
@@ -311,89 +306,6 @@ function sprint_editor_full($, params) {
             popupToggle();
         });
 
-        $editor.on('click', '.sp-x-col-del', function (e) {
-            e.preventDefault();
-
-            var $grid = $(this).closest('.sp-x-lt');
-            var $col = getActiveColumn($grid);
-
-            var $tab = getActiveTab($grid);
-
-            var columnUid = $col.data('uid');
-
-            if ($col.length <= 0 || !columnUid) {
-                return false;
-            }
-
-            $col.find('.sp-x-box').each(function () {
-                var uid = $(this).data('uid');
-                sprint_editor.beforeDelete(uid);
-            });
-
-
-            var newxtindex = $grid.find('.sp-x-col').index($col);
-
-            var colcount = $grid.find('.sp-x-col').length;
-            var newcount = colcount - 1;
-            if (newcount > 0) {
-
-                $tab.remove();
-                $col.remove();
-
-                var $newcol = $grid.find('.sp-x-col').eq(newxtindex);
-                if ($newcol.length <= 0) {
-                    $newcol = $grid.find('.sp-x-col').last();
-                }
-
-                selectColumn(
-                    $newcol.data('uid')
-                );
-
-                updateIndexes($grid);
-
-            } else {
-                $grid.remove();
-            }
-        });
-
-        $editor.on('click', '.sp-x-col-add', function (e) {
-            e.preventDefault();
-            var $grid = $(this).closest('.sp-x-lt');
-
-            var newcount = $grid.find('.sp-x-col').length + 1;
-
-            if (newcount > 4) {
-                return;
-            }
-
-            var ltname = 'type' + newcount;
-
-            var columnUid = sprint_editor.makeUid();
-
-            var html = sprint_editor.renderTemplate('box-layout-col', {
-                enableChange: params.enableChange,
-                title: BX.message('SPRINT_EDITOR_col_default'),
-                uid: columnUid,
-                compiled: sprint_editor.compileClasses(ltname, '', params),
-            });
-
-            var tab = sprint_editor.renderTemplate('box-layout-col-tab', {
-                uid: columnUid,
-                title: BX.message('SPRINT_EDITOR_col_default')
-            });
-
-            $grid.find('.sp-x-lt-tabs').append(tab);
-            $grid.find('.sp-x-lt-row').append(html);
-
-            sortableBlocks($grid.find('.sp-x-col').last());
-
-            selectColumn(columnUid);
-
-            checkClipboardButtons();
-
-            updateIndexes($grid);
-        });
-
         $editor.on('click', '.sp-x-col-edit', function (e) {
             var $grid = $(this).closest('.sp-x-lt');
             var $title = getActiveTab($grid).find('.sp-x-col-title');
@@ -598,7 +510,9 @@ function sprint_editor_full($, params) {
     }
 
     function layoutAdd(layout) {
-        var ltname = 'type' + layout.columns.length;
+        var columnsCnt = layout.columns.length;
+
+        var ltname = 'type' + columnsCnt;
 
         var columns = [];
 
@@ -635,7 +549,7 @@ function sprint_editor_full($, params) {
         $editor.find('.sp-x-editor-lt').append(
             sprint_editor.renderTemplate('box-layout', {
                 enableChange: params.enableChange,
-                enableChangeColumns: params.enableChangeColumns,
+                enableMoveColumns: (columnsCnt > 1),
                 columns: columns,
                 title: layoutTitle,
                 compiled: sprint_editor.compileSettings(layout, layoutSettings)
@@ -928,12 +842,10 @@ function sprint_editor_full($, params) {
             });
 
             if (columns.length > 0) {
-
                 layouts.push({
                     settings: ltsettings,
                     columns: columns
                 });
-
             }
 
         });

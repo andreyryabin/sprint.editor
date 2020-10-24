@@ -7,11 +7,12 @@ use DirectoryIterator;
 
 class AdminEditor
 {
-    protected static $initCounts = 0;
-    protected static $css = [];
-    protected static $js  = [];
-    protected static $parameters = [];
-    protected static $templates  = [];
+    protected static $initCounts   = 0;
+    protected static $css          = [];
+    protected static $js           = [];
+    protected static $allblocks    = [];
+    protected static $alllayouts   = [];
+    protected static $templates    = [];
     protected static $selectValues = [];
 
     public static function init($params)
@@ -70,9 +71,15 @@ class AdminEditor
             $userSettings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
         }
 
-        $filteredSelect = self::filterSelect($userSettings);
+        $filteredBlocks = self::filterBlocks($userSettings);
+        $blocksToolbar = self::getBlocksToolbar($userSettings, $filteredBlocks);
 
-        if (empty($filteredSelect['layouts'])) {
+        $filteredLayouts = self::filterLayouts($userSettings);
+        $layoutsToolbar = self::getLayoutsToolbar($userSettings, $filteredLayouts);
+
+        $packToolbar = [];
+
+        if (empty($filteredLayouts)) {
             $file = '/templates/admin_editor_simple.php';
         } else {
             $file = '/templates/admin_editor.php';
@@ -80,16 +87,18 @@ class AdminEditor
 
         return self::renderFile(
             Module::getModuleDir() . $file, [
-            'jsonValue'        => json_encode(Locale::convertToUtf8IfNeed($value)),
-            'selectValues'     => $filteredSelect,
-            'templates'        => Locale::convertToWin1251IfNeed(self::$templates),
-            'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed(self::$parameters)),
-            'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
-            'enableChange'     => $enableChange,
-            'inputName'        => $params['inputName'],
-            'uniqId'           => $params['uniqId'],
-            'firstRun'         => (self::$initCounts == 1) ? 1 : 0,
-        ]
+                'jsonValue'        => json_encode(Locale::convertToUtf8IfNeed($value)),
+                'blocksToolbar'    => Locale::convertToWin1251IfNeed($blocksToolbar),
+                'layoutsToolbar'   => Locale::convertToWin1251IfNeed($layoutsToolbar),
+                'packToolbar'      => Locale::convertToWin1251IfNeed($packToolbar),
+                'templates'        => Locale::convertToWin1251IfNeed(self::$templates),
+                'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
+                'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
+                'enableChange'     => $enableChange,
+                'inputName'        => $params['inputName'],
+                'uniqId'           => $params['uniqId'],
+                'firstRun'         => (self::$initCounts == 1) ? 1 : 0,
+            ]
         );
     }
 
@@ -293,8 +302,6 @@ class AdminEditor
             return false;
         }
 
-        $selectBlocks = [];
-
         $iterator = new DirectoryIterator($rootpath);
         foreach ($iterator as $item) {
             if (!$item->isDir() || $item->isDot()) {
@@ -359,49 +366,28 @@ class AdminEditor
             unset($param['css']);
             unset($param['js']);
 
-            if (!empty($param['title'])) {
-                $selectBlocks[] = $param;
-            }
-
-            self::$parameters[$blockName] = $param;
+            self::$allblocks[$blockName] = $param;
         }
 
-        if (empty($selectBlocks)) {
-            return false;
-        }
-
-        self::sortByNum($selectBlocks, 'sort');
-
-        self::$selectValues['blocks_' . $groupname] = [
-            'title'  => GetMessage('SPRINT_EDITOR_group_' . $groupname),
-            'type'   => 'blocks_' . $groupname,
-            'blocks' => Locale::convertToWin1251IfNeed($selectBlocks),
-        ];
+        return true;
     }
 
     protected static function registerLayouts()
     {
-        $selectLayouts = [];
-        for ($num = 1; $num <= 4; $num++) {
-            $selectLayouts[] = [
+        for ($num = 0; $num <= 4; $num++) {
+            $layoutName = 'layout_' . $num;
+
+            self::$alllayouts[$layoutName] = [
                 'title' => GetMessage('SPRINT_EDITOR_layout_type' . $num),
-                'name'  => 'layout_' . $num,
+                'name'  => $layoutName,
             ];
         }
-
-        self::$selectValues['layouts'] = [
-            'title'  => GetMessage('SPRINT_EDITOR_group_layout'),
-            'type'   => 'layouts',
-            'blocks' => Locale::convertToWin1251IfNeed($selectLayouts),
-        ];
     }
 
     public static function registerPacks()
     {
-        $packs = [];
-
         $dir = Module::getPacksDir();
-
+        $packs = [];
         $iterator = new DirectoryIterator($dir);
         foreach ($iterator as $item) {
             if ($item->getExtension() != 'json') {
@@ -412,97 +398,137 @@ class AdminEditor
 
             $content = file_get_contents($item->getPathname());
             $content = json_decode($content, true);
+            if (empty($content)) {
+                continue;
+            }
 
-            if ($content && isset($content['blocks']) && $content['layouts']) {
-                $packname = !empty($content['packname']) ? $content['packname'] : $packuid;
+            if (!isset($content['blocks']) || !isset($content['layouts'])) {
+                continue;
+            }
 
-                $packs[] = [
-                    'name'  => 'pack_' . $packuid,
-                    'title' => $packname,
+            $title = !empty($content['packname']) ? $content['packname'] : $packuid;
+            $packName = 'pack_' . $packuid;
+
+            $packs[$packName] = [
+                'name'  => $packName,
+                'title' => $title,
+            ];
+        }
+
+        $packs = self::sortByStr($packs, 'title');
+
+        return [
+            'title'  => GetMessage('SPRINT_EDITOR_group_packs'),
+            'blocks' => Locale::convertToWin1251IfNeed($packs),
+        ];
+    }
+
+    protected static function filterBlocks($userSettings)
+    {
+        if (!empty($userSettings['block_disabled'])) {
+            $blocks = array_filter(
+                self::$allblocks,
+                function ($block) use ($userSettings) {
+                    return !in_array($block['name'], $userSettings['block_disabled']);
+                }
+            );
+        } elseif (!empty($userSettings['block_enabled'])) {
+            $blocks = array_map(
+                function ($name) {
+                    return self::$allblocks[$name];
+                }, $userSettings['block_enabled']
+            );
+        } else {
+            $blocks = self::$allblocks;
+        }
+
+        return array_filter(
+            $blocks,
+            function ($block) {
+                return !empty($block['title']);
+            }
+        );
+    }
+
+    protected static function filterLayouts($userSettings)
+    {
+        if (!empty($userSettings['layout_enabled'])) {
+            $layouts = array_map(
+                function ($name) {
+                    return self::$alllayouts[$name];
+                }, $userSettings['layout_enabled']
+            );
+        } elseif (!empty($userSettings['block_disabled'])) {
+            $layouts = array_filter(
+                self::$alllayouts,
+                function ($layout) use ($userSettings) {
+                    return !in_array($layout['name'], $userSettings['block_disabled']);
+                }
+            );
+        } else {
+            $layouts = self::$alllayouts;
+        }
+
+        return array_filter(
+            $layouts,
+            function ($layout) {
+                return !empty($layout['title']);
+            }
+        );
+    }
+
+    protected static function getBlocksToolbar($userSettings, $filteredBlocks)
+    {
+        if (!empty($userSettings['block_toolbar'])) {
+            $blocksToolbar = $userSettings['block_toolbar'];
+            foreach ($blocksToolbar as $toolbarIndex => $toolbarItem) {
+                $filteredItemBlocks = [];
+                foreach ($toolbarItem['blocks'] as $blockName) {
+                    if (isset($filteredBlocks[$blockName])) {
+                        $filteredItemBlocks[] = $filteredBlocks[$blockName];
+                    }
+                }
+                $blocksToolbar[$toolbarIndex]['blocks'] = self::sortByNum($filteredItemBlocks, 'sort');
+            }
+        } else {
+            $blocksToolbar = [];
+            foreach (['blocks', 'my'] as $groupname) {
+                $filteredItemBlocks = array_filter(
+                    $filteredBlocks,
+                    function ($block) use ($groupname) {
+                        return ($block['groupname'] == $groupname);
+                    }
+                );
+                $blocksToolbar[] = [
+                    'title'  => GetMessage('SPRINT_EDITOR_group_' . $groupname),
+                    'blocks' => self::sortByNum($filteredItemBlocks, 'sort'),
                 ];
             }
         }
 
-        if (empty($packs)) {
-            return false;
-        }
+        $blocksToolbar = array_filter(
+            $blocksToolbar,
+            function ($toolbarItem) {
+                return !empty($toolbarItem['blocks']);
+            }
+        );
 
-        self::sortByStr($packs, 'title');
-
-        $result = [
-            'title'  => GetMessage('SPRINT_EDITOR_group_packs'),
-            'type'   => 'packs',
-            'blocks' => Locale::convertToWin1251IfNeed($packs),
-        ];
-
-        self::$selectValues['packs'] = $result;
-
-        return $result;
+        return $blocksToolbar;
     }
 
-    protected static function filterSelect($userSettings)
+    protected static function getLayoutsToolbar($userSettings, $filteredLayouts)
     {
-        $localValues = self::$selectValues;
-
-        if (!empty($userSettings['block_disabled'])) {
-            $localValues = [];
-            foreach (self::$selectValues as $groupType => $group) {
-                $localBlocks = [];
-                foreach ($group['blocks'] as $blockIndex => $block) {
-                    if (!in_array($block['name'], $userSettings['block_disabled'])) {
-                        $localBlocks[] = $block;
-                    }
-                }
-                if (!empty($localBlocks)) {
-                    $localValues[$groupType] = [
-                        'title'  => $group['title'],
-                        'type'   => $group['type'],
-                        'blocks' => $localBlocks,
-
-                    ];
-                }
-            }
-        } elseif (!empty($userSettings['block_enabled'])) {
-            $localValues = [];
-            foreach (self::$selectValues as $groupType => $group) {
-                $localBlocks = [];
-                foreach ($group['blocks'] as $blockIndex => $block) {
-                    if (in_array($block['name'], $userSettings['block_enabled'])) {
-                        $localBlocks[] = $block;
-                    }
-                }
-                if (!empty($localBlocks)) {
-                    $localValues[$groupType] = [
-                        'title'  => $group['title'],
-                        'type'   => $group['type'],
-                        'blocks' => $localBlocks,
-
-                    ];
-                }
-            }
+        if (!empty($userSettings['layout_toolbar'])) {
+            $layoutsToolbar = [];
+        } else {
+            $layoutsToolbar = [
+                [
+                    'title'  => GetMessage('SPRINT_EDITOR_group_layout'),
+                    'blocks' => $filteredLayouts,
+                ],
+            ];
         }
-
-        if (!empty($userSettings['layout_enabled'])) {
-            foreach (self::$selectValues as $groupType => $group) {
-                if ($groupType == 'layouts') {
-                    $localBlocks = [];
-                    foreach ($group['blocks'] as $block) {
-                        if (in_array($block['name'], $userSettings['layout_enabled'])) {
-                            $localBlocks[] = $block;
-                        }
-                    }
-                    if (!empty($localBlocks)) {
-                        $localValues[$groupType] = [
-                            'title'  => $group['title'],
-                            'type'   => $group['type'],
-                            'blocks' => $localBlocks,
-                        ];
-                    }
-                }
-            }
-        }
-
-        return $localValues;
+        return $layoutsToolbar;
     }
 
     public static function renderFile($file, $vars = [])
@@ -515,28 +541,33 @@ class AdminEditor
         /** @noinspection PhpIncludeInspection */
         include $file;
 
-        $html = ob_get_clean();
-        return $html;
+        return ob_get_clean();
     }
 
-    protected static function sortByNum(&$input = [], $key = 'sort')
+    protected static function sortByNum($input = [], $key = 'sort')
     {
         usort(
-            $input, function ($a, $b) use ($key) {
-            if ($a[$key] == $b[$key]) {
-                return 0;
+            $input,
+            function ($a, $b) use ($key) {
+                if ($a[$key] == $b[$key]) {
+                    return 0;
+                }
+                return ($a[$key] < $b[$key]) ? -1 : 1;
             }
-            return ($a[$key] < $b[$key]) ? -1 : 1;
-        }
         );
+
+        return $input;
     }
 
-    protected static function sortByStr(&$input = [], $key = 'title')
+    protected static function sortByStr($input = [], $key = 'title')
     {
         usort(
-            $input, function ($a, $b) use ($key) {
-            return strcmp($a[$key], $b[$key]);
-        }
+            $input,
+            function ($a, $b) use ($key) {
+                return strcmp($a[$key], $b[$key]);
+            }
         );
+
+        return $input;
     }
 }

@@ -5,13 +5,10 @@
  */
 
 $settings = [
-    'title' => 'Редактор с колонками',
+    'title'           => 'Редактор с колонками',
 
     //Разрешить изменение структуры материала, перекрывает настройку "Отключить добавление блоков"
     //'enable_change' => true,
-
-    //Разрешить изменение числа колонок в сетке, работает если настройка enable_change включена
-    //'enable_change_columns' => false,
 
     //Удалять блок при перемещении его за пределы редактора
     //'delete_block_after_sort_out' => false,
@@ -20,21 +17,21 @@ $settings = [
     'layout_settings' => [
         'type1' => [],
         'type2' => [
-//            'param1' => [
-//                'type'    => 'select',
-//                'default' => 'style1',
-//                'value'   => [
-//                    'style1' => 'style1',
-//                    'style2' => 'style2',
-//                ],
-//            ],
-//            'param2' => [
-//                'type'  => 'select',
-//                'value' => [
-//                    'style3' => 'style3',
-//                    'style4' => 'style4',
-//                ],
-//            ],
+            //            'param1' => [
+            //                'type'    => 'select',
+            //                'default' => 'style1',
+            //                'value'   => [
+            //                    'style1' => 'style1',
+            //                    'style2' => 'style2',
+            //                ],
+            //            ],
+            //            'param2' => [
+            //                'type'  => 'select',
+            //                'value' => [
+            //                    'style3' => 'style3',
+            //                    'style4' => 'style4',
+            //                ],
+            //            ],
         ],
         'type3' => [],
         'type4' => [],
@@ -73,6 +70,24 @@ $settings = [
         'col-md-4'  => '33.33%',
         'col-md-3'  => '25%',
     ],
+
+    //Произвольный список блоков
+    //    'block_toolbar' => [
+    //        [
+    //            'title'  => 'Блоки1',
+    //            'blocks' => [
+    //                'htag',
+    //                'text',
+    //            ],
+    //        ],
+    //        [
+    //            'title'  => 'Блоки2',
+    //            'blocks' => [
+    //                'gallery',
+    //                'image',
+    //            ],
+    //        ],
+    //    ],
 
     //Настройки блоков
     'block_settings'  => [

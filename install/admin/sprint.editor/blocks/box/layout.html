@@ -1,12 +1,7 @@
 <div class="sp-x-lt">
 
     <div class="sp-x-buttons sp-x-buttons-lt1">
-        <div class="sp-x-lt-tabs">
-            {{~it.columns :col}}
-            {{=col.tab}}
-            {{~}}
-        </div>
-
+        <div class="sp-x-lt-tabs">{{~it.columns :col}}{{=col.tab}}{{~}}</div>
         <div class="sp-x-buttons-group">
             {{?it.enableChange}}
             <span title="Вставить блоки в выбранную колонку" class="sp-x-btn sp-x-col-paste">&crarr; Вставить</span>
@@ -26,23 +21,15 @@
                 <span title="Копировать блоки в выбранной колонке" class="sp-x-btn sp-x-col-copy">Копировать</span>
                 <span title="Вырезать блоки в выбранной колонке" class="sp-x-btn sp-x-col-cut">Вырезать</span>
             </div>
+            {{?it.enableMoveColumns}}
             <div class="sp-x-pp-group">
                 <span title="Передвинуть колонку влево" class="sp-x-btn sp-x-col-left">&larr; Влево</span>
                 <span title="Передвинуть колонку вправо" class="sp-x-btn sp-x-col-right">&rarr; Вправо</span>
-            </div>
-            {{?it.enableChangeColumns}}
-            <div class="sp-x-pp-group">
-                <span title="Удалить выбранную колонку" class="sp-x-btn sp-x-col-del">х Удалить колонку</span>
             </div>
             {{?}}
             <div class="sp-x-pp-group">
                 <span class="sp-x-pp-group-title">Действия с сеткой</span>
             </div>
-            {{?it.enableChangeColumns}}
-            <div class="sp-x-pp-group">
-                <span title="Добавить колонку" class="sp-x-btn sp-x-col-add">+ Добавить колонку</span>
-            </div>
-            {{?}}
             <div class="sp-x-pp-group">
                 <span title="Поднять сетку вверх" class="sp-x-btn sp-x-lt-up">&uarr; Поднять</span>
                 <span title="Опустить сетку вниз" class="sp-x-btn sp-x-lt-dn">&darr; Опустить</span>

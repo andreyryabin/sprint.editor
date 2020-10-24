@@ -25,7 +25,7 @@ if (CModule::IncludeModule('sprint.editor')) {
     if (isset($_REQUEST['load'])) {
         $packid = $_REQUEST['load'];
         $dir = Sprint\Editor\Module::getPacksDir();
-        $result = file_get_contents($dir . $packid . '.json', $json);
+        $result = file_get_contents($dir . $packid . '.json');
         $result = json_decode($result, true);
     } else {
         if (isset($_REQUEST['save'])) {

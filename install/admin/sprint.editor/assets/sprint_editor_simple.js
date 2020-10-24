@@ -46,11 +46,6 @@ function sprint_editor_simple($, params) {
         params.enableChange = !!params.jsonUserSettings.enable_change;
     }
 
-    params.enableChangeColumns = false;
-    if (params.jsonUserSettings.hasOwnProperty('enable_change_columns')) {
-        params.enableChangeColumns = !!params.jsonUserSettings.enable_change_columns;
-    }
-
     params.deleteBlockAfterSortOut = false;
     if (params.jsonUserSettings.hasOwnProperty('delete_block_after_sort_out')) {
         params.deleteBlockAfterSortOut = !!params.jsonUserSettings.delete_block_after_sort_out;
