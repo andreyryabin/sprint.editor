@@ -147,7 +147,7 @@
 }
 
 .sp-x-box-block,
-.sp-x-box-settings{
+.sp-x-box-settings {
     margin: 0 10px 0;
 }
 
@@ -196,11 +196,23 @@
 }
 
 .bx-core-adm-dialog div.sp-x-separator,
-.sp-x-separator {
+.sp-x-separator,
+.bx-core-adm-dialog div.sp-x-lt-separator,
+.sp-x-lt-separator {
     border-bottom: 2px dashed #ccc;
+    position: relative;
+}
+
+.bx-core-adm-dialog div.sp-x-separator,
+.sp-x-separator {
     margin-top: 15px;
     margin-bottom: 13px;
-    position: relative;
+}
+
+.bx-core-adm-dialog div.sp-x-lt-separator,
+.sp-x-lt-separator {
+    margin-top: 5px;
+    margin-bottom: 13px;
 }
 
 .bx-core-adm-dialog .sp-x-separator-handle,
