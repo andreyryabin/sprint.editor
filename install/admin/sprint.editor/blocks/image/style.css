@@ -15,11 +15,12 @@
     width: 200px;
     height: 200px;
     background: #ccc;
+    overflow: hidden;
+    text-align: center;
 }
 
 .sp-block-image .sp-result img {
-    width: 200px;
-    height: 200px;
+
 }
 
 .sp-block-image .sp-col-desc {

@@ -11,39 +11,41 @@ if ($APPLICATION->GetGroupRight($module_id) == 'D') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && check_bitrix_sessid()) {
-
     if (isset($_REQUEST['opts_save'])) {
         $optionsConfig = Module::getOptionsConfig();
         foreach ($optionsConfig as $name => $aOption) {
-            if (!empty($_REQUEST[$name])) {
-                Module::setDbOption($name, 'yes');
-            } else {
-                Module::setDbOption($name, 'no');
+            if ($aOption['TYPE'] == 'checkbox') {
+                if (!empty($_REQUEST[$name])) {
+                    Module::setDbOption($name, 'yes');
+                } else {
+                    Module::setDbOption($name, 'no');
+                }
+            } elseif ($aOption['TYPE'] == 'text') {
+                Module::setDbOption($name, isset($_REQUEST[$name]) ? strval($_REQUEST[$name]) : '');
             }
         }
     }
 
     if (isset($_REQUEST['task_name']) && isset($_REQUEST['task_action'])) {
-        UpgradeManager::executeTask(
-            $_REQUEST['task_name'],
-            $_REQUEST['task_action']
-        );
+        foreach ($_REQUEST['task_action'] as $taskAction => $taskTitle) {
+            UpgradeManager::executeTask(
+                $_REQUEST['task_name'],
+                $taskAction
+            );
+        }
     }
-
 }
 
 $editorEntities = [];
 if (CModule::IncludeModule('main')) {
     $dbres = CUserTypeEntity::GetList([], ['USER_TYPE_ID' => 'sprint_editor']);
     while ($item = $dbres->Fetch()) {
-
         $entityId = $item['ENTITY_ID'];
         if (!isset($editorEntities[$entityId])) {
             $editorEntities[$entityId] = [
                 'entity' => $item,
-                'props' => [],
+                'props'  => [],
             ];
-
         }
 
         $editorEntities[$entityId]['props'][] = [
@@ -52,29 +54,43 @@ if (CModule::IncludeModule('main')) {
     }
 }
 
-
 $editorIblocks = [];
 if (CModule::IncludeModule('iblock')) {
-
-    $dbres = CIBlockProperty::GetList(['SORT' => 'ASC'], [
-        'USER_TYPE' => 'sprint_editor',
-    ]);
+    $dbres = CIBlockProperty::GetList(
+        ['SORT' => 'ASC'], [
+            'USER_TYPE' => 'sprint_editor',
+        ]
+    );
 
     while ($item = $dbres->Fetch()) {
         $iblockId = $item['IBLOCK_ID'];
         if (!isset($editorIblocks[$iblockId])) {
-            $iblock = CIBlock::GetList(['SORT' => 'ASC'], [
-                'ID' => $iblockId,
-            ])->Fetch();
-            $iblock['URL'] = "/bitrix/admin/iblock_edit.php?" . http_build_query([
-                    'ID' => $iblock['ID'],
-                    'admin' => 'Y',
-                    'type' => $iblock['IBLOCK_TYPE_ID'],
-                    'lang' => LANGUAGE_ID,
-                ]);
+            $iblock = CIBlock::GetList(
+                ['SORT' => 'ASC'], [
+                    'ID' => $iblockId,
+                ]
+            )->Fetch();
+            $iblock['URL'] = "/bitrix/admin/iblock_edit.php?" . http_build_query(
+                    [
+                        'ID'    => $iblock['ID'],
+                        'admin' => 'Y',
+                        'type'  => $iblock['IBLOCK_TYPE_ID'],
+                        'lang'  => LANGUAGE_ID,
+                    ]
+                );
+            $iblock['URL2'] = "/bitrix/admin/iblock_list_admin.php?" . http_build_query(
+                    [
+                        'IBLOCK_ID'            => $iblock['ID'],
+                        'type'                 => $iblock['IBLOCK_TYPE_ID'],
+                        'lang'                 => LANGUAGE_ID,
+                        'find_section_section' => '0',
+                        'SECTION_ID'           => '0',
+                        'apply_filter'         => 'Y',
+                    ]
+                );
             $editorIblocks[$iblockId] = [
                 'iblock' => $iblock,
-                'props' => [],
+                'props'  => [],
             ];
         }
 
@@ -98,16 +114,25 @@ if (CModule::IncludeModule('iblock')) {
 <form method="post">
     <?
     $optionsConfig = Module::getOptionsConfig();
-    foreach ($optionsConfig as $name => $aOption):
+    foreach ($optionsConfig as $name => $aOption) {
         $value = Module::getDbOption($name) ?>
-        <label>
-            <input <? if ($value == 'yes'): ?>checked="checked"<? endif ?>
-                   type="checkbox"
-                   name="<?= $name ?>"
-                   value="<?= $aOption['DEFAULT'] ?>">
-            <?= $aOption['TITLE'] ?>
-        </label><br/>
-    <? endforeach; ?>
+        <div style="margin-bottom: 10px">
+            <? if ($aOption['TYPE'] == 'checkbox') { ?>
+                <label>
+                    <input <? if ($value == 'yes'){ ?>checked="checked"<? } ?>
+                           type="checkbox"
+                           name="<?= $name ?>"
+                           value="<?= $aOption['DEFAULT'] ?>">
+                    <?= $aOption['TITLE'] ?>
+                </label>
+            <? } elseif ($aOption['TYPE'] == 'text') { ?>
+                <label>
+                    <input type="text" name="<?= $name ?>" value="<?= $value ?>"/>
+                    <?= $aOption['TITLE'] ?>
+                </label>
+            <? } ?>
+        </div>
+    <? } ?>
     <br/>
     <input class="adm-btn-green" type="submit" name="opts_save" value="<?= GetMessage('SPRINT_EDITOR_BTN_SAVE') ?>">
     <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
@@ -123,78 +148,73 @@ $taskList = UpgradeManager::getTasks();
 
 <h2><?= GetMessage('SPRINT_EDITOR_TASKS') ?></h2>
 
-<? foreach ($taskList as $aItem): ?>
-
-    <div style="margin-bottom: 20px;">
-        <? UpgradeManager::outMessages($aItem['name']) ?>
-
-        <? foreach ($aItem['buttons'] as $button): ?>
-            <form method="post" style="display: inline">
-                <? if ($aItem['installed'] == 'yes'): ?>
-                    <input type="submit" disabled="disabled" value="<?= $button['title'] ?>">
-                <? else: ?>
-                    <input type="submit" value="<?= $button['title'] ?>">
-                <? endif; ?>
-
+<? foreach ($taskList as $aItem) { ?>
+    <? if ($aItem['installed'] != 'yes') { ?>
+        <div style="margin-bottom: 20px;">
+            <form method="post">
+                <? UpgradeManager::outMessages($aItem['name']) ?>
+                <div>
+                    <? if ($aItem['installed'] == 'yes') { ?>
+                        <strike><?= $aItem['description'] ?></strike>
+                    <? } else { ?>
+                        <?= nl2br($aItem['description']) ?>
+                    <? } ?>
+                </div>
+                <? foreach ($aItem['buttons'] as $button) { ?>
+                    <input type="submit" name="task_action[<?= $button['name'] ?>]" value="<?= $button['title'] ?>">
+                <? } ?>
                 <input type="hidden" name="task_name" value="<?= $aItem['name'] ?>">
-                <input type="hidden" name="task_action" value="<?= $button['name'] ?>">
                 <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
                 <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
                 <?= bitrix_sessid_post(); ?>
             </form>
-        <? endforeach ?>
+        </div>
+    <? } ?>
+<? } ?>
 
-        <? if ($aItem['installed'] == 'yes'): ?>
-            <strike><?= $aItem['description'] ?></strike>
-        <? else: ?>
-            <?= nl2br($aItem['description']) ?>
-        <? endif; ?>
-
-    </div>
-
-<? endforeach; ?>
-
-
-
-
-<? if (!empty($editorIblocks)): ?>
+<? if (!empty($editorIblocks)) { ?>
     <h2><?= GetMessage('SPRINT_EDITOR_USED_IBLOCKS') ?></h2>
 
     <table class='c-result'>
         <tr>
             <th>id</th>
+            <th>name</th>
             <th>code</th>
             <th>url</th>
+            <th>settings</th>
             <th>props</th>
         </tr>
-        <? foreach ($editorIblocks as $item): ?>
+        <? foreach ($editorIblocks as $item) { ?>
             <tr>
                 <td>
                     <?= $item['iblock']['ID'] ?>
                 </td>
                 <td>
+                    <?= $item['iblock']['NAME'] ?>
+                </td>
+                <td>
                     <?= $item['iblock']['CODE'] ?>
                 </td>
                 <td>
-                    <a target="_blank" href="<?= $item['iblock']['URL'] ?>">
-                        <?= $item['iblock']['NAME'] ?>
-                    </a>
+                    <a target="_blank" href="<?= $item['iblock']['URL2'] ?>">link</a>
                 </td>
                 <td>
-                    <? foreach ($item['props'] as $prop): ?>
+                    <a target="_blank" href="<?= $item['iblock']['URL'] ?>">link</a>
+                </td>
+                <td>
+                    <? foreach ($item['props'] as $prop) { ?>
                         <?= $prop['CODE'] ?><br/>
-                    <? endforeach; ?>
+                    <? } ?>
                 </td>
             </tr>
-        <? endforeach; ?>
+        <? } ?>
     </table>
-
     <br/>
-<? endif; ?>
+<? } ?>
 
 
 
-<? if (!empty($editorEntities)): ?>
+<? if (!empty($editorEntities)) { ?>
     <h2><?= GetMessage('SPRINT_EDITOR_USED_ENTITIES') ?></h2>
 
     <table class='c-result'>
@@ -202,21 +222,21 @@ $taskList = UpgradeManager::getTasks();
             <th>entity</th>
             <th>fields</th>
         </tr>
-        <? foreach ($editorEntities as $item): ?>
+        <? foreach ($editorEntities as $item) { ?>
             <tr>
                 <td>
                     <?= $item['entity']['ENTITY_ID'] ?>
                 </td>
                 <td>
-                    <? foreach ($item['props'] as $prop): ?>
+                    <? foreach ($item['props'] as $prop) { ?>
                         <?= $prop['FIELD_NAME'] ?><br/>
-                    <? endforeach; ?>
+                    <? } ?>
                 </td>
             </tr>
-        <? endforeach; ?>
+        <? } ?>
     </table>
     <br/>
-<? endif; ?>
+<? } ?>
 
 
 <h2><?= GetMessage('SPRINT_EDITOR_HELP') ?></h2>

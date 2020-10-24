@@ -9,7 +9,7 @@ class Task0003 extends Upgrade
         $this->addButton('execute', GetMessage('SPRINT_EDITOR_BTN_EXECUTE'));
         $this->addButton('check', GetMessage('SPRINT_EDITOR_BTN_CHECK'));
 
-        $this->setDescription('Увеличить размер колонки в бд до longtext');
+        $this->setDescription(GetMessage('SPRINT_EDITOR_LONG_TEXT_DESC'));
 
         \CModule::IncludeModule('iblock');
     }

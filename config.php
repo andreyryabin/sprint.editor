@@ -14,4 +14,14 @@
         'DEFAULT' => 'yes',
         'TYPE' => 'checkbox',
     ],
+    'instagram_app_id' => [
+        'TITLE' => GetMessage('SPRINT_EDITOR_INSTAGRAM_APP_ID'),
+        'DEFAULT' => '2741760692768967',
+        'TYPE' => 'text',
+    ],
+    'instagram_app_secret' => [
+        'TITLE' => GetMessage('SPRINT_EDITOR_INSTAGRAM_APP_SECRET'),
+        'DEFAULT' => '828e97ef193404e336cbc1e7e9628412',
+        'TYPE' => 'text',
+    ],
 ];

@@ -1,9 +1,9 @@
 <? /** @var $block array */ ?><?
 $sections = Sprint\Editor\Blocks\IblockSections::getList(
     $block, [
-    'NAME',
-    'SECTION_PAGE_URL',
-]
+        'NAME',
+        'SECTION_PAGE_URL',
+    ]
 );
 ?>
 <div class="sp-iblock-sections">

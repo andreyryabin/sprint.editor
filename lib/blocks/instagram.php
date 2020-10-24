@@ -3,6 +3,7 @@
 namespace Sprint\Editor\Blocks;
 
 use CPHPCache;
+use Sprint\Editor\Module;
 
 class Instagram
 {
@@ -21,12 +22,21 @@ class Instagram
         if ($obCache->InitCache($ttl, $uniqstr, $initdir)) {
             $vars = $obCache->GetVars();
         } elseif ($obCache->StartDataCache()) {
-            $endpoint = 'https://api.instagram.com/oembed?' . http_build_query(['url' => $block['url']]);
-            $ctx = stream_context_create(['http' => ['timeout' => 5,]]);
+            $endpoint = 'https://graph.facebook.com/v8.0/instagram_oembed?' . http_build_query(
+                    [
+                        'url'          => $block['url'],
+                        'access_token' => implode(
+                            '|', [
+                                Module::getDbOption('instagram_app_id'),
+                                Module::getDbOption('instagram_app_secret'),
+                            ]
+                        ),
+                    ]
+                );
 
+            $ctx = stream_context_create(['http' => ['timeout' => 5,]]);
             $vars = file_get_contents($endpoint, false, $ctx);
             $vars = json_decode($vars, true);
-
             if (json_last_error() == JSON_ERROR_NONE && is_array($vars)) {
                 $obCache->EndDataCache($vars);
             } else {

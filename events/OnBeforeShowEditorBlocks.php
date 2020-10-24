@@ -1,5 +1,7 @@
 <?php
 
+use Sprint\Editor\AdminBlocks\ImageAdminBlock;
+
 AddEventHandler(
 
     'sprint.editor',
@@ -51,9 +53,9 @@ AddEventHandler(
                 if (!empty($block['file']['ID'])) {
                     $block['file'] = Sprint\Editor\Tools\Image::resizeImage2(
                         $block['file']['ID'], [
-                            'width'  => 200,
-                            'height' => 200,
-                            'exact'  => 1,
+                            'width'  => ImageAdminBlock::PREVIEW_WIDTH,
+                            'height' => ImageAdminBlock::PREVIEW_HEIGHT,
+                            'exact'  => ImageAdminBlock::PREVIEW_EXACT,
                         ]
                     );
                 }
