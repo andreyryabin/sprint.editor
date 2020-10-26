@@ -5,7 +5,7 @@ namespace Sprint\Editor;
 class Locale
 {
     private static $localeLoaded = false;
-    private static $messages = [];
+    private static $messages     = [];
 
     public static function isWin1251()
     {
@@ -14,16 +14,20 @@ class Locale
 
     public static function convertToWin1251IfNeed($msg)
     {
-        if (self::isWin1251() && self::detectUtf8($msg)) {
-            $msg = self::deepConvert('utf-8', 'windows-1251//IGNORE', $msg);
+        if (self::isWin1251()) {
+            if (self::detectUtf8($msg)) {
+                $msg = self::deepConvert('utf-8', 'windows-1251//IGNORE', $msg);
+            }
         }
         return $msg;
     }
 
     public static function convertToUtf8IfNeed($msg)
     {
-        if (self::isWin1251() && !self::detectUtf8($msg)) {
-            $msg = self::deepConvert('windows-1251', 'utf-8//IGNORE', $msg);
+        if (self::isWin1251()) {
+            if (!self::detectUtf8($msg)) {
+                $msg = self::deepConvert('windows-1251', 'utf-8//IGNORE', $msg);
+            }
         }
         return $msg;
     }

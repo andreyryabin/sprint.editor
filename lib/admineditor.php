@@ -78,8 +78,6 @@ class AdminEditor
         $filteredLayouts = self::filterLayouts($userSettings);
         $layoutsToolbar = self::getLayoutsToolbar($userSettings, $filteredLayouts);
 
-        $packToolbar = [];
-
         if (empty($filteredLayouts)) {
             $file = '/templates/admin_editor_simple.php';
         } else {
@@ -89,9 +87,8 @@ class AdminEditor
         return self::renderFile(
             Module::getModuleDir() . $file, [
                 'jsonValue'        => json_encode(Locale::convertToUtf8IfNeed($value)),
-                'blocksToolbar'    => Locale::convertToWin1251IfNeed($blocksToolbar),
-                'layoutsToolbar'   => Locale::convertToWin1251IfNeed($layoutsToolbar),
-                'packToolbar'      => Locale::convertToWin1251IfNeed($packToolbar),
+                'blocksToolbar'    => $blocksToolbar,
+                'layoutsToolbar'   => $layoutsToolbar,
                 'templates'        => Locale::convertToWin1251IfNeed(self::$templates),
                 'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
                 'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
@@ -502,7 +499,7 @@ class AdminEditor
                 );
                 $blocksToolbar[] = [
                     'title'  => GetMessage('SPRINT_EDITOR_group_' . $groupname),
-                    'blocks' => self::sortByNum($filteredItemBlocks, 'sort'),
+                    'blocks' => Locale::convertToWin1251IfNeed(self::sortByNum($filteredItemBlocks, 'sort')),
                 ];
             }
         }
@@ -525,7 +522,7 @@ class AdminEditor
             $layoutsToolbar = [
                 [
                     'title'  => GetMessage('SPRINT_EDITOR_group_layout'),
-                    'blocks' => $filteredLayouts,
+                    'blocks' => Locale::convertToWin1251IfNeed($filteredLayouts),
                 ],
             ];
         }

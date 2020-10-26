@@ -39,9 +39,7 @@ $settings = [
 
     //Доступные классы колонок для сеток
     'layout_classes'  => [
-        'type1' => [
-            ['col-md-3', 'col-md-4', 'col-md-6', 'col-md-8', 'col-md-9', 'col-md-12'],
-        ],
+        'type1' => [],
         'type2' => [
             ['col-md-3', 'col-md-4', 'col-md-6', 'col-md-8', 'col-md-9', 'col-md-12'],
         ],
