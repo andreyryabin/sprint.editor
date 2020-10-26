@@ -1,14 +1,32 @@
 <div class="sp-x-lt">
-
+    {{?it.compiled && it.compiled.length > 0}}
+    <div class="sp-x-lt-settings" title="Настройка сетки, общая для всех колонок">
+        {{~it.compiled :item}}
+        <div data-name="{{!item.name}}" class="sp-x-settings-group">
+            {{~item.options :option}}
+            {{?option.selected}}
+            <span class="sp-x-active" title="{{!option.value}}" data-value="{{!option.value}}">{{=option.title}}</span>
+            {{??}}
+            <span title="{{!option.value}}" data-value="{{!option.value}}">{{=option.title}}</span>
+            {{?}}
+            {{~}}
+        </div>
+        {{~}}
+        <div class="sp-x-lt-separator"></div>
+    </div>
+    {{?}}
     <div class="sp-x-buttons sp-x-buttons-lt1">
-        <div class="sp-x-lt-tabs">{{~it.columns :col}}{{=col.tab}}{{~}}</div>
+        <div class="sp-x-lt-tabs">
+            {{~it.columns :col}}
+            {{=col.tab}}
+            {{~}}
+        </div>
         <div class="sp-x-buttons-group">
             {{?it.enableChange}}
             <span title="Вставить блоки в выбранную колонку" class="sp-x-btn sp-x-col-paste">&crarr; Вставить</span>
             <span title="" class="sp-x-btn sp-x-btn-green sp-x-pp-lt-open">... Действия</span>
             {{?}}
         </div>
-
         <div class="sp-x-pp-lt">
             {{?it.enableChange}}
             <div class="sp-x-pp-group">
@@ -40,39 +58,18 @@
             {{?}}
         </div>
     </div>
-
     <div class="sp-x-separator">
         <span title="Показать\скрыть блоки в сетке" class="sp-x-separator-handle sp-x-btn sp-x-lt-toggle">&equiv;</span>
     </div>
-
-    {{?it.compiled && it.compiled.length > 0}}
-    <div class="sp-x-lt-settings" title="Настройка сетки, общая для всех колонок">
-        {{~it.compiled :item}}
-        <div data-name="{{!item.name}}" class="sp-x-settings-group">
-            {{~item.options :option}}
-            {{?option.selected}}
-            <span class="sp-x-active" title="{{!option.value}}" data-value="{{!option.value}}">{{=option.title}}</span>
-            {{??}}
-            <span title="{{!option.value}}" data-value="{{!option.value}}">{{=option.title}}</span>
-            {{?}}
-            {{~}}
-        </div>
-        {{~}}
-        <div class="sp-x-lt-separator"></div>
-    </div>
-    {{?}}
-
     <div class="sp-x-lt-row">
         {{~it.columns :col}}
         {{=col.html}}
         {{~}}
     </div>
-
     <div class="sp-x-buttons sp-x-buttons-lt2">
         {{?it.enableChange}}
         <span class="sp-x-btn sp-x-btn-green sp-x-pp-blocks-open">Добавить блок</span>
         <span class="sp-x-btn sp-x-lastblock">Добавить</span>
         {{?}}
     </div>
-
 </div>

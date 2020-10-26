@@ -3,7 +3,6 @@
     "layout.html",
     "layout-col.html",
     "layout-col-tab.html",
-    "layout-col-settings.html",
     "select-pack.html"
   ]
 }

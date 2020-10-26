@@ -59,6 +59,7 @@ class AdminEditor
         //default setings (simple editor)
         $userSettings = [
             'block_disabled' => [
+                'layout_0',
                 'layout_1',
                 'layout_2',
                 'layout_3',
@@ -374,7 +375,7 @@ class AdminEditor
 
     protected static function registerLayouts()
     {
-        for ($num = 0; $num <= 4; $num++) {
+        for ($num = 1; $num <= 4; $num++) {
             $layoutName = 'layout_' . $num;
 
             self::$alllayouts[$layoutName] = [
