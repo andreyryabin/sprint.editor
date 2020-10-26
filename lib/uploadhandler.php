@@ -691,7 +691,7 @@ class UploadHandler
             } else {
                 return $this->generate_response(
                     [
-                        'image' => $this->downloadFile($url),
+                        'image' => $this->downloadImage($url),
                     ], true
                 );
             }
