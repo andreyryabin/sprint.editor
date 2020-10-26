@@ -176,35 +176,20 @@ $taskList = UpgradeManager::getTasks();
     <h2><?= GetMessage('SPRINT_EDITOR_USED_IBLOCKS') ?></h2>
 
     <table class='c-result'>
-        <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>code</th>
-            <th>url</th>
-            <th>settings</th>
-            <th>props</th>
-        </tr>
         <? foreach ($editorIblocks as $item) { ?>
             <tr>
                 <td>
-                    <?= $item['iblock']['ID'] ?>
-                </td>
-                <td>
-                    <?= $item['iblock']['NAME'] ?>
-                </td>
-                <td>
-                    <?= $item['iblock']['CODE'] ?>
-                </td>
-                <td>
-                    <a target="_blank" href="<?= $item['iblock']['URL2'] ?>">link</a>
-                </td>
-                <td>
-                    <a target="_blank" href="<?= $item['iblock']['URL'] ?>">link</a>
+                    [<?= $item['iblock']['ID'] ?>] [<?= $item['iblock']['CODE'] ?>] <?= $item['iblock']['NAME'] ?>
                 </td>
                 <td>
                     <? foreach ($item['props'] as $prop) { ?>
-                        <?= $prop['CODE'] ?><br/>
+                        [<?= $prop['ID'] ?>] [<?= $prop['CODE'] ?>] <?= $prop['NAME'] ?><br/>
                     <? } ?>
+                </td>
+                <td>
+                    <a target="_blank" href="<?= $item['iblock']['URL2'] ?>"><?=GetMessage('SPRINT_EDITOR_LONG_TEXT_IBLOCK_LINK_ELEM')?></a>
+                    <br/>
+                    <a target="_blank" href="<?= $item['iblock']['URL'] ?>"><?=GetMessage('SPRINT_EDITOR_LONG_TEXT_IBLOCK_LINK_SETT')?></a>
                 </td>
             </tr>
         <? } ?>
