@@ -13,7 +13,7 @@
   ],
   "isUtf8": {
     "js": [
-      "/bitrix/admin/sprint.editor/assets/trumbowyg/langs/ru.js"
+      "/bitrix/admin/sprint.editor/assets/trumbowyg/langs/ru.min.js"
     ]
   },
   "isWin1251": {
