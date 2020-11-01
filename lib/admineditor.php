@@ -260,18 +260,6 @@ class AdminEditor
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/doT-master/doT.min.js');
         }
 
-        $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.css');
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/trumbowyg.js');
-
-        $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/mycss/ui/trumbowyg.mycss.css');
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/mycss/trumbowyg.mycss.js');
-
-        if (Locale::isWin1251()) {
-            $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/langs/ru.windows-1251.js');
-        } else {
-            $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/trumbowyg/langs/ru.min.js');
-        }
-
         $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/sprint_editor.css');
         foreach (self::$css as $val) {
             $APPLICATION->SetAdditionalCSS($val);
@@ -346,6 +334,18 @@ class AdminEditor
             if (!empty($param['js']) && is_array($param['js'])) {
                 foreach ($param['js'] as $js) {
                     self::$js[] = $js;
+                }
+            }
+
+            $encodeKey = Locale::isWin1251() ? 'isWin1251' : 'isUtf8';
+            if (!empty($param[$encodeKey]['js']) && is_array($param[$encodeKey]['js'])) {
+                foreach ($param[$encodeKey]['js'] as $js) {
+                    self::$js[] = $js;
+                }
+            }
+            if (!empty($param[$encodeKey]['css']) && is_array($param[$encodeKey]['css'])) {
+                foreach ($param[$encodeKey]['css'] as $css) {
+                    self::$css[] = $css;
                 }
             }
 

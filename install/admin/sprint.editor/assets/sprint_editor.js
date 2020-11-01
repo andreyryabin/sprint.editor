@@ -95,27 +95,6 @@ var sprint_editor = {
         this._imagesdelete = jQuery.extend({}, this._imagesdelete, items);
     },
 
-    deleteImagesBeforeSubmit: function () {
-        this._submitcnt++;
-
-        if (this._submitcnt !== 1) {
-            return;
-        }
-
-        if (jQuery.isEmptyObject(this._imagesdelete)) {
-            return;
-        }
-
-        jQuery.ajax({
-            url: '/bitrix/admin/sprint.editor/assets/backend/delete.php',
-            type: 'post',
-            data: {
-                items: this._imagesdelete
-            }
-        });
-
-    },
-
     initblock: function ($, $el, name, blockData, blockSettings) {
         name = sprint_editor.hasBlockMethod(name) ? name : 'dump';
 

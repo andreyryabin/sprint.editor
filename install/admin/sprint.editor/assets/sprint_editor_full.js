@@ -85,7 +85,6 @@ function sprint_editor_full($, params) {
     checkClipboardButtons();
 
     $form.on('submit', function (e) {
-        //sprint_editor.deleteImagesBeforeSubmit();
         var resultString = saveToString();
 
         $editor.find('input,textarea,select').removeAttr('name');
