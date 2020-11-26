@@ -25,8 +25,7 @@ sprint_editor.registerBlock('instagram', function ($, $el, data) {
     };
 
     function getPost($input, $preview) {
-        $preview.empty();
-
+        $preview.addClass('sp-empty').empty();
         var inputUrl = $input.val();
         if (inputUrl.length > 0) {
             $.ajax({
@@ -37,7 +36,7 @@ sprint_editor.registerBlock('instagram', function ($, $el, data) {
                 dataType: "html",
                 success: function (result) {
                     if (result) {
-                        $preview.html(result);
+                        $preview.removeClass('sp-empty').html(result);
                         if (typeof instgrm !== 'undefined') {
                             instgrm.Embeds.process();
                         }

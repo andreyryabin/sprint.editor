@@ -25,8 +25,7 @@ sprint_editor.registerBlock('twitter', function ($, $el, data) {
     };
 
     function getTweet($input, $preview) {
-        $preview.empty();
-
+        $preview.addClass('sp-empty').empty();
         var inputUrl = $input.val();
         if (inputUrl.length > 0) {
             $.ajax({
@@ -37,7 +36,7 @@ sprint_editor.registerBlock('twitter', function ($, $el, data) {
                 dataType: "jsonp",
                 success: function (result) {
                     if (result && result.html) {
-                        $preview.html(result.html);
+                        $preview.removeClass('sp-empty').html(result.html);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {

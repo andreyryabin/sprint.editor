@@ -7,3 +7,8 @@
     /*max-height: 180px;*/
     overflow-y: scroll;
 }
+
+.sp-block-instagram .sp-preview.sp-empty {
+    background: #ccc;
+    min-height: 100px;
+}

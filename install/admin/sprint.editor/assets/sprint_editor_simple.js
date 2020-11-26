@@ -89,20 +89,6 @@ function sprint_editor_simple($, params) {
 
     if (params.enableChange) {
 
-        $editor.on('click', '.sp-x-box-paste', function (e) {
-            e.preventDefault();
-
-            var clipboardData = sprint_editor.getClipboard();
-            var $box = $(this).closest('.sp-x-box');
-
-            $.each(clipboardData, function (blockUid, blockData) {
-                blockAdd(blockData.block, $box);
-            });
-
-            sprint_editor.fireEvent('clipboard:paste');
-            sprint_editor.clearClipboard();
-        });
-
         $editor.on('click', '.sp-x-pp-blocks .sp-x-btn', function (e) {
             addByNameBlock($(this));
         });
@@ -134,6 +120,22 @@ function sprint_editor_simple($, params) {
             e.preventDefault();
             var $box = $(this).closest('.sp-x-box');
             sprint_editor.copyToClipboard($box.data('uid'), true);
+            popupToggle();
+        });
+
+        $editor.on('click', '.sp-x-box-paste', function (e) {
+            e.preventDefault();
+
+            var clipboardData = sprint_editor.getClipboard();
+            var $box = $(this).closest('.sp-x-box');
+
+            $.each(clipboardData, function (blockUid, blockData) {
+                blockAdd(blockData.block, $box);
+            });
+
+            sprint_editor.fireEvent('clipboard:paste');
+            sprint_editor.clearClipboard();
+
             popupToggle();
         });
 
@@ -174,10 +176,12 @@ function sprint_editor_simple($, params) {
                     var $ncol = getActiveColumn($ngrid);
                     var $head = $ncol.find('.sp-x-col-settings');
                     if ($head.length > 0) {
-                        $ncol = $head;
+                        $block.insertAfter($head);
+                        sprint_editor.afterSort($block.data('uid'));
+                    } else {
+                        $block.prependTo($ncol);
+                        sprint_editor.afterSort($block.data('uid'));
                     }
-                    $block.insertAfter($ncol);
-                    sprint_editor.afterSort($block.data('uid'));
                 }
             }
         });

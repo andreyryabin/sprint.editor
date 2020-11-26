@@ -22,23 +22,25 @@
 <div class="sp-x-editor<?= $uniqId ?>">
     <div class="sp-x-editor-lt"></div>
     <? if ($enableChange) { ?>
-        <div class="sp-x-editor-buttons sp-x-buttons">
-            <span class="sp-x-btn sp-x-btn-green sp-x-pp-main-open"><?= GetMessage('SPRINT_EDITOR_BTN_ACTIONS') ?></span>
-            <div class="sp-x-pp-main">
-                <div class="sp-x-pp-group">
+        <div class="sp-x-footer">
+            <div class="sp-x-buttons sp-x-buttons-lt2">
+                <span class="sp-x-btn sp-x-btn-green sp-x-pp-main-open"><?= GetMessage('SPRINT_EDITOR_BTN_ACTIONS') ?></span>
+                <div class="sp-x-pp-main">
+                    <div class="sp-x-pp-group">
                     <span class="sp-x-btn" data-name="save_pack" title="<?= GetMessage('SPRINT_EDITOR_pack_save_title') ?>">
                         <?= GetMessage('SPRINT_EDITOR_pack_save') ?>
                     </span>
-                </div>
-                <div class="sp-x-packs-loader"></div>
-                <? foreach ($layoutsToolbar as $aGroup) { ?>
-                    <div class="sp-x-pp-group">
-                        <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
-                        <? foreach ($aGroup['blocks'] as $aBlock) { ?>
-                            <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
-                        <? } ?>
                     </div>
-                <? } ?>
+                    <div class="sp-x-packs-loader"></div>
+                    <? foreach ($layoutsToolbar as $aGroup) { ?>
+                        <div class="sp-x-pp-group">
+                            <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
+                            <? foreach ($aGroup['blocks'] as $aBlock) { ?>
+                                <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
+                            <? } ?>
+                        </div>
+                    <? } ?>
+                </div>
             </div>
         </div>
     <? } ?>

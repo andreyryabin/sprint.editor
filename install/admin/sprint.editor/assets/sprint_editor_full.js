@@ -132,6 +132,8 @@ function sprint_editor_full($, params) {
 
             sprint_editor.fireEvent('clipboard:paste');
             sprint_editor.clearClipboard();
+
+            popupToggle();
         });
 
         $editor.on('click', '.sp-x-box-paste', function (e) {
@@ -146,6 +148,8 @@ function sprint_editor_full($, params) {
 
             sprint_editor.fireEvent('clipboard:paste');
             sprint_editor.clearClipboard();
+
+            popupToggle();
         });
 
         $editor.on('click', '.sp-x-pp-blocks .sp-x-btn', function (e) {
@@ -225,10 +229,12 @@ function sprint_editor_full($, params) {
                     var $ncol = getActiveColumn($ngrid);
                     var $head = $ncol.find('.sp-x-col-settings');
                     if ($head.length > 0) {
-                        $ncol = $head;
+                        $block.insertAfter($head);
+                        sprint_editor.afterSort($block.data('uid'));
+                    } else {
+                        $block.prependTo($ncol);
+                        sprint_editor.afterSort($block.data('uid'));
                     }
-                    $block.insertAfter($ncol);
-                    sprint_editor.afterSort($block.data('uid'));
                 }
             }
         });
@@ -509,9 +515,7 @@ function sprint_editor_full($, params) {
     }
 
     function layoutAdd(layout) {
-        var columnsCnt = layout.columns.length;
-
-        var ltname = 'type' + columnsCnt;
+        var ltname = 'type' + layout.columns.length;
 
         var columns = [];
 
@@ -527,20 +531,11 @@ function sprint_editor_full($, params) {
             }
 
             var columnTitle = (column.title) ? column.title : BX.message('SPRINT_EDITOR_col_default');
-
-
             columns.push({
                 uid: columnUid,
-                html: sprint_editor.renderTemplate('box-layout-col', {
-                    enableChange: params.enableChange,
-                    title: columnTitle,
-                    uid: columnUid,
-                    compiled: sprint_editor.compileClasses(ltname, column.css, params)
-                }),
-                tab: sprint_editor.renderTemplate('box-layout-col-tab', {
-                    uid: columnUid,
-                    title: columnTitle
-                })
+                title: columnTitle,
+                enableChange: params.enableChange,
+                compiled: sprint_editor.compileClasses(ltname, column.css, params)
             })
         });
 
@@ -548,7 +543,6 @@ function sprint_editor_full($, params) {
         $editor.find('.sp-x-editor-lt').append(
             sprint_editor.renderTemplate('box-layout', {
                 enableChange: params.enableChange,
-                enableMoveColumns: (columnsCnt > 1),
                 columns: columns,
                 title: layoutTitle,
                 compiled: sprint_editor.compileSettings(layout, layoutSettings)
