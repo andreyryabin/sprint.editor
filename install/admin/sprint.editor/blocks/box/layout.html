@@ -1,18 +1,9 @@
 <div class="sp-x-lt">
     <div class="sp-x-buttons sp-x-buttons-lt1">
 
-        <div class="sp-x-lt-tabs" {{?it.columns.length == 1}}style="display:none"{{?}}>
-            {{~it.columns :col}}
-            <span class="sp-x-btn sp-x-col-tab" data-uid="{{=col.uid}}">
-                <span class="sp-x-col-title">{{=col.title}}</span>
-                <span class="sp-x-col-index"></span>
-            </span>
-            {{~}}
-        </div>
-
         <div class="sp-x-buttons-group">
             {{?it.enableChange}}
-            <span title="" class="sp-x-btn sp-x-pp-lt-open">... Действия</span>
+            <span title="" class="sp-x-btn sp-x-pp-lt-open">&equiv;</span>
             {{?}}
             <div class="sp-x-pp-lt">
                 {{?it.enableChange}}
@@ -49,6 +40,15 @@
             </div>
         </div>
 
+        <div class="sp-x-lt-tabs">
+            {{~it.columns :col}}
+            <span class="sp-x-btn sp-x-col-tab" data-uid="{{=col.uid}}">
+                <span class="sp-x-col-title">{{=col.title}}</span>
+                <span class="sp-x-col-index"></span>
+            </span>
+            {{~}}
+        </div>
+
         {{?it.compiled.length > 0}}
         <div class="sp-x-lt-settings" title="Настройка сетки, общая для всех колонок">
             {{~it.compiled :item}}
@@ -68,9 +68,7 @@
 
     </div>
 
-    <div class="sp-x-separator sp-x-separator-lt">
-        <span title="Показать\скрыть блоки в сетке" class="sp-x-separator-handle sp-x-btn sp-x-lt-toggle">&equiv;</span>
-    </div>
+    <div class="sp-x-separator sp-x-separator-lt"></div>
 
     <div class="sp-x-lt-row">
         {{~it.columns :col}}

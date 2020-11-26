@@ -7,6 +7,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings) {
     }, data);
 
     var blocks = [
+        {id: 'htag', title: 'заголовок'},
         {id: 'text', title: 'текст'},
         {id: 'image', title: 'картинку'},
         {id: 'video', title: 'видео'},
