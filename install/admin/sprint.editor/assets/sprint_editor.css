@@ -406,9 +406,13 @@
 }
 
 .sp-x-pp-box,
+.bx-core-adm-dialog div.sp-x-pp-box,
 .sp-x-pp-lt,
+.bx-core-adm-dialog div.sp-x-pp-lt,
 .sp-x-pp-blocks,
-.sp-x-pp-main {
+.bx-core-adm-dialog div.sp-x-pp-blocks,
+.sp-x-pp-main,
+.bx-core-adm-dialog div.sp-x-pp-main {
     display: none;
 
     max-width: 500px;
@@ -451,27 +455,10 @@
 }
 
 .bx-core-adm-dialog .sp-x-separator div.sp-x-pp-blocks,
-.sp-x-separator .sp-x-pp-blocks{
+.sp-x-separator .sp-x-pp-blocks {
     left: -50px;
     top: 15px;
 }
-
-
-.bx-core-adm-dialog div.sp-x-pp-box,
-.sp-x-pp-box,
-.bx-core-adm-dialog div.sp-x-pp-lt,
-.sp-x-pp-lt {
-    /*right: 0;*/
-    /*text-align: right;*/
-}
-
-.bx-core-adm-dialog div.sp-x-pp-box .sp-x-pp-group,
-.sp-x-pp-box .sp-x-pp-group,
-.bx-core-adm-dialog div.sp-x-pp-lt .sp-x-pp-group,
-.sp-x-pp-lt .sp-x-pp-group {
-    /*text-align: right;*/
-}
-
 
 .sp-x-pp-group {
     margin-bottom: 10px;
@@ -499,15 +486,25 @@
     display: none;
 }
 
-.bx-core-adm-dialog div.sp-x-settings-group,
 .sp-x-settings-group,
+.bx-core-adm-dialog div.sp-x-settings-group,
 .sp-x-lt-tabs,
 .bx-core-adm-dialog div.sp-x-lt-tabs,
 .sp-x-col-settings,
+.bx-core-adm-dialog div.sp-x-col-settings,
 .sp-x-box-settings,
+.bx-core-adm-dialog div.sp-x-box-settings,
 .sp-x-lt-settings,
+.bx-core-adm-dialog div.sp-x-lt-settings,
 .sp-x-buttons-lt1,
-.sp-x-buttons-box {
+.bx-core-adm-dialog div.sp-x-buttons-lt1,
+.sp-x-buttons-box,
+.bx-core-adm-dialog div.sp-x-buttons-box,
+.sp-x-pp-blocks,
+.bx-core-adm-dialog div.sp-x-pp-blocks,
+.sp-x-pp-group,
+.bx-core-adm-dialog div.sp-x-pp-group
+ {
     /*text-align: center;*/
     /*text-align: left;*/
     font-size: 0;
