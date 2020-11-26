@@ -3,8 +3,11 @@
 }
 
 .sp-block-lists .sp-item input {
-    width: 90%;
+    width: 78%;
 }
 .sp-block-lists .sp-lists-type{
     margin-bottom: 6px;
+}
+.sp-block-lists .sp-item-handle{
+    cursor: pointer;
 }

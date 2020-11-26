@@ -58,12 +58,20 @@ class AdminEditor
 
         //default setings (simple editor)
         $userSettings = [
-            'block_disabled' => [
-                'layout_0',
-                'layout_1',
-                'layout_2',
-                'layout_3',
-                'layout_4',
+            'layout_enabled' => [
+                'layout_none',
+            ],
+
+            'block_settings' => [
+                'lists' => [
+                    'type' => [
+                        'type'  => 'select',
+                        'value' => [
+                            'ol' => 'Нумерованный',
+                            'ul' => 'Маркированный',
+                        ],
+                    ],
+                ],
             ],
         ];
 

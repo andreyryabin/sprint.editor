@@ -1,26 +1,10 @@
 sprint_editor.registerBlock('lists', function ($, $el, data, settings) {
 
     data = $.extend({
-        type: 'ul',
         elements: [{text: ''}, {text: ''}]
     }, data);
 
     this.getData = function () {
-
-        var taglist = [
-            {id: 'ol', title: 'Нумерованный'},
-            {id: 'ul', title: 'Маркированный'},
-        ];
-
-        if (settings.taglist && settings.taglist.value) {
-            taglist = [];
-            $.each(settings.taglist.value, function (index, val) {
-                taglist.push({id: index, title: val})
-            });
-        }
-
-        data['taglist'] = taglist;
-
         return data;
     };
 
@@ -37,8 +21,6 @@ sprint_editor.registerBlock('lists', function ($, $el, data, settings) {
                 });
             }
         });
-        delete data['taglist'];
-        data.type = $el.find('select').val();
         data.elements = trimed;
         return data;
     };
@@ -46,11 +28,34 @@ sprint_editor.registerBlock('lists', function ($, $el, data, settings) {
     this.afterRender = function () {
         var $res = $el.find('.sp-lists-result');
 
+        $res.sortable({
+            items: ".sp-item",
+            handle: ".sp-item-handle",
+        });
+
         $res.html(
             sprint_editor.renderTemplate('lists-items', data)
         );
 
-        $el.on('click', '.sp-lists-add', function () {
+        $res.on('click', '.sp-item-del', function (e) {
+            e.preventDefault();
+            $(this).closest('.sp-item').remove();
+        });
+
+        $res.on('keypress', '.sp-item-text', function (e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                addItem(true);
+            }
+        });
+
+        $el.on('click', '.sp-lists-add', function (e) {
+            e.preventDefault();
+            addItem(false);
+        });
+
+        function addItem(focus) {
             $res.append(
                 sprint_editor.renderTemplate('lists-items', {
                     elements: [
@@ -59,6 +64,9 @@ sprint_editor.registerBlock('lists', function ($, $el, data, settings) {
                 })
             );
 
-        });
+            if (focus) {
+                $res.find('.sp-item-text').last().focus();
+            }
+        }
     }
 });

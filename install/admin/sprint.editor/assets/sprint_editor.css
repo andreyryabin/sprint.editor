@@ -115,13 +115,13 @@
 .sp-x-box-copied {
     background: #FFEBC1;
     border: 2px solid #FDBF3B;
-    padding: 5px 5px 10px;
+    padding: 5px;
 }
 
 .sp-x-box-cutted {
     background: #fee;
     border: 2px solid #d00;
-    padding: 5px 5px 10px;
+    padding: 5px;
 }
 
 .sp-x-lt,
@@ -452,8 +452,8 @@
 
 .bx-core-adm-dialog .sp-x-separator div.sp-x-pp-blocks,
 .sp-x-separator .sp-x-pp-blocks{
-    left: -18px;
-    top: -15px;
+    left: -50px;
+    top: 15px;
 }
 
 
