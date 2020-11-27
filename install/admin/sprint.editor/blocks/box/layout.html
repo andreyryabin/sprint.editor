@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <div class="sp-x-lt-tabs">
+        <div class="sp-x-lt-tabs" {{?it.columns.length == 1}}style="display:none"{{?}}>
             {{~it.columns :col}}
             <span class="sp-x-btn sp-x-col-tab" data-uid="{{=col.uid}}">
                 <span class="sp-x-col-title">{{=col.title}}</span>
