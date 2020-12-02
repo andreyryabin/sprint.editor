@@ -4,7 +4,7 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
     currentEditorParams = currentEditorParams || {};
 
     data = $.extend({
-        items: [],
+        blocks: [],
     }, data);
 
     var blocklist = [
@@ -28,7 +28,7 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
     };
 
     this.collectData = function () {
-        data.items = [];
+        data.blocks = [];
         $el.find('.sp-acc-box').each(function () {
             var blockData = sprint_editor.collectData(
                 $(this).data('uid')
@@ -38,7 +38,7 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
                 $(this).find('.sp-x-box-settings')
             );
 
-            data.items.push(blockData);
+            data.blocks.push(blockData);
         });
         delete data['blocklist'];
         return data;
@@ -47,8 +47,8 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
     this.afterRender = function () {
         var $container = $el.find('.sp-items');
 
-        $.each(data.items, function (index, item) {
-            addblock(item, $container);
+        $.each(data.blocks, function (index, blockData) {
+            addblock(blockData, $container);
         });
 
         $el.on('click', '.sp-acc-box-del', function (e) {

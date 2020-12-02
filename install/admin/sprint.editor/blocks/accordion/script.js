@@ -7,7 +7,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
         items: [],
     }, data);
 
-    var blocks = [
+    var blocklist = [
         {id: 'htag', title: 'заголовок'},
         {id: 'text', title: 'текст'},
         {id: 'image', title: 'картинку'},
@@ -16,9 +16,9 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
     ];
 
     if (settings.blocks && settings.blocks.value) {
-        blocks = [];
+        blocklist = [];
         $.each(settings.blocks.value, function (index, val) {
-            blocks.push({id: index, title: val})
+            blocklist.push({id: index, title: val})
         });
     }
 
@@ -178,7 +178,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
         function addTab(tabData) {
             var $tab = $(sprint_editor.renderTemplate('accordion-tab', {
                 title: tabData.title,
-                blocks: blocks
+                blocklist: blocklist
             }));
 
             $el.find('.sp-acc-container').append($tab);

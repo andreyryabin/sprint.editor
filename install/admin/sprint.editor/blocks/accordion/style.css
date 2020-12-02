@@ -3,23 +3,14 @@
     margin-bottom: 10px;
 }
 
-.sp-block-accordion .sp-acc-tab-container {
-
-}
-
 .sp-block-accordion .sp-acc-buttons {
-    background: #eee;
-    /*border-bottom: 1px dashed #ccc;*/
-    /*text-align: left;*/
     position: relative;
 }
 
 .sp-block-accordion .sp-acc-tab-buttons,
 .sp-block-accordion .sp-acc-buttons {
-    /*border-top: 1px dashed #ccc;*/
-    /*text-align: center;*/
-    background: #eee;
     padding: 10px 10px 0;
+    background: #eee;
 }
 
 
@@ -32,40 +23,26 @@
     font-size: 13px;
 }
 
-.sp-block-accordion .sp-x-pp-box,
-.sp-block-accordion .sp-x-buttons-group {
-    /*position: absolute;*/
-    /*right: 10px;*/
-    /*text-align: right;*/
-}
-
-.sp-block-accordion .sp-acc-del {
-    /*float: right;*/
-}
-
 .sp-block-accordion input.sp-acc-tab-value {
     width: 60%;
     float: right;
-    /*margin-right:90px;*/
 }
 
 .sp-block-accordion .sp-acc-box {
     margin: 10px;
 }
 
-.sp-block-accordion .sp-acc-footer {
-
-}
-
-
-.sp-block-accordion .sp-acc-box-block {
-
-}
-
-.sp-block-accordion .sp-acc-tab-container {
-}
-
 .sp-block-accordion .sp-acc-box-handle,
 .sp-block-accordion .sp-acc-tab-handle {
     cursor: move;
+}
+
+
+.sp-block-accordion .sp-acc-box.ui-sortable-helper {
+    background: #e0e8ea;
+    padding: 10px 10px 20px;
+}
+.sp-block-accordion .sp-acc-tab.ui-sortable-helper {
+    background: #e0e8ea;
+    /*padding: 10px 10px 20px;*/
 }
