@@ -71,7 +71,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
         $el.on('click', '.sp-add-col', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('.active');
+            var $td = $el.find('td.active');
             if ($td.length > 0) {
                 $('<td contenteditable="true"></td>').insertAfter($td);
 
@@ -83,7 +83,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
         $el.on('click', '.sp-del-col', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('.active');
+            var $td = $el.find('td.active');
             var $tr = $td.parent();
 
             if ($td.length > 0) {
@@ -99,8 +99,183 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
         $el.on('click', '.sp-add-row', function (e) {
             e.preventDefault();
+            addrow();
+            showcolbtns();
+        });
 
-            var $tr = $el.find('.active').parent();
+        $el.on('click', '.sp-del-row', function (e) {
+            e.preventDefault();
+
+            var $td = $el.find('td.active');
+
+            if ($td.length > 0) {
+                $td.parent().remove();
+            }
+
+            showcolbtns();
+        });
+        $el.on('click', '.sp-sel-row', function (e) {
+            e.preventDefault();
+
+            var $td = $el.find('td.active');
+
+            if ($td.length > 0) {
+                $td.parent().toggleClass('active');
+            }
+
+            showcolbtns();
+        });
+        $el.on('click', '.sp-add-cs', function (e) {
+            e.preventDefault();
+
+            var $td = $el.find('td.active');
+
+            if ($td.length > 0) {
+
+                var $ntd = $td.next('td');
+
+                if ($ntd.length) {
+
+                    var ncs = $ntd.attr('colspan');
+                    ncs = (ncs) ? parseInt(ncs, 10) : 1;
+
+                    $ntd.remove();
+                    var cs = $td.attr('colspan');
+
+                    cs = (cs) ? parseInt(cs, 10) : 1;
+
+                    $td.attr('colspan', cs + ncs);
+                }
+            }
+            showcolbtns();
+        });
+
+        $el.on('click', '.sp-del-cs', function (e) {
+            e.preventDefault();
+
+            var $td = $el.find('td.active');
+
+            if ($td.length > 0) {
+
+                var cs = $td.attr('colspan');
+                cs = (cs) ? parseInt(cs, 10) : 1;
+
+                if (cs - 1 > 1) {
+                    $td.attr('colspan', cs - 1);
+                } else {
+                    $td.removeAttr('colspan');
+                }
+
+                if (cs > 1) {
+                    $('<td contenteditable="true"></td>').insertAfter($td);
+                }
+            }
+            showcolbtns();
+        });
+
+
+        $el.on('click', '.sp-add-rs', function (e) {
+            e.preventDefault();
+
+            var $td = $el.find('td.active');
+
+            if ($td.length > 0) {
+
+                var cs = $td.attr('rowspan');
+
+                cs = (cs) ? parseInt(cs, 10) : 1;
+
+                $td.attr('rowspan', cs + 1);
+
+
+            }
+            showcolbtns();
+        });
+
+        $el.on('click', '.sp-del-rs', function (e) {
+            e.preventDefault();
+
+            var $td = $el.find('td.active');
+
+            if ($td.length > 0) {
+
+                var rs = $td.attr('rowspan');
+
+                rs = (rs) ? parseInt(rs, 10) : 1;
+
+                if (rs - 1 <= 1) {
+                    $td.removeAttr('rowspan');
+                } else {
+                    $td.attr('rowspan', rs - 1);
+                }
+
+            }
+            showcolbtns();
+        });
+
+        $el.on('click', '.sp-sel-dn', function (e) {
+            var $trs = $el.find('tr.active');
+            if ($trs.length > 0) {
+                var $first = $trs.first();
+                var $last = $trs.last();
+
+                var $ntr = $last.next('tr');
+                if (!$ntr.length) {
+                    $ntr = addrowAppend($last);
+                }
+
+                $trs.insertAfter($ntr);
+            }
+        });
+
+
+        $el.on('click', '.sp-sel-up', function (e) {
+            var $trs = $el.find('tr.active');
+            if ($trs.length > 0) {
+                var $first = $trs.first();
+                var $last = $trs.last();
+                var $ntr = $first.prev('tr');
+                $trs.insertBefore($ntr);
+            }
+        });
+
+
+        $el.on('click', '.sp-toggle-align', function (e) {
+            e.preventDefault();
+
+            var $td = $el.find('td.active');
+
+            if ($td.length > 0) {
+                if ($td.hasClass('center')) {
+                    $td.removeClass('center');
+                    $td.addClass('right');
+                } else if ($td.hasClass('right')) {
+                    $td.removeClass('right');
+                } else {
+                    $td.addClass('center');
+                }
+            }
+            showcolbtns();
+        });
+
+        $el.on('click', '.sp-toggle-bold', function (e) {
+            e.preventDefault();
+
+            var $td = $el.find('td.active');
+
+            if ($td.length > 0) {
+                if ($td.hasClass('bold')) {
+                    $td.removeClass('bold');
+                } else {
+                    $td.addClass('bold');
+                }
+            }
+
+            showcolbtns();
+        });
+
+        function addrow() {
+            var $tr = $el.find('td.active').parent();
             if ($tr.length <= 0) {
                 $tr = $table.find('tr').last();
             }
@@ -126,153 +301,48 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             } else {
                 $table.append('<tr>' + newtr + '</tr>');
             }
+        }
 
-            showcolbtns();
-        });
-
-        $el.on('click', '.sp-del-row', function (e) {
-            e.preventDefault();
-
-            var $td = $el.find('.active');
-
-            if ($td.length > 0) {
-                $td.parent().remove();
-            }
-
-            showcolbtns();
-        });
-
-        $el.on('click', '.sp-add-cs', function (e) {
-            e.preventDefault();
-
-            var $td = $el.find('.active');
-
-            if ($td.length > 0) {
-
-                var $ntd = $td.next('td');
-
-                if ($ntd.length) {
-
-                    var ncs = $ntd.attr('colspan');
-                    ncs = (ncs) ? parseInt(ncs, 10) : 1;
-
-                    $ntd.remove();
-                    var cs = $td.attr('colspan');
-
-                    cs = (cs) ? parseInt(cs, 10) : 1;
-
-                    $td.attr('colspan', cs + ncs);
-                }
-            }
-            showcolbtns();
-        });
-
-        $el.on('click', '.sp-del-cs', function (e) {
-            e.preventDefault();
-
-            var $td = $el.find('.active');
-
-            if ($td.length > 0) {
-
-                var cs = $td.attr('colspan');
-                cs = (cs) ? parseInt(cs, 10) : 1;
-
-                if (cs - 1 > 1) {
-                    $td.attr('colspan', cs - 1);
+        function addrowAppend($tr) {
+            var colCount = 0;
+            $tr.find('td').each(function () {
+                if ($(this).attr('colspan')) {
+                    colCount += +$(this).attr('colspan');
                 } else {
-                    $td.removeAttr('colspan');
+                    colCount++;
                 }
+            });
 
-                if (cs > 1) {
-                    $('<td contenteditable="true"></td>').insertAfter($td);
-                }
+            colCount = (colCount > 0) ? colCount : 1;
+
+            var newtr = '';
+            for (var index = 1; index <= colCount; index++) {
+                newtr += '<td contenteditable="true"></td>';
             }
-            showcolbtns();
-        });
+            $table.append('<tr>' + newtr + '</tr>');
 
+            return $table.find('tr').last();
 
-        $el.on('click', '.sp-add-rs', function (e) {
-            e.preventDefault();
-
-            var $td = $el.find('.active');
-
-            if ($td.length > 0) {
-
-                var cs = $td.attr('rowspan');
-
-                cs = (cs) ? parseInt(cs, 10) : 1;
-
-                $td.attr('rowspan', cs + 1);
-
-
-            }
-            showcolbtns();
-        });
-
-        $el.on('click', '.sp-del-rs', function (e) {
-            e.preventDefault();
-
-            var $td = $el.find('.active');
-
-            if ($td.length > 0) {
-
-                var rs = $td.attr('rowspan');
-
-                rs = (rs) ? parseInt(rs, 10) : 1;
-
-                if (rs - 1 <= 1) {
-                    $td.removeAttr('rowspan');
-                } else {
-                    $td.attr('rowspan', rs - 1);
-                }
-
-            }
-            showcolbtns();
-        });
-
-
-        $el.on('click', '.sp-toggle-align', function (e) {
-            e.preventDefault();
-
-            var $td = $el.find('.active');
-
-            if ($td.length > 0) {
-                if ($td.hasClass('center')) {
-                    $td.removeClass('center');
-                    $td.addClass('right');
-                } else if ($td.hasClass('right')) {
-                    $td.removeClass('right');
-                } else {
-                    $td.addClass('center');
-                }
-            }
-            showcolbtns();
-        });
-
-        $el.on('click', '.sp-toggle-bold', function (e) {
-            e.preventDefault();
-
-            var $td = $el.find('.active');
-
-            if ($td.length > 0) {
-                if ($td.hasClass('bold')) {
-                    $td.removeClass('bold');
-                } else {
-                    $td.addClass('bold');
-                }
-            }
-
-            showcolbtns();
-        });
+        }
 
         function showcolbtns() {
-            var $td = $table.find('.active');
+            var $td = $table.find('td.active');
 
             $el.find('.sp-add-row').show();
 
+            var $trSel = $table.find('tr.active');
+            if ($trSel.length > 0) {
+                $el.find('.sp-sel-up').show();
+                $el.find('.sp-sel-dn').show();
+            } else {
+                $el.find('.sp-sel-up').hide();
+                $el.find('.sp-sel-dn').hide();
+            }
+
             if ($td.length > 0) {
-                $el.find('.sp-col-buttons input').show();
+                $el.find('.sp-col-buttons').show();
                 $el.find('.sp-del-row').show();
+                $el.find('.sp-sel-row').show();
 
                 var $tr = $td.parent();
                 var $ntd = $td.next('td');
@@ -314,8 +384,9 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                     $el.find('.sp-add-rs').hide();
                 }
             } else {
-                $el.find('.sp-col-buttons input').hide();
+                $el.find('.sp-col-buttons').hide();
                 $el.find('.sp-del-row').hide();
+                $el.find('.sp-sel-row').hide();
 
             }
         }

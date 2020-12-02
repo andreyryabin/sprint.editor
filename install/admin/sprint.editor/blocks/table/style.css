@@ -12,12 +12,16 @@
     height: 22px;
 }
 
+.sp-block-table tr.active td{
+    border: 1px solid #d00;
+}
+
 .sp-block-table td p {
     margin: 0;
     padding: 0;
 }
 
-.sp-block-table .active {
+.sp-block-table td.active {
     background: #FFEBC1;
 }
 

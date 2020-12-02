@@ -82,6 +82,7 @@
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
             jsonUserSettings: <?=$jsonUserSettings?>,
+        }, {
             jsonValue: <?=$jsonValue?>
         });
     });

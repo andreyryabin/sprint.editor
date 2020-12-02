@@ -16,5 +16,22 @@
             <span class="sp-x-btn sp-acc-box-handle">{{=it.title}}</span>
         </div>
     </div>
+
+    {{?it.compiled && it.compiled.length > 0}}
+    <div class="sp-x-box-settings">
+        {{~it.compiled :item}}
+        <div data-name="{{!item.name}}" class="sp-x-settings-group">
+            {{~item.options :option}}
+            {{?option.selected}}
+            <span class="sp-x-active" data-value="{{!option.value}}">{{=option.title}}</span>
+            {{??}}
+            <span data-value="{{!option.value}}">{{=option.title}}</span>
+            {{?}}
+            {{~}}
+        </div>
+        {{~}}
+    </div>
+    {{?}}
+
     <div class="sp-acc-box-block"></div>
 </div>

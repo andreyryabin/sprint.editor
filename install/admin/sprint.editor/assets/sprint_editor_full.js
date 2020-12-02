@@ -1,6 +1,6 @@
-function sprint_editor_full($, params) {
-    var $editor = $('.sp-x-editor' + params.uniqid);
-    var $inputresult = $('.sp-x-result' + params.uniqid);
+function sprint_editor_full($, currentEditorParams,currentEditorValue) {
+    var $editor = $('.sp-x-editor' + currentEditorParams.uniqid);
+    var $inputresult = $('.sp-x-result' + currentEditorParams.uniqid);
     var $form = $editor.closest('form').first();
 
     $(document).keyup(function (e) {
@@ -23,42 +23,42 @@ function sprint_editor_full($, params) {
         }
     });
 
-    if (!params.jsonValue) {
-        params.jsonValue = {};
+    if (!currentEditorValue.jsonValue) {
+        currentEditorValue.jsonValue = {};
     }
 
-    if (!params.jsonValue.blocks) {
-        params.jsonValue.blocks = [];
+    if (!currentEditorValue.jsonValue.blocks) {
+        currentEditorValue.jsonValue.blocks = [];
     }
 
-    if (!params.jsonValue.layouts) {
-        params.jsonValue.layouts = [];
+    if (!currentEditorValue.jsonValue.layouts) {
+        currentEditorValue.jsonValue.layouts = [];
     }
 
-    if (!params.jsonUserSettings) {
-        params.jsonUserSettings = {};
+    if (!currentEditorParams.jsonUserSettings) {
+        currentEditorParams.jsonUserSettings = {};
     }
 
-    if (params.hasOwnProperty('enableChange')) {
-        params.enableChange = !!params.enableChange;
+    if (currentEditorParams.hasOwnProperty('enableChange')) {
+        currentEditorParams.enableChange = !!currentEditorParams.enableChange;
     } else {
-        params.enableChange = true;
+        currentEditorParams.enableChange = true;
     }
 
-    if (params.jsonUserSettings.hasOwnProperty('enable_change')) {
-        params.enableChange = !!params.jsonUserSettings.enable_change;
+    if (currentEditorParams.jsonUserSettings.hasOwnProperty('enable_change')) {
+        currentEditorParams.enableChange = !!currentEditorParams.jsonUserSettings.enable_change;
     }
 
-    params.deleteBlockAfterSortOut = false;
-    if (params.jsonUserSettings.hasOwnProperty('delete_block_after_sort_out')) {
-        params.deleteBlockAfterSortOut = !!params.jsonUserSettings.delete_block_after_sort_out;
+    currentEditorParams.deleteBlockAfterSortOut = false;
+    if (currentEditorParams.jsonUserSettings.hasOwnProperty('delete_block_after_sort_out')) {
+        currentEditorParams.deleteBlockAfterSortOut = !!currentEditorParams.jsonUserSettings.delete_block_after_sort_out;
     }
 
-    $.each(params.jsonValue.layouts, function (index, layout) {
+    $.each(currentEditorValue.jsonValue.layouts, function (index, layout) {
         layoutAdd(layout);
     });
 
-    $.each(params.jsonValue.blocks, function (index, block) {
+    $.each(currentEditorValue.jsonValue.blocks, function (index, block) {
         blockAdd(block);
     });
 
@@ -91,7 +91,7 @@ function sprint_editor_full($, params) {
         $inputresult.val(resultString);
     });
 
-    if (params.enableChange) {
+    if (currentEditorParams.enableChange) {
 
         packShow();
 
@@ -375,7 +375,7 @@ function sprint_editor_full($, params) {
         } else if ($handler.hasClass('sp-x-pp-blocks-open')) {
             $popup = $editor.find('.sp-x-pp-blocks');
             if (!$popup || $popup.length <= 0) {
-                $popup = $(sprint_editor.renderTemplate('pp-blocks' + params.uniqid, {}));
+                $popup = $(sprint_editor.renderTemplate('pp-blocks' + currentEditorParams.uniqid, {}));
             }
 
             $handler.after($popup);
@@ -497,9 +497,9 @@ function sprint_editor_full($, params) {
         var columns = [];
         var defaultclass = '';
 
-        if (params.jsonUserSettings.layout_defaults) {
-            if (params.jsonUserSettings.layout_defaults[ltname]) {
-                defaultclass = params.jsonUserSettings.layout_defaults[ltname];
+        if (currentEditorParams.jsonUserSettings.layout_defaults) {
+            if (currentEditorParams.jsonUserSettings.layout_defaults[ltname]) {
+                defaultclass = currentEditorParams.jsonUserSettings.layout_defaults[ltname];
             }
         }
 
@@ -534,15 +534,15 @@ function sprint_editor_full($, params) {
             columns.push({
                 uid: columnUid,
                 title: columnTitle,
-                enableChange: params.enableChange,
-                compiled: sprint_editor.compileClasses(ltname, column.css, params)
+                enableChange: currentEditorParams.enableChange,
+                compiled: sprint_editor.compileClasses(ltname, column.css, currentEditorParams)
             })
         });
 
-        var layoutSettings = sprint_editor.getLayoutSettings(ltname, params);
+        var layoutSettings = sprint_editor.getLayoutSettings(ltname, currentEditorParams);
         $editor.find('.sp-x-editor-lt').append(
             sprint_editor.renderTemplate('box-layout', {
-                enableChange: params.enableChange,
+                enableChange: currentEditorParams.enableChange,
                 columns: columns,
                 title: layoutTitle,
                 compiled: sprint_editor.compileSettings(layout, layoutSettings)
@@ -551,7 +551,7 @@ function sprint_editor_full($, params) {
 
         var $grid = $editor.find('.sp-x-lt').last();
 
-        if (params.enableChange) {
+        if (currentEditorParams.enableChange) {
             sortableBlocks($grid.find('.sp-x-col'));
         }
 
@@ -575,7 +575,7 @@ function sprint_editor_full($, params) {
             },
             beforeStop: function (event, ui) {
                 var uid = ui.item.data('uid');
-                if (removeIntent && params.deleteBlockAfterSortOut) {
+                if (removeIntent && currentEditorParams.deleteBlockAfterSortOut) {
                     sprint_editor.beforeDelete(uid);
                     ui.item.remove();
                 } else {
@@ -604,8 +604,8 @@ function sprint_editor_full($, params) {
         }
 
         var uid = sprint_editor.makeUid();
-        var blockSettings = sprint_editor.getBlockSettings(blockData.name, params);
-        var $box = $(sprint_editor.renderBlock(blockData, blockSettings, uid, params));
+        var blockSettings = sprint_editor.getBlockSettings(blockData.name, currentEditorParams);
+        var $box = $(sprint_editor.renderBlock(blockData, blockSettings, uid, currentEditorParams));
 
         if (!$container || $container.length <= 0) {
             if (blockData.layout) {
@@ -626,9 +626,22 @@ function sprint_editor_full($, params) {
         }
 
         var $el = $box.find('.sp-x-box-block');
-        var entry = sprint_editor.initblock($, $el, blockData.name, blockData, blockSettings);
+        var entry = sprint_editor.initblock(
+            $,
+            $el,
+            blockData.name,
+            blockData,
+            blockSettings,
+            currentEditorParams
+        );
 
-        sprint_editor.initblockAreas($, $el, entry);
+        sprint_editor.initblockAreas(
+            $,
+            $el,
+            entry,
+            currentEditorParams
+        );
+
         sprint_editor.registerEntry(uid, entry);
 
         return $box;

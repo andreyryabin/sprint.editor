@@ -16,6 +16,7 @@
 
 .sp-block-accordion .sp-acc-box-buttons {
     position: relative;
+    display: inline-block;
     /*text-align: center;*/
     /*margin-bottom: 10px;*/
 }

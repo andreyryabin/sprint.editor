@@ -132,12 +132,13 @@ $settings = [
                 ],
             ],
         ],
-        'lists' => [
+        'lists'     => [
             'type' => [
-                'type'  => 'select',
-                'value' => [
-                    'ol' => 'Нумерованный',
+                'type'    => 'select',
+                'default' => 'ul',
+                'value'   => [
                     'ul' => 'Маркированный',
+                    'ol' => 'Нумерованный',
                 ],
             ],
         ],

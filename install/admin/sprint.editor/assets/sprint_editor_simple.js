@@ -1,6 +1,6 @@
-function sprint_editor_simple($, params) {
-    var $editor = $('.sp-x-editor' + params.uniqid);
-    var $inputresult = $('.sp-x-result' + params.uniqid);
+function sprint_editor_simple($, currentEditorParams, currentEditorValue) {
+    var $editor = $('.sp-x-editor' + currentEditorParams.uniqid);
+    var $inputresult = $('.sp-x-result' + currentEditorParams.uniqid);
     var $form = $editor.closest('form').first();
 
     $(document).keyup(function (e) {
@@ -24,36 +24,36 @@ function sprint_editor_simple($, params) {
     });
 
 
-    if (!params.jsonValue) {
-        params.jsonValue = {};
+    if (!currentEditorValue.jsonValue) {
+        currentEditorValue.jsonValue = {};
     }
 
-    if (!params.jsonValue.blocks) {
-        params.jsonValue.blocks = [];
+    if (!currentEditorValue.jsonValue.blocks) {
+        currentEditorValue.jsonValue.blocks = [];
     }
 
-    if (!params.jsonUserSettings) {
-        params.jsonUserSettings = {};
+    if (!currentEditorParams.jsonUserSettings) {
+        currentEditorParams.jsonUserSettings = {};
     }
 
-    if (params.hasOwnProperty('enableChange')) {
-        params.enableChange = !!params.enableChange;
+    if (currentEditorParams.hasOwnProperty('enableChange')) {
+        currentEditorParams.enableChange = !!currentEditorParams.enableChange;
     } else {
-        params.enableChange = true;
+        currentEditorParams.enableChange = true;
     }
 
-    if (params.jsonUserSettings.hasOwnProperty('enable_change')) {
-        params.enableChange = !!params.jsonUserSettings.enable_change;
+    if (currentEditorParams.jsonUserSettings.hasOwnProperty('enable_change')) {
+        currentEditorParams.enableChange = !!currentEditorParams.jsonUserSettings.enable_change;
     }
 
-    params.deleteBlockAfterSortOut = false;
-    if (params.jsonUserSettings.hasOwnProperty('delete_block_after_sort_out')) {
-        params.deleteBlockAfterSortOut = !!params.jsonUserSettings.delete_block_after_sort_out;
+    currentEditorParams.deleteBlockAfterSortOut = false;
+    if (currentEditorParams.jsonUserSettings.hasOwnProperty('delete_block_after_sort_out')) {
+        currentEditorParams.deleteBlockAfterSortOut = !!currentEditorParams.jsonUserSettings.delete_block_after_sort_out;
     }
 
     layoutAdd();
 
-    $.each(params.jsonValue.blocks, function (index, block) {
+    $.each(currentEditorValue.jsonValue.blocks, function (index, block) {
         block.layout = '0,0';
         blockAdd(block);
     });
@@ -87,7 +87,7 @@ function sprint_editor_simple($, params) {
         $inputresult.val(resultString);
     });
 
-    if (params.enableChange) {
+    if (currentEditorParams.enableChange) {
 
         $editor.on('click', '.sp-x-pp-blocks .sp-x-btn', function (e) {
             addByNameBlock($(this));
@@ -227,7 +227,7 @@ function sprint_editor_simple($, params) {
         } else if ($handler.hasClass('sp-x-pp-blocks-open')) {
             $popup = $editor.find('.sp-x-pp-blocks');
             if (!$popup || $popup.length <= 0) {
-                $popup = $(sprint_editor.renderTemplate('pp-blocks' + params.uniqid, {}));
+                $popup = $(sprint_editor.renderTemplate('pp-blocks' + currentEditorParams.uniqid, {}));
             }
 
             $handler.after($popup);
@@ -306,7 +306,7 @@ function sprint_editor_simple($, params) {
     }
 
     function layoutAdd() {
-        if (params.enableChange) {
+        if (currentEditorParams.enableChange) {
             sortableBlocks($editor.find('.sp-x-col').last());
         }
     }
@@ -327,7 +327,7 @@ function sprint_editor_simple($, params) {
             },
             beforeStop: function (event, ui) {
                 var uid = ui.item.data('uid');
-                if (removeIntent && params.deleteBlockAfterSortOut) {
+                if (removeIntent && currentEditorParams.deleteBlockAfterSortOut) {
                     sprint_editor.beforeDelete(uid);
                     ui.item.remove();
                 } else {
@@ -356,8 +356,8 @@ function sprint_editor_simple($, params) {
         }
 
         var uid = sprint_editor.makeUid();
-        var blockSettings = sprint_editor.getBlockSettings(blockData.name, params);
-        var $box = $(sprint_editor.renderBlock(blockData, blockSettings, uid, params));
+        var blockSettings = sprint_editor.getBlockSettings(blockData.name, currentEditorParams);
+        var $box = $(sprint_editor.renderBlock(blockData, blockSettings, uid, currentEditorParams));
 
         if (!$container || $container.length <= 0) {
             if (blockData.layout) {
@@ -378,9 +378,22 @@ function sprint_editor_simple($, params) {
         }
 
         var $el = $box.find('.sp-x-box-block');
-        var entry = sprint_editor.initblock($, $el, blockData.name, blockData, blockSettings);
+        var entry = sprint_editor.initblock(
+            $,
+            $el,
+            blockData.name,
+            blockData,
+            blockSettings,
+            currentEditorParams
+        );
 
-        sprint_editor.initblockAreas($, $el, entry);
+        sprint_editor.initblockAreas(
+            $,
+            $el,
+            entry,
+            currentEditorParams
+        );
+
         sprint_editor.registerEntry(uid, entry);
 
         return $box;

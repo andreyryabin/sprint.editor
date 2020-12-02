@@ -95,11 +95,17 @@ var sprint_editor = {
         this._imagesdelete = jQuery.extend({}, this._imagesdelete, items);
     },
 
-    initblock: function ($, $el, name, blockData, blockSettings) {
+    initblock: function ($, $el, name, blockData, blockSettings, currentEditorParams) {
         name = sprint_editor.hasBlockMethod(name) ? name : 'dump';
 
         var method = sprint_editor.getBlockMethod(name);
-        var entry = new method($, $el, blockData, blockSettings);
+        var entry = new method(
+            $,
+            $el,
+            blockData,
+            blockSettings,
+            currentEditorParams
+        );
 
         var html = sprint_editor.renderTemplate(name, entry.getData());
         $el.html(html).addClass('sp-block-' + name);
@@ -111,7 +117,7 @@ var sprint_editor = {
         return entry;
     },
 
-    initblockAreas: function ($, $el, entry) {
+    initblockAreas: function ($, $el, entry, currentEditorParams) {
         if (entry && typeof entry.getAreas == 'function') {
             var areas = entry.getAreas();
             var entryData = entry.getData();
@@ -132,7 +138,8 @@ var sprint_editor = {
                         $el.find(area.container),
                         area.blockName,
                         areaData,
-                        area.blockSettings
+                        area.blockSettings,
+                        currentEditorParams
                     );
                 }
             }
@@ -307,7 +314,7 @@ var sprint_editor = {
 
             renderVars['uid'] = uid;
             renderVars['enableChange'] = params.enableChange;
-            renderVars['compiled'] = this.compileSettings(blockData, blockSettings);
+            renderVars['compiled'] = sprint_editor.compileSettings(blockData, blockSettings);
 
             return this.renderTemplate('box', renderVars);
         }
@@ -430,6 +437,10 @@ var sprint_editor = {
     getBlockSettings: function (name, params) {
         var blockSettings = {};
 
+        if (!params.hasOwnProperty('jsonUserSettings')) {
+            return blockSettings;
+        }
+
         if (!params.jsonUserSettings.hasOwnProperty('block_settings')) {
             return blockSettings;
         }
@@ -444,6 +455,10 @@ var sprint_editor = {
 
     getLayoutSettings: function (name, params) {
         var layoutSettings = {};
+
+        if (!params.hasOwnProperty('jsonUserSettings')) {
+            return layoutSettings;
+        }
 
         if (!params.jsonUserSettings.hasOwnProperty('layout_settings')) {
             return layoutSettings;

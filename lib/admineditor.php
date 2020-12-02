@@ -65,10 +65,11 @@ class AdminEditor
             'block_settings' => [
                 'lists' => [
                     'type' => [
-                        'type'  => 'select',
-                        'value' => [
-                            'ol' => 'Нумерованный',
+                        'type'    => 'select',
+                        'default' => 'ul',
+                        'value'   => [
                             'ul' => 'Маркированный',
+                            'ol' => 'Нумерованный',
                         ],
                     ],
                 ],

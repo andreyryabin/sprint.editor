@@ -1,6 +1,7 @@
-sprint_editor.registerBlock('accordion', function ($, $el, data, settings) {
+sprint_editor.registerBlock('accordion', function ($, $el, data, settings, currentEditorParams) {
 
     settings = settings || {};
+    currentEditorParams = currentEditorParams || {};
 
     data = $.extend({
         items: [],
@@ -11,6 +12,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings) {
         {id: 'text', title: 'текст'},
         {id: 'image', title: 'картинку'},
         {id: 'video', title: 'видео'},
+        {id: 'lists', title: 'список'},
     ];
 
     if (settings.blocks && settings.blocks.value) {
@@ -37,9 +39,15 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings) {
             tab.title = $(this).find('.sp-acc-tab-value').val();
 
             $(this).find('.sp-acc-box').each(function () {
-                tab.blocks.push(sprint_editor.collectData(
+                var blockData = sprint_editor.collectData(
                     $(this).data('uid')
-                ))
+                );
+
+                blockData.settings = sprint_editor.collectSettings(
+                    $(this).find('.sp-x-box-settings')
+                );
+
+                tab.blocks.push(blockData);
             });
 
             data.items.push(tab);
@@ -190,9 +198,12 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings) {
 
         function addblock(blockData, $tabcontainer) {
             var uid = sprint_editor.makeUid('sp-acc');
+            var blockSettings = sprint_editor.getBlockSettings(blockData.name, currentEditorParams);
+
             var $box = $(sprint_editor.renderTemplate('accordion-box', {
                 uid: uid,
-                title: sprint_editor.getBlockTitle(blockData.name)
+                title: sprint_editor.getBlockTitle(blockData.name),
+                compiled: sprint_editor.compileSettings(blockData, blockSettings)
             }));
 
             $tabcontainer.append($box);
@@ -202,10 +213,17 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings) {
                 $,
                 $elBlock,
                 blockData.name,
-                blockData
+                blockData,
+                blockSettings,
+                currentEditorParams
             );
 
-            sprint_editor.initblockAreas($, $elBlock, elEntry);
+            sprint_editor.initblockAreas(
+                $,
+                $elBlock,
+                elEntry,
+                currentEditorParams
+            );
             sprint_editor.registerEntry(uid, elEntry);
         }
     };
