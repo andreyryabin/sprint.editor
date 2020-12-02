@@ -1,0 +1,7 @@
+{
+  "title": "Контейнер",
+  "sort": "950",
+  "templates": [
+    "box.html"
+  ]
+}

@@ -141,48 +141,21 @@ function sprint_editor_simple($, currentEditorParams, currentEditorValue) {
 
         $editor.on('click', '.sp-x-box-up', function (e) {
             e.preventDefault();
-
             var $block = $(this).closest('.sp-x-box');
-            var $grid = $(this).closest('.sp-x-lt');
-
             var $nblock = $block.prev('.sp-x-box');
             if ($nblock.length > 0) {
                 $block.insertBefore($nblock);
                 sprint_editor.afterSort($block.data('uid'));
-            } else {
-                var $ngrid = $grid.prev('.sp-x-lt');
-                if ($ngrid.length > 0) {
-                    var $ncol = getActiveColumn($ngrid);
-                    $block.appendTo($ncol);
-                    sprint_editor.afterSort($block.data('uid'));
-                }
             }
         });
 
         $editor.on('click', '.sp-x-box-dn', function (e) {
             e.preventDefault();
-
             var $block = $(this).closest('.sp-x-box');
-            var $grid = $(this).closest('.sp-x-lt');
-
             var $nblock = $block.next('.sp-x-box');
             if ($nblock.length > 0) {
                 $block.insertAfter($nblock);
                 sprint_editor.afterSort($block.data('uid'));
-
-            } else {
-                var $ngrid = $grid.next('.sp-x-lt');
-                if ($ngrid.length > 0) {
-                    var $ncol = getActiveColumn($ngrid);
-                    var $head = $ncol.find('.sp-x-col-settings');
-                    if ($head.length > 0) {
-                        $block.insertAfter($head);
-                        sprint_editor.afterSort($block.data('uid'));
-                    } else {
-                        $block.prependTo($ncol);
-                        sprint_editor.afterSort($block.data('uid'));
-                    }
-                }
             }
         });
 

@@ -1,0 +1,19 @@
+.sp-block-container {
+    border: 1px solid #ccc;
+}
+
+.sp-block-container .sp-buttons{
+    background: #eee;
+    padding: 10px 10px 0;
+}
+.sp-block-container .sp-buttons {
+    font-size: 0;
+}
+
+.sp-block-container .sp-buttons span {
+    font-size: 13px;
+}
+
+.sp-block-container .sp-acc-box {
+    margin: 10px;
+}

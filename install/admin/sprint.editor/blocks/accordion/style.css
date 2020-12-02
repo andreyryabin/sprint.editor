@@ -14,13 +14,6 @@
     position: relative;
 }
 
-.sp-block-accordion .sp-acc-box-buttons {
-    position: relative;
-    display: inline-block;
-    /*text-align: center;*/
-    /*margin-bottom: 10px;*/
-}
-
 .sp-block-accordion .sp-acc-tab-buttons,
 .sp-block-accordion .sp-acc-buttons {
     /*border-top: 1px dashed #ccc;*/
@@ -31,7 +24,6 @@
 
 
 .sp-block-accordion .sp-acc-buttons,
-.sp-block-accordion .sp-acc-box-buttons,
 .sp-block-accordion .sp-acc-tab-buttons {
     font-size: 0;
 }

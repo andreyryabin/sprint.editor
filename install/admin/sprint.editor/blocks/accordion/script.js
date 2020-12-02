@@ -27,9 +27,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
     };
 
     this.collectData = function () {
-
         data.items = [];
-
         $el.find('.sp-acc-tab').each(function () {
             var tab = {
                 title: '',
@@ -53,7 +51,6 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             data.items.push(tab);
 
         });
-
         return data;
     };
 
@@ -62,7 +59,6 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
         $.each(data.items, function (index, item) {
             addTab(item);
         });
-
 
         $el.on('click', '.sp-acc-del', function (e) {
             e.preventDefault();
@@ -192,8 +188,6 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             $.each(tabData.blocks, function (index, blockData) {
                 addblock(blockData, $tabcontainer)
             });
-
-
         }
 
         function addblock(blockData, $tabcontainer) {
