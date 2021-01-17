@@ -291,7 +291,6 @@ function sprint_editor_simple($, currentEditorParams, currentEditorValue) {
             items: ".sp-x-box",
             connectWith: ".sp-x-col",
             handle: ".sp-x-box-handle",
-            placeholder: "sp-x-box-placeholder",
             over: function () {
                 removeIntent = false;
             },
@@ -391,7 +390,7 @@ function sprint_editor_simple($, currentEditorParams, currentEditorValue) {
                     var blockData = sprint_editor.collectData(uid);
 
                     blockData.settings = sprint_editor.collectSettings(
-                        $(this).find('.sp-x-box-settings')
+                        $(this).children('.sp-x-box-settings')
                     );
 
                     blockData.layout = '0,0';
