@@ -21,6 +21,7 @@ if (CModule::IncludeModule('sprint.editor')) {
     $handler = new UploadHandler(
         [
             'save_origin_name' => true,
+            'max_file_size'    => 0,
         ]
     );
 }
