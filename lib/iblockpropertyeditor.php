@@ -39,7 +39,7 @@ class IblockPropertyEditor
                 'uniqId'       => $arProperty['ID'],
                 'value'        => $value['VALUE'],
                 'inputName'    => $strHTMLControlName['VALUE'],
-                'defaultValue' => $arProperty['~DEFAULT_VALUE'],
+                'defaultValue' => $arProperty['DEFAULT_VALUE'],
                 'userSettings' => $settings,
             ]
         );

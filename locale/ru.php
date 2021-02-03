@@ -44,14 +44,14 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_add_block" => "Добавить блок",
     "SPRINT_EDITOR_group_my" => "Пользовательские",
 
-    "SPRINT_EDITOR_layout_type1" => "Сетка из 1 колонки",
+    "SPRINT_EDITOR_layout_type1" => "Простая сетка",
     "SPRINT_EDITOR_layout_type2" => "Сетка из 2 колонок",
     "SPRINT_EDITOR_layout_type3" => "Сетка из 3 колонок",
     "SPRINT_EDITOR_layout_type4" => "Сетка из 4 колонок",
     "SPRINT_EDITOR_layout_toggle" => "Переключить отображение колонок",
 
     "SPRINT_EDITOR_pack_save" => "Сохранить как макет",
-    "SPRINT_EDITOR_pack_save_title" => "Сохранить колонки с блоками в новый макет",
+    "SPRINT_EDITOR_pack_save_title" => "Сохранить контент редактора в макет",
     "SPRINT_EDITOR_pack_del" => "Удалить макет",
 
     "SPRINT_EDITOR_pack_change" => "Укажите название макета",

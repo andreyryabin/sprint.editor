@@ -1,9 +1,10 @@
 {{?it.blocks && it.blocks.length > 0}}
 <div class="sp-x-pp-group">
-    <div class="sp-x-pp-group-title">{{!it.title}}</div>
     {{~it.blocks :item}}
-    <span class="sp-x-btn" data-name="{{!item.name}}">{{!item.title}}</span>
-    <span class="sp-x-btn" data-name="delete_pack" data-pack="{{!item.name}}" title="{{!it.mess_pack_del}}">x</span>
+    <span class="sp-x-btn" data-name="{{!item.name}}">
+        {{!item.title}}
+        <span class="sp-x-btn" data-name="delete_pack" data-pack="{{!item.name}}" title="{{!it.mess_pack_del}}">x</span>
+    </span>
     {{~}}
 </div>
 {{?}}

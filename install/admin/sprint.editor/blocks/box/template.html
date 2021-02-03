@@ -1,11 +1,9 @@
 <div class="sp-x-box" data-uid="{{=it.uid}}">
     <div class="sp-x-buttons sp-x-buttons-box">
+        {{?it.enableChange}}
         <div class="sp-x-buttons-group">
-            {{?it.enableChange}}
             <span class="sp-x-btn sp-x-pp-box-open">&equiv;</span>
-            {{?}}
             <div class="sp-x-pp-box">
-                {{?it.enableChange}}
                 <div class="sp-x-pp-group">
                     <span title="Вставить блоки после этого блока" class="sp-x-btn sp-x-box-paste">&crarr; Вставить</span>
                     <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">Копировать</span>
@@ -18,9 +16,9 @@
                 <div class="sp-x-pp-group">
                     <span title="Удалить блок" class="sp-x-btn sp-x-box-del">x Удалить</span>
                 </div>
-                {{?}}
             </div>
         </div>
+        {{?}}
         <div class="sp-x-buttons-group">
             {{?it.enableChange}}
             <span title="{{=it.hint}}" class="sp-x-btn sp-x-box-handle">{{=it.title}}</span>
@@ -29,7 +27,6 @@
             {{?}}
         </div>
     </div>
-
     {{?it.compiled && it.compiled.length > 0}}
     <div class="sp-x-box-settings">
         {{~it.compiled :item}}
@@ -45,9 +42,7 @@
         {{~}}
     </div>
     {{?}}
-
     <div class="sp-x-box-block"></div>
-
     <div class="sp-x-separator">
         {{?it.enableChange}}
         <span title="Добавить блок" class="sp-x-separator-handle sp-x-btn sp-x-pp-blocks-open">+</span>

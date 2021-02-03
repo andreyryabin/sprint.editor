@@ -31,6 +31,25 @@ class AdminEditor
             self::registerAssets();
         }
 
+        //default value (simple editor)
+        $defaultValue = json_encode(
+            [
+                'packname' => '',
+                'version'  => 2,
+                'blocks'   => [],
+                'layouts'  => [
+                    [
+                        'settings' => [],
+                        'columns'  => [
+                            [
+                                'css' => '',
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
+
         $params = array_merge(
             [
                 'uniqId'       => '',
@@ -40,6 +59,10 @@ class AdminEditor
                 'userSettings' => '',
             ], $params
         );
+
+        if (empty($params['defaultValue'])) {
+            $params['defaultValue'] = $defaultValue;
+        }
 
         $value = self::prepareValue($params['value']);
         if (empty($value['blocks']) && empty($value['layouts'])) {
@@ -61,7 +84,6 @@ class AdminEditor
             'layout_enabled' => [
                 'layout_none',
             ],
-
             'block_settings' => [
                 'lists' => [
                     'type' => [
@@ -87,14 +109,8 @@ class AdminEditor
         $filteredLayouts = self::filterLayouts($userSettings);
         $layoutsToolbar = self::getLayoutsToolbar($userSettings, $filteredLayouts);
 
-        if (empty($filteredLayouts)) {
-            $file = '/templates/admin_editor_simple.php';
-        } else {
-            $file = '/templates/admin_editor.php';
-        }
-
         return self::renderFile(
-            Module::getModuleDir() . $file, [
+            Module::getModuleDir() . '/templates/admin_editor.php', [
                 'jsonValue'        => json_encode(Locale::convertToUtf8IfNeed($value)),
                 'blocksToolbar'    => $blocksToolbar,
                 'layoutsToolbar'   => $layoutsToolbar,
@@ -275,7 +291,6 @@ class AdminEditor
         }
 
         $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor.js');
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_simple.js');
         $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_full.js');
 
         foreach (self::$js as $val) {
@@ -425,7 +440,6 @@ class AdminEditor
         $packs = self::sortByStr($packs, 'title');
 
         return [
-            'title'  => GetMessage('SPRINT_EDITOR_group_packs'),
             'blocks' => Locale::convertToWin1251IfNeed($packs),
         ];
     }

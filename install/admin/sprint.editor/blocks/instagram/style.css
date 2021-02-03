@@ -5,7 +5,7 @@
 .sp-block-instagram .sp-preview {
     margin-top: 10px;
     /*max-height: 180px;*/
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
 }
 
 .sp-block-instagram .sp-preview.sp-empty {
