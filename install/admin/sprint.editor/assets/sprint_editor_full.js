@@ -172,7 +172,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             var packname = prompt(BX.message('SPRINT_EDITOR_pack_change'));
             if (packname) {
                 var $selectors = jQuery([]).pushStack($(this).closest('.sp-x-lt'));
-                packSaveGrid('' + packname, $selectors);
+                packSave('' + packname, $selectors);
                 popupToggle($(this));
             }
         });
@@ -653,19 +653,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         // scrollTo($el);
     }
 
-    function packSave(packname) {
-        $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
-            save: saveToString(packname)
-        }, function (resp) {
-            if (resp) {
-                $editor.find('.sp-x-packs-loader').html(
-                    sprint_editor.renderTemplate('box-select-pack', resp)
-                );
-            }
-        });
-    }
-
-    function packSaveGrid(packname, $selectors) {
+    function packSave(packname, $selectors) {
         $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
             save: saveToString(packname, $selectors)
         }, function (resp) {
