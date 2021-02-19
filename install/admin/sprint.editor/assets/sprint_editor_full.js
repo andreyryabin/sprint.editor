@@ -1,4 +1,4 @@
-function sprint_editor_full($, currentEditorParams,currentEditorValue) {
+function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     var $editor = $('.sp-x-editor' + currentEditorParams.uniqid);
     var $inputresult = $('.sp-x-result' + currentEditorParams.uniqid);
     var $form = $editor.closest('form').first();
@@ -165,6 +165,16 @@ function sprint_editor_full($, currentEditorParams,currentEditorValue) {
         $editor.on('click', '.sp-x-footer .sp-x-btn', function (e) {
             e.stopPropagation();
             addByNameLayout($(this));
+        });
+
+        $editor.on('click', '.sp-x-lt-save', function (e) {
+            e.preventDefault();
+            var packname = prompt(BX.message('SPRINT_EDITOR_pack_change'));
+            if (packname) {
+                var $selectors = jQuery([]).pushStack($(this).closest('.sp-x-lt'));
+                packSaveGrid('' + packname, $selectors);
+                popupToggle($(this));
+            }
         });
 
         $editor.on('click', '.sp-x-pp-lt-open', function (e) {
@@ -404,7 +414,6 @@ function sprint_editor_full($, currentEditorParams,currentEditorValue) {
         if (name.indexOf('layout_') === 0) {
             name = name.substr(7);
             layoutEmptyAdd(name);
-            popupToggle();
             checkClipboardButtons();
 
         } else if (name.indexOf('pack_') === 0) {
@@ -656,6 +665,18 @@ function sprint_editor_full($, currentEditorParams,currentEditorValue) {
         });
     }
 
+    function packSaveGrid(packname, $selectors) {
+        $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
+            save: saveToString(packname, $selectors)
+        }, function (resp) {
+            if (resp) {
+                $editor.find('.sp-x-packs-loader').html(
+                    sprint_editor.renderTemplate('box-select-pack', resp)
+                );
+            }
+        });
+    }
+
     function packShow() {
         $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
             show: 1
@@ -776,14 +797,14 @@ function sprint_editor_full($, currentEditorParams,currentEditorValue) {
         }
     }
 
-
-    function saveToString(packname) {
+    function saveToString(packname, $selectors) {
         packname = packname || '';
+        $selectors = $selectors || $editor.find('.sp-x-lt');
 
         var blocks = [];
         var layouts = [];
 
-        $editor.find('.sp-x-lt').each(function (gindex) {
+        $selectors.each(function (gindex) {
             var columns = [];
 
             // var lttitle = $(this).find('.sp-x-lt-title').text();

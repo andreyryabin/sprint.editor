@@ -228,6 +228,10 @@
     display: none;
 }
 
+.sp-x-box.ui-sortable-helper .sp-x-separator{
+    display: none;
+}
+
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-box,
 .sp-x-buttons.sp-x-buttons-box {
     /*text-align: center;*/

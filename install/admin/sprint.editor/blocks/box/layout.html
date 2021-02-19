@@ -4,11 +4,12 @@
         <div class="sp-x-buttons-group">
             <span title="" class="sp-x-btn sp-x-pp-lt-open">&equiv;</span>
             <div class="sp-x-pp-lt">
-                {{?it.columns.length > 1}}
                 <div class="sp-x-pp-group">
+                    {{?it.columns.length > 1}}
                     <span title="Изменить название колонки" class="sp-x-btn sp-x-col-edit">Изменить название</span>
+                    {{?}}
+                    <span title="Сохранить сетку как макет" class="sp-x-btn sp-x-lt-save">Сохранить как макет</span>
                 </div>
-                {{?}}
                 <div class="sp-x-pp-group">
                     <span title="Вставить блоки" class="sp-x-btn sp-x-col-paste">&crarr; Вставить</span>
                     <span title="Копировать видимые блоки в сетке" class="sp-x-btn sp-x-col-copy">Копировать</span>
@@ -32,7 +33,7 @@
         {{?}}
         <div class="sp-x-lt-tabs" {{?it.columns.length== 1}}style="display:none" {{?}}>
             {{~it.columns :col}}
-            <span class="sp-x-btn sp-x-col-tab" data-uid="{{=col.uid}}">
+            <span class="sp-x-btn sp-x-btn-green sp-x-col-tab" data-uid="{{=col.uid}}">
                 <span class="sp-x-col-title">{{=col.title}}</span>
                 <span class="sp-x-col-index"></span>
             </span>
