@@ -44,7 +44,7 @@ if (CModule::IncludeModule('sprint.editor')) {
             }
         }
 
-        $result = AdminEditor::registerPacks();
+        $result['packs'] = AdminEditor::registerPacks();
         $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
     }
 }

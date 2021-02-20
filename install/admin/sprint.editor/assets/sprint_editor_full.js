@@ -44,6 +44,11 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     } else {
         currentEditorParams.enableChange = true;
     }
+    if (currentEditorParams.hasOwnProperty('enablePacks')) {
+        currentEditorParams.enablePacks = !!currentEditorParams.enablePacks;
+    } else {
+        currentEditorParams.enablePacks = true;
+    }
 
     if (currentEditorParams.jsonUserSettings.hasOwnProperty('enable_change')) {
         currentEditorParams.enableChange = !!currentEditorParams.jsonUserSettings.enable_change;
@@ -92,8 +97,9 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     });
 
     if (currentEditorParams.enableChange) {
-
-        packShow();
+        if (currentEditorParams.enablePacks) {
+            packShow();
+        }
 
         $editor.on('click', '.sp-x-col-copy', function (e) {
             e.preventDefault();
@@ -541,6 +547,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
                 uid: columnUid,
                 title: columnTitle,
                 enableChange: currentEditorParams.enableChange,
+                enablePacks: currentEditorParams.enablePacks,
                 compiled: sprint_editor.compileClasses(ltname, column.css, currentEditorParams)
             })
         });
@@ -549,6 +556,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         $editor.find('.sp-x-editor-lt').append(
             sprint_editor.renderTemplate('box-layout', {
                 enableChange: currentEditorParams.enableChange,
+                enablePacks: currentEditorParams.enablePacks,
                 columns: columns,
                 title: layoutTitle,
                 compiled: sprint_editor.compileSettings(layout, layoutSettings)

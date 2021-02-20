@@ -7,21 +7,18 @@ use DirectoryIterator;
 
 class AdminEditor
 {
-    protected static $initCounts   = 0;
-    protected static $css          = [];
-    protected static $js           = [];
-    protected static $allblocks    = [];
-    protected static $alllayouts   = [];
-    protected static $templates    = [];
-    protected static $selectValues = [];
+    protected static $initCounts = 0;
+    protected static $css        = [];
+    protected static $js         = [];
+    protected static $allblocks  = [];
+    protected static $alllayouts = [];
+    protected static $templates  = [];
 
     public static function init($params)
     {
         self::$initCounts++;
 
         if (self::$initCounts == 1) {
-            self::registerPacks();
-
             self::registerBlocks('blocks', false, false);
 
             self::registerBlocks('my', false, true);
@@ -79,6 +76,11 @@ class AdminEditor
             $enableChange = 1;
         }
 
+        $enablePacks = 0;
+        if (empty($params['userSettings']['DISABLE_PACKS'])) {
+            $enablePacks = 1;
+        }
+
         //default setings (simple editor)
         $userSettings = [
             'layout_enabled' => [
@@ -98,9 +100,11 @@ class AdminEditor
             ],
         ];
 
-        if (!empty($params['userSettings']['SETTINGS_NAME'])) {
-            self::registerSettingsAssets($params['userSettings']['SETTINGS_NAME']);
-            $userSettings = self::loadSettings($params['userSettings']['SETTINGS_NAME']);
+        $userSettingsName = !empty($params['userSettings']['SETTINGS_NAME']) ? $params['userSettings']['SETTINGS_NAME'] : '';
+
+        if ($userSettingsName) {
+            self::registerSettingsAssets($userSettingsName);
+            $userSettings = self::loadSettings($userSettingsName);
         }
 
         $filteredBlocks = self::filterBlocks($userSettings);
@@ -118,6 +122,8 @@ class AdminEditor
                 'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
                 'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
                 'enableChange'     => $enableChange,
+                'enablePacks'      => $enablePacks,
+                'userSettingsName' => $userSettingsName,
                 'inputName'        => $params['inputName'],
                 'uniqId'           => $params['uniqId'],
                 'firstRun'         => (self::$initCounts == 1) ? 1 : 0,
@@ -285,13 +291,13 @@ class AdminEditor
             $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/doT-master/doT.min.js');
         }
 
-        $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/sprint_editor.css');
+        $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/sprint_editor.css?2');
         foreach (self::$css as $val) {
             $APPLICATION->SetAdditionalCSS($val);
         }
 
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor.js');
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_full.js');
+        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor.js?2');
+        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_full.js?2');
 
         foreach (self::$js as $val) {
             $APPLICATION->AddHeadScript($val);
@@ -429,19 +435,16 @@ class AdminEditor
             }
 
             $title = !empty($content['packname']) ? $content['packname'] : $packuid;
-            $packName = 'pack_' . $packuid;
 
-            $packs[$packName] = [
-                'name'  => $packName,
+            $packs[$packuid] = [
+                'name'  => $packuid,
                 'title' => $title,
             ];
         }
 
         $packs = self::sortByStr($packs, 'title');
 
-        return [
-            'blocks' => Locale::convertToWin1251IfNeed($packs),
-        ];
+        return Locale::convertToWin1251IfNeed($packs);
     }
 
     protected static function filterBlocks($userSettings)
@@ -549,6 +552,13 @@ class AdminEditor
                 ],
             ];
         }
+        $layoutsToolbar = array_filter(
+            $layoutsToolbar,
+            function ($toolbarItem) {
+                return !empty($toolbarItem['blocks']);
+            }
+        );
+
         return $layoutsToolbar;
     }
 

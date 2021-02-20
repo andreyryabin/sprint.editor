@@ -42,7 +42,7 @@ class UserTypeEditor
         $settings = $arUserField['SETTINGS'];
         $newsettings = [];
 
-        foreach (['DEFAULT_VALUE', 'DISABLE_CHANGE', 'SETTINGS_NAME'] as $val) {
+        foreach (['DEFAULT_VALUE', 'DISABLE_CHANGE', 'DISABLE_PACKS', 'SETTINGS_NAME'] as $val) {
             $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
         }
 
@@ -61,6 +61,7 @@ class UserTypeEditor
                 'inputName'    => $arHtmlControl['NAME'] . '[DEFAULT_VALUE]',
                 'userSettings' => [
                     'DISABLE_CHANGE' => '',
+                    'DISABLE_PACKS'  => '',
                     'SETTINGS_NAME'  => $settings['SETTINGS_NAME'],
                 ],
                 'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE'],
@@ -69,11 +70,11 @@ class UserTypeEditor
 
         return AdminEditor::renderFile(
             Module::getModuleDir() . '/templates/user_type.php', [
-            'inputName'     => $arHtmlControl['NAME'],
-            'settings'      => $settings,
-            'userfiles'     => $userfiles,
-            'defaultEditor' => $defaultEditor,
-        ]
+                'inputName'     => $arHtmlControl['NAME'],
+                'settings'      => $settings,
+                'userfiles'     => $userfiles,
+                'defaultEditor' => $defaultEditor,
+            ]
         );
     }
 

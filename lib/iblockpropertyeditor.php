@@ -84,10 +84,10 @@ class IblockPropertyEditor
 
         return AdminEditor::renderFile(
             Module::getModuleDir() . '/templates/iblock_property.php', [
-            'inputName' => $strHTMLControlName['NAME'],
-            'settings'  => $settings,
-            'userfiles' => $userfiles,
-        ]
+                'inputName' => $strHTMLControlName['NAME'],
+                'settings'  => $settings,
+                'userfiles' => $userfiles,
+            ]
         );
     }
 
@@ -96,7 +96,7 @@ class IblockPropertyEditor
         $settings = $arProperty['USER_TYPE_SETTINGS'];
         $newsettings = [];
 
-        foreach (['DISABLE_CHANGE', 'SETTINGS_NAME'] as $val) {
+        foreach (['DISABLE_CHANGE', 'DISABLE_PACKS', 'SETTINGS_NAME'] as $val) {
             $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
         }
 
