@@ -3,7 +3,7 @@
 $request = Bitrix\Main\Context::getCurrent()->getRequest();
 $packsDir = Sprint\Editor\Module::getPacksDir();
 
-$currentSettingsId = (string)$request->get('currentSettingsId');
+$currentUserSettingsName = (string)$request->get('currentUserSettingsName');
 $currentPackId = (string)$request->get('currentPackId');
 
 if ($request->isPost()) {
@@ -18,11 +18,10 @@ if ($request->isPost()) {
         }
     }
     if ($request->getPost('save_pack')) {
-        $currentPackId = $request->getPost('currentPackId');
         $packContentJson = $request->getPost('pack_content');
         $packContent = json_decode($packContentJson, true);
         $packContent['packname'] = (string)$request->getPost('pack_title');
-        $packContentJson = json_encode($packContent);
+        $packContentJson = json_encode($packContent, JSON_UNESCAPED_UNICODE);
 
         $currentPackId = ($currentPackId) ? $currentPackId : md5($packContentJson);
 
@@ -35,7 +34,11 @@ if ($request->isPost()) {
 }
 
 $userfiles = Sprint\Editor\AdminEditor::getUserSettingsFiles();
-$packs = Sprint\Editor\AdminEditor::registerPacks();
+$packs = Sprint\Editor\AdminEditor::registerPacks(
+    [
+        'userSettingsName' => $currentUserSettingsName,
+    ]
+);
 
 $packContentJson = '';
 $currentPackName = '';
@@ -43,7 +46,7 @@ if ($currentPackId) {
     if (is_file($packsDir . $currentPackId . '.json')) {
         $packContentJson = file_get_contents($packsDir . $currentPackId . '.json');
         $packContent = json_decode($packContentJson, true);
-        $currentPackName = $packContent['packname'] ?? '';
+        $currentPackName = (string)(isset($packContent['packname']) ? $packContent['packname'] : '');
     }
 }
 
@@ -53,7 +56,7 @@ $editorParams = [
     'inputName'    => 'pack_content',
     'defaultValue' => '',
     'userSettings' => [
-        'SETTINGS_NAME'  => $currentSettingsId,
+        'SETTINGS_NAME'  => $currentUserSettingsName,
         'DISABLE_CHANGE' => '',
         'DISABLE_PACKS'  => 'Y',
     ],
@@ -66,34 +69,48 @@ $editorParams = [
             <tbody>
             <tr class="">
                 <td class="adm-detail-valign-top" style="width: 40%">
-                    <form action="" method="get">
-                        <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
-                        <div style="margin-bottom: 10px">
-                            <?= GetMessage('SPRINT_EDITOR_field_pack') ?><br/>
-                            <select style="width: 250px" name="currentPackId">
-                                <option value=""><?= GetMessage('SPRINT_EDITOR_new_pack') ?></option>
-                                <? foreach ($packs as $pack) { ?>
-                                    <option <?= ($currentPackId == $pack['name'] ? 'selected="selected"' : '') ?> value="<?= $pack['name'] ?>"><?= $pack['title'] ?></option>
-                                <? } ?>
-                            </select>
-
+                    <div style="margin-bottom: 10px">
+                        <?= GetMessage('SPRINT_EDITOR_pack_user_settings') ?><br/>
+                        <? foreach ($userfiles as $settingsName => $settingsTitle) { ?>
+                            <div style="margin-bottom: 10px;">
+                                <a class="adm-btn <?= ($currentUserSettingsName == $settingsName ? 'adm-btn-active' : '') ?>"
+                                   href="sprint_editor.php?<?= http_build_query(
+                                       [
+                                           'lang'                    => LANGUAGE_ID,
+                                           'currentUserSettingsName' => $settingsName,
+                                       ]
+                                   ) ?>"><?= $settingsTitle ?></a>
+                            </div>
+                        <? } ?>
+                    </div>
+                    <div style="margin-bottom: 10px">
+                        <?= GetMessage('SPRINT_EDITOR_field_packs') ?><br/>
+                        <div style="margin-bottom: 10px;">
+                            <a class="adm-btn adm-btn-save <?= ($currentPackId == '' ? 'adm-btn-save-active' : '') ?>"
+                               href="sprint_editor.php?<?= http_build_query(
+                                   [
+                                       'lang'                    => LANGUAGE_ID,
+                                       'currentPackId'           => '',
+                                       'currentUserSettingsName' => $currentUserSettingsName,
+                                   ]
+                               ) ?>">Новый макет</a>
                         </div>
-                        <div style="margin-bottom: 10px">
-                            <?= GetMessage('SPRINT_EDITOR_pack_user_settings') ?> <br/>
-                            <select style="width: 250px" name="currentSettingsId">
-                                <? foreach ($userfiles as $settingsId => $settingsName) { ?>
-                                    <option <?= ($currentSettingsId == $settingsId ? 'selected="selected"' : '') ?> value="<?= $settingsId ?>"><?= $settingsName ?></option>
-                                <? } ?>
-                            </select>
-                        </div>
-                        <div style="margin-bottom: 10px">
-                            <input type="submit" value="<?= GetMessage('SPRINT_EDITOR_pack_open') ?>">
-                        </div>
-                    </form>
+                        <? foreach ($packs as $pack) { ?>
+                            <div style="margin-bottom: 10px;">
+                                <a class="adm-btn <?= ($currentPackId == $pack['name'] ? 'adm-btn-active' : '') ?>"
+                                   href="sprint_editor.php?<?= http_build_query(
+                                       [
+                                           'lang'                    => LANGUAGE_ID,
+                                           'currentPackId'           => $pack['name'],
+                                           'currentUserSettingsName' => $currentUserSettingsName,
+                                       ]
+                                   ) ?>"><?= $pack['title'] ?></a>
+                            </div>
+                        <? } ?>
+                    </div>
                 </td>
                 <td class="adm-detail-valign-top" style="width: 60%">
                     <form action="" method="post">
-                        <input type="hidden" name="currentPackId" value="<?= $currentPackId ?>">
                         <div style="background-color: #e3ecee;border: 1px solid #c4ced2;padding: 10px;margin-bottom: 10px">
                             <?= GetMessage('SPRINT_EDITOR_pack_name') ?><br/>
                             <input style="width: 78%" name="pack_title" value="<?= $currentPackName ?>" type="text">

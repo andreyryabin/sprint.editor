@@ -59,7 +59,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_pack_del"          => "Удалить макет",
 
     "SPRINT_EDITOR_new_pack"           => "Новый макет",
-    "SPRINT_EDITOR_field_pack"         => "Макет",
+    "SPRINT_EDITOR_field_packs"        => "Макеты",
     "SPRINT_EDITOR_pack_user_settings" => "Пользовательские настройки",
     "SPRINT_EDITOR_pack_open"          => "Открыть",
     "SPRINT_EDITOR_pack_name"          => "Название макета",

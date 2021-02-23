@@ -100,7 +100,7 @@ class AdminEditor
             ],
         ];
 
-        $userSettingsName = !empty($params['userSettings']['SETTINGS_NAME']) ? $params['userSettings']['SETTINGS_NAME'] : '';
+        $userSettingsName = !empty($params['userSettings']['SETTINGS_NAME']) ? (string)$params['userSettings']['SETTINGS_NAME'] : '';
 
         if ($userSettingsName) {
             self::registerSettingsAssets($userSettingsName);
@@ -412,8 +412,10 @@ class AdminEditor
         }
     }
 
-    public static function registerPacks()
+    public static function registerPacks($filter = [])
     {
+        $userSettingsName = (string)(isset($filter['userSettingsName']) ? $filter['userSettingsName'] : '');
+
         $dir = Module::getPacksDir();
         $packs = [];
         $iterator = new DirectoryIterator($dir);
@@ -432,6 +434,12 @@ class AdminEditor
 
             if (!isset($content['blocks']) || !isset($content['layouts'])) {
                 continue;
+            }
+
+            if (isset($content['userSettingsName'])){
+                if ($content['userSettingsName'] != $userSettingsName) {
+                    continue;
+                }
             }
 
             $title = !empty($content['packname']) ? $content['packname'] : $packuid;

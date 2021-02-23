@@ -34,11 +34,12 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     if (!currentEditorValue.jsonValue.layouts) {
         currentEditorValue.jsonValue.layouts = [];
     }
-
-    if (!currentEditorParams.jsonUserSettings) {
-        currentEditorParams.jsonUserSettings = {};
+    if (!currentEditorValue.jsonValue) {
+        currentEditorValue.jsonValue = {};
     }
-
+    if (!currentEditorParams.userSettingsName) {
+        currentEditorParams.userSettingsName = '';
+    }
     if (currentEditorParams.hasOwnProperty('enableChange')) {
         currentEditorParams.enableChange = !!currentEditorParams.enableChange;
     } else {
@@ -663,7 +664,8 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
     function packSave(packname, $selectors) {
         $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
-            save: saveToString(packname, $selectors)
+            save: saveToString(packname, $selectors),
+            userSettingsName:currentEditorParams.userSettingsName
         }, function (resp) {
             if (resp) {
                 $editor.find('.sp-x-packs-loader').html(
@@ -675,7 +677,8 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
     function packShow() {
         $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
-            show: 1
+            show: 1,
+            userSettingsName:currentEditorParams.userSettingsName
         }, function (resp) {
             if (resp) {
                 $editor.find('.sp-x-packs-loader').html(
@@ -687,7 +690,8 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
     function packDelete(packname) {
         $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
-            del: packname
+            del: packname,
+            userSettingsName:currentEditorParams.userSettingsName
         }, function (resp) {
             if (resp) {
                 $editor.find('.sp-x-packs-loader').html(
@@ -699,7 +703,8 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
     function packLoad(packname) {
         $.get('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
-            load: packname
+            load: packname,
+            userSettingsName:currentEditorParams.userSettingsName
         }, function (pack) {
 
             if (!pack || !pack.layouts || !pack.blocks) {
@@ -875,6 +880,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             resultString = sprint_editor.safeStringify({
                 packname: packname,
                 version: 2,
+                userSettingsName:currentEditorParams.userSettingsName,
                 blocks: blocks,
                 layouts: layouts
             });

@@ -19,32 +19,56 @@ global $APPLICATION;
 global $USER;
 global $DB;
 
+$request = Bitrix\Main\Context::getCurrent()->getRequest();
+
 $result = [];
 
 if (CModule::IncludeModule('sprint.editor')) {
-    if (isset($_REQUEST['load'])) {
-        $packid = $_REQUEST['load'];
+    $userSettingsName = (string)$request->get('userSettingsName');
+
+    if ($request->get('load')) {
+        $packid = $request->get('load');
         $dir = Sprint\Editor\Module::getPacksDir();
-        $result = file_get_contents($dir . $packid . '.json');
-        $result = json_decode($result, true);
-    } else {
-        if (isset($_REQUEST['save'])) {
-            $json = $_REQUEST['save'];
-            $packid = md5($json);
-            $dir = Sprint\Editor\Module::getPacksDir();
-            file_put_contents($dir . $packid . '.json', $json);
+        $file = $dir . $packid . '.json';
+        if (is_file($file)) {
+            $result = file_get_contents($dir . $packid . '.json');
+            $result = json_decode($result, true);
         }
+    }
+    if ($request->get('save')) {
+        $json = $request->get('save');
+        $packid = md5($json);
+        $dir = Sprint\Editor\Module::getPacksDir();
+        file_put_contents($dir . $packid . '.json', $json);
+        $result['packs'] = AdminEditor::registerPacks(
+            [
+                'userSettingsName' => $userSettingsName,
+            ]
+        );
+        $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
+    }
 
-        if (isset($_REQUEST['del'])) {
-            $packid = $_REQUEST['del'];
-            $dir = Sprint\Editor\Module::getPacksDir();
-            $file = $dir . $packid . '.json';
-            if (is_file($file)) {
-                unlink($file);
-            }
+    if ($request->get('del')) {
+        $packid = $request->get('del');
+        $dir = Sprint\Editor\Module::getPacksDir();
+        $file = $dir . $packid . '.json';
+        if (is_file($file)) {
+            unlink($file);
         }
+        $result['packs'] = AdminEditor::registerPacks(
+            [
+                'userSettingsName' => $userSettingsName,
+            ]
+        );
+        $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
+    }
 
-        $result['packs'] = AdminEditor::registerPacks();
+    if ($request->get('show')) {
+        $result['packs'] = AdminEditor::registerPacks(
+            [
+                'userSettingsName' => $userSettingsName,
+            ]
+        );
         $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
     }
 }

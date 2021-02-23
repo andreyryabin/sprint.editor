@@ -95,6 +95,7 @@
             uniqid: "<?= $uniqId ?>",
             enableChange: <?=$enableChange?>,
             enablePacks: <?=$enablePacks?>,
+            userSettingsName: "<?=$userSettingsName?>",
             jsonUserSettings: <?=$jsonUserSettings?>,
         }, {
             jsonValue: <?=$jsonValue?>
