@@ -113,6 +113,11 @@
     padding: 5px;
 }
 
+.sp-x-box-collapsed > .sp-x-box-block {
+    display: none;
+}
+
+
 .sp-x-lt,
 .sp-x-footer {
     background: #fff;
@@ -189,6 +194,11 @@
 .sp-x-separator {
     margin-top: 15px;
     margin-bottom: 13px;
+}
+
+.bx-core-adm-dialog .sp-x-box-collapsed div.sp-x-separator,
+.sp-x-box-collapsed .sp-x-separator {
+    margin-top: 0;
 }
 
 .sp-x-separator-lt {
@@ -304,6 +314,7 @@
     border: 1px solid #ccc;
     padding: 6px;
     min-width: 18px;
+    line-height: 16px;
 }
 
 a.sp-x-btn,

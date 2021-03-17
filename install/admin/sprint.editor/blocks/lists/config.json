@@ -1,7 +1,4 @@
 {
   "title": "Список",
-  "sort": "30",
-  "templates": [
-    "items.html"
-  ]
+  "sort": "30"
 }

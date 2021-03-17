@@ -91,6 +91,11 @@ var sprint_editor = {
         return '';
     },
 
+    renderString: function(str, data) {
+        var func = window.doT.template(str);
+        return func(data);
+    },
+
     markImagesForDelete: function (items) {
         this._imagesdelete = jQuery.extend({}, this._imagesdelete, items);
     },

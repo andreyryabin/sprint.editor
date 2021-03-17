@@ -1,7 +1,23 @@
 .sp-block-lists .sp-item {
     margin-bottom: 6px;
+    position: relative;
+}
+
+.sp-block-lists .sp-subitems {
+    margin-top: 6px;
 }
 
 .sp-block-lists .sp-item input {
     width: 78%;
+}
+
+.sp-block-lists .sp-item-group{
+    font-size: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+.sp-block-lists .sp-subitems{
+    padding-left: 20px;
 }

@@ -188,11 +188,21 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             e.preventDefault();
             popupToggle($(this));
         });
+        /*$editor.on('mouseenter', '.sp-x-pp-lt-hover', function (e) {
+            e.preventDefault();
+            popupToggle($(this).children('.sp-x-pp-lt-open'),true);
+        });*/
+
 
         $editor.on('click', '.sp-x-pp-box-open', function (e) {
             e.preventDefault();
             popupToggle($(this));
         });
+        /*$editor.on('mouseenter', '.sp-x-pp-box-hover', function (e) {
+            e.preventDefault();
+            popupToggle($(this).children('.sp-x-pp-box-open'),true);
+        });*/
+
 
         $editor.on('click', '.sp-x-pp-blocks-open', function (e) {
             e.preventDefault();
@@ -339,6 +349,34 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         });
     }
 
+    $editor.on('click', '.sp-x-box-collapse', function (e) {
+        e.preventDefault();
+        var $box = $(this).closest('.sp-x-box');
+        $box.toggleClass('sp-x-box-collapsed');
+        popupToggle();
+    });
+
+    $editor.on('click', '.sp-x-lt-collapse', function (e) {
+        e.preventDefault();
+        var $grid = $(this).closest('.sp-x-lt');
+        var $col = getActiveColumn($grid);
+        var first = true;
+        var collapse = true;
+        $col.find('.sp-x-box').each(function () {
+            if (first) {
+                collapse = $(this).hasClass('sp-x-box-collapsed')
+                first = false;
+            }
+            if (collapse) {
+                $(this).removeClass('sp-x-box-collapsed');
+            } else {
+                $(this).addClass('sp-x-box-collapsed');
+            }
+        });
+
+        popupToggle();
+    });
+
     $editor.on('click', '.sp-x-col-tab', function (e) {
         selectColumn($(this).data('uid'));
     });
@@ -365,7 +403,8 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         $(document).scrollTop($elem.offset().top - 80);
     }
 
-    function popupToggle($handler) {
+    function popupToggle($handler, hoverMode) {
+        hoverMode = !!hoverMode;
 
         function popupHide() {
             $editor.find('.sp-x-pp-box').hide();
@@ -400,6 +439,12 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         if (!$popup) {
             popupHide();
             return true;
+        }
+
+        if (hoverMode){
+            if ($handler.hasClass('sp-x-active')) {
+                return true;
+            }
         }
 
         if ($handler.hasClass('sp-x-active')) {
@@ -665,7 +710,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     function packSave(packname, $selectors) {
         $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
             save: saveToString(packname, $selectors),
-            userSettingsName:currentEditorParams.userSettingsName
+            userSettingsName: currentEditorParams.userSettingsName
         }, function (resp) {
             if (resp) {
                 $editor.find('.sp-x-packs-loader').html(
@@ -678,7 +723,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     function packShow() {
         $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
             show: 1,
-            userSettingsName:currentEditorParams.userSettingsName
+            userSettingsName: currentEditorParams.userSettingsName
         }, function (resp) {
             if (resp) {
                 $editor.find('.sp-x-packs-loader').html(
@@ -691,7 +736,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     function packDelete(packname) {
         $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
             del: packname,
-            userSettingsName:currentEditorParams.userSettingsName
+            userSettingsName: currentEditorParams.userSettingsName
         }, function (resp) {
             if (resp) {
                 $editor.find('.sp-x-packs-loader').html(
@@ -704,7 +749,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     function packLoad(packname) {
         $.get('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
             load: packname,
-            userSettingsName:currentEditorParams.userSettingsName
+            userSettingsName: currentEditorParams.userSettingsName
         }, function (pack) {
 
             if (!pack || !pack.layouts || !pack.blocks) {
@@ -880,7 +925,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             resultString = sprint_editor.safeStringify({
                 packname: packname,
                 version: 2,
-                userSettingsName:currentEditorParams.userSettingsName,
+                userSettingsName: currentEditorParams.userSettingsName,
                 blocks: blocks,
                 layouts: layouts
             });
