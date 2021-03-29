@@ -41,6 +41,7 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
 
                 btns = [
                     ['viewHTML'],
+                    ['formatting'],
                     ['myCss'],
                     ['strong', 'em', 'underline', 'del'],
                     ['link','specialChars'],
@@ -52,6 +53,7 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
             } else {
                 btns = [
                     ['viewHTML'],
+                    ['formatting'],
                     ['strong', 'em', 'underline', 'del'],
                     ['link','specialChars'],
                     ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
