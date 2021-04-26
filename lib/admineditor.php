@@ -20,6 +20,7 @@ class AdminEditor
 
         if (self::$initCounts == 1) {
             self::registerBlocks('blocks', false, false);
+            self::registerBlocks('blocks', true, false);
 
             self::registerBlocks('my', false, true);
             self::registerBlocks('my', true, true);
