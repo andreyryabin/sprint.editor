@@ -441,7 +441,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             return true;
         }
 
-        if (hoverMode){
+        if (hoverMode) {
             if ($handler.hasClass('sp-x-active')) {
                 return true;
             }
@@ -921,7 +921,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
         var resultString = '';
 
-        if (layouts.length > 0) {
+        if (layouts.length > 0 && blocks.length > 0) {
             resultString = sprint_editor.safeStringify({
                 packname: packname,
                 version: 2,

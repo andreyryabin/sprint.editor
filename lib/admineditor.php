@@ -29,25 +29,6 @@ class AdminEditor
             self::registerAssets();
         }
 
-        //default value (simple editor)
-        $defaultValue = json_encode(
-            [
-                'packname' => '',
-                'version'  => 2,
-                'blocks'   => [],
-                'layouts'  => [
-                    [
-                        'settings' => [],
-                        'columns'  => [
-                            [
-                                'css' => '',
-                            ],
-                        ],
-                    ],
-                ],
-            ]
-        );
-
         $params = array_merge(
             [
                 'uniqId'       => '',
@@ -57,20 +38,6 @@ class AdminEditor
                 'userSettings' => '',
             ], $params
         );
-
-        if (empty($params['defaultValue'])) {
-            $params['defaultValue'] = $defaultValue;
-        }
-
-        $value = self::prepareValue($params['value']);
-        if (empty($value['blocks']) && empty($value['layouts'])) {
-            $value = self::prepareValue($params['defaultValue']);
-        }
-
-        $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
-        foreach ($events as $aEvent) {
-            ExecuteModuleEventEx($aEvent, [&$value['blocks']]);
-        }
 
         $enableChange = 0;
         if (empty($params['userSettings']['DISABLE_CHANGE'])) {
@@ -101,7 +68,10 @@ class AdminEditor
             ],
         ];
 
-        $userSettingsName = !empty($params['userSettings']['SETTINGS_NAME']) ? (string)$params['userSettings']['SETTINGS_NAME'] : '';
+        $userSettingsName = '';
+        if (!empty($params['userSettings']['SETTINGS_NAME'])) {
+            $userSettingsName = (string)$params['userSettings']['SETTINGS_NAME'];
+        }
 
         if ($userSettingsName) {
             self::registerSettingsAssets($userSettingsName);
@@ -113,6 +83,36 @@ class AdminEditor
 
         $filteredLayouts = self::filterLayouts($userSettings);
         $layoutsToolbar = self::getLayoutsToolbar($userSettings, $filteredLayouts);
+
+        $value = self::prepareValue($params['value']);
+        if (empty($value['blocks']) && empty($value['layouts'])) {
+            $value = self::prepareValue($params['defaultValue']);
+        }
+
+        $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
+        foreach ($events as $aEvent) {
+            ExecuteModuleEventEx($aEvent, [&$value['blocks']]);
+        }
+
+        if (empty($filteredLayouts) && empty($value['blocks']) && empty($value['layouts'])) {
+            $defblocks = [];
+            $deflayouts = [
+                [
+                    'settings' => [],
+                    'columns'  => [
+                        [
+                            'css' => '',
+                        ],
+                    ],
+                ],
+            ];
+            $value = [
+                'packname' => '',
+                'version'  => 2,
+                'blocks'   => $defblocks,
+                'layouts'  => $deflayouts,
+            ];
+        }
 
         return self::renderFile(
             Module::getModuleDir() . '/templates/admin_editor.php', [
@@ -210,7 +210,7 @@ class AdminEditor
         if (!empty($value) && !isset($value['version'])) {
             $newlayots = [];
 
-            foreach ($value['layouts'] as $index => $layout) {
+            foreach ($value['layouts'] as $layout) {
                 $newcolumns = [];
                 foreach ($layout as $column) {
                     $newcolumns[] = [
@@ -253,7 +253,7 @@ class AdminEditor
     {
         $value = self::prepareValue($jsonValue);
         $search = '';
-        foreach ($value['blocks'] as $key => $val) {
+        foreach ($value['blocks'] as $val) {
             if ($val['name'] == 'text' && !empty($val['value'])) {
                 $search .= ' ' . $val['value'];
             }
@@ -437,7 +437,7 @@ class AdminEditor
                 continue;
             }
 
-            if (isset($content['userSettingsName'])){
+            if (isset($content['userSettingsName'])) {
                 if ($content['userSettingsName'] != $userSettingsName) {
                     continue;
                 }
