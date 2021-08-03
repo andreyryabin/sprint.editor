@@ -42,7 +42,7 @@ class UserTypeEditor
         $settings = $arUserField['SETTINGS'];
         $newsettings = [];
 
-        foreach (['DEFAULT_VALUE', 'DISABLE_CHANGE', 'DISABLE_PACKS', 'SETTINGS_NAME'] as $val) {
+        foreach (['DEFAULT_VALUE', 'DISABLE_CHANGE', 'SETTINGS_NAME'] as $val) {
             $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
         }
 
@@ -61,7 +61,6 @@ class UserTypeEditor
                 'inputName'    => $arHtmlControl['NAME'] . '[DEFAULT_VALUE]',
                 'userSettings' => [
                     'DISABLE_CHANGE' => '',
-                    'DISABLE_PACKS'  => '',
                     'SETTINGS_NAME'  => $settings['SETTINGS_NAME'],
                 ],
                 'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE'],

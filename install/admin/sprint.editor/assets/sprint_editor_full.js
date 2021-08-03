@@ -45,11 +45,6 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     } else {
         currentEditorParams.enableChange = true;
     }
-    if (currentEditorParams.hasOwnProperty('enablePacks')) {
-        currentEditorParams.enablePacks = !!currentEditorParams.enablePacks;
-    } else {
-        currentEditorParams.enablePacks = true;
-    }
 
     if (currentEditorParams.jsonUserSettings.hasOwnProperty('enable_change')) {
         currentEditorParams.enableChange = !!currentEditorParams.jsonUserSettings.enable_change;
@@ -98,10 +93,6 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     });
 
     if (currentEditorParams.enableChange) {
-        if (currentEditorParams.enablePacks) {
-            packShow();
-        }
-
         $editor.on('click', '.sp-x-col-copy', function (e) {
             e.preventDefault();
             var $grid = $(this).closest('.sp-x-lt');
@@ -172,16 +163,6 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         $editor.on('click', '.sp-x-footer .sp-x-btn', function (e) {
             e.stopPropagation();
             addByNameLayout($(this));
-        });
-
-        $editor.on('click', '.sp-x-lt-save', function (e) {
-            e.preventDefault();
-            var packname = prompt(BX.message('SPRINT_EDITOR_pack_change'));
-            if (packname) {
-                var $selectors = jQuery([]).pushStack($(this).closest('.sp-x-lt'));
-                packSave('' + packname, $selectors);
-                popupToggle($(this));
-            }
         });
 
         $editor.on('click', '.sp-x-pp-lt-open', function (e) {
@@ -468,25 +449,8 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             layoutEmptyAdd(name);
             checkClipboardButtons();
 
-        } else if (name.indexOf('pack_') === 0) {
-            name = name.substr(5);
+        } else {
             packLoad(name);
-        } else if (name === 'delete_pack') {
-            var packname = $handler.data('pack');
-            if (packname.indexOf('pack_') === 0) {
-                packname = packname.substr(5);
-                if (confirm(BX.message('SPRINT_EDITOR_pack_del_confirm'))) {
-                    packDelete(packname);
-                }
-            } else {
-                alert(BX.message('SPRINT_EDITOR_pack_del_error'))
-            }
-
-        } else if (name === 'save_pack') {
-            var packname = prompt(BX.message('SPRINT_EDITOR_pack_change'));
-            if (packname) {
-                packSave('' + packname);
-            }
         }
     }
 
@@ -593,7 +557,6 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
                 uid: columnUid,
                 title: columnTitle,
                 enableChange: currentEditorParams.enableChange,
-                enablePacks: currentEditorParams.enablePacks,
                 compiled: sprint_editor.compileClasses(ltname, column.css, currentEditorParams)
             })
         });
@@ -602,7 +565,6 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         $editor.find('.sp-x-editor-lt').append(
             sprint_editor.renderTemplate('box-layout', {
                 enableChange: currentEditorParams.enableChange,
-                enablePacks: currentEditorParams.enablePacks,
                 columns: columns,
                 title: layoutTitle,
                 compiled: sprint_editor.compileSettings(layout, layoutSettings)
@@ -705,45 +667,6 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
         return $box;
         // scrollTo($el);
-    }
-
-    function packSave(packname, $selectors) {
-        $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
-            save: saveToString(packname, $selectors),
-            userSettingsName: currentEditorParams.userSettingsName
-        }, function (resp) {
-            if (resp) {
-                $editor.find('.sp-x-packs-loader').html(
-                    sprint_editor.renderTemplate('box-select-pack', resp)
-                );
-            }
-        });
-    }
-
-    function packShow() {
-        $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
-            show: 1,
-            userSettingsName: currentEditorParams.userSettingsName
-        }, function (resp) {
-            if (resp) {
-                $editor.find('.sp-x-packs-loader').html(
-                    sprint_editor.renderTemplate('box-select-pack', resp)
-                );
-            }
-        });
-    }
-
-    function packDelete(packname) {
-        $.post('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
-            del: packname,
-            userSettingsName: currentEditorParams.userSettingsName
-        }, function (resp) {
-            if (resp) {
-                $editor.find('.sp-x-packs-loader').html(
-                    sprint_editor.renderTemplate('box-select-pack', resp)
-                );
-            }
-        });
     }
 
     function packLoad(packname) {

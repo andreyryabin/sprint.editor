@@ -34,11 +34,7 @@ if ($request->isPost()) {
 }
 
 $userfiles = Sprint\Editor\AdminEditor::getUserSettingsFiles();
-$packs = Sprint\Editor\AdminEditor::registerPacks(
-    [
-        'userSettingsName' => $currentUserSettingsName,
-    ]
-);
+$packs = Sprint\Editor\AdminEditor::registerPacks($currentUserSettingsName);
 
 $packContentJson = '';
 $currentPackName = '';
@@ -58,7 +54,6 @@ $editorParams = [
     'userSettings' => [
         'SETTINGS_NAME'  => $currentUserSettingsName,
         'DISABLE_CHANGE' => '',
-        'DISABLE_PACKS'  => 'Y',
     ],
 ];
 
@@ -71,7 +66,7 @@ $editorParams = [
                 <td class="adm-detail-valign-top" style="width: 40%">
                     <div style="margin-bottom: 10px">
                         <?= GetMessage('SPRINT_EDITOR_pack_user_settings') ?><br/>
-                        <? foreach ($userfiles as $settingsName => $settingsTitle) { ?>
+                        <?php foreach ($userfiles as $settingsName => $settingsTitle) { ?>
                             <div style="margin-bottom: 10px;">
                                 <a class="adm-btn <?= ($currentUserSettingsName == $settingsName ? 'adm-btn-active' : '') ?>"
                                    href="sprint_editor.php?<?= http_build_query(
@@ -81,7 +76,7 @@ $editorParams = [
                                        ]
                                    ) ?>"><?= $settingsTitle ?></a>
                             </div>
-                        <? } ?>
+                        <?php } ?>
                     </div>
                     <div style="margin-bottom: 10px">
                         <?= GetMessage('SPRINT_EDITOR_field_packs') ?><br/>
@@ -95,7 +90,7 @@ $editorParams = [
                                    ]
                                ) ?>">Новый макет</a>
                         </div>
-                        <? foreach ($packs as $pack) { ?>
+                        <?php foreach ($packs as $pack) { ?>
                             <div style="margin-bottom: 10px;">
                                 <a class="adm-btn <?= ($currentPackId == $pack['name'] ? 'adm-btn-active' : '') ?>"
                                    href="sprint_editor.php?<?= http_build_query(
@@ -106,7 +101,7 @@ $editorParams = [
                                        ]
                                    ) ?>"><?= $pack['title'] ?></a>
                             </div>
-                        <? } ?>
+                        <?php } ?>
                     </div>
                 </td>
                 <td class="adm-detail-valign-top" style="width: 60%">
@@ -118,9 +113,9 @@ $editorParams = [
                         <?= Sprint\Editor\AdminEditor::init($editorParams); ?>
                         <div style="background-color: #e3ecee;border: 1px solid #c4ced2;padding: 10px;margin-bottom: 10px">
                             <input class="adm-btn" name="save_pack" value="<?= GetMessage('SPRINT_EDITOR_pack_save') ?>" type="submit">
-                            <? if ($currentPackId) { ?>
+                            <?php if ($currentPackId) { ?>
                                 <input class="adm-btn" name="delete_pack" value="<?= GetMessage('SPRINT_EDITOR_pack_delete') ?>" type="submit">
-                            <? } ?>
+                            <?php } ?>
                         </div>
                     </form>
                 </td>

@@ -44,11 +44,6 @@ class AdminEditor
             $enableChange = 1;
         }
 
-        $enablePacks = 0;
-        if (empty($params['userSettings']['DISABLE_PACKS'])) {
-            $enablePacks = 1;
-        }
-
         //default setings (simple editor)
         $userSettings = [
             'layout_enabled' => [
@@ -81,7 +76,11 @@ class AdminEditor
         $filteredBlocks = self::filterBlocks($userSettings);
         $blocksToolbar = self::getBlocksToolbar($userSettings, $filteredBlocks);
 
-        $filteredLayouts = self::filterLayouts($userSettings);
+        $filteredLayouts = array_merge(
+            self::filterLayouts($userSettings),
+            self::registerPacks($userSettingsName)
+        );
+
         $layoutsToolbar = self::getLayoutsToolbar($userSettings, $filteredLayouts);
 
         $value = self::prepareValue($params['value']);
@@ -123,7 +122,6 @@ class AdminEditor
                 'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
                 'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
                 'enableChange'     => $enableChange,
-                'enablePacks'      => $enablePacks,
                 'userSettingsName' => $userSettingsName,
                 'inputName'        => $params['inputName'],
                 'uniqId'           => $params['uniqId'],
@@ -413,10 +411,8 @@ class AdminEditor
         }
     }
 
-    public static function registerPacks($filter = [])
+    public static function registerPacks($userSettingsName)
     {
-        $userSettingsName = (string)(isset($filter['userSettingsName']) ? $filter['userSettingsName'] : '');
-
         $dir = Module::getPacksDir();
         $packs = [];
         $iterator = new DirectoryIterator($dir);

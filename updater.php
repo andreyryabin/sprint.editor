@@ -29,6 +29,6 @@ if ($updater && $updater instanceof \CUpdater) {
         $updater->CopyFiles("install/admin/", "admin/");
     }
 
-    //3.11.1
+    //3.16.1
 
 }

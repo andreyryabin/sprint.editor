@@ -1,7 +1,5 @@
 <?php
 
-use Sprint\Editor\AdminEditor;
-
 define("PUBLIC_AJAX_MODE", true);
 
 define("NO_KEEP_STATISTIC", true);
@@ -34,42 +32,6 @@ if (CModule::IncludeModule('sprint.editor')) {
             $result = file_get_contents($dir . $packid . '.json');
             $result = json_decode($result, true);
         }
-    }
-    if ($request->get('save')) {
-        $json = $request->get('save');
-        $packid = md5($json);
-        $dir = Sprint\Editor\Module::getPacksDir();
-        file_put_contents($dir . $packid . '.json', $json);
-        $result['packs'] = AdminEditor::registerPacks(
-            [
-                'userSettingsName' => $userSettingsName,
-            ]
-        );
-        $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
-    }
-
-    if ($request->get('del')) {
-        $packid = $request->get('del');
-        $dir = Sprint\Editor\Module::getPacksDir();
-        $file = $dir . $packid . '.json';
-        if (is_file($file)) {
-            unlink($file);
-        }
-        $result['packs'] = AdminEditor::registerPacks(
-            [
-                'userSettingsName' => $userSettingsName,
-            ]
-        );
-        $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
-    }
-
-    if ($request->get('show')) {
-        $result['packs'] = AdminEditor::registerPacks(
-            [
-                'userSettingsName' => $userSettingsName,
-            ]
-        );
-        $result['mess_pack_del'] = GetMessage('SPRINT_EDITOR_pack_del');
     }
 }
 
