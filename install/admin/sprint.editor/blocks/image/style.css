@@ -12,6 +12,7 @@
 .sp-block-image .sp-result img {
     display: block;
     margin: 0 auto;
+    padding: 5px;
 }
 
 .sp-block-image .sp-panel {
