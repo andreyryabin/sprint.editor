@@ -333,7 +333,24 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     $editor.on('click', '.sp-x-box-collapse', function (e) {
         e.preventDefault();
         var $box = $(this).closest('.sp-x-box');
-        $box.toggleClass('sp-x-box-collapsed');
+        $box.addClass('sp-x-box-collapsed');
+        popupToggle();
+    });
+
+    $editor.on('click', '.sp-x-box-expand', function (e) {
+        e.preventDefault();
+        var $box = $(this).closest('.sp-x-box');
+        $box.removeClass('sp-x-box-collapsed');
+        popupToggle();
+    });
+
+    $editor.on('click', '.sp-x-lt-expand', function (e) {
+        e.preventDefault();
+        var $grid = $(this).closest('.sp-x-lt');
+        var $col = getActiveColumn($grid);
+        $col.find('.sp-x-box').each(function () {
+            $(this).removeClass('sp-x-box-collapsed');
+        });
         popupToggle();
     });
 
@@ -341,20 +358,9 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         e.preventDefault();
         var $grid = $(this).closest('.sp-x-lt');
         var $col = getActiveColumn($grid);
-        var first = true;
-        var collapse = true;
         $col.find('.sp-x-box').each(function () {
-            if (first) {
-                collapse = $(this).hasClass('sp-x-box-collapsed')
-                first = false;
-            }
-            if (collapse) {
-                $(this).removeClass('sp-x-box-collapsed');
-            } else {
-                $(this).addClass('sp-x-box-collapsed');
-            }
+            $(this).addClass('sp-x-box-collapsed');
         });
-
         popupToggle();
     });
 

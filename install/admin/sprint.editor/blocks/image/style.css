@@ -1,38 +1,35 @@
-.sp-block-image {
+.sp-block-image .sp-rel {
     position: relative;
-}
-
-.sp-block-image .sp-col-item {
-    width: 210px;
-}
-
-.sp-block-image .sp-col-item {
-    width: 200px;
 }
 
 .sp-block-image .sp-result {
-    position: relative;
-    width: 200px;
-    height: 200px;
+    min-height: 210px;
     background: #ccc;
     overflow: hidden;
-    text-align: center;
+    text-align: left;
 }
 
 .sp-block-image .sp-result img {
-
+    display: block;
+    margin: 0 auto;
 }
 
-.sp-block-image .sp-col-desc {
+.sp-block-image .sp-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
     background: #eee;
+    width: 50%;
+    display: none;
+}
+
+.sp-block-image.sp-show .sp-panel {
+    display: block;
 }
 
 .sp-block-image .sp-source {
     background: #FFEBC1;
-}
-
-.sp-block-image.sp-show .sp-source {
-    display: block;
 }
 
 .sp-block-image .sp-download-url,

@@ -75,7 +75,7 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
 
-        $el.on('click', '.sp-toggle', function () {
+        $el.on('click', '.sp-files-toggle', function () {
             if ($el.hasClass('sp-show')) {
                 $el.find('.sp-source').hide(250);
                 $el.removeClass('sp-show');

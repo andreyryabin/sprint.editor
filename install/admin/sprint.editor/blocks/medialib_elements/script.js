@@ -51,7 +51,7 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
             });
         });
 
-        $el.on('click', '.sp-toggle', function () {
+        $el.on('click', '.sp-medialib-toggle', function () {
             if ($el.hasClass('sp-show')) {
                 $el.find('.sp-source').hide(250);
                 $el.removeClass('sp-show');

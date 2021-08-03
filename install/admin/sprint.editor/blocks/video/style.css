@@ -4,7 +4,7 @@
 }
 
 .sp-block-video .sp-table {
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }
 
 .sp-block-video .sp-preview {
@@ -31,4 +31,5 @@
 
 .sp-block-video .sp-area1-image {
     display: none;
+    margin-top: 10px;
 }

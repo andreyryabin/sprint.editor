@@ -38,7 +38,7 @@ sprint_editor.registerBlock('video', function ($, $el, data) {
             getVideo($(this).val());
         }, 500);
 
-        $el.on('click', '.sp-toggle', function () {
+        $el.on('click', '.sp-area1-toggle', function () {
             if ($el.hasClass('sp-show')) {
                 $el.find('.sp-area1-image').hide(250);
                 $el.removeClass('sp-show');

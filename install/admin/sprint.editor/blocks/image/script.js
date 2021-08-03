@@ -35,6 +35,8 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
                 });
 
                 renderfiles();
+
+                togglepanel();
             },
             progressall: function (e, result) {
                 var progress = parseInt(result.loaded / result.total * 100, 10);
@@ -76,9 +78,13 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
                         data.file = result.image;
 
                         renderfiles();
+
+                        togglepanel();
                     }
 
                     $urltext.val('');
+
+
                 }
             });
         }, 500);
@@ -90,7 +96,26 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
 
             renderfiles();
         });
+
+        $el.on('click', '.sp-image-toggle', function () {
+            togglepanel();
+        });
+
+        if (!data.file || !data.file.SRC) {
+            togglepanel();
+        }
+
     };
+
+    var togglepanel = function () {
+        if ($el.hasClass('sp-show')) {
+            $el.find('.sp-panel').hide(250);
+            $el.removeClass('sp-show');
+        } else {
+            $el.find('.sp-panel').show(250);
+            $el.addClass('sp-show');
+        }
+    }
 
     var renderfiles = function () {
         $el.find('.sp-result').html(
