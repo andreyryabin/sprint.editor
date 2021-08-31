@@ -122,10 +122,10 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             });
             $tabBtn1.on('click', '.sp-acc-dn', function (e) {
                 e.preventDefault();
-                var block = $(this).closest('.sp-acc-tab');
-                var nblock = block.next('.sp-acc-tab');
-                if (nblock.length > 0) {
-                    block.insertAfter(nblock);
+                var $block = $(this).closest('.sp-acc-tab');
+                var $nblock = $block.next('.sp-acc-tab');
+                if ($nblock.length > 0) {
+                    $block.insertAfter($nblock);
                 }
             });
 

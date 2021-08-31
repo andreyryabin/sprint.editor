@@ -252,19 +252,19 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
         $editor.on('click', '.sp-x-lt-up', function (e) {
             e.preventDefault();
-            var block = $(this).closest('.sp-x-lt');
-            var nblock = block.prev('.sp-x-lt');
-            if (nblock.length > 0) {
-                block.insertBefore(nblock);
+            var $block = $(this).closest('.sp-x-lt');
+            var $nblock = block.prev('.sp-x-lt');
+            if ($nblock.length > 0) {
+                $block.insertBefore($nblock);
             }
         });
 
         $editor.on('click', '.sp-x-lt-dn', function (e) {
             e.preventDefault();
-            var block = $(this).closest('.sp-x-lt');
-            var nblock = block.next('.sp-x-lt');
-            if (nblock.length > 0) {
-                block.insertAfter(nblock);
+            var $block = $(this).closest('.sp-x-lt');
+            var $nblock = $block.next('.sp-x-lt');
+            if ($nblock.length > 0) {
+                $block.insertAfter($nblock);
             }
         });
 
@@ -367,11 +367,19 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     $editor.on('click', '.sp-x-col-tab', function (e) {
         selectColumn($(this).data('uid'));
     });
-
     $editor.on('click', '.sp-x-box-settings span', function (e) {
         var $span = $(this);
         $span.siblings('span').removeClass('sp-x-active');
         $span.toggleClass('sp-x-active');
+
+        var $block = $span.closest('.sp-x-box');
+        var $group = $span.parent();
+
+        sprint_editor.changeSettings(
+            $block.data('uid'),
+            $group.data('name'),
+            $span.hasClass('sp-x-active') ? $span.data('value') : ''
+        );
     });
 
     $editor.on('click', '.sp-x-lt-settings span', function (e) {

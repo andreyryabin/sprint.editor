@@ -91,7 +91,7 @@ var sprint_editor = {
         return '';
     },
 
-    renderString: function(str, data) {
+    renderString: function (str, data) {
         var func = window.doT.template(str);
         return func(data);
     },
@@ -197,6 +197,18 @@ var sprint_editor = {
             }
         }
     },
+    changeSettings: function (uid, paramName, paramValue) {
+        if (!sprint_editor.hasEntry(uid)) {
+            return;
+        }
+
+        var entry = sprint_editor.getEntry(uid);
+
+        if (typeof entry.changeSettings === 'function') {
+            entry.changeSettings(paramName, paramValue);
+        }
+    },
+
     collectData: function (uid) {
         var blockData = {};
         if (!sprint_editor.hasEntry(uid)) {
