@@ -480,10 +480,11 @@ class AdminEditor
     protected static function filterLayouts($userSettings)
     {
         if (!empty($userSettings['layout_enabled'])) {
-            $layouts = array_map(
-                function ($name) {
-                    return self::$alllayouts[$name];
-                }, $userSettings['layout_enabled']
+            $layouts = array_filter(
+                self::$alllayouts,
+                function ($layout) use ($userSettings) {
+                    return in_array($layout['name'], $userSettings['layout_enabled']);
+                }
             );
         } elseif (!empty($userSettings['block_disabled'])) {
             $layouts = array_filter(
