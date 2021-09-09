@@ -459,10 +459,11 @@ class AdminEditor
                 }
             );
         } elseif (!empty($userSettings['block_enabled'])) {
-            $blocks = array_map(
-                function ($name) {
-                    return self::$allblocks[$name];
-                }, $userSettings['block_enabled']
+            $blocks = array_filter(
+                self::$allblocks,
+                function ($block) use ($userSettings) {
+                    return in_array($block['name'], $userSettings['block_enabled']);
+                }
             );
         } else {
             $blocks = self::$allblocks;
