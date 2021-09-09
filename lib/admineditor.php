@@ -139,15 +139,13 @@ class AdminEditor
             include $settingsFile;
         }
 
-        $settings = array_merge(
+        return array_merge(
             [
                 'title'          => $settingsName,
                 'layout_classes' => [],
                 'block_settings' => [],
             ], $settings
         );
-
-        return $settings;
     }
 
     public static function registerSettingsAssets($settingsName)
@@ -303,15 +301,14 @@ class AdminEditor
         }
     }
 
-    protected static function registerBlocks($groupname, $islocal = false, $checkname = true)
+    protected static function registerBlocks($groupname, $islocal, $checkname)
     {
         if ($islocal) {
             $webpath = '/local/admin/sprint.editor/' . $groupname . '/';
-            $rootpath = Module::getDocRoot() . $webpath;
         } else {
             $webpath = '/bitrix/admin/sprint.editor/' . $groupname . '/';
-            $rootpath = Module::getDocRoot() . $webpath;
         }
+        $rootpath = Module::getDocRoot() . $webpath;
 
         if (!is_dir($rootpath)) {
             return false;
@@ -447,9 +444,9 @@ class AdminEditor
             ];
         }
 
-        $packs = self::sortByStr($packs, 'title');
-
-        return Locale::convertToWin1251IfNeed($packs);
+        return Locale::convertToWin1251IfNeed(
+            self::sortByStr($packs, 'title')
+        );
     }
 
     protected static function filterBlocks($userSettings)
@@ -517,7 +514,7 @@ class AdminEditor
                         $filteredItemBlocks[] = $filteredBlocks[$blockName];
                     }
                 }
-                $blocksToolbar[$toolbarIndex]['blocks'] = self::sortByNum($filteredItemBlocks, 'sort');
+                $blocksToolbar[$toolbarIndex]['blocks'] = $filteredItemBlocks;
             }
         } else {
             $blocksToolbar = [];
@@ -530,19 +527,22 @@ class AdminEditor
                 );
                 $blocksToolbar[] = [
                     'title'  => GetMessage('SPRINT_EDITOR_group_' . $groupname),
-                    'blocks' => Locale::convertToWin1251IfNeed(self::sortByNum($filteredItemBlocks, 'sort')),
+                    'blocks' => Locale::convertToWin1251IfNeed(
+                        self::sortBlocksByUserSettings(
+                            $userSettings,
+                            $filteredItemBlocks
+                        )
+                    ),
                 ];
             }
         }
 
-        $blocksToolbar = array_filter(
+        return array_filter(
             $blocksToolbar,
             function ($toolbarItem) {
                 return !empty($toolbarItem['blocks']);
             }
         );
-
-        return $blocksToolbar;
     }
 
     protected static function getLayoutsToolbar($userSettings, $filteredLayouts)
@@ -557,14 +557,12 @@ class AdminEditor
                 ],
             ];
         }
-        $layoutsToolbar = array_filter(
+        return array_filter(
             $layoutsToolbar,
             function ($toolbarItem) {
                 return !empty($toolbarItem['blocks']);
             }
         );
-
-        return $layoutsToolbar;
     }
 
     public static function renderFile($file, $vars = [])
@@ -574,36 +572,37 @@ class AdminEditor
         }
 
         ob_start();
-        /** @noinspection PhpIncludeInspection */
         include $file;
 
         return ob_get_clean();
     }
 
-    protected static function sortByNum($input = [], $key = 'sort')
+    protected static function sortByNum($input, $key)
     {
-        usort(
-            $input,
-            function ($a, $b) use ($key) {
-                if ($a[$key] == $b[$key]) {
-                    return 0;
-                }
-                return ($a[$key] < $b[$key]) ? -1 : 1;
-            }
-        );
+        usort($input, function ($a, $b) use ($key) {
+            return ($a[$key] < $b[$key]) ? -1 : 1;
+        });
 
         return $input;
     }
 
-    protected static function sortByStr($input = [], $key = 'title')
+    protected static function sortByStr($input, $key)
     {
-        usort(
-            $input,
-            function ($a, $b) use ($key) {
-                return strcmp($a[$key], $b[$key]);
-            }
-        );
+        usort($input, function ($a, $b) use ($key) {
+            return strcmp($a[$key], $b[$key]);
+        });
 
         return $input;
+    }
+
+    protected static function sortBlocksByUserSettings($userSettings, array $filteredItemBlocks)
+    {
+        $sortMethod = isset($userSettings['block_sort']) ? $userSettings['block_sort'] : '';
+
+        if ($sortMethod == 'title') {
+            return self::sortByStr($filteredItemBlocks, 'title');
+        } else {
+            return self::sortByNum($filteredItemBlocks, 'sort');
+        }
     }
 }

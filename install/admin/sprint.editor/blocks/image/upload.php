@@ -3,6 +3,7 @@
 use Sprint\Editor\AdminBlocks\ImageAdminBlock;
 use Sprint\Editor\UploadHandler;
 
+define("PUBLIC_AJAX_MODE", true);
 define("NO_KEEP_STATISTIC", true);
 define("NO_AGENT_STATISTIC", true);
 define("NO_AGENT_CHECK", true);
@@ -22,9 +23,9 @@ if (CModule::IncludeModule('sprint.editor')) {
     $handler = new UploadHandler(
         [
             'bitrix_resize' => [
-                'width'  => ImageAdminBlock::PREVIEW_WIDTH,
+                'width' => ImageAdminBlock::PREVIEW_WIDTH,
                 'height' => ImageAdminBlock::PREVIEW_HEIGHT,
-                'exact'  => ImageAdminBlock::PREVIEW_EXACT,
+                'exact' => ImageAdminBlock::PREVIEW_EXACT,
             ],
         ]
     );
