@@ -1,6 +1,8 @@
 function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     var $editor = $('.sp-x-editor' + currentEditorParams.uniqid);
+
     var $inputresult = $('.sp-x-result' + currentEditorParams.uniqid);
+
     var $form = $editor.closest('form').first();
 
     $(document).keyup(function (e) {
@@ -34,12 +36,15 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     if (!currentEditorValue.jsonValue.layouts) {
         currentEditorValue.jsonValue.layouts = [];
     }
+
     if (!currentEditorValue.jsonValue) {
         currentEditorValue.jsonValue = {};
     }
+
     if (!currentEditorParams.userSettingsName) {
         currentEditorParams.userSettingsName = '';
     }
+
     if (currentEditorParams.hasOwnProperty('enableChange')) {
         currentEditorParams.enableChange = !!currentEditorParams.enableChange;
     } else {
@@ -92,243 +97,231 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         $inputresult.val(resultString);
     });
 
-    if (currentEditorParams.enableChange) {
-        $editor.on('click', '.sp-x-col-copy', function (e) {
-            e.preventDefault();
-            var $grid = $(this).closest('.sp-x-lt');
-            var $col = getActiveColumn($grid);
+    $editor.on('click', '.sp-x-col-copy', function (e) {
+        e.preventDefault();
+        var $grid = $(this).closest('.sp-x-lt');
+        var $col = getActiveColumn($grid);
 
-            $col.find('.sp-x-box').each(function () {
-                sprint_editor.copyToClipboard($(this).data('uid'), false);
-            });
-
-            popupToggle();
+        $col.find('.sp-x-box').each(function () {
+            sprint_editor.copyToClipboard($(this).data('uid'), false);
         });
 
-        $editor.on('click', '.sp-x-col-cut', function (e) {
-            e.preventDefault();
-            var $grid = $(this).closest('.sp-x-lt');
-            var $col = getActiveColumn($grid);
+        popupToggle();
+    });
 
-            $col.find('.sp-x-box').each(function () {
-                sprint_editor.copyToClipboard($(this).data('uid'), true);
-            });
+    $editor.on('click', '.sp-x-col-cut', function (e) {
+        e.preventDefault();
+        var $grid = $(this).closest('.sp-x-lt');
+        var $col = getActiveColumn($grid);
 
-            popupToggle();
+        $col.find('.sp-x-box').each(function () {
+            sprint_editor.copyToClipboard($(this).data('uid'), true);
         });
 
-        $editor.on('click', '.sp-x-col-paste', function (e) {
-            e.preventDefault();
+        popupToggle();
+    });
 
-            var clipboardData = sprint_editor.getClipboard();
-            var $grid = $(this).closest('.sp-x-lt');
-            var $col = getActiveColumn($grid);
+    $editor.on('click', '.sp-x-col-paste', function (e) {
+        e.preventDefault();
 
-            $.each(clipboardData, function (blockUid, blockData) {
-                blockAdd(blockData.block, $col);
-            });
+        var clipboardData = sprint_editor.getClipboard();
+        var $grid = $(this).closest('.sp-x-lt');
+        var $col = getActiveColumn($grid);
 
-            sprint_editor.fireEvent('clipboard:paste');
-            sprint_editor.clearClipboard();
-
-            popupToggle();
+        $.each(clipboardData, function (blockUid, blockData) {
+            blockAdd(blockData.block, $col);
         });
 
-        $editor.on('click', '.sp-x-box-paste', function (e) {
-            e.preventDefault();
+        sprint_editor.fireEvent('clipboard:paste');
+        sprint_editor.clearClipboard();
 
-            var clipboardData = sprint_editor.getClipboard();
-            var $box = $(this).closest('.sp-x-box');
+        popupToggle();
+    });
 
-            $.each(clipboardData, function (blockUid, blockData) {
-                blockAdd(blockData.block, $box);
-            });
+    $editor.on('click', '.sp-x-box-paste', function (e) {
+        e.preventDefault();
 
-            sprint_editor.fireEvent('clipboard:paste');
-            sprint_editor.clearClipboard();
+        var clipboardData = sprint_editor.getClipboard();
+        var $box = $(this).closest('.sp-x-box');
 
-            popupToggle();
+        $.each(clipboardData, function (blockUid, blockData) {
+            blockAdd(blockData.block, $box);
         });
 
-        $editor.on('click', '.sp-x-pp-blocks .sp-x-btn', function (e) {
-            e.preventDefault();
-            addByNameBlock($(this));
-        });
+        sprint_editor.fireEvent('clipboard:paste');
+        sprint_editor.clearClipboard();
 
-        $editor.on('click', '.sp-x-lastblock', function (e) {
-            e.preventDefault();
-            addByNameBlock($(this));
-        });
+        popupToggle();
+    });
 
-        $editor.on('click', '.sp-x-footer .sp-x-btn', function (e) {
-            e.stopPropagation();
-            addByNameLayout($(this));
-        });
+    $editor.on('click', '.sp-x-pp-blocks .sp-x-btn', function (e) {
+        e.preventDefault();
+        addByNameBlock($(this));
+    });
 
-        $editor.on('click', '.sp-x-pp-lt-open', function (e) {
-            e.preventDefault();
-            popupToggle($(this));
-        });
-        /*$editor.on('mouseenter', '.sp-x-pp-lt-hover', function (e) {
-            e.preventDefault();
-            popupToggle($(this).children('.sp-x-pp-lt-open'),true);
-        });*/
+    $editor.on('click', '.sp-x-lastblock', function (e) {
+        e.preventDefault();
+        addByNameBlock($(this));
+    });
 
+    $editor.on('click', '.sp-x-footer .sp-x-btn', function (e) {
+        e.stopPropagation();
+        addByNameLayout($(this));
+    });
 
-        $editor.on('click', '.sp-x-pp-box-open', function (e) {
-            e.preventDefault();
-            popupToggle($(this));
-        });
-        /*$editor.on('mouseenter', '.sp-x-pp-box-hover', function (e) {
-            e.preventDefault();
-            popupToggle($(this).children('.sp-x-pp-box-open'),true);
-        });*/
+    $editor.on('click', '.sp-x-pp-lt-open', function (e) {
+        e.preventDefault();
+        popupToggle($(this));
+    });
 
+    $editor.on('click', '.sp-x-pp-box-open', function (e) {
+        e.preventDefault();
+        popupToggle($(this));
+    });
 
-        $editor.on('click', '.sp-x-pp-blocks-open', function (e) {
-            e.preventDefault();
-            popupToggle($(this));
-        });
+    $editor.on('click', '.sp-x-pp-blocks-open', function (e) {
+        e.preventDefault();
+        popupToggle($(this));
+    });
 
-        $editor.on('click', '.sp-x-box-copy', function (e) {
-            e.preventDefault();
-            var $box = $(this).closest('.sp-x-box');
-            sprint_editor.copyToClipboard($box.data('uid'), false);
-            popupToggle();
-        });
+    $editor.on('click', '.sp-x-box-copy', function (e) {
+        e.preventDefault();
+        var $box = $(this).closest('.sp-x-box');
+        sprint_editor.copyToClipboard($box.data('uid'), false);
+        popupToggle();
+    });
 
-        $editor.on('click', '.sp-x-box-cut', function (e) {
-            e.preventDefault();
-            var $box = $(this).closest('.sp-x-box');
-            sprint_editor.copyToClipboard($box.data('uid'), true);
-            popupToggle();
-        });
+    $editor.on('click', '.sp-x-box-cut', function (e) {
+        e.preventDefault();
+        var $box = $(this).closest('.sp-x-box');
+        sprint_editor.copyToClipboard($box.data('uid'), true);
+        popupToggle();
+    });
 
-        $editor.on('click', '.sp-x-box-up', function (e) {
-            e.preventDefault();
+    $editor.on('click', '.sp-x-box-up', function (e) {
+        e.preventDefault();
 
-            var $block = $(this).closest('.sp-x-box');
-            var $grid = $(this).closest('.sp-x-lt');
+        var $block = $(this).closest('.sp-x-box');
+        var $grid = $(this).closest('.sp-x-lt');
 
-            var $nblock = $block.prev('.sp-x-box');
-            if ($nblock.length > 0) {
-                $block.insertBefore($nblock);
+        var $nblock = $block.prev('.sp-x-box');
+        if ($nblock.length > 0) {
+            $block.insertBefore($nblock);
+            sprint_editor.afterSort($block.data('uid'));
+        } else {
+            var $ngrid = $grid.prev('.sp-x-lt');
+            if ($ngrid.length > 0) {
+                var $ncol = getActiveColumn($ngrid);
+                $block.appendTo($ncol);
                 sprint_editor.afterSort($block.data('uid'));
-            } else {
-                var $ngrid = $grid.prev('.sp-x-lt');
-                if ($ngrid.length > 0) {
-                    var $ncol = getActiveColumn($ngrid);
-                    $block.appendTo($ncol);
+            }
+        }
+    });
+
+    $editor.on('click', '.sp-x-box-dn', function (e) {
+        e.preventDefault();
+
+        var $block = $(this).closest('.sp-x-box');
+        var $grid = $(this).closest('.sp-x-lt');
+
+        var $nblock = $block.next('.sp-x-box');
+        if ($nblock.length > 0) {
+            $block.insertAfter($nblock);
+            sprint_editor.afterSort($block.data('uid'));
+        } else {
+            var $ngrid = $grid.next('.sp-x-lt');
+            if ($ngrid.length > 0) {
+                var $ncol = getActiveColumn($ngrid);
+                var $head = $ncol.find('.sp-x-col-settings');
+                if ($head.length > 0) {
+                    $block.insertAfter($head);
+                    sprint_editor.afterSort($block.data('uid'));
+                } else {
+                    $block.prependTo($ncol);
                     sprint_editor.afterSort($block.data('uid'));
                 }
             }
+        }
+    });
+
+    $editor.on('click', '.sp-x-lt-up', function (e) {
+        e.preventDefault();
+        var $block = $(this).closest('.sp-x-lt');
+        var $nblock = block.prev('.sp-x-lt');
+        if ($nblock.length > 0) {
+            $block.insertBefore($nblock);
+        }
+    });
+
+    $editor.on('click', '.sp-x-lt-dn', function (e) {
+        e.preventDefault();
+        var $block = $(this).closest('.sp-x-lt');
+        var $nblock = $block.next('.sp-x-lt');
+        if ($nblock.length > 0) {
+            $block.insertAfter($nblock);
+        }
+    });
+
+    $editor.on('click', '.sp-x-col-left', function (e) {
+        e.preventDefault();
+        var $grid = $(this).closest('.sp-x-lt');
+        var $tab = getActiveTab($grid);
+        var $ntab = $tab.prev('.sp-x-col-tab');
+        if ($ntab.length > 0) {
+            $tab.insertBefore($ntab);
+        }
+    });
+
+    $editor.on('click', '.sp-x-col-right', function (e) {
+        e.preventDefault();
+        var $grid = $(this).closest('.sp-x-lt');
+        var $tab = getActiveTab($grid);
+        var $ntab = $tab.next('.sp-x-col-tab');
+        if ($ntab.length > 0) {
+            $tab.insertAfter($ntab);
+        }
+    });
+
+    $editor.on('click', '.sp-x-box-del', function (e) {
+        e.preventDefault();
+        var $box = $(this).closest('.sp-x-box');
+
+        boxDelete($box);
+    });
+
+    $editor.on('click', '.sp-x-lt-toggle', function (e) {
+        e.preventDefault();
+        var $grid = $(this).closest('.sp-x-lt');
+        if ($grid.hasClass('sp-x-hidden')) {
+            $grid.removeClass('sp-x-hidden');
+            $(this).removeClass('sp-x-active');
+        } else {
+            $grid.addClass('sp-x-hidden');
+            $(this).addClass('sp-x-active');
+        }
+    });
+
+    $editor.on('click', '.sp-x-lt-del', function (e) {
+        e.preventDefault();
+
+        var $grid = $(this).closest('.sp-x-lt');
+
+        $grid.find('.sp-x-box').each(function () {
+            var uid = $(this).data('uid');
+            sprint_editor.beforeDelete(uid);
         });
 
-        $editor.on('click', '.sp-x-box-dn', function (e) {
-            e.preventDefault();
+        $grid.remove();
 
-            var $block = $(this).closest('.sp-x-box');
-            var $grid = $(this).closest('.sp-x-lt');
+        popupToggle();
+    });
 
-            var $nblock = $block.next('.sp-x-box');
-            if ($nblock.length > 0) {
-                $block.insertAfter($nblock);
-                sprint_editor.afterSort($block.data('uid'));
-            } else {
-                var $ngrid = $grid.next('.sp-x-lt');
-                if ($ngrid.length > 0) {
-                    var $ncol = getActiveColumn($ngrid);
-                    var $head = $ncol.find('.sp-x-col-settings');
-                    if ($head.length > 0) {
-                        $block.insertAfter($head);
-                        sprint_editor.afterSort($block.data('uid'));
-                    } else {
-                        $block.prependTo($ncol);
-                        sprint_editor.afterSort($block.data('uid'));
-                    }
-                }
-            }
-        });
+    $editor.on('click', '.sp-x-col-edit', function (e) {
+        var $grid = $(this).closest('.sp-x-lt');
+        var $title = getActiveTab($grid).find('.sp-x-col-title');
+        layoutEditColumnTitle($title);
 
-        $editor.on('click', '.sp-x-lt-up', function (e) {
-            e.preventDefault();
-            var $block = $(this).closest('.sp-x-lt');
-            var $nblock = block.prev('.sp-x-lt');
-            if ($nblock.length > 0) {
-                $block.insertBefore($nblock);
-            }
-        });
-
-        $editor.on('click', '.sp-x-lt-dn', function (e) {
-            e.preventDefault();
-            var $block = $(this).closest('.sp-x-lt');
-            var $nblock = $block.next('.sp-x-lt');
-            if ($nblock.length > 0) {
-                $block.insertAfter($nblock);
-            }
-        });
-
-        $editor.on('click', '.sp-x-col-left', function (e) {
-            e.preventDefault();
-            var $grid = $(this).closest('.sp-x-lt');
-            var $tab = getActiveTab($grid);
-            var $ntab = $tab.prev('.sp-x-col-tab');
-            if ($ntab.length > 0) {
-                $tab.insertBefore($ntab);
-            }
-        });
-
-        $editor.on('click', '.sp-x-col-right', function (e) {
-            e.preventDefault();
-            var $grid = $(this).closest('.sp-x-lt');
-            var $tab = getActiveTab($grid);
-            var $ntab = $tab.next('.sp-x-col-tab');
-            if ($ntab.length > 0) {
-                $tab.insertAfter($ntab);
-            }
-        });
-
-        $editor.on('click', '.sp-x-box-del', function (e) {
-            e.preventDefault();
-            var $box = $(this).closest('.sp-x-box');
-
-            boxDelete($box);
-        });
-
-        $editor.on('click', '.sp-x-lt-toggle', function (e) {
-            e.preventDefault();
-            var $grid = $(this).closest('.sp-x-lt');
-            if ($grid.hasClass('sp-x-hidden')) {
-                $grid.removeClass('sp-x-hidden');
-                $(this).removeClass('sp-x-active');
-            } else {
-                $grid.addClass('sp-x-hidden');
-                $(this).addClass('sp-x-active');
-            }
-        });
-
-        $editor.on('click', '.sp-x-lt-del', function (e) {
-            e.preventDefault();
-
-            var $grid = $(this).closest('.sp-x-lt');
-
-            $grid.find('.sp-x-box').each(function () {
-                var uid = $(this).data('uid');
-                sprint_editor.beforeDelete(uid);
-            });
-
-            $grid.remove();
-
-            popupToggle();
-        });
-
-        $editor.on('click', '.sp-x-col-edit', function (e) {
-            var $grid = $(this).closest('.sp-x-lt');
-            var $title = getActiveTab($grid).find('.sp-x-col-title');
-            layoutEditColumnTitle($title);
-
-        });
-    }
+    });
 
     $editor.on('click', '.sp-x-box-collapse', function (e) {
         e.preventDefault();
