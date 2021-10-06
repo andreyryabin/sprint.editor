@@ -77,7 +77,6 @@ class Image
     /** @deprecated */
     static public function resizeImageById($iImageId, $width = 0, $height = 0, $exact = 0)
     {
-        /** @noinspection PhpDynamicAsStaticMethodCallInspection */
         if ($aImage = CFile::GetFileArray($iImageId)) {
             $aImage = self::resizeImage($aImage, $width, $height, $exact);
         }
@@ -89,7 +88,6 @@ class Image
     {
         if ($width > 0 && $height > 0) {
             $resizeType = ($exact) ? BX_RESIZE_IMAGE_EXACT : BX_RESIZE_IMAGE_PROPORTIONAL;
-            /** @noinspection PhpDynamicAsStaticMethodCallInspection */
 
             $aImage['SRC'] = !empty($aImage['SRC']) ? $aImage['SRC'] : CFile::GetFileSRC($aImage);
             $resized = CFile::ResizeImageGet(
@@ -130,7 +128,6 @@ class Image
         foreach ($parts as $part) {
             array_push($partsEncoded, rawurlencode(urldecode($part)));
         }
-        $path = implode("/", $partsEncoded);
-        return $path;
+        return implode("/", $partsEncoded);
     }
 }

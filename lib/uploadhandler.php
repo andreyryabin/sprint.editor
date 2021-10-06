@@ -635,13 +635,13 @@ class UploadHandler
     {
         return CUtil::translit(
             $str, 'ru', [
-            "max_len"               => 100,
-            "change_case"           => 'L', // 'L' - toLower, 'U' - toUpper, false - do not change
-            "replace_space"         => '-',
-            "replace_other"         => '-',
-            "delete_repeat_replace" => true,
-            "safe_chars"            => '.()',
-        ]
+                "max_len"               => 100,
+                "change_case"           => 'L', // 'L' - toLower, 'U' - toUpper, false - do not change
+                "replace_space"         => '-',
+                "replace_other"         => '-',
+                "delete_repeat_replace" => true,
+                "safe_chars"            => '.()',
+            ]
         );
     }
 
@@ -652,18 +652,23 @@ class UploadHandler
         foreach ($files as $k => $file) {
             $aFile = CFile::MakeFileArray($file->path);
             $aFile['MODULE_ID'] = 'sprint.editor';
-
             if (!empty($this->options['bitrix_resize'])) {
-                $checkErr = CFile::CheckImageFile($aFile, 0, 0, 0);
-                if (empty($checkErr)) {
+                if ($aFile['type'] == 'image/svg+xml') {
                     $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
                     if ($bitrixId) {
                         $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
                     }
+                } else {
+                    $checkErr = CFile::CheckImageFile($aFile, 0, 0, 0);
+                    if (empty($checkErr)) {
+                        $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
+                        if ($bitrixId) {
+                            $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+                        }
+                    }
                 }
             } else {
                 $checkErr = CFile::CheckFile($aFile, 0, 0, 0);
-
                 if (empty($checkErr)) {
                     $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
                     if ($bitrixId) {

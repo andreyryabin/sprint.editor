@@ -3,26 +3,30 @@
 }
 
 .sp-block-image .sp-result {
-    min-height: 210px;
-    background: #ccc;
+    min-height: 200px;
     overflow: hidden;
-    text-align: left;
+    text-align: center;
+    border: 2px solid #ccc;
 }
 
 .sp-block-image .sp-result img {
     display: block;
     margin: 0 auto;
-    padding: 5px;
+    /*padding: 5px;*/
+    max-width: 98%;
+    height: 210px;
 }
 
 .sp-block-image .sp-panel {
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
     background: #eee;
     width: 50%;
+    height: 212px;
     display: none;
+    border-bottom: 2px solid #ccc;
+    border-right: 2px solid #ccc;
 }
 
 .sp-block-image.sp-show .sp-panel {

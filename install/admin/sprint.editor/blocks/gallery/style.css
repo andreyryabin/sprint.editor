@@ -10,7 +10,10 @@
     margin: 3px;
     float: left;
 }
-
+.sp-block-gallery .sp-item img{
+    width: 98px;
+    height: 55px;
+}
 
 .sp-block-gallery .sp-placeholder {
     border: 2px dotted black;
