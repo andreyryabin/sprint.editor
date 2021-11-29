@@ -247,7 +247,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     $editor.on('click', '.sp-x-lt-up', function (e) {
         e.preventDefault();
         var $block = $(this).closest('.sp-x-lt');
-        var $nblock = block.prev('.sp-x-lt');
+        var $nblock = $block.prev('.sp-x-lt');
         if ($nblock.length > 0) {
             $block.insertBefore($nblock);
         }

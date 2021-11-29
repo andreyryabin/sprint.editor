@@ -2,6 +2,7 @@
     <div class="sp-x-buttons sp-x-buttons-box">
         <div class="sp-x-buttons-group">
             <span class="sp-x-btn sp-x-pp-box-open">&equiv;</span>
+            <span class="sp-x-btn sp-acc-box-handle">{{=it.title}}</span>
             <div class="sp-x-pp-box">
                 <div class="sp-x-pp-group">
                     <span title="Поднять вверх" class="sp-x-btn sp-acc-box-up">&uarr; Поднять</span>
@@ -11,9 +12,6 @@
                     <span title="Удалить блок" class="sp-x-btn sp-acc-box-del">x Удалить</span>
                 </div>
             </div>
-        </div>
-        <div class="sp-x-buttons-group">
-            <span class="sp-x-btn sp-acc-box-handle">{{=it.title}}</span>
         </div>
     </div>
     {{?it.compiled && it.compiled.length > 0}}

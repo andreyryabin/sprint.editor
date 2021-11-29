@@ -653,7 +653,7 @@ class UploadHandler
             $aFile = CFile::MakeFileArray($file->path);
             $aFile['MODULE_ID'] = 'sprint.editor';
             if (!empty($this->options['bitrix_resize'])) {
-                if ($aFile['type'] == 'image/svg+xml') {
+                if ($aFile['type'] == 'image/svg+xml' || $aFile['type'] == 'image/svg') {
                     $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
                     if ($bitrixId) {
                         $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
