@@ -95,7 +95,7 @@ $settings = [
 
     //Настройки блоков
     'block_settings'  => [
-        'htag'      => [
+        'htag'            => [
             //список тегов для заголовка
             'taglist' => [
                 'type'  => 'hidden',
@@ -109,7 +109,7 @@ $settings = [
             ],
 
         ],
-        'accordion' => [
+        'accordion'       => [
             //подключаемые блоки к аккордеону
             'blocks' => [
                 'type'  => 'hidden',
@@ -120,7 +120,7 @@ $settings = [
                 ],
             ],
         ],
-        'text'      => [
+        'text'            => [
             'param1' => [
                 'type'  => 'select',
                 'value' => [
@@ -138,7 +138,7 @@ $settings = [
                 ],
             ],
         ],
-        'lists'     => [
+        'lists'           => [
             'type' => [
                 'type'    => 'select',
                 'default' => 'ul',
@@ -147,6 +147,20 @@ $settings = [
                     'ol' => 'Нумерованный',
                 ],
             ],
+        ],
+        'iblock_elements' => [
+            //ограничим список доступных ИБ в блоке "Инфоблоки.Элементы"
+            //            'enabled_iblocks' => [
+            //                'type'  => 'hidden',
+            //                'value' => [4, 10],
+            //            ],
+        ],
+        'iblock_sections' => [
+            //ограничим список доступных ИБ в блоке "Инфоблоки.Категории"
+            //            'enabled_iblocks' => [
+            //                'type'  => 'hidden',
+            //                'value' => [4, 10],
+            //            ],
         ],
     ],
 
