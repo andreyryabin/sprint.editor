@@ -9,33 +9,40 @@ use Sprint\Editor\Locale;
 
 class IblockSections
 {
-    protected $params = [];
+    private $enabledIblocks;
+    private $selectedSections;
+    private $iblockId;
 
     public function __construct()
     {
         CModule::IncludeModule('iblock');
 
-        $ids = !empty($_REQUEST['section_ids']) ? $_REQUEST['section_ids'] : [];
-        $ids = array_map(
-            function ($val) {
-                return intval($val);
-            }, $ids
-        );
+        $this->enabledIblocks = !empty($_REQUEST['enabled_iblocks']) ? $_REQUEST['enabled_iblocks'] : [];
+        $this->enabledIblocks = is_array($this->enabledIblocks) ? $this->enabledIblocks : [];
 
-        $ids = array_unique($ids);
+        $this->selectedSections = !empty($_REQUEST['section_ids']) ? $_REQUEST['section_ids'] : [];
+        $this->selectedSections = is_array($this->selectedSections) ? $this->selectedSections : [];
+        $this->selectedSections = array_map('intval', $this->selectedSections);
+        $this->selectedSections = array_unique($this->selectedSections);
 
-        $ibid = !empty($_REQUEST['iblock_id']) ? intval($_REQUEST['iblock_id']) : 0;
-
-        $this->params = [
-            'iblock_id'   => $ibid,
-            'section_ids' => $ids,
-        ];
+        $this->iblockId = !empty($_REQUEST['iblock_id']) ? intval($_REQUEST['iblock_id']) : 0;
     }
 
     public function execute()
     {
+        $iblocksFilter = ['ACTIVE' => 'Y'];
+        if (!empty($this->enabledIblocks)) {
+            $iblocksFilter['=ID'] = $this->enabledIblocks;
+        }
+
+        $dbResult = CIblock::GetList(
+            [
+                'SORT' => 'ASC',
+            ],
+            $iblocksFilter
+        );
+
         $iblocks = [];
-        $dbResult = CIblock::GetList(['SORT' => 'ASC'], ['ACTIVE' => 'Y']);
         while ($aItem = $dbResult->Fetch()) {
             $iblocks[] = [
                 'title' => Locale::truncateText($aItem['NAME']),
@@ -44,15 +51,15 @@ class IblockSections
         }
 
         $elements = [];
-        if ($this->params['iblock_id'] > 0 && !empty($this->params['section_ids'])) {
+        if ($this->iblockId > 0 && !empty($this->selectedSections)) {
             $dbRes = CIBlockSection::GetList(
                 [
                     'ID' => 'DESC',
                 ],
                 [
-                    'IBLOCK_ID' => $this->params['iblock_id'],
+                    'IBLOCK_ID' => $this->iblockId,
                     'ACTIVE'    => 'Y',
-                    'ID'        => $this->params['section_ids'],
+                    'ID'        => $this->selectedSections,
                 ],
                 false,
                 [
@@ -72,7 +79,7 @@ class IblockSections
                 ];
             }
 
-            foreach ($this->params['section_ids'] as $id) {
+            foreach ($this->selectedSections as $id) {
                 if (isset($unsorted[$id])) {
                     $elements[] = $unsorted[$id];
                 }
@@ -85,8 +92,8 @@ class IblockSections
                 [
                     'iblocks'     => $iblocks,
                     'elements'    => $elements,
-                    'iblock_id'   => $this->params['iblock_id'],
-                    'section_ids' => $this->params['section_ids'],
+                    'iblock_id'   => $this->iblockId,
+                    'section_ids' => $this->selectedSections,
                 ]
             )
         );

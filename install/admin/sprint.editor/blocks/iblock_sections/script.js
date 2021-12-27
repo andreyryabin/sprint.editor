@@ -1,4 +1,11 @@
-sprint_editor.registerBlock('iblock_sections', function ($, $el, data) {
+sprint_editor.registerBlock('iblock_sections', function ($, $el, data, settings) {
+
+    settings = settings || {};
+
+    var enabled_iblocks = [];
+    if (settings.enabled_iblocks && settings.enabled_iblocks.value && Array.isArray(settings.enabled_iblocks.value)) {
+        enabled_iblocks = settings.enabled_iblocks.value;
+    }
 
     data = $.extend({
         iblock_id: 0,
@@ -36,7 +43,8 @@ sprint_editor.registerBlock('iblock_sections', function ($, $el, data) {
 
                 sendrequest({
                     iblock_id: findIblockId(),
-                    section_ids: newids
+                    section_ids: newids,
+                    enabled_iblocks: enabled_iblocks
                 });
             }
         };
@@ -76,13 +84,15 @@ sprint_editor.registerBlock('iblock_sections', function ($, $el, data) {
         $el.on('change', '.sp-select-iblock', function () {
             sendrequest({
                 iblock_id: findIblockId(),
-                section_ids: findElementIds()
+                section_ids: findElementIds(),
+                enabled_iblocks: enabled_iblocks
             });
         });
 
         sendrequest({
             iblock_id: data.iblock_id,
-            section_ids: data.section_ids
+            section_ids: data.section_ids,
+            enabled_iblocks: enabled_iblocks
         });
 
     };
