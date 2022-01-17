@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/../lib/locale.php";
 
-Sprint\Editor\Locale::loadLocale(array(
+Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_MODULE_NAME"                => "Редактор для контент-менеджеров",
     "SPRINT_EDITOR_MODULE_DESCRIPTION"         => "Инструменты для наполнения контента",
     "SPRINT_EDITOR_PARTNER_NAME"               => "Андрей Рябин",
@@ -34,6 +34,7 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_HELP_DONATE"                => "Поддержать разработку",
     "SPRINT_EDITOR_HELP_TELEGRAM"              => "Группа в телеграме",
     "SPRINT_EDITOR_SETTINGS_DISABLE_CHANGE"    => "Отключить добавление блоков",
+    "SPRINT_EDITOR_SETTINGS_WIDE_MODE"         => "Развернуть редактор на всю ширину",
     "SPRINT_EDITOR_SETTINGS_DISABLE_PACKS"     => "Отключить работу с макетами",
     "SPRINT_EDITOR_SETTINGS_SETTINGS_NAME"     => "Пользовательские настройки блоков",
     "SPRINT_EDITOR_SETTINGS_DEFAULT_VALUE"     => "Значение по умолчанию",
@@ -79,4 +80,4 @@ Sprint\Editor\Locale::loadLocale(array(
     "SPRINT_EDITOR_USED_ENTITIES" => "Пользовательские поля",
 
     "SPRINT_EDITOR_block_contents_title" => "Содержание:",
-));
+]);

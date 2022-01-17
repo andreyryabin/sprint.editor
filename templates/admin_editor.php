@@ -7,7 +7,8 @@
  *
  * @var $uniqId
  * @var $inputName
- * @var $formName
+ * @var $editorName
+ * @var $wideMode
  *
  * @var $firstRun
  * @var $layoutsToolbar
@@ -85,7 +86,9 @@
     jQuery(document).ready(function ($) {
         sprint_editor_full($, {
             uniqid: "<?= $uniqId ?>",
+            editorName: "<?= $editorName ?>",
             enableChange: <?=$enableChange?>,
+            wideMode: <?=$wideMode?>,
             userSettingsName: "<?=$userSettingsName?>",
             jsonUserSettings: <?=$jsonUserSettings?>,
         }, {

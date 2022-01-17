@@ -54,6 +54,7 @@ $editorParams = [
     'userSettings' => [
         'SETTINGS_NAME'  => $currentUserSettingsName,
         'DISABLE_CHANGE' => '',
+        'WIDE_MODE'      => '',
     ],
 ];
 

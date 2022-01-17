@@ -44,6 +44,11 @@ class AdminEditor
             $enableChange = 1;
         }
 
+        $wideMode = 1;
+        if (empty($params['userSettings']['WIDE_MODE'])) {
+            $wideMode = 0;
+        }
+
         //default setings (simple editor)
         $userSettings = [
             'layout_enabled' => [
@@ -125,6 +130,8 @@ class AdminEditor
                 'userSettingsName' => $userSettingsName,
                 'inputName'        => $params['inputName'],
                 'uniqId'           => $params['uniqId'],
+                'editorName'       => $params['editorName'],
+                'wideMode'         => $wideMode,
                 'firstRun'         => (self::$initCounts == 1) ? 1 : 0,
             ]
         );

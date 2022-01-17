@@ -31,12 +31,13 @@ class IblockPropertyEditor
 
         if (self::isSettingsPage()) {
             $settings['DISABLE_CHANGE'] = '';
-            //$settings['SETTINGS_NAME'] = '';
+            $settings['WIDE_MODE'] = '';
         }
 
         return AdminEditor::init(
             [
                 'uniqId'       => $arProperty['ID'],
+                'editorName'   => $arProperty['NAME'],
                 'value'        => $value['VALUE'],
                 'inputName'    => $strHTMLControlName['VALUE'],
                 'defaultValue' => $arProperty['DEFAULT_VALUE'],
@@ -96,7 +97,7 @@ class IblockPropertyEditor
         $settings = $arProperty['USER_TYPE_SETTINGS'];
         $newsettings = [];
 
-        foreach (['DISABLE_CHANGE', 'SETTINGS_NAME'] as $val) {
+        foreach (['DISABLE_CHANGE', 'WIDE_MODE', 'SETTINGS_NAME'] as $val) {
             $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
         }
 

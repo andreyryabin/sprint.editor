@@ -221,6 +221,7 @@
 .sp-x-separator-handle.sp-x-pp-blocks-open {
     position: absolute;
     left: -50px;
+    background: #fff;
 }
 
 .sp-x-lt.sp-x-hidden {

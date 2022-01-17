@@ -24,6 +24,7 @@ class UserTypeEditor
         return AdminEditor::init(
             [
                 'uniqId'       => $arUserField['ID'],
+                'editorName'   => $arUserField['FIELD_NAME'],
                 'value'        => $arUserField['VALUE'],
                 'inputName'    => $arHtmlControl['NAME'],
                 'userSettings' => $arUserField['SETTINGS'],
@@ -42,7 +43,7 @@ class UserTypeEditor
         $settings = $arUserField['SETTINGS'];
         $newsettings = [];
 
-        foreach (['DEFAULT_VALUE', 'DISABLE_CHANGE', 'SETTINGS_NAME'] as $val) {
+        foreach (['DEFAULT_VALUE', 'DISABLE_CHANGE', 'WIDE_MODE', 'SETTINGS_NAME'] as $val) {
             $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
         }
 
@@ -61,6 +62,7 @@ class UserTypeEditor
                 'inputName'    => $arHtmlControl['NAME'] . '[DEFAULT_VALUE]',
                 'userSettings' => [
                     'DISABLE_CHANGE' => '',
+                    'WIDE_MODE'      => '',
                     'SETTINGS_NAME'  => $settings['SETTINGS_NAME'],
                 ],
                 'defaultValue' => $arUserField['SETTINGS']['DEFAULT_VALUE'],
