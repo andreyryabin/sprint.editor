@@ -22,6 +22,7 @@ if (CModule::IncludeModule('sprint.editor')) {
     $services = [
         'youtube' => Sprint\Editor\Tools\Youtube::class,
         'vimeo'   => Sprint\Editor\Tools\Vimeo::class,
+        'rutube'  => Sprint\Editor\Tools\Rutube::class
     ];
 
     foreach ($services as $code => $service) {
