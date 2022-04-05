@@ -22,6 +22,7 @@ class Video
         $services = [
             'youtube' => Youtube::class,
             'vimeo'   => Vimeo::class,
+            'rutube'  => Sprint\Editor\Tools\Rutube::class,
         ];
 
         $videoHtml = '';
