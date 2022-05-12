@@ -4,7 +4,7 @@ namespace Sprint\Editor;
 
 class UserTypeEditor
 {
-    function GetUserTypeDescription()
+    public static function GetUserTypeDescription()
     {
         return [
             "USER_TYPE_ID" => "sprint_editor",
@@ -14,12 +14,12 @@ class UserTypeEditor
         ];
     }
 
-    public function GetAdminListViewHTML($arUserField, $arHtmlControl)
+    public static function GetAdminListViewHTML($arUserField, $arHtmlControl)
     {
         return 'text';
     }
 
-    public function GetEditFormHTML($arUserField, $arHtmlControl)
+    public static function GetEditFormHTML($arUserField, $arHtmlControl)
     {
         return AdminEditor::init(
             [
@@ -33,12 +33,12 @@ class UserTypeEditor
         );
     }
 
-    public function OnSearchIndex($arUserField)
+    public static function OnSearchIndex($arUserField)
     {
         return AdminEditor::getSearchIndex($arUserField["VALUE"]);
     }
 
-    public function PrepareSettings($arUserField)
+    public static function PrepareSettings($arUserField)
     {
         $settings = $arUserField['SETTINGS'];
         $newsettings = [];
@@ -50,7 +50,7 @@ class UserTypeEditor
         return $newsettings;
     }
 
-    public function GetSettingsHTML($arUserField, $arHtmlControl, $bVarsFromForm)
+    public static function GetSettingsHTML($arUserField, $arHtmlControl, $bVarsFromForm)
     {
         $settings = self::PrepareSettings($arUserField);
         $userfiles = AdminEditor::getUserSettingsFiles();
@@ -79,7 +79,7 @@ class UserTypeEditor
         );
     }
 
-    public function GetDBColumnType($arUserField)
+    public static function GetDBColumnType($arUserField)
     {
         global $DB;
         switch (strtolower($DB->type)) {

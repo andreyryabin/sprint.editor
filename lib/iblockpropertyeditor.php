@@ -4,7 +4,7 @@ namespace Sprint\Editor;
 
 class IblockPropertyEditor
 {
-    public function GetUserTypeDescription()
+    public static function GetUserTypeDescription()
     {
         return [
             "PROPERTY_TYPE"        => "S",
@@ -19,12 +19,12 @@ class IblockPropertyEditor
         ];
     }
 
-    public function GetAdminListViewHTML($arProperty, $value, $strHTMLControlName)
+    public static function GetAdminListViewHTML($arProperty, $value, $strHTMLControlName)
     {
         return 'text';
     }
 
-    public function GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
+    public static function GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
     {
         $settings = self::PrepareSettings($arProperty);
         $settings = $settings['USER_TYPE_SETTINGS'];
@@ -46,12 +46,12 @@ class IblockPropertyEditor
         );
     }
 
-    public function GetPublicEditHTML($arProperty, $value, $strHTMLControlName)
+    public static function GetPublicEditHTML($arProperty, $value, $strHTMLControlName)
     {
         return self::GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName);
     }
 
-    public function GetSearchContent($arProperty, $value, $strHTMLControlName)
+    public static function GetSearchContent($arProperty, $value, $strHTMLControlName)
     {
         return AdminEditor::getSearchIndex($value["VALUE"]);
     }
