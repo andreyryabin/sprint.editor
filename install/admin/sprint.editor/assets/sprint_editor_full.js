@@ -835,6 +835,10 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
                     let blockData = sprint_editor.collectData(uid);
 
+                    if (sprint_editor.isEmptyData(uid)){
+                        return true;
+                    }
+
                     blockData.settings = sprint_editor.collectSettings(
                         $(this).children('.sp-x-box-settings')
                     );

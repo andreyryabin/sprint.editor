@@ -55,7 +55,7 @@ var sprint_editor = {
     },
 
     getBlockTitle: function (name) {
-        var params = this.getBlockParams(name);
+        let params = this.getBlockParams(name);
         if (params && params['title']) {
             return params['title'];
         }
@@ -63,7 +63,7 @@ var sprint_editor = {
     },
 
     getBlockWebPath: function (blockName) {
-        var values = this.getBlockParams(blockName);
+        let values = this.getBlockParams(blockName);
         if (values.islocal) {
             return '/local/admin/sprint.editor/' + values.groupname + '/' + values.name;
         } else {
@@ -73,7 +73,7 @@ var sprint_editor = {
 
     renderTemplate: function (name, data) {
         if (!this._tplcache[name]) {
-            var $tpl = jQuery('#sp-x-template-' + name);
+            let $tpl = jQuery('#sp-x-template-' + name);
             if ($tpl.length > 0) {
                 this._tplcache[name] = $tpl.html();
             } else {
@@ -82,7 +82,7 @@ var sprint_editor = {
         }
 
         if (window.doT) {
-            var func = window.doT.template(
+            let func = window.doT.template(
                 this._tplcache[name]
             );
             return func(data);
@@ -92,7 +92,7 @@ var sprint_editor = {
     },
 
     renderString: function (str, data) {
-        var func = window.doT.template(str);
+        let func = window.doT.template(str);
         return func(data);
     },
 
@@ -103,8 +103,8 @@ var sprint_editor = {
     initblock: function ($, $el, name, blockData, blockSettings, currentEditorParams) {
         name = sprint_editor.hasBlockMethod(name) ? name : 'dump';
 
-        var method = sprint_editor.getBlockMethod(name);
-        var entry = new method(
+        let method = sprint_editor.getBlockMethod(name);
+        let entry = new method(
             $,
             $el,
             blockData,
@@ -112,7 +112,7 @@ var sprint_editor = {
             currentEditorParams
         );
 
-        var html = sprint_editor.renderTemplate(name, entry.getData());
+        let html = sprint_editor.renderTemplate(name, entry.getData());
         $el.html(html).addClass('sp-block-' + name);
 
         if (typeof entry.afterRender == 'function') {
@@ -124,14 +124,14 @@ var sprint_editor = {
 
     initblockAreas: function ($, $el, entry, currentEditorParams) {
         if (entry && typeof entry.getAreas == 'function') {
-            var areas = entry.getAreas();
-            var entryData = entry.getData();
-            for (var prop in areas) {
+            let areas = entry.getAreas();
+            let entryData = entry.getData();
+            for (let prop in areas) {
                 if (areas.hasOwnProperty(prop)) {
-                    var area = areas[prop];
+                    let area = areas[prop];
                     area.blockSettings = area.blockSettings || {};
 
-                    var areaData = {};
+                    let areaData = {};
                     if (area.dataFrom) {
                         areaData[area.dataFrom] = entryData[area.dataKey];
                     } else {
@@ -156,17 +156,17 @@ var sprint_editor = {
             return;
         }
 
-        var entry = sprint_editor.getEntry(uid);
+        let entry = sprint_editor.getEntry(uid);
 
         if (typeof entry.beforeDelete === 'function') {
             entry.beforeDelete();
         }
 
         if (typeof entry.getAreas === 'function') {
-            var areas = entry.getAreas();
-            for (var prop in areas) {
+            let areas = entry.getAreas();
+            for (let prop in areas) {
                 if (areas.hasOwnProperty(prop)) {
-                    var area = areas[prop];
+                    let area = areas[prop];
                     if (typeof area.block.beforeDelete === 'function') {
                         area.block.beforeDelete();
                     }
@@ -179,17 +179,17 @@ var sprint_editor = {
             return;
         }
 
-        var entry = sprint_editor.getEntry(uid);
+        let entry = sprint_editor.getEntry(uid);
 
         if (typeof entry.afterSort === 'function') {
             entry.afterSort();
         }
 
         if (typeof entry.getAreas === 'function') {
-            var areas = entry.getAreas();
-            for (var prop in areas) {
+            let areas = entry.getAreas();
+            for (let prop in areas) {
                 if (areas.hasOwnProperty(prop)) {
-                    var area = areas[prop];
+                    let area = areas[prop];
                     if (typeof area.block.afterSort === 'function') {
                         area.block.afterSort();
                     }
@@ -202,20 +202,30 @@ var sprint_editor = {
             return;
         }
 
-        var entry = sprint_editor.getEntry(uid);
+        let entry = sprint_editor.getEntry(uid);
 
         if (typeof entry.changeSettings === 'function') {
             entry.changeSettings(paramName, paramValue);
         }
     },
 
+    isEmptyData: function (uid) {
+        let entry = sprint_editor.getEntry(uid);
+
+        if (entry && typeof entry.isEmptyData === 'function') {
+            return !!entry.isEmptyData();
+        }
+
+        return false;
+    },
+
     collectData: function (uid) {
-        var blockData = {};
+        let blockData = {};
         if (!sprint_editor.hasEntry(uid)) {
             return blockData;
         }
 
-        var entry = sprint_editor.getEntry(uid);
+        let entry = sprint_editor.getEntry(uid);
 
         if (typeof entry.collectData !== 'function') {
             return blockData;
@@ -227,11 +237,11 @@ var sprint_editor = {
             return blockData;
         }
 
-        var areas = entry.getAreas();
-        for (var prop in areas) {
+        let areas = entry.getAreas();
+        for (let prop in areas) {
             if (areas.hasOwnProperty(prop)) {
-                var area = areas[prop];
-                var adata = area.block.collectData();
+                let area = areas[prop];
+                let adata = area.block.collectData();
                 if (area.dataFrom) {
                     blockData[area.dataKey] = adata[area.dataFrom];
                 } else {
@@ -249,9 +259,9 @@ var sprint_editor = {
             this._events[type] = [];
         }
 
-        for (var prop in this._events[type]) {
+        for (let prop in this._events[type]) {
             if (this._events[type].hasOwnProperty(prop)) {
-                var event = this._events[type][prop];
+                let event = this._events[type][prop];
                 if (typeof event === 'function') {
                     event();
                 }
@@ -268,7 +278,7 @@ var sprint_editor = {
 
     copyToClipboard: function (uid, deleteAfterPaste) {
         if (window.localStorage && sprint_editor.hasEntry(uid)) {
-            var val = JSON.parse(
+            let val = JSON.parse(
                 localStorage.getItem(
                     sprint_editor._clipboardUid
                 )
@@ -304,7 +314,7 @@ var sprint_editor = {
     },
 
     getClipboard: function () {
-        var val = {};
+        let val = {};
         if (window.localStorage) {
             val = JSON.parse(
                 localStorage.getItem(
@@ -317,7 +327,7 @@ var sprint_editor = {
     },
 
     makeUid: function (prefix) {
-        var uniq = Math.random().toString(36).substring(2, 12);
+        let uniq = Math.random().toString(36).substring(2, 12);
         this._uidcounter++;
 
         prefix = (prefix) ? prefix : 'sp';
@@ -326,7 +336,7 @@ var sprint_editor = {
     },
 
     renderBlock: function (blockData, blockSettings, uid, params) {
-        var renderVars = this.getBlockParams(blockData.name);
+        let renderVars = this.getBlockParams(blockData.name);
         if (renderVars) {
 
             renderVars['uid'] = uid;
@@ -340,7 +350,7 @@ var sprint_editor = {
 
     compileSettings: function (blockData, settings) {
 
-        var compiled = [];
+        let compiled = [];
 
         if (!settings) {
             return compiled;
@@ -348,18 +358,18 @@ var sprint_editor = {
 
         jQuery.each(settings, function (setName, setSet) {
 
-            if (!setSet.value || !setSet.type || setSet.type != 'select') {
+            if (!setSet.value || !setSet.type || setSet.type !== 'select') {
                 return true;
             }
 
-            var value = [];
-            var nothingSelected = true;
+            let value = [];
+            let nothingSelected = true;
 
             jQuery.each(setSet.value, function (valVal, valTitle) {
-                var isSelected = (
+                let isSelected = (
                     blockData.settings &&
                     blockData.settings[setName] &&
-                    blockData.settings[setName] == valVal
+                    blockData.settings[setName] === valVal
                 ) ? 1 : 0;
 
                 if (isSelected) {
@@ -375,7 +385,7 @@ var sprint_editor = {
 
             if (nothingSelected && setSet.hasOwnProperty('default')) {
                 jQuery.each(value, function (index, valItem) {
-                    if (valItem.value == setSet.default) {
+                    if (valItem.value === setSet.default) {
                         valItem.selected = 1;
                     }
                 });
@@ -392,9 +402,9 @@ var sprint_editor = {
     },
     compileClasses: function (ltname, cssstr, params) {
 
-        var selectedCss = cssstr.split(' ');
+        let selectedCss = cssstr.split(' ');
 
-        var allclasses = {};
+        let allclasses = {};
         if (params.jsonUserSettings.layout_classes) {
             if (params.jsonUserSettings.layout_classes[ltname]) {
                 if (params.jsonUserSettings.layout_classes[ltname].length > 0) {
@@ -403,7 +413,7 @@ var sprint_editor = {
             }
         }
 
-        var compiled = [];
+        let compiled = [];
 
         if (!allclasses) {
             return compiled;
@@ -415,8 +425,8 @@ var sprint_editor = {
                 return true;
             }
 
-            var value = [];
-            var valSel = 0;
+            let value = [];
+            let valSel = 0;
 
             jQuery.each(groupClasses, function (cssIndex, cssName) {
 
@@ -440,7 +450,7 @@ var sprint_editor = {
         return compiled;
     },
     getClassTitle: function (cssname, params) {
-        if (params.jsonUserSettings.layout_titles) {
+        if (params.jsonUserSettings.hasOwnProperty('layout_titles')) {
             if (params.jsonUserSettings.layout_titles[cssname]) {
                 if (params.jsonUserSettings.layout_titles[cssname].length > 0) {
                     return params.jsonUserSettings.layout_titles[cssname];
@@ -452,41 +462,30 @@ var sprint_editor = {
     },
 
     getBlockSettings: function (name, params) {
-        var blockSettings = {};
+        let blockSettings = {};
+        if (
+            params.hasOwnProperty('jsonUserSettings') &&
+            params.jsonUserSettings.hasOwnProperty('block_settings') &&
+            params.jsonUserSettings.block_settings.hasOwnProperty(name)
 
-        if (!params.hasOwnProperty('jsonUserSettings')) {
-            return blockSettings;
+        ) {
+            return params.jsonUserSettings.block_settings[name];
+
         }
-
-        if (!params.jsonUserSettings.hasOwnProperty('block_settings')) {
-            return blockSettings;
-        }
-
-        if (!params.jsonUserSettings.block_settings.hasOwnProperty(name)) {
-            return blockSettings;
-        }
-
-        return params.jsonUserSettings.block_settings[name];
-
+        return blockSettings;
     },
 
     getLayoutSettings: function (name, params) {
-        var layoutSettings = {};
+        let layoutSettings = {};
 
-        if (!params.hasOwnProperty('jsonUserSettings')) {
-            return layoutSettings;
+        if (params.hasOwnProperty('jsonUserSettings') &&
+            params.jsonUserSettings.hasOwnProperty('layout_settings') &&
+            params.jsonUserSettings.layout_settings.hasOwnProperty(name)
+        ) {
+            return params.jsonUserSettings.layout_settings[name];
+
         }
-
-        if (!params.jsonUserSettings.hasOwnProperty('layout_settings')) {
-            return layoutSettings;
-        }
-
-        if (!params.jsonUserSettings.layout_settings.hasOwnProperty(name)) {
-            return layoutSettings;
-        }
-
-        return params.jsonUserSettings.layout_settings[name];
-
+        return layoutSettings;
     },
 
     safeStringify: function (data) {
@@ -505,12 +504,12 @@ var sprint_editor = {
         return data;
     },
     collectSettings($settings) {
-        var settcnt = 0;
-        var settval = {};
+        let settcnt = 0;
+        let settval = {};
 
         $settings.find('.sp-x-settings-group').each(function () {
-            var name = $(this).data('name');
-            var $val = $(this).find('.sp-x-active').first();
+            let name = jQuery(this).data('name');
+            let $val = jQuery(this).find('.sp-x-active').first();
 
             if ($val.length > 0) {
                 settval[name] = $val.data('value');

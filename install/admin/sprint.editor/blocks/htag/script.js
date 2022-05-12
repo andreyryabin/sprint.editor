@@ -10,7 +10,7 @@ sprint_editor.registerBlock('htag', function ($, $el, data, settings) {
 
 
     this.getData = function () {
-        var taglist = [
+        let taglist = [
             {id: 'h1', title: 'h1'},
             {id: 'h2', title: 'h2'},
             {id: 'h3', title: 'h3'},
@@ -43,8 +43,8 @@ sprint_editor.registerBlock('htag', function ($, $el, data, settings) {
     };
 
     this.afterRender = function () {
-        var $input = $el.find('input[type=text]');
-        var $anchor = $el.find('.sp-anchor');
+        const $input = $el.find('input[type=text]');
+        const $anchor = $el.find('.sp-anchor');
 
         $input.bindWithDelay('input', function () {
             $anchor.text(translite(
