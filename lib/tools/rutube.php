@@ -8,7 +8,7 @@ class Rutube
     {
         $matches = [];
         if (preg_match(
-            '%rutube.ru\/video\/(\w+)\/%i',
+            '%rutube.ru\/video\/([a-z0-9]+)\/%i',
             $url,
             $matches
         )) {
@@ -19,10 +19,6 @@ class Rutube
 
     static public function getPreviewImg($url)
     {
-        $code = self::getVideoCode($url);
-        if ($code) {
-            return sprintf('http://img.youtube.com/vi/%s/0.jpg', $code);
-        }
         return '';
     }
 
@@ -31,7 +27,7 @@ class Rutube
         $code = self::getVideoCode($url);
         if ($code) {
             return sprintf(
-                '<iframe width="%s" height="%s" src="https://rutube.ru/play/embed/%s" frameborder="0" frameBorder="0" allow="clipboard-write" mozallowfullscreen webkitAllowFullScreen allowfullscreen></iframe>',
+                '<iframe width="%s" height="%s" src="https://rutube.ru/pl/?pl_video=%s" frameborder="0" allowfullscreen></iframe>',
                     $width,
                     $height,
                     $code
