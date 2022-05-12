@@ -2,6 +2,7 @@
 
 namespace Sprint\Editor\Blocks;
 
+use Sprint\Editor\Tools\Rutube;
 use Sprint\Editor\Tools\Vimeo;
 use Sprint\Editor\Tools\Youtube;
 
@@ -20,12 +21,12 @@ class Video
         );
 
         $services = [
-            'youtube' => Youtube::class,
-            'vimeo'   => Vimeo::class,
+            Youtube::class,
+            Vimeo::class,
+            Rutube::class,
         ];
 
-        $videoHtml = '';
-        foreach ($services as $code => $service) {
+        foreach ($services as $service) {
             $videoHtml = $service::getVideoHtml($block['url'], $block['width'], $block['height']);
             if ($videoHtml) {
                 break;
