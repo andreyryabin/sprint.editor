@@ -1,0 +1,10 @@
+<select class="sp-select">
+    <option value="">нет</option>
+    {{~it.snippets :item}}
+    <option {{?item.file== it.file}}selected="selected" {{?}} value="{{!item.file}}">{{=item.title}}</option>
+    {{~}}
+</select>
+
+<div class="sp-preview">
+    {{=it.description}}
+</div>

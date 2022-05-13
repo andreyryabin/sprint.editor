@@ -1,0 +1,9 @@
+{
+  "title": "Сниппет",
+  "sort": "1200",
+  "js": [
+  ],
+  "templates": [
+    "select.html"
+  ]
+}

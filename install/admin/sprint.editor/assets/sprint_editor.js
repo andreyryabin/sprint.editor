@@ -174,6 +174,7 @@ var sprint_editor = {
             }
         }
     },
+
     afterSort: function (uid) {
         if (!sprint_editor.hasEntry(uid)) {
             return;
@@ -197,6 +198,7 @@ var sprint_editor = {
             }
         }
     },
+
     changeSettings: function (uid, paramName, paramValue) {
         if (!sprint_editor.hasEntry(uid)) {
             return;
@@ -400,6 +402,7 @@ var sprint_editor = {
 
         return compiled;
     },
+
     compileClasses: function (ltname, cssstr, params) {
 
         let selectedCss = cssstr.split(' ');
@@ -449,6 +452,7 @@ var sprint_editor = {
 
         return compiled;
     },
+
     getClassTitle: function (cssname, params) {
         if (params.jsonUserSettings.hasOwnProperty('layout_titles')) {
             if (params.jsonUserSettings.layout_titles[cssname]) {
@@ -488,6 +492,16 @@ var sprint_editor = {
         return layoutSettings;
     },
 
+    getSnippets: function (params) {
+        if (
+            params.hasOwnProperty('jsonUserSettings') &&
+            params.jsonUserSettings.hasOwnProperty('snippets')
+        ) {
+            return params.jsonUserSettings.snippets;
+        }
+        return [];
+    },
+
     safeStringify: function (data) {
         data = JSON.stringify(data);
 
@@ -503,6 +517,7 @@ var sprint_editor = {
 
         return data;
     },
+
     collectSettings($settings) {
         let settcnt = 0;
         let settval = {};

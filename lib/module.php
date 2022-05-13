@@ -50,6 +50,15 @@ class Module
         }
     }
 
+    public static function getSnippetsDir()
+    {
+        if (is_dir(self::getDocRoot() . '/local/admin/sprint.editor/snippets/')) {
+            return self::makeDir('/local/admin/sprint.editor/snippets/');
+        } else {
+            return self::makeDir('/bitrix/admin/sprint.editor/snippets/');
+        }
+    }
+
     public static function getVersion()
     {
         $arModuleVersion = [];

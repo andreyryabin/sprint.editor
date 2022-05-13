@@ -187,4 +187,14 @@ $settings = [
         //        'layout_4',
     ],
 
+    //Сниппеты для блока "Сниппет"
+    //Файлы сниппетов хранятся в папке /local/admin/sprint.editor/snippets или в /bitrix/admin/sprint.editor/snippets
+    //Данный путь можно переопределить в шаблоне блока snippet.php
+    'snippets'       => [
+        [
+            'file'        => 'example.php',
+            'title'       => 'example',
+            'description' => '<strong>Пример сниппета</strong>',
+        ],
+    ],
 ];
