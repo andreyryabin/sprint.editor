@@ -2,16 +2,16 @@
 
 class sprint_editor extends CModule
 {
-    var $MODULE_ID = "sprint.editor";
-    var $MODULE_NAME;
-    var $MODULE_VERSION;
-    var $MODULE_VERSION_DATE;
-    var $MODULE_DESCRIPTION;
-    var $PARTNER_NAME;
-    var $PARTNER_URI;
-    var $MODULE_GROUP_RIGHTS = "Y";
+    public $MODULE_ID = "sprint.editor";
+    public $MODULE_NAME;
+    public $MODULE_VERSION;
+    public $MODULE_VERSION_DATE;
+    public $MODULE_DESCRIPTION;
+    public $PARTNER_NAME;
+    public $PARTNER_URI;
+    public $MODULE_GROUP_RIGHTS = "Y";
 
-    function sprint_editor()
+    public function __construct()
     {
         $arModuleVersion = [];
 
@@ -28,7 +28,7 @@ class sprint_editor extends CModule
         $this->PARTNER_URI = GetMessage("SPRINT_EDITOR_PARTNER_URI");
     }
 
-    function DoInstall()
+    public function DoInstall()
     {
         RegisterModule($this->MODULE_ID);
         RegisterModuleDependences('iblock', 'OnIBlockPropertyBuildList', 'sprint.editor', '\\Sprint\\Editor\\IblockPropertyEditor', 'GetUserTypeDescription');
@@ -38,17 +38,17 @@ class sprint_editor extends CModule
         $this->afterInstallCopyPublic();
     }
 
-    function afterInstallCopyAdmin()
+    public function afterInstallCopyAdmin()
     {
         CopyDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin", true, true);
     }
 
-    function afterInstallCopyPublic()
+    public function afterInstallCopyPublic()
     {
         CopyDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components", true, true);
     }
 
-    function DoUninstall()
+    public function DoUninstall()
     {
         global $DB;
 
