@@ -78,6 +78,8 @@ class AdminEditor
             $userSettings = self::loadSettings($userSettingsName);
         }
 
+        self::setCustomTitles($userSettings);
+
         $filteredBlocks = self::filterBlocks($userSettings);
         $blocksToolbar = self::getBlocksToolbar($userSettings, $filteredBlocks);
 
@@ -255,13 +257,27 @@ class AdminEditor
     public static function getSearchIndex($jsonValue)
     {
         $value = self::prepareValue($jsonValue);
+
         $search = '';
-        foreach ($value['blocks'] as $val) {
-            if ($val['name'] == 'text' && !empty($val['value'])) {
-                $search .= ' ' . $val['value'];
+        foreach ($value['blocks'] as $block) {
+            if ($block['name'] == 'text' && !empty($block['value'])) {
+                $search .= ' ' . $block['value'];
             }
-            if ($val['name'] == 'htag' && !empty($val['value'])) {
-                $search .= ' ' . $val['value'];
+            if ($block['name'] == 'htag' && !empty($block['value'])) {
+                $search .= ' ' . $block['value'];
+            }
+            if ($block['name'] == 'accordion' && !empty($block['items'])) {
+                foreach ($block['items'] as $accordionTab) {
+                    $search .= ' ' . $accordionTab['title'];
+                    foreach ($accordionTab['blocks'] as $accordionTabBlock) {
+                        if ($accordionTabBlock['name'] == 'text' && !empty($accordionTabBlock['value'])) {
+                            $search .= ' ' . $accordionTabBlock['value'];
+                        }
+                        if ($accordionTabBlock['name'] == 'htag' && !empty($accordionTabBlock['value'])) {
+                            $search .= ' ' . $block['value'];
+                        }
+                    }
+                }
             }
         }
 
@@ -510,6 +526,17 @@ class AdminEditor
                 return !empty($layout['title']);
             }
         );
+    }
+
+    protected static function setCustomTitles($userSettings)
+    {
+        if (!empty($userSettings['block_titles'])) {
+            foreach ($userSettings['block_titles'] as $name => $title) {
+                if (isset(self::$allblocks[$name])) {
+                    self::$allblocks[$name]['title'] = $title;
+                }
+            }
+        }
     }
 
     protected static function getBlocksToolbar($userSettings, $filteredBlocks)

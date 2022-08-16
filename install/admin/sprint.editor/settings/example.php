@@ -72,6 +72,11 @@ $settings = [
         'col-md-3'  => '25%',
     ],
 
+    //Названия блоков переопределяющие значения по умолчанию
+    'block_titles'    => [
+        //'text' => 'Текст',
+    ],
+
     //сортировка по названию блока
     //'block_sort'     => 'title',
 
@@ -190,7 +195,7 @@ $settings = [
     //Сниппеты для блока "Сниппет"
     //Файлы сниппетов хранятся в папке /local/admin/sprint.editor/snippets или в /bitrix/admin/sprint.editor/snippets
     //Данный путь можно переопределить в шаблоне блока snippet.php
-    'snippets'       => [
+    'snippets'        => [
         [
             'file'        => 'example.php',
             'title'       => 'example',
