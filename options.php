@@ -242,7 +242,7 @@ $taskList = UpgradeManager::getTasks();
     </a></p>
 
 <p><?= GetMessage('SPRINT_EDITOR_HELP_DONATE') ?> <br/>
-    <a target="_blank" href="https://money.yandex.ru/to/410012104240288/500">
-        https://money.yandex.ru/to/410012104240288/500
+    <a target="_blank" href="https://yoomoney.ru/to/410012104240288">
+        https://yoomoney.ru/to/410012104240288
     </a></p>
 
