@@ -1,13 +1,15 @@
 <div class="sp-x-box" data-uid="{{=it.uid}}">
     <div class="sp-x-buttons sp-x-buttons-box">
-        {{?it.enableChange}}
-        <div class="sp-x-buttons-group sp-x-pp-box-hover">
+        <div class="sp-x-buttons-group">
+            {{?it.enableChange}}
             <span class="sp-x-btn sp-x-pp-box-open">&equiv;</span>
+            {{?}}
             {{?it.enableChange}}
             <span title="{{=it.hint}}" class="sp-x-btn sp-x-box-handle">{{=it.title}}</span>
             {{??}}
-            <span title="{{=it.hint}}" class="sp-x-btn ">{{=it.title}}</span>
+            <span title="{{=it.hint}}" class="sp-x-btn">{{=it.title}}</span>
             {{?}}
+            {{?it.enableChange}}
             <div class="sp-x-pp-box">
                 <div class="sp-x-pp-group">
                     <span title="Вставить блоки после этого блока" class="sp-x-btn sp-x-box-paste">&crarr; Вставить</span>
@@ -22,8 +24,8 @@
                     <span title="Удалить блок" class="sp-x-btn sp-x-box-del">x Удалить</span>
                 </div>
             </div>
+            {{?}}
         </div>
-        {{?}}
     </div>
     {{?it.compiled && it.compiled.length > 0}}
     <div class="sp-x-box-settings">
@@ -41,6 +43,9 @@
     </div>
     {{?}}
     <div class="sp-x-box-block"></div>
+    {{?it.description}}
+    <div class="sp-x-box-description adm-info-message">{{=it.description}}</div>
+    {{?}}
     <div class="sp-x-separator">
         {{?it.enableChange}}
         <span title="Добавить блок" class="sp-x-separator-handle sp-x-btn sp-x-pp-blocks-open">+</span>

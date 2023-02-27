@@ -218,6 +218,11 @@
     top: -15px;
 }
 
+.bx-core-adm-dialog div.sp-x-box-description.adm-info-message,
+.sp-x-box-description.adm-info-message{
+    margin: 10px 0 0 0 !important;
+}
+
 .sp-x-separator-handle.sp-x-pp-blocks-open {
     position: absolute;
     left: -50px;

@@ -1,4 +1,4 @@
-<? /**
+<?php /**
  * @var $this   SprintEditorBlocksComponent
  * @var $layout array
  *
@@ -8,22 +8,22 @@
  */
 $isSimpleGrid = (count($layout['columns']) == 1 && empty($layout['columns'][0]['css']));
 ?>
-<? if ($isSimpleGrid) { ?>
-    <? foreach ($layout['columns'] as $column) { ?>
-        <? foreach ($column['blocks'] as $block) { ?>
-            <? $this->includeBlock($block) ?>
-        <? } ?>
-    <? } ?>
-<? } else { ?>
+<?php if ($isSimpleGrid) { ?>
+    <?php foreach ($layout['columns'] as $column) { ?>
+        <?php foreach ($column['blocks'] as $block) { ?>
+            <?php $this->includeBlock($block) ?>
+        <?php } ?>
+    <?php } ?>
+<?php } else { ?>
     <div class="sp-container">
         <div class="row">
-            <? foreach ($layout['columns'] as $column) { ?>
-                <div<? if (!empty($column['css'])) { ?> class="<?= $column['css'] ?>"<? } ?>>
-                    <? foreach ($column['blocks'] as $block) { ?>
-                        <? $this->includeBlock($block) ?>
-                    <? } ?>
+            <?php foreach ($layout['columns'] as $column) { ?>
+                <div<?php if (!empty($column['css'])) { ?> class="<?= $column['css'] ?>"<?php } ?>>
+                    <?php foreach ($column['blocks'] as $block) { ?>
+                        <?php $this->includeBlock($block) ?>
+                    <?php } ?>
                 </div>
-            <? } ?>
+            <?php } ?>
         </div>
     </div>
-<? } ?>
+<?php } ?>

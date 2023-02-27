@@ -75,7 +75,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
 
-        $el.on('click', '.sp-gallery-toggle', function () {
+        $el.on('click', '.sp-gallery-toggle', function (e) {
             if ($el.hasClass('sp-show')) {
                 $el.find('.sp-source').hide(250);
                 $el.removeClass('sp-show');
@@ -90,10 +90,16 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             closeedit();
         });
 
-        $el.on('click', '.sp-item', function () {
-            $el.find('.sp-item').removeClass('sp-x-active');
-            $(this).addClass('sp-x-active');
-            openedit($(this).data('uid'));
+        $el.on('click', '.sp-item', function (e) {
+            e.stopPropagation();
+            if ($(this).hasClass('sp-x-active')) {
+                $(this).removeClass('sp-x-active');
+                closeedit();
+            } else {
+                $el.find('.sp-item').removeClass('sp-x-active');
+                $(this).addClass('sp-x-active');
+                openedit($(this).data('uid'));
+            }
         });
 
         $el.find('.sp-download-url').bindWithDelay('input', function () {

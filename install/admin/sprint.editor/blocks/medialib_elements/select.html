@@ -1,5 +1,5 @@
 <div class="sp-field">
-    <input type="button" class="sp-medialib-toggle" value="Выбрать">
+    <span class="sp-x-btn sp-medialib-toggle">Выбрать</span>
 </div>
 <div class="sp-source">
     <div class="sp-filter">
@@ -13,8 +13,8 @@
             </select>
 
             {{?it.collection_id && it.page_cnt}}
-            <input class="sp-nav-left" type="button" value="&larr;">
-            <input class="sp-nav-right" type="button" value="&rarr;">
+            <span class="sp-x-btn sp-nav-left">&larr;</span>
+            <span class="sp-x-btn sp-nav-right">&rarr;</span>
             {{=it.page_num}}/{{=it.page_cnt}}
             {{?}}
 

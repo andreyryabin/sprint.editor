@@ -78,9 +78,10 @@ class AdminEditor
             $userSettings = self::loadSettings($userSettingsName);
         }
 
-        self::setCustomTitles($userSettings);
-
         $filteredBlocks = self::filterBlocks($userSettings);
+        $filteredBlocks = self::setCustomTitles($filteredBlocks, $userSettings);
+        $filteredBlocks = self::setCustomConfigs($filteredBlocks, $userSettings);
+
         $blocksToolbar = self::getBlocksToolbar($userSettings, $filteredBlocks);
 
         $filteredLayouts = array_merge(
@@ -126,7 +127,7 @@ class AdminEditor
                 'blocksToolbar'    => $blocksToolbar,
                 'layoutsToolbar'   => $layoutsToolbar,
                 'templates'        => Locale::convertToWin1251IfNeed(self::$templates),
-                'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
+                'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed($filteredBlocks)),
                 'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
                 'enableChange'     => $enableChange,
                 'userSettingsName' => $userSettingsName,
@@ -412,6 +413,8 @@ class AdminEditor
             unset($param['templates']);
             unset($param['css']);
             unset($param['js']);
+            unset($param['isUtf8']);
+            unset($param['isWin1251']);
 
             self::$allblocks[$blockName] = $param;
         }
@@ -528,15 +531,28 @@ class AdminEditor
         );
     }
 
-    protected static function setCustomTitles($userSettings)
+    protected static function setCustomConfigs($blocks, $userSettings)
     {
-        if (!empty($userSettings['block_titles'])) {
-            foreach ($userSettings['block_titles'] as $name => $title) {
-                if (isset(self::$allblocks[$name])) {
-                    self::$allblocks[$name]['title'] = $title;
+        if (!empty($userSettings['block_configs'])) {
+            foreach ($userSettings['block_configs'] as $name => $config) {
+                if (isset($blocks[$name]) && is_array($config)) {
+                    $blocks[$name] = array_merge($blocks[$name], $config);
                 }
             }
         }
+        return $blocks;
+    }
+
+    protected static function setCustomTitles($blocks, $userSettings)
+    {
+        if (!empty($userSettings['block_titles'])) {
+            foreach ($userSettings['block_titles'] as $name => $title) {
+                if (isset($blocks[$name])) {
+                    $blocks[$name]['title'] = $title;
+                }
+            }
+        }
+        return $blocks;
     }
 
     protected static function getBlocksToolbar($userSettings, $filteredBlocks)
@@ -633,7 +649,7 @@ class AdminEditor
 
     protected static function sortBlocksByUserSettings($userSettings, array $filteredItemBlocks)
     {
-        $sortMethod = isset($userSettings['block_sort']) ? $userSettings['block_sort'] : '';
+        $sortMethod = $userSettings['block_sort'] ?? '';
 
         if ($sortMethod == 'title') {
             return self::sortByStr($filteredItemBlocks, 'title');

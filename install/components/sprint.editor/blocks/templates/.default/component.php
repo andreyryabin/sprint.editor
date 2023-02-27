@@ -1,6 +1,6 @@
-<? /**
+<?php /**
  * @var $block array
- * @var $this SprintEditorBlocksComponent
+ * @var $this  SprintEditorBlocksComponent
  */
 global $APPLICATION;
 if (!empty($block['component_name'])) {
@@ -15,4 +15,4 @@ if (!empty($block['component_name'])) {
             'HIDE_ICONS' => 'Y',
         ]
     );
-} ?>
+}

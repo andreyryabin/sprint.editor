@@ -1,3 +1,3 @@
-<? /** @var $block array */ ?><? echo '<pre>';
+<?php /** @var $block array */ ?><?php echo '<pre>';
 print_r($block);
 echo '</pre>'; ?>

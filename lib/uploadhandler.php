@@ -533,8 +533,7 @@ class UploadHandler
             }
             $this->head();
             if ($this->get_server_var('HTTP_CONTENT_RANGE')) {
-                $files = isset($content[$this->options['param_name']]) ?
-                    $content[$this->options['param_name']] : null;
+                $files = $content[$this->options['param_name']] ?? null;
                 if ($files && is_array($files) && is_object($files[0]) && $files[0]->size) {
                     $this->header(
                         'Range: 0-' . (
@@ -605,18 +604,15 @@ class UploadHandler
                 // param_name is a single object identifier like "file",
                 // $upload is a one-dimensional array:
                 $files[] = $this->handle_file_upload(
-                    isset($upload['tmp_name']) ? $upload['tmp_name'] : null,
+                    $upload['tmp_name'] ?? null,
                     $file_name
                         ? $file_name
-                        : (isset($upload['name']) ?
-                        $upload['name'] : null),
+                        : ($upload['name'] ?? null),
                     $size
                         ? $size
-                        : (isset($upload['size']) ?
-                        $upload['size'] : $this->get_server_var('CONTENT_LENGTH')),
-                    isset($upload['type']) ?
-                        $upload['type'] : $this->get_server_var('CONTENT_TYPE'),
-                    isset($upload['error']) ? $upload['error'] : null,
+                        : ($upload['size'] ?? $this->get_server_var('CONTENT_LENGTH')),
+                    $upload['type'] ?? $this->get_server_var('CONTENT_TYPE'),
+                    $upload['error'] ?? null,
                     null,
                     $content_range
                 );
@@ -659,7 +655,7 @@ class UploadHandler
                         $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
                     }
                 } else {
-                    $checkErr = CFile::CheckImageFile($aFile, 0, 0, 0);
+                    $checkErr = CFile::CheckImageFile($aFile);
                     if (empty($checkErr)) {
                         $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
                         if ($bitrixId) {
@@ -668,7 +664,7 @@ class UploadHandler
                     }
                 }
             } else {
-                $checkErr = CFile::CheckFile($aFile, 0, 0, 0);
+                $checkErr = CFile::CheckFile($aFile);
                 if (empty($checkErr)) {
                     $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
                     if ($bitrixId) {
@@ -712,7 +708,7 @@ class UploadHandler
     protected function downloadImage($url)
     {
         $aFile = CFile::MakeFileArray($url);
-        $checkErr = CFile::CheckImageFile($aFile, 0, 0, 0);
+        $checkErr = CFile::CheckImageFile($aFile);
         $file = false;
         if (empty($checkErr)) {
             $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
@@ -727,7 +723,7 @@ class UploadHandler
     {
         $aFile = CFile::MakeFileArray($url);
 
-        $checkErr = CFile::CheckFile($aFile, 0, 0, 0);
+        $checkErr = CFile::CheckFile($aFile);
         $file = false;
         if (empty($checkErr)) {
             $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');

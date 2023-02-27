@@ -1,7 +1,7 @@
-<? /** @var $block array * */
+<?php /** @var $block array * */
 /**@var $APPLICATION CMain */ ?>
 <div class="sp-yandex-map">
-    <? global $APPLICATION;
+    <?php global $APPLICATION;
     $APPLICATION->IncludeComponent(
         "bitrix:map.yandex.view",
         "",

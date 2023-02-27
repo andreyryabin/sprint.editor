@@ -76,7 +76,17 @@ $settings = [
     'block_titles'    => [
         //'text' => 'Текст',
     ],
-
+    /* параметр заменяет значения по умолчанию, заданные в файлах config.json блоков
+    'block_configs'  => [
+        'text' => [
+             //html-вид кнопки вставки блока
+            'button'  => 'Текст <br/><img src="/local/admin/sprint.editor/settings/icons/text_icon.png">',
+            //новый заголовок
+            'title' => 'Текст1',
+            'hint'  => 'Подсказка при наведении на название блока',
+            'description'  => 'Видимая подсказка под блоком',
+        ],
+    ],*/
     //сортировка по названию блока
     //'block_sort'     => 'title',
 

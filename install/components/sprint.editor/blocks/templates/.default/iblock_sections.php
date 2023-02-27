@@ -1,4 +1,4 @@
-<? /** @var $block array */ ?><?
+<?php /** @var $block array */ ?><?php
 $sections = Sprint\Editor\Blocks\IblockSections::getList(
     $block, [
         'NAME',
@@ -7,9 +7,9 @@ $sections = Sprint\Editor\Blocks\IblockSections::getList(
 );
 ?>
 <div class="sp-iblock-sections">
-    <? foreach ($sections as $aItem): ?>
+    <?php foreach ($sections as $aItem) { ?>
         <div>
             <a href="<?= $aItem['SECTION_PAGE_URL'] ?>"><?= $aItem['NAME'] ?></a> <br/>
         </div>
-    <? endforeach; ?>
+    <?php } ?>
 </div>

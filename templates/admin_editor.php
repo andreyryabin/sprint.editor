@@ -30,7 +30,9 @@
                     if (!empty($aGroup['blocks'])) { ?>
                         <div class="sp-x-pp-group">
                             <?php foreach ($aGroup['blocks'] as $aBlock) { ?>
-                                <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
+                                <span class="sp-x-btn sp-x-btn-<?= $aBlock['name'] ?>" data-name="<?= $aBlock['name'] ?>">
+                                    <?= $aBlock['button'] ?? $aBlock['title'] ?>
+                                </span>
                             <?php } ?>
                         </div>
                     <?php }
@@ -45,7 +47,9 @@
             <div class="sp-x-pp-group">
                 <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
                 <?php foreach ($aGroup['blocks'] as $aBlock) { ?>
-                    <span class="sp-x-btn" data-name="<?= $aBlock['name'] ?>"><?= $aBlock['title'] ?></span>
+                    <span class="sp-x-btn sp-x-btn-<?= $aBlock['name'] ?>" data-name="<?= $aBlock['name'] ?>">
+                        <?= $aBlock['button'] ?? $aBlock['title'] ?>
+                    </span>
                 <?php } ?>
             </div>
         <?php } ?>

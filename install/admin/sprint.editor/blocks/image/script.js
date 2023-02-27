@@ -109,10 +109,12 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
 
     var togglepanel = function () {
         if ($el.hasClass('sp-show')) {
-            $el.find('.sp-panel').hide(250);
+            $el.find('.sp-source').hide(250);
+            $el.find('.sp-edit').hide(250);
             $el.removeClass('sp-show');
         } else {
-            $el.find('.sp-panel').show(250);
+            $el.find('.sp-source').show(250);
+            $el.find('.sp-edit').show(250);
             $el.addClass('sp-show');
         }
     }

@@ -1,16 +1,16 @@
-<? /**
+<?php /**
  * @var $block array
  * @var $this  SprintEditorBlocksComponent
  */ ?>
 <div class="sp-accordion">
-    <? foreach ($block['items'] as $item): ?>
+    <?php foreach ($block['items'] as $item) { ?>
         <div class="sp-accordion-title">
             <?= $item['title'] ?>
         </div>
         <div class="sp-accordion-container">
-            <? foreach ($item['blocks'] as $itemblock): ?>
-                <? $this->includeBlock($itemblock) ?>
-            <? endforeach; ?>
+            <?php foreach ($item['blocks'] as $itemblock) { ?>
+                <?php $this->includeBlock($itemblock) ?>
+            <?php } ?>
         </div>
-    <? endforeach; ?>
+    <?php } ?>
 </div>

@@ -45,7 +45,8 @@ class Component
     static protected function calcArrayExpression($str)
     {
         $str = substr($str, 8, -2);
-        $str = explode(',', $str);
+        //$str = explode(',', $str);
+        $str = explode('",', $str);
         foreach ($str as $key => $val) {
             $str[$key] = trim($val, ' \'"');
         }

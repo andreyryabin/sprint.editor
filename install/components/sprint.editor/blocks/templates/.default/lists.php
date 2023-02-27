@@ -1,4 +1,4 @@
-<? /** @var $block array */
+<?php /** @var $block array */
 
 $settings = !empty($block['settings']) ? $block['settings'] : [];
 $tag = !empty($settings['type']) ? $settings['type'] : 'ul';

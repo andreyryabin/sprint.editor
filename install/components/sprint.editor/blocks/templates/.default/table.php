@@ -1,15 +1,16 @@
-<? /** @var $block array */ ?>
+<?php /** @var $block array */ ?>
 <div class="sp-block-table">
     <table>
-        <? foreach ($block['rows'] as $cols): ?>
+        <?php foreach ($block['rows'] as $cols) { ?>
             <tr>
-                <? foreach ($cols as $col): $col = Sprint\Editor\Blocks\Table::prepareColumn($col); ?>
-                    <td <? if ($col['style']): ?>style="<?= $col['style'] ?>"<? endif; ?>
-                        <? if ($col['colspan']): ?>colspan="<?= $col['colspan'] ?>"<? endif; ?>
-                        <? if ($col['rowspan']): ?>rowspan="<?= $col['rowspan'] ?>"<? endif; ?>
+                <?php foreach ($cols as $col) {
+                    $col = Sprint\Editor\Blocks\Table::prepareColumn($col); ?>
+                    <td <?php if ($col['style']){ ?>style="<?= $col['style'] ?>"<?php } ?>
+                        <?php if ($col['colspan']){ ?>colspan="<?= $col['colspan'] ?>"<?php } ?>
+                        <?php if ($col['rowspan']){ ?>rowspan="<?= $col['rowspan'] ?>"<?php } ?>
                     ><?= $col['text'] ?></td>
-                <? endforeach; ?>
+                <?php } ?>
             </tr>
-        <? endforeach; ?>
+        <?php } ?>
     </table>
 </div>

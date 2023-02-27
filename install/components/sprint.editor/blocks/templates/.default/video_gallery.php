@@ -1,7 +1,7 @@
-<? /**
+<?php /**
  * @var $block array
  * @var $this  SprintEditorBlocksComponent
- */ ?><?
+ */ ?><?php
 
 $this->registerCss('/bitrix/admin/sprint.editor/assets/video-gallery/css/sprint-video-gallery.css');
 $this->registerJs('/bitrix/admin/sprint.editor/assets/video-gallery/js/jquery.nicescroll.min.js');
@@ -14,20 +14,20 @@ $items = Sprint\Editor\Blocks\VideoGallery::getItems(
     'height' => 240,
     'exact'  => 0,
 ], [
-    'width'  => 1024,
-    'height' => 768,
-    'exact'  => 0,
-]
+        'width'  => 1024,
+        'height' => 768,
+        'exact'  => 0,
+    ]
 );
 
-?><? if (!empty($items)): ?>
+?><?php if (!empty($items)) { ?>
     <div class="sp-video-gallery">
-        <? foreach ($items as $item): ?>
-            <? if (!empty($item['YOUTUBE_CODE'])): ?>
+        <?php foreach ($items as $item) { ?>
+            <?php if (!empty($item['YOUTUBE_CODE'])) { ?>
                 <div data-type="youtube" data-src="<?= $item['YOUTUBE_CODE'] ?>"><img src="<?= $item['SRC'] ?>" alt="<?= $item['DESCRIPTION'] ?>"></div>
-            <? else: ?>
+            <?php } else { ?>
                 <div data-type="image" data-src="<?= $item['DETAIL_SRC'] ?>"><img src="<?= $item['SRC'] ?>" alt="<?= $item['DESCRIPTION'] ?>"></div>
-            <? endif ?>
-        <? endforeach; ?>
+            <?php } ?>
+        <?php } ?>
     </div>
-<? endif; ?>
+<?php } ?>

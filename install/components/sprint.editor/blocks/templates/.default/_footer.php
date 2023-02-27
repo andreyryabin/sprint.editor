@@ -1,4 +1,4 @@
-<? /**
+<?php /**
  * Подключается после вывода всех блоков
  *
  * @var $this     SprintEditorBlocksComponent

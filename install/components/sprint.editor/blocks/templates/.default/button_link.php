@@ -1,4 +1,4 @@
-<? /** @var $block array */ ?>
-<? if (!empty($block['title']) && !empty($block['url'])): ?>
-    <a class="sp-button_link" <? if (!empty($block['target'])): ?>target="<?= $block['target'] ?>" <? endif; ?> href="<?= $block['url'] ?>"><?= $block['title'] ?></a>
-<? endif; ?>
+<?php /** @var $block array */ ?>
+<?php if (!empty($block['title']) && !empty($block['url'])) { ?>
+    <a class="sp-button_link" <?php if (!empty($block['target'])){ ?>target="<?= $block['target'] ?>" <?php } ?> href="<?= $block['url'] ?>"><?= $block['title'] ?></a>
+<?php } ?>
