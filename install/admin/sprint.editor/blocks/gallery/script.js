@@ -76,13 +76,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
 
 
         $el.on('click', '.sp-gallery-toggle', function (e) {
-            if ($el.hasClass('sp-show')) {
-                $el.find('.sp-source').hide(250);
-                $el.removeClass('sp-show');
-            } else {
-                $el.find('.sp-source').show(250);
-                $el.addClass('sp-show');
-            }
+            togglepanel();
         });
 
         $el.on('click', '.sp-item-del', function () {
@@ -157,8 +151,21 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
 
             }
         });
-    };
 
+
+        if (!data.images || !data.images.length) {
+            togglepanel();
+        }
+    };
+    var togglepanel = function () {
+        if ($el.hasClass('sp-show')) {
+            $el.find('.sp-source').hide(250);
+            $el.removeClass('sp-show');
+        } else {
+            $el.find('.sp-source').show(250);
+            $el.addClass('sp-show');
+        }
+    }
     var renderitem = function (uid) {
         if (!itemsCollection[uid]) {
             return;

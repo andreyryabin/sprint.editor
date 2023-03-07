@@ -127,7 +127,7 @@ class AdminEditor
                 'blocksToolbar'    => $blocksToolbar,
                 'layoutsToolbar'   => $layoutsToolbar,
                 'templates'        => Locale::convertToWin1251IfNeed(self::$templates),
-                'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed($filteredBlocks)),
+                'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
                 'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
                 'enableChange'     => $enableChange,
                 'userSettingsName' => $userSettingsName,
