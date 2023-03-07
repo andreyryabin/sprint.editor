@@ -1,66 +1,18 @@
 /* common */
-.sp-file {
-    max-width: 150px;
-    text-align: center;
-    display: inline-block;
-    overflow: hidden;
+.sp-x-btn-file {
     position: relative;
-    text-decoration: none;
     cursor: pointer;
-    color: #3f4b54;
-    padding: 6px 15px 5px;
-    line-height: 16px;
-    /*-webkit-border-radius: 4px;*/
-    /*border-radius: 4px;*/
-    border: 0;
-    -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .11), 0 1px 1px rgba(0, 0, 0, .3), inset 0 1px #fff, inset 0 0 1px rgba(255, 255, 255, .5);
-    box-shadow: 0 0 1px rgba(0, 0, 0, .3), 0 1px 1px rgba(0, 0, 0, .3), inset 0 1px 0 #fff, inset 0 0 1px rgba(255, 255, 255, .5);
-    background-color: #e0e9ec;
-    background-image: -webkit-linear-gradient(bottom, #d7e3e7, #fff) !important;
-    background-image: -moz-linear-gradient(bottom, #d7e3e7, #fff) !important;
-    background-image: -ms-linear-gradient(bottom, #d7e3e7, #fff) !important;
-    background-image: -o-linear-gradient(bottom, #d7e3e7, #fff) !important;
-    background-image: linear-gradient(bottom, #d7e3e7, #fff) !important;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: bold;
-    font-size: 13px;
-    height: 18px;
-    text-shadow: 0 1px rgba(255, 255, 255, 0.7);
-    vertical-align: middle;
-    -webkit-font-smoothing: antialiased
 }
-
-.sp-file:hover {
-    text-decoration: none;
-    background: #f3f6f7 !important;
-    background-image: -webkit-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
-    background-image: -moz-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
-    background-image: -ms-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
-    background-image: -o-linear-gradient(top, #f8f8f9, #f2f6f8) !important;
-    background-image: linear-gradient(top, #f8f8f9, #f2f6f8) !important
-}
-
-.sp-file:active {
-    background-color: #b7c4c9 !important;
-    -webkit-box-shadow: inset 0 1px 1px 1px rgba(103, 109, 123, .78);
-    box-shadow: inset 0 1px 1px 1px rgba(103, 109, 123, .78);
-    background-image: -webkit-linear-gradient(top, rgba(179, 194, 200, .96), rgba(202, 215, 219, .96)) !important;
-    background-image: -moz-linear-gradient(top, rgba(179, 194, 200, .96), rgba(202, 215, 219, .96)) !important;
-    background-image: -ms-linear-gradient(top, rgba(179, 194, 200, .96), rgba(202, 215, 219, .96)) !important;
-    background-image: -o-linear-gradient(top, rgba(179, 194, 200, .96), rgba(202, 215, 219, .96)) !important;
-    background-image: linear-gradient(top, rgba(179, 194, 200, .96), rgba(202, 215, 219, .96)) !important;
-    border-top: transparent;
-}
-
-.sp-file input[type=file] {
+.sp-x-btn-file input[type=file] {
     cursor: pointer;
     direction: ltr;
-    font-size: 200px !important;
+    width: 100%;
+    height: 100%;
     margin: 0;
     opacity: 0;
     position: absolute;
-    right: 0;
     top: 0;
+    left:0;
     display: block;
 }
 
@@ -223,7 +175,7 @@
     margin: 10px 0 0 0 !important;
 }
 
-.sp-x-separator-handle.sp-x-pp-blocks-open {
+.sp-x-separator-handle.sp-x-toolbar-open {
     position: absolute;
     left: -50px;
     background: #fff;
@@ -406,8 +358,8 @@ a.sp-x-btn:hover,
 .bx-core-adm-dialog div.sp-x-pp-box,
 .sp-x-pp-lt,
 .bx-core-adm-dialog div.sp-x-pp-lt,
-.sp-x-pp-blocks,
-.bx-core-adm-dialog div.sp-x-pp-blocks {
+.sp-x-toolbar,
+.bx-core-adm-dialog div.sp-x-toolbar {
     display: none;
 
     max-width: 500px;
@@ -427,28 +379,28 @@ a.sp-x-btn:hover,
     rgba(0, 0, 0, .2) 0 1px 1px;
 }
 
-.bx-core-adm-dialog div.sp-x-pp-blocks,
-.sp-x-pp-blocks {
+.bx-core-adm-dialog div.sp-x-toolbar,
+.sp-x-toolbar {
     /*left: 0;*/
     text-align: left;
 }
 
-.bx-core-adm-dialog div.sp-x-pp-blocks,
-.sp-x-pp-blocks {
+.bx-core-adm-dialog div.sp-x-toolbar,
+.sp-x-toolbar {
     /*left: 0;*/
     /*top: 0;*/
     margin: 0;
 }
 
-.bx-core-adm-dialog .sp-x-editor-simple div.sp-x-pp-blocks,
-.sp-x-editor-simple .sp-x-pp-blocks {
+.bx-core-adm-dialog .sp-x-editor-simple div.sp-x-toolbar,
+.sp-x-editor-simple .sp-x-toolbar {
     /*left: 0;*/
     /*top: 0;*/
     margin: 0;
 }
 
-.bx-core-adm-dialog .sp-x-separator div.sp-x-pp-blocks,
-.sp-x-separator .sp-x-pp-blocks {
+.bx-core-adm-dialog .sp-x-separator div.sp-x-toolbar,
+.sp-x-separator .sp-x-toolbar {
     left: -50px;
     top: 15px;
 }
@@ -493,8 +445,8 @@ a.sp-x-btn:hover,
 .bx-core-adm-dialog div.sp-x-buttons-lt1,
 .sp-x-buttons-box,
 .bx-core-adm-dialog div.sp-x-buttons-box,
-.sp-x-pp-blocks,
-.bx-core-adm-dialog div.sp-x-pp-blocks,
+.sp-x-toolbar,
+.bx-core-adm-dialog div.sp-x-toolbar,
 .sp-x-pp-group,
 .bx-core-adm-dialog div.sp-x-pp-group {
     /*text-align: center;*/

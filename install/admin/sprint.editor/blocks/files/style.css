@@ -21,12 +21,13 @@
 }
 
 .sp-block-files .sp-item-desc {
-    width: 80%;
+    width: 300px
 }
 
 .sp-block-files .sp-edit {
     display: none;
     background: #ddd;
+    padding: 10px;
 }
 
 .sp-block-files .sp-x-active {
@@ -43,6 +44,7 @@
 .sp-block-files .sp-source {
     background: #FFEBC1;
     display: none;
+    padding: 10px;
 }
 
 .sp-block-files.sp-show .sp-source {
@@ -50,12 +52,7 @@
 }
 
 .sp-block-files .sp-download-url {
-    width: 80%;
-}
-
-
-.sp-block-files .sp-fields {
-    padding: 10px;
+    width: 300px
 }
 
 .sp-block-files .sp-field {

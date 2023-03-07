@@ -36,9 +36,9 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
             renderitem(uid);
         });
 
-        var $btn = $el.find('.sp-file');
+        var $btn = $el.find('.sp-x-btn-file');
         var $btninput = $btn.find('input[type=file]');
-        var $label = $btn.find('strong');
+        var $label = $btn.find('label');
         var labeltext = $label.text();
 
         $el.find('.sp-item-desc').bindWithDelay('input', function () {
@@ -90,10 +90,16 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
             closeedit();
         });
 
-        $el.on('click', '.sp-item', function () {
-            $el.find('.sp-item').removeClass('sp-x-active');
-            $(this).addClass('sp-x-active');
-            openedit($(this).data('uid'));
+        $el.on('click', '.sp-item', function (e) {
+            e.stopPropagation();
+            if ($(this).hasClass('sp-x-active')) {
+                $(this).removeClass('sp-x-active');
+                closeedit();
+            } else {
+                $el.find('.sp-item').removeClass('sp-x-active');
+                $(this).addClass('sp-x-active');
+                openedit($(this).data('uid'));
+            }
         });
 
         $el.find('.sp-download-url').bindWithDelay('input', function () {

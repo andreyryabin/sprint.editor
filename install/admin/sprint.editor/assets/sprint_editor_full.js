@@ -177,7 +177,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         popupToggle();
     });
 
-    $editor.on('click', '.sp-x-pp-blocks .sp-x-btn', function (e) {
+    $editor.on('click', '.sp-x-toolbar .sp-x-btn', function (e) {
         e.preventDefault();
         addByNameBlock($(this));
     });
@@ -202,7 +202,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         popupToggle($(this));
     });
 
-    $editor.on('click', '.sp-x-pp-blocks-open', function (e) {
+    $editor.on('click', '.sp-x-toolbar-open', function (e) {
         e.preventDefault();
         popupToggle($(this));
     });
@@ -416,10 +416,10 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         function popupHide() {
             $editor.find('.sp-x-pp-box').hide();
             $editor.find('.sp-x-pp-lt').hide();
-            $editor.find('.sp-x-pp-blocks').hide();
+            $editor.find('.sp-x-toolbar').hide();
             $editor.find('.sp-x-pp-box-open').removeClass('sp-x-active');
             $editor.find('.sp-x-pp-lt-open').removeClass('sp-x-active');
-            $editor.find('.sp-x-pp-blocks-open').removeClass('sp-x-active');
+            $editor.find('.sp-x-toolbar-open').removeClass('sp-x-active');
         }
 
 
@@ -434,8 +434,8 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-lt');
         } else if ($handler.hasClass('sp-x-pp-box-open')) {
             $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-box');
-        } else if ($handler.hasClass('sp-x-pp-blocks-open')) {
-            $popup = $editor.find('.sp-x-pp-blocks');
+        } else if ($handler.hasClass('sp-x-toolbar-open')) {
+            $popup = $editor.find('.sp-x-toolbar');
             if (!$popup || $popup.length <= 0) {
                 $popup = $(sprint_editor.renderTemplate('pp-blocks' + currentEditorParams.uniqid, {}));
             }

@@ -98,9 +98,9 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
             sprint_editor.renderTemplate('video_gallery-edit', itemsCollection[uid])
         ).show(250);
 
-        var $btn = $el.find('.sp-file');
+        var $btn = $el.find('.sp-x-btn-file');
         var $btninput = $btn.find('input[type=file]');
-        var $label = $btn.find('strong');
+        var $label = $btn.find('label');
         var labeltext = $label.text();
 
 

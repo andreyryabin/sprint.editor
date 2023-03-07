@@ -1,12 +1,12 @@
+.sp-block-image {
+    /*border-radius: 10px;*/
+    /*position: relative;*/
+}
+
 .sp-block-image .sp-result {
     min-height: 210px;
     overflow: hidden;
-    text-align: center;
-    border: 2px solid #ccc;
-}
-
-.sp-block-image .sp-image-toggle {
-    cursor: pointer;
+    background: #eee;
 }
 
 .sp-block-image .sp-result img {
@@ -17,39 +17,56 @@
     height: 210px;
 }
 
+.sp-block-image .sp-item-del {
+    /*position: absolute;*/
+    /*top: 2px;*/
+    /*left: 2px;*/
+    /*border-radius: 10px;*/
+    /*padding: 10px;*/
+}
+
 .sp-block-image .sp-edit {
     background: #ddd;
+    /*position: absolute;*/
+    /*bottom: 0;*/
+    /*left: 10%;*/
+    /*width: 80%;*/
+    /*border-radius: 10px;*/
+    padding: 10px;
 }
 
 .sp-block-image .sp-source {
     background: #FFEBC1;
-
+    /*width: 80%;*/
+    /*border-radius: 10px;*/
+    /*position: absolute;*/
+    /*top:0;*/
+    /*left: 0;*/
+    padding: 10px;
+    /*width: 100%;*/
 }
 
-.sp-block-image .sp-source,
-.sp-block-image .sp-edit {
+.sp-block-image .sp-download-url {
+    width: 300px
+}
+
+.sp-block-image .sp-item-text {
+    width: 300px
+}
+
+
+.sp-block-image .sp-source {
     display: none;
 }
 
-.sp-block-image.sp-show .sp-source,
-.sp-block-image.sp-show .sp-edit {
+.sp-block-image .sp-edit {
     display: block;
 }
 
-
-.sp-block-image .sp-download-url,
-.sp-block-image .sp-item-text {
-    width: 80%;
+.sp-block-image.sp-show .sp-source {
+    display: block;
 }
 
-.sp-block-image .sp-fields {
-    padding: 10px;
-}
-
-.sp-block-image .sp-field {
-    margin-bottom: 10px;
-}
-
-.sp-block-image .sp-field:last-child {
-    margin-bottom: 0;
+.sp-block-image.sp-show .sp-edit {
+    display: none;
 }

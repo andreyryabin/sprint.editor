@@ -1,22 +1,18 @@
-<div class="sp-fields sp-source">
-    <div class="sp-field">
-        <input class="sp-download-url" type="text" placeholder="Скачать изображение по ссылке">
-    </div>
-    <div class="sp-field"><span class="sp-note">или</span></div>
-    <div class="sp-field">
-        <div class="sp-file">
-            <strong>Загрузить</strong>&nbsp;
-            <input type="file" name="file" class="adm-designed-file">
-        </div>
+<div class="sp-source">
+    <input class="sp-download-url" type="text" placeholder="Скачать изображение по ссылке">
+    <span class="sp-note">или</span>
+    <div class="sp-x-btn sp-x-btn-file">
+        <label>Загрузить</label>
+        <input type="file" name="file">
     </div>
 </div>
-<div class="sp-result sp-image-toggle"></div>
-<div class="sp-fields sp-edit">
-    <div class="sp-field">
-        <input placeholder="Описание" class="sp-item-text" type="text" value="{{!it.desc}}">
-    </div>
-    <div class="sp-field">
-        <span class="sp-x-btn sp-item-del">Удалить</span>
-    </div>
+<div class="sp-edit">
+    <input placeholder="Описание" class="sp-item-text" type="text" value="{{!it.desc}}">
+    <span class="sp-note">или</span>
+    <span class="sp-x-btn sp-item-del">Удалить</span>
 </div>
+<div class="sp-result"></div>
+
+
+
 

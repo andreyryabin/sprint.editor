@@ -18,9 +18,9 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
 
         renderfiles();
 
-        var $btn = $el.find('.sp-file');
+        var $btn = $el.find('.sp-x-btn-file');
         var $btninput = $btn.find('input[type=file]');
-        var $label = $btn.find('strong');
+        var $label = $btn.find('label');
         var labeltext = $label.text();
 
         $btninput.fileupload({
@@ -28,15 +28,13 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
             url: sprint_editor.getBlockWebPath('image') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
-                deletefiles();
-
                 $.each(result.result.file, function (index, file) {
                     data.file = file;
                 });
 
                 renderfiles();
 
-                togglepanel();
+                togglepanel(false);
             },
             progressall: function (e, result) {
                 var progress = parseInt(result.loaded / result.total * 100, 10);
@@ -72,14 +70,11 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
                 dataType: 'json',
                 success: function (result) {
                     if (result.image) {
-
-                        deletefiles();
-
                         data.file = result.image;
 
                         renderfiles();
 
-                        togglepanel();
+                        togglepanel(false);
                     }
 
                     $urltext.val('');
@@ -90,32 +85,26 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
         }, 500);
 
         $el.on('click', '.sp-item-del', function () {
-            deletefiles();
-
             data.file = {};
 
             renderfiles();
-        });
 
-        $el.on('click', '.sp-image-toggle', function () {
-            togglepanel();
+            togglepanel(true);
         });
 
         if (!data.file || !data.file.SRC) {
-            togglepanel();
+            togglepanel(true);
+        } else {
+            togglepanel(false);
         }
 
     };
 
-    var togglepanel = function () {
-        if ($el.hasClass('sp-show')) {
-            $el.find('.sp-source').hide(250);
-            $el.find('.sp-edit').hide(250);
-            $el.removeClass('sp-show');
-        } else {
-            $el.find('.sp-source').show(250);
-            $el.find('.sp-edit').show(250);
+    var togglepanel = function (show) {
+        if (show) {
             $el.addClass('sp-show');
+        } else {
+            $el.removeClass('sp-show');
         }
     }
 
@@ -124,20 +113,5 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
             sprint_editor.renderTemplate('image-image', data)
         );
     };
-
-    var deletefiles = function () {
-        var uid = sprint_editor.makeUid();
-        var items = {};
-        items[uid] = {
-            file: data.file
-        };
-
-        sprint_editor.markImagesForDelete(items);
-    };
-
-    this.beforeDelete = function () {
-        deletefiles();
-    }
-
 
 });

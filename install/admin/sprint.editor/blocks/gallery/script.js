@@ -36,9 +36,9 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             renderitem(uid);
         });
 
-        var $btn = $el.find('.sp-file');
+        var $btn = $el.find('.sp-x-btn-file');
         var $btninput = $btn.find('input[type=file]');
-        var $label = $btn.find('strong');
+        var $label = $btn.find('label');
         var labeltext = $label.text();
 
         $el.find('.sp-item-desc').bindWithDelay('input', function () {

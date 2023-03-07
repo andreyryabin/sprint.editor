@@ -42,7 +42,7 @@
     <?php } ?>
 </div>
 <script type="text/html" id="sp-x-template-pp-blocks<?= $uniqId ?>">
-    <div class="sp-x-pp-blocks">
+    <div class="sp-x-toolbar sp-x-toolbar-<?=$userSettingsName?>">
         <?php foreach ($blocksToolbar as $aGroup) { ?>
             <div class="sp-x-pp-group">
                 <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
