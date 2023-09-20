@@ -10,6 +10,7 @@
     padding: 5px;
     min-width: 24px;
     height: 22px;
+    vertical-align: top;
 }
 
 .sp-block-table tr.active td{
@@ -22,7 +23,8 @@
 }
 
 .sp-block-table td.active {
-    background: #FFEBC1;
+    /*background: #FFEBC1;*/
+    /*border: 1px solid #d00;*/
 }
 
 .sp-block-table .bold {
@@ -40,3 +42,22 @@
 .sp-block-table .sp-buttons {
     /*text-align: center;*/
 }
+
+.sp-block-table .trumbowyg-box {
+    /*border: none;*/
+}
+.sp-block-table .trumbowyg {
+    min-height: 70px;
+}
+.sp-block-table .trumbowyg-button-pane {
+    min-width: 380px;
+}
+.sp-block-table .trumbowyg-editor {
+    padding: 5px;
+    min-height: 70px;
+}
+
+.sp-block-table .trumbowyg-textarea {
+    min-height: 70px;
+}
+

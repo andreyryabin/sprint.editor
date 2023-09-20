@@ -21,8 +21,17 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 var col = {};
                 var attrs = [];
 
-                col.text = $(this).text();
-                col.text = $.trim(col.text);
+                var teditor = $(this).find('.trumbowyg-editor').first();
+                if (teditor.length > 0) {
+                    col.text = teditor.trumbowyg('html');
+                } else {
+                    var tbox = $(this).find('.trumbowyg-editor-box').first();
+                    if (tbox.length > 0) {
+                        col.text = tbox.html();
+                    } else {
+                        col.text = '';
+                    }
+                }
 
                 if ($(this).hasClass('center')) {
                     attrs.push('center');
@@ -60,12 +69,33 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
     this.afterRender = function () {
         var $table = $el.find('table');
+        var $editor = null;
+
         showcolbtns();
+
+        $el.on('keydown', function (e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 9) {
+                e.preventDefault();
+                var $td = $el.find('td.active');
+                if ($td.next('td').length > 0) {
+                    $td.next('td').trigger('click');
+                } else {
+                    var $nexttd = $td.closest('tr').next('tr').find('td').first();
+                    if ($nexttd.length > 0) {
+                        $nexttd.trigger('click');
+                    }
+
+                }
+            }
+        });
 
         $el.on('click', 'td', function () {
             $el.find('td').not(this).removeClass('active');
             $(this).addClass('active');
             showcolbtns();
+
+            initeditor($(this));
         });
 
         $el.on('click', '.sp-add-col', function (e) {
@@ -73,13 +103,12 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             var $td = $el.find('td.active');
             if ($td.length > 0) {
-                $('<td contenteditable="true"></td>').insertAfter($td);
+                $('<td><div class="trumbowyg-editor-box"></div></td>').insertAfter($td);
 
                 $td.next('td').trigger('click');
             }
             showcolbtns();
         });
-
         $el.on('click', '.sp-del-col', function (e) {
             e.preventDefault();
 
@@ -102,7 +131,6 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             addrow();
             showcolbtns();
         });
-
         $el.on('click', '.sp-del-row', function (e) {
             e.preventDefault();
 
@@ -125,6 +153,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             showcolbtns();
         });
+
         $el.on('click', '.sp-add-cs', function (e) {
             e.preventDefault();
 
@@ -149,7 +178,6 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             }
             showcolbtns();
         });
-
         $el.on('click', '.sp-del-cs', function (e) {
             e.preventDefault();
 
@@ -167,13 +195,11 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 }
 
                 if (cs > 1) {
-                    $('<td contenteditable="true"></td>').insertAfter($td);
+                    $('<td><div class="trumbowyg-editor-box"></div></td>').insertAfter($td);
                 }
             }
             showcolbtns();
         });
-
-
         $el.on('click', '.sp-add-rs', function (e) {
             e.preventDefault();
 
@@ -191,7 +217,6 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             }
             showcolbtns();
         });
-
         $el.on('click', '.sp-del-rs', function (e) {
             e.preventDefault();
 
@@ -227,8 +252,6 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 $trs.insertAfter($ntr);
             }
         });
-
-
         $el.on('click', '.sp-sel-up', function (e) {
             var $trs = $el.find('tr.active');
             if ($trs.length > 0) {
@@ -238,7 +261,6 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 $trs.insertBefore($ntr);
             }
         });
-
 
         $el.on('click', '.sp-toggle-align', function (e) {
             e.preventDefault();
@@ -257,7 +279,6 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             }
             showcolbtns();
         });
-
         $el.on('click', '.sp-toggle-bold', function (e) {
             e.preventDefault();
 
@@ -293,7 +314,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             var newtr = '';
             for (var index = 1; index <= colCount; index++) {
-                newtr += '<td contenteditable="true"></td>';
+                newtr += '<td><div class="trumbowyg-editor-box"></div></td>';
             }
 
             if ($tr.length > 0) {
@@ -317,7 +338,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             var newtr = '';
             for (var index = 1; index <= colCount; index++) {
-                newtr += '<td contenteditable="true"></td>';
+                newtr += '<td><div class="trumbowyg-editor-box"></div></td>';
             }
             $table.append('<tr>' + newtr + '</tr>');
 
@@ -387,10 +408,41 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 $el.find('.sp-col-buttons').hide();
                 $el.find('.sp-del-row').hide();
                 $el.find('.sp-sel-row').hide();
-
             }
         }
 
+
+        function initeditor($cell) {
+
+            if ($cell.hasClass('inited')) {
+                return;
+            }
+            $cell.addClass('inited');
+
+            if ($editor) {
+                $editor.trumbowyg('destroy');
+            }
+            $el.find('td').not($cell).each(function () {
+                $(this).removeClass('inited');
+            });
+
+
+            $editor = $cell.children('.trumbowyg-editor-box').first();
+
+            $editor.trumbowyg({
+                svgPath: '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',
+                lang: 'ru',
+                resetCss: true,
+                removeformatPasted: true,
+                //autogrow: true,
+                btns: [
+                    ['viewHTML', 'strong', 'em', 'underline', 'del', 'link'],
+                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                ],
+            }).focus();
+
+
+        }
     };
 
 });

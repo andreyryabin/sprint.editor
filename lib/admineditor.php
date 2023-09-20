@@ -78,6 +78,14 @@ class AdminEditor
             $userSettings = self::loadSettings($userSettingsName);
         }
 
+        //для редактора макетов показываем сетки всегда даже если отключены
+        $saveEmpty = 0;
+        if ($params['inputName'] == 'pack_content') {
+            unset($userSettings['layout_enabled']);
+            unset($userSettings['layout_toolbar']);
+            $saveEmpty = 1;
+        }
+
         $filteredBlocks = self::filterBlocks($userSettings);
         $filteredBlocks = self::setCustomTitles($filteredBlocks, $userSettings);
         $filteredBlocks = self::setCustomConfigs($filteredBlocks, $userSettings);
@@ -134,6 +142,7 @@ class AdminEditor
                 'inputName'        => $params['inputName'],
                 'uniqId'           => $params['uniqId'],
                 'editorName'       => $params['editorName'],
+                'saveEmpty'        => $saveEmpty,
                 'wideMode'         => $wideMode,
                 'firstRun'         => (self::$initCounts == 1) ? 1 : 0,
             ]

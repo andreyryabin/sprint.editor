@@ -25,6 +25,12 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         currentEditorParams.userSettingsName = '';
     }
 
+    if (currentEditorParams.hasOwnProperty('saveEmpty')) {
+        currentEditorParams.saveEmpty = !!currentEditorParams.saveEmpty;
+    } else {
+        currentEditorParams.saveEmpty = false;
+    }
+
     if (currentEditorParams.hasOwnProperty('enableChange')) {
         currentEditorParams.enableChange = !!currentEditorParams.enableChange;
     } else {
@@ -860,7 +866,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
         let resultString = '';
 
-        if (layouts.length > 0 && blocks.length > 0) {
+        if (currentEditorParams.saveEmpty || (layouts.length > 0 && blocks.length > 0)) {
             resultString = sprint_editor.safeStringify({
                 packname: packname,
                 version: 2,

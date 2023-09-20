@@ -20,7 +20,16 @@ if ($request->isPost()) {
     if ($request->getPost('save_pack')) {
         $packContentJson = $request->getPost('pack_content');
         $packContent = json_decode($packContentJson, true);
-        $packContent['packname'] = (string)$request->getPost('pack_title');
+        $packContent = is_array($packContent) ? $packContent : [];
+        $packContent = array_merge([
+            'version' => 2,
+            'blocks'  => [],
+            'layouts' => [],
+        ], $packContent, [
+            'packname'         => (string)$request->getPost('pack_title'),
+            'userSettingsName' => $currentUserSettingsName,
+        ]);
+
         $packContentJson = json_encode($packContent, JSON_UNESCAPED_UNICODE);
 
         $currentPackId = ($currentPackId) ? $currentPackId : md5($packContentJson);

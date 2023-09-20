@@ -8,6 +8,7 @@
  * @var $uniqId
  * @var $inputName
  * @var $editorName
+ * @var $saveEmpty
  * @var $wideMode
  *
  * @var $firstRun
@@ -42,7 +43,7 @@
     <?php } ?>
 </div>
 <script type="text/html" id="sp-x-template-pp-blocks<?= $uniqId ?>">
-    <div class="sp-x-toolbar sp-x-toolbar-<?=$userSettingsName?>">
+    <div class="sp-x-toolbar sp-x-toolbar-<?= $userSettingsName ?>">
         <?php foreach ($blocksToolbar as $aGroup) { ?>
             <div class="sp-x-pp-group">
                 <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
@@ -93,6 +94,7 @@
             editorName: "<?= $editorName ?>",
             enableChange: <?=$enableChange?>,
             wideMode: <?=$wideMode?>,
+            saveEmpty: <?=$saveEmpty?>,
             userSettingsName: "<?=$userSettingsName?>",
             jsonUserSettings: <?=$jsonUserSettings?>,
         }, {

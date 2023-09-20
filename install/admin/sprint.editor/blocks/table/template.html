@@ -3,10 +3,9 @@
     <tr>
         {{~cols :col}}
         <td class="{{~col.attrs :css}} {{=css}} {{~}}"
-            contenteditable="true"
             {{?col.colspan}}colspan="{{=col.colspan}}" {{?}}
             {{?col.rowspan}}rowspan="{{=col.rowspan}}" {{?}}>
-            {{=col.text}}
+            <div class="trumbowyg-editor-box">{{=col.text}}</div>
         </td>
         {{~}}
     </tr>
@@ -28,11 +27,6 @@
     <span class="sp-x-btn sp-del-cs">разъединить с &rarr;</span>
     <span class="sp-x-btn sp-add-rs">объединить с &darr;</span>
     <span class="sp-x-btn sp-del-rs">разъединить с &darr;</span>
-</div>
-
-<div class="sp-buttons sp-col-buttons" style="margin-top: 10px;">
-    <span class="sp-x-btn sp-toggle-align">выравнивание</span>
-    <span class="sp-x-btn sp-toggle-bold">выделить жирным</span>
 </div>
 
 <div class="sp-buttons sp-col-buttons" style="margin-top: 10px;">
