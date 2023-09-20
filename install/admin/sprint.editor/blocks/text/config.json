@@ -2,12 +2,12 @@
   "title": "Текст",
   "sort": "20",
   "js": [
-    "/bitrix/admin/sprint.editor/assets/trumbowyg/trumbowyg.js",
+    "/bitrix/admin/sprint.editor/assets/trumbowyg/trumbowyg.min.js",
     "/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/mycss/trumbowyg.mycss.js",
     "/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/specialchars/trumbowyg.specialchars.js"
   ],
   "css": [
-    "/bitrix/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.css",
+    "/bitrix/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.min.css",
     "/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/mycss/ui/trumbowyg.mycss.css",
     "/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/specialchars/ui/trumbowyg.specialchars.css"
   ],

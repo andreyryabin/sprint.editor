@@ -102,13 +102,11 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             e.preventDefault();
 
             var $td = $el.find('td.active');
-            if ($td.length > 0) {
-                $('<td><div class="trumbowyg-editor-box"></div></td>').insertAfter($td);
-
-                $td.next('td').trigger('click');
-            }
+            addcol(td, true)
             showcolbtns();
         });
+
+
         $el.on('click', '.sp-del-col', function (e) {
             e.preventDefault();
 
@@ -195,7 +193,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 }
 
                 if (cs > 1) {
-                    $('<td><div class="trumbowyg-editor-box"></div></td>').insertAfter($td);
+                    addcol($td, false);
                 }
             }
             showcolbtns();
@@ -207,13 +205,11 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             if ($td.length > 0) {
 
-                var cs = $td.attr('rowspan');
+                var rs = $td.attr('rowspan');
 
-                cs = (cs) ? parseInt(cs, 10) : 1;
+                rs = (rs) ? parseInt(rs, 10) : 1;
 
-                $td.attr('rowspan', cs + 1);
-
-
+                $td.attr('rowspan', rs + 1);
             }
             showcolbtns();
         });
@@ -233,7 +229,6 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 } else {
                     $td.attr('rowspan', rs - 1);
                 }
-
             }
             showcolbtns();
         });
@@ -295,22 +290,36 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             showcolbtns();
         });
 
+        function addcol($td, select) {
+            if ($td.length > 0) {
+                $('<td><div class="trumbowyg-editor-box"></div></td>').insertAfter($td);
+
+                if (select) {
+                    $td.next('td').trigger('click');
+                }
+            }
+        }
+
+        function colcount($tr){
+            var cnt = 0;
+            $tr.find('td').each(function () {
+                if ($(this).attr('colspan')) {
+                    cnt += +$(this).attr('colspan');
+                } else {
+                    cnt++;
+                }
+            });
+
+            return cnt;
+        }
+
         function addrow() {
             var $tr = $el.find('td.active').parent();
             if ($tr.length <= 0) {
                 $tr = $table.find('tr').last();
             }
 
-            var colCount = 0;
-            $tr.find('td').each(function () {
-                if ($(this).attr('colspan')) {
-                    colCount += +$(this).attr('colspan');
-                } else {
-                    colCount++;
-                }
-            });
-
-            colCount = (colCount > 0) ? colCount : 1;
+            var colCount = colcount($tr)
 
             var newtr = '';
             for (var index = 1; index <= colCount; index++) {
@@ -324,17 +333,9 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             }
         }
 
-        function addrowAppend($tr) {
-            var colCount = 0;
-            $tr.find('td').each(function () {
-                if ($(this).attr('colspan')) {
-                    colCount += +$(this).attr('colspan');
-                } else {
-                    colCount++;
-                }
-            });
 
-            colCount = (colCount > 0) ? colCount : 1;
+        function addrowAppend($tr) {
+             var colCount = colcount($tr)
 
             var newtr = '';
             for (var index = 1; index <= colCount; index++) {

@@ -17,14 +17,6 @@ if ($updater && $updater instanceof \CUpdater) {
 
 
     //        sprint_editor_rmdir(__DIR__ . '/install/classes/');
-    if (is_file(__DIR__ . '/install/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.min.css')) {
-        unlink(__DIR__ . '/install/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.min.css');
-    }
-
-    if (is_file(__DIR__ . '/install/admin/sprint.editor/assets/trumbowyg/trumbowyg.min.js')) {
-        unlink(__DIR__ . '/install/admin/sprint.editor/assets/trumbowyg/trumbowyg.min.js');
-    }
-
     if (is_dir(__DIR__ . '/install/components/')) {
         //$updater->CopyFiles("install/components/", "components/");
     }
