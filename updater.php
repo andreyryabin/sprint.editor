@@ -15,11 +15,15 @@ if ($updater && $updater instanceof \CUpdater) {
         }
     }
 
-    //v 2.9.1 remove classes dir
-    //    sprint_editor_rmdir(__DIR__ . '/install/classes/');
-    //    if (is_file(__DIR__ . '/loader.php')) {
-    //        unlink(__DIR__ . '/loader.php');
-    //    }
+
+    //        sprint_editor_rmdir(__DIR__ . '/install/classes/');
+    if (is_file(__DIR__ . '/install/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.min.css')) {
+        unlink(__DIR__ . '/install/admin/sprint.editor/assets/trumbowyg/ui/trumbowyg.min.css');
+    }
+
+    if (is_file(__DIR__ . '/install/admin/sprint.editor/assets/trumbowyg/trumbowyg.min.js')) {
+        unlink(__DIR__ . '/install/admin/sprint.editor/assets/trumbowyg/trumbowyg.min.js');
+    }
 
     if (is_dir(__DIR__ . '/install/components/')) {
         //$updater->CopyFiles("install/components/", "components/");
@@ -28,7 +32,6 @@ if ($updater && $updater instanceof \CUpdater) {
     if (is_dir(__DIR__ . '/install/admin/')) {
         $updater->CopyFiles("install/admin/", "admin/");
     }
-
     //4.1.1
 
 }

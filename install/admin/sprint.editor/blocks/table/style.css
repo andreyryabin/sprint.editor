@@ -14,7 +14,7 @@
     padding: 5px;
     min-width: 24px;
     height: 22px;
-    /*vertical-align: top;*/
+    vertical-align: top;
 }
 
 .sp-block-table tr.active td {
@@ -74,12 +74,12 @@
     position: absolute;
     top: 0;
     left: 0;
-    display: none;
+    /*display: none;*/
     border: 1px solid #d7e0e2;
 }
 
 .sp-block-table td.active .trumbowyg-button-pane {
-    display: flex;
+    /*display: flex;*/
 }
 
 .sp-block-table .trumbowyg-editor {
