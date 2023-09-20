@@ -19,7 +19,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             var cols = [];
             $(this).find('td').each(function () {
                 var col = {};
-                var attrs = [];
+                /*var attrs = [];*/
 
                 var teditor = $(this).find('.trumbowyg-editor').first();
                 if (teditor.length > 0) {
@@ -33,7 +33,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                     }
                 }
 
-                if ($(this).hasClass('center')) {
+                /*if ($(this).hasClass('center')) {
                     attrs.push('center');
                 } else if ($(this).hasClass('right')) {
                     attrs.push('right');
@@ -41,7 +41,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
                 if ($(this).hasClass('bold')) {
                     attrs.push('bold');
-                }
+                }*/
 
                 if ($(this).attr('colspan')) {
                     col.colspan = $(this).attr('colspan');
@@ -51,9 +51,9 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                     col.rowspan = $(this).attr('rowspan');
                 }
 
-                if (attrs.length > 0) {
+                /*if (attrs.length > 0) {
                     col.attrs = attrs;
-                }
+                }*/
 
                 cols.push(col)
             });
@@ -421,23 +421,28 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             if ($editor) {
                 $editor.trumbowyg('destroy');
+                $editor = null;
             }
+
             $el.find('td').not($cell).each(function () {
                 $(this).removeClass('inited');
             });
-
 
             $editor = $cell.children('.trumbowyg-editor-box').first();
 
             $editor.trumbowyg({
                 svgPath: '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',
                 lang: 'ru',
-                resetCss: true,
+                resetCss: false,
                 removeformatPasted: true,
-                //autogrow: true,
+                autogrow: true,
                 btns: [
-                    ['viewHTML', 'strong', 'em', 'underline', 'del', 'link'],
-                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                    [
+                        'viewHTML', 'strong', 'em', 'underline', 'del', 'link',
+                    ],
+                    [
+                        'justifyLeft', 'justifyCenter', 'justifyRight'
+                    ]
                 ],
             }).focus();
 

@@ -10,17 +10,8 @@
 .sp-block-text .trumbowyg-box {
     min-height: 70px;
 }
-.sp-block-text .trumbowyg-editor table {
-    width: 100%;
-    border-collapse: separate;
-    background: #fff;
-    border: 1px solid #aaa !important;
-}
 
-.sp-block-text .trumbowyg-editor td {
-    border: 1px solid #aaa;
-    padding: 5px;
-    min-width: 24px;
-    height: 22px;
-    vertical-align: top;
+.sp-block-text .trumbowyg-editor-box p {
+    margin: 0;
+    padding: 0;
 }

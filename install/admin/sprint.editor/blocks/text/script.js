@@ -66,7 +66,7 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
             $el.find('.sp-text').trumbowyg({
                 svgPath: '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',
                 lang: 'ru',
-                resetCss: true,
+                resetCss: false,
                 removeformatPasted: true,
                 autogrow: true,
                 btns: btns,

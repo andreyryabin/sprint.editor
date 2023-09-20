@@ -5,26 +5,25 @@
     border: 1px solid #aaa !important;
 }
 
+.sp-block-table .pane {
+    height: 40px;
+}
+
 .sp-block-table td {
     border: 1px solid #aaa;
     padding: 5px;
     min-width: 24px;
     height: 22px;
-    vertical-align: top;
+    /*vertical-align: top;*/
 }
 
-.sp-block-table tr.active td{
+.sp-block-table tr.active td {
     border: 1px solid #d00;
-}
-
-.sp-block-table td p {
-    margin: 0;
-    padding: 0;
 }
 
 .sp-block-table td.active {
     /*background: #FFEBC1;*/
-    /*border: 1px solid #d00;*/
+    border: 1px solid #d00;
 }
 
 .sp-block-table .bold {
@@ -45,19 +44,54 @@
 
 .sp-block-table .trumbowyg-box {
     /*border: none;*/
+    min-height: auto;
 }
-.sp-block-table .trumbowyg {
-    min-height: 70px;
+
+.sp-block-table .trumbowyg-editor-box p {
+    margin: 0;
+    padding: 0;
 }
+
+.sp-block-table {
+    position: relative;
+}
+
+
+.sp-block-table .trumbowyg-box {
+    position: inherit;
+    border: none;
+}
+
+.sp-block-table .fake-button-pane {
+    height: 36px;
+    background: #ecf0f1;
+    border: 1px solid #d7e0e2;
+    margin-bottom: 5px;
+    padding: 0 5px;
+}
+
 .sp-block-table .trumbowyg-button-pane {
-    min-width: 380px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    border: 1px solid #d7e0e2;
 }
+
+.sp-block-table td.active .trumbowyg-button-pane {
+    display: flex;
+}
+
 .sp-block-table .trumbowyg-editor {
-    padding: 5px;
-    min-height: 70px;
+    padding: 0;
+    height: auto;
 }
 
-.sp-block-table .trumbowyg-textarea {
-    min-height: 70px;
+.sp-block-table .trumbowyg-box.trumbowyg-editor-visible .trumbowyg-textarea {
+    display: none;
 }
 
+.sp-block-table .trumbowyg-box.trumbowyg-editor-hidden .trumbowyg-textarea {
+    display: block;
+    min-height: 70px;
+}

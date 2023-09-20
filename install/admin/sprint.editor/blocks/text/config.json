@@ -2,7 +2,7 @@
   "title": "Текст",
   "sort": "20",
   "js": [
-    "/bitrix/admin/sprint.editor/assets/trumbowyg/trumbowyg.js",
+    "/bitrix/admin/sprint.editor/assets/trumbowyg/trumbowyg.min.js",
     "/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/mycss/trumbowyg.mycss.js",
     "/bitrix/admin/sprint.editor/assets/trumbowyg/plugins/specialchars/trumbowyg.specialchars.js"
   ],
