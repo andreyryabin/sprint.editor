@@ -31,7 +31,7 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
         var $container = $el.children('.sp-items');
 
         data.blocks = [];
-        $container.children('.sp-acc-box').each(function () {
+        $container.children('.sp-x-box').each(function () {
             var blockData = sprint_editor.collectData(
                 $(this).data('uid')
             );
@@ -56,7 +56,7 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
 
         $container.sortable({
             items: "> div",
-            handle: ".sp-acc-box-handle",
+            handle: ".sp-cont-box-handle",
         });
 
         $buttons.on('click', '.sp-x-btn', function () {
@@ -69,7 +69,7 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
         });
 
         function addblock(blockData, $container) {
-            var uid = sprint_editor.makeUid('sp-acc');
+            var uid = sprint_editor.makeUid('sp-cont');
             var blockSettings = sprint_editor.getBlockSettings(blockData.name, currentEditorParams);
 
             var $box = $(sprint_editor.renderTemplate('container-box', {
@@ -78,9 +78,13 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
                 compiled: sprint_editor.compileSettings(blockData, blockSettings)
             }));
 
+            $box.hide();
+
             $container.append($box);
 
-            var $elBlock = $box.children('.sp-acc-box-block');
+            $box.show(250);
+
+            var $elBlock = $box.children('.sp-x-box-block');
             var elEntry = sprint_editor.initblock(
                 $,
                 $elBlock,
@@ -101,9 +105,9 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
 
             var $buttonsBox = $box.children('.sp-x-buttons-box');
 
-            $buttonsBox.on('click', '.sp-acc-box-del', function (e) {
+            $buttonsBox.on('click', '.sp-cont-box-del', function (e) {
                 e.preventDefault();
-                var $target = $(this).closest('.sp-acc-box');
+                var $target = $(this).closest('.sp-x-box');
 
                 var uid = $target.data('uid');
                 sprint_editor.beforeDelete(uid);
@@ -113,20 +117,20 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
                 });
             });
 
-            $buttonsBox.on('click', '.sp-acc-box-up', function (e) {
+            $buttonsBox.on('click', '.sp-cont-box-up', function (e) {
                 e.preventDefault();
-                var $block = $(this).closest('.sp-acc-box');
-                var $nblock = $block.prev('.sp-acc-box');
+                var $block = $(this).closest('.sp-x-box');
+                var $nblock = $block.prev('.sp-x-box');
                 if ($nblock.length > 0) {
                     $block.insertBefore($nblock);
                     sprint_editor.afterSort($block.data('uid'));
                 }
             });
 
-            $buttonsBox.on('click', '.sp-acc-box-dn', function (e) {
+            $buttonsBox.on('click', '.sp-cont-box-dn', function (e) {
                 e.preventDefault();
-                var $block = $(this).closest('.sp-acc-box');
-                var $nblock = $block.next('.sp-acc-box');
+                var $block = $(this).closest('.sp-x-box');
+                var $nblock = $block.next('.sp-x-box');
                 if ($nblock.length > 0) {
                     $block.insertAfter($nblock);
                     sprint_editor.afterSort(

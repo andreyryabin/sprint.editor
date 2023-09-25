@@ -3,7 +3,6 @@
     width: 100%;
     border-collapse: collapse;
 }
-
 .sp-block-table table tr {
     background: #f7f7f7;
     color: #8a8a8a;
@@ -22,6 +21,9 @@
     text-align: left;
     border: 1px solid #ccc;
     padding: 5px;
+}
+.sp-block-table p {
+    margin: 0;
 }
 
 .sp-image img {

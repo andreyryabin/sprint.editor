@@ -27,20 +27,20 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
     };
 
     this.collectData = function () {
+        data.items = [];
+
         var $container = $el.children('.sp-acc-container');
 
-        data.items = [];
         $container.children('.sp-acc-tab').each(function () {
-            var $tabContainer = $(this).children('.sp-acc-tab-container');
+            var $tabblocks = $(this).children('.sp-acc-tab-blocks');
             var $tabBtn1 = $(this).children('.sp-acc-buttons1')
-            var $tabBtn2 = $(this).children('.sp-acc-buttons2')
 
             var tab = {
                 title: $tabBtn1.children('.sp-acc-tab-value').val(),
                 blocks: []
             };
 
-            $tabContainer.children('.sp-acc-box').each(function () {
+            $tabblocks.children('.sp-x-box').each(function () {
                 var blockData = sprint_editor.collectData(
                     $(this).data('uid')
                 );
@@ -60,17 +60,19 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
 
     this.afterRender = function () {
         var $container = $el.children('.sp-acc-container');
-        var $addtabbtn = $el.children('.sp-acc-add-tab');
 
         $.each(data.items, function (index, item) {
-            addTab(item);
+            addTab(item, false);
         });
 
-        $addtabbtn.on('click', function (e) {
-            addTab({
-                title: '',
-                blocks: []
-            });
+        sprint_editor.listenEvent('clipboard:check', function () {
+            let clipboardData = sprint_editor.getClipboard();
+
+            if (!$.isEmptyObject(clipboardData)) {
+                $el.find('.sp-acc-paste').show();
+            } else {
+                $el.find('.sp-acc-paste').hide();
+            }
         });
 
         $container.sortable({
@@ -78,7 +80,135 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             handle: ".sp-acc-tab-handle",
         });
 
-        function addTab(tabData) {
+        $el.on('click', '.sp-acc-add-tab', function (e) {
+            addTab({
+                title: '',
+                blocks: []
+            }, true);
+        });
+
+         $el.on('click', '.sp-acc-buttons1', function (event) {
+            if ($(event.target).hasClass('sp-acc-buttons1')) {
+                var $tab = $(event.target).closest('.sp-acc-tab');
+
+                showTab($tab)
+
+                sprint_editor.fireEvent('popup:hide');
+            }
+        });
+
+        $el.on('click', '.sp-acc-tab-handle', function (event) {
+            var $tab = $(event.target).closest('.sp-acc-tab');
+
+            showTab($tab)
+
+            sprint_editor.fireEvent('popup:hide');
+        });
+
+        $el.on('click', '.sp-acc-box-add', function () {
+            var $tabblocks = $(this).closest('.sp-acc-tab').children('.sp-acc-tab-blocks');
+            addblock(
+                {
+                    name: $(this).data('name')
+                },
+                $tabblocks
+            );
+        });
+
+        $el.on('click', '.sp-acc-paste', function (event) {
+            event.preventDefault();
+
+            let clipboardData = sprint_editor.getClipboard();
+            var $tabblocks = $(this).closest('.sp-acc-tab').children('.sp-acc-tab-blocks');
+
+            $.each(clipboardData, function (blockUid, blockData) {
+                addblock(blockData.block, $tabblocks);
+            });
+
+            sprint_editor.fireEvent('clipboard:paste');
+            sprint_editor.clearClipboard();
+        });
+
+        $el.on('click', '.sp-acc-copy', function (e) {
+            e.preventDefault();
+            var $tabblocks = $(this).closest('.sp-acc-tab').children('.sp-acc-tab-blocks');
+
+            $tabblocks.find('.sp-x-box').each(function () {
+                sprint_editor.copyToClipboard($(this).data('uid'), false);
+            });
+        });
+
+        $el.on('click', '.sp-acc-cut', function (e) {
+            e.preventDefault();
+            var $tabblocks = $(this).closest('.sp-acc-tab').children('.sp-acc-tab-blocks');
+
+            $tabblocks.find('.sp-x-box').each(function () {
+                sprint_editor.copyToClipboard($(this).data('uid'), true);
+            });
+        });
+
+        $el.on('click', '.sp-acc-del', function (e) {
+            e.preventDefault();
+            var $target = $(this).closest('.sp-acc-tab');
+
+            $target.hide(250, function () {
+                $target.remove();
+            });
+        });
+        $el.on('click', '.sp-acc-up', function (e) {
+            e.preventDefault();
+            var $block = $(this).closest('.sp-acc-tab');
+            var $nblock = $block.prev('.sp-acc-tab');
+            if ($nblock.length > 0) {
+                $block.insertBefore($nblock);
+            }
+        });
+        $el.on('click', '.sp-acc-dn', function (e) {
+            e.preventDefault();
+            var $block = $(this).closest('.sp-acc-tab');
+            var $nblock = $block.next('.sp-acc-tab');
+            if ($nblock.length > 0) {
+                $block.insertAfter($nblock);
+            }
+        });
+
+        $el.on('click', '.sp-acc-box-del', function (e) {
+            e.preventDefault();
+            var $target = $(this).closest('.sp-x-box');
+
+            var uid = $target.data('uid');
+            sprint_editor.beforeDelete(uid);
+
+            $target.hide(250, function () {
+                $target.remove();
+            });
+        });
+        $el.on('click', '.sp-acc-box-up', function (e) {
+            e.preventDefault();
+
+            var $block = $(this).closest('.sp-x-box');
+
+            var $nblock = $block.prev('.sp-x-box');
+            if ($nblock.length > 0) {
+                $block.insertBefore($nblock);
+                sprint_editor.afterSort($block.data('uid'));
+            }
+        });
+        $el.on('click', '.sp-acc-box-dn', function (e) {
+            e.preventDefault();
+
+            var $block = $(this).closest('.sp-x-box');
+
+            var $nblock = $block.next('.sp-x-box');
+            if ($nblock.length > 0) {
+                $block.insertAfter($nblock);
+                sprint_editor.afterSort(
+                    $block.data('uid')
+                );
+            }
+        });
+
+        function addTab(tabData, show) {
             var $tab = $(sprint_editor.renderTemplate('accordion-tab', {
                 title: tabData.title,
                 blocklist: blocklist
@@ -86,58 +216,48 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
 
             $container.append($tab);
 
-            var $tabcontainer = $tab.children('.sp-acc-tab-container');
+            if (show) {
+                showTab($tab)
+            }
+
+            var $tabblocks = $tab.children('.sp-acc-tab-blocks');
 
             $.each(tabData.blocks, function (index, blockData) {
-                addblock(blockData, $tabcontainer)
+                addblock(blockData, $tabblocks)
             });
 
-            var $tabBtn1 = $tab.children('.sp-acc-buttons1')
-            var $tabBtn2 = $tab.children('.sp-acc-buttons2')
-
-            $tabBtn2.on('click', '.sp-x-btn', function () {
-                addblock(
-                    {
-                        name: $(this).data('name')
-                    },
-                    $tabcontainer
-                );
-            });
-
-            $tabBtn1.on('click', '.sp-acc-del', function (e) {
-                e.preventDefault();
-                var $target = $(this).closest('.sp-acc-tab');
-
-                $target.hide(250, function () {
-                    $target.remove();
-                });
-            });
-            $tabBtn1.on('click', '.sp-acc-up', function (e) {
-                e.preventDefault();
-                var $block = $(this).closest('.sp-acc-tab');
-                var $nblock = $block.prev('.sp-acc-tab');
-                if ($nblock.length > 0) {
-                    $block.insertBefore($nblock);
-                }
-            });
-            $tabBtn1.on('click', '.sp-acc-dn', function (e) {
-                e.preventDefault();
-                var $block = $(this).closest('.sp-acc-tab');
-                var $nblock = $block.next('.sp-acc-tab');
-                if ($nblock.length > 0) {
-                    $block.insertAfter($nblock);
-                }
-            });
-
-
-            $tabcontainer.sortable({
+            $tabblocks.sortable({
                 items: "> div",
                 handle: ".sp-acc-box-handle",
-                connectWith: ".sp-acc-tab-container",
+                connectWith: ".sp-acc-tab-blocks",
             });
         }
 
-        function addblock(blockData, $tabcontainer) {
+        function showTab($tab) {
+            var $tabblocks = $tab.children('.sp-acc-tab-blocks');
+            var $tabbtns2 = $tab.children('.sp-acc-buttons2');
+
+            $el.find('.sp-acc-tab-blocks').not($tabblocks).hide(250);
+            $el.find('.sp-acc-buttons2').not($tabbtns2).hide(250);
+
+            $tabblocks.show(250);
+            $tabbtns2.show(250);
+
+        }
+
+        function enabledblock(name) {
+            var index = blocklist.findIndex(function (val) {
+                return val.id === name;
+            })
+
+            return (index >= 0);
+        }
+
+        function addblock(blockData, $tabblocks) {
+            if (!enabledblock(blockData.name)) {
+                return;
+            }
+
             var uid = sprint_editor.makeUid('sp-acc');
             var blockSettings = sprint_editor.getBlockSettings(blockData.name, currentEditorParams);
 
@@ -147,9 +267,13 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
                 compiled: sprint_editor.compileSettings(blockData, blockSettings)
             }));
 
-            $tabcontainer.append($box);
+            $box.hide();
 
-            var $elBlock = $box.children('.sp-acc-box-block');
+            $tabblocks.append($box);
+
+            $box.show(250);
+
+            var $elBlock = $box.children('.sp-x-box-block');
             var elEntry = sprint_editor.initblock(
                 $,
                 $elBlock,
@@ -166,68 +290,6 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
                 currentEditorParams
             );
             sprint_editor.registerEntry(uid, elEntry);
-
-
-            var $buttonsBox = $box.children('.sp-x-buttons-box');
-
-            $buttonsBox.on('click', '.sp-acc-box-del', function (e) {
-                e.preventDefault();
-                var $target = $(this).closest('.sp-acc-box');
-
-                var uid = $target.data('uid');
-                sprint_editor.beforeDelete(uid);
-
-                $target.hide(250, function () {
-                    $target.remove();
-                });
-            });
-            $buttonsBox.on('click', '.sp-acc-box-up', function (e) {
-                e.preventDefault();
-
-                var $block = $(this).closest('.sp-acc-box');
-                var $grid = $(this).closest('.sp-acc-tab');
-
-                var $nblock = $block.prev('.sp-acc-box');
-                if ($nblock.length > 0) {
-                    $block.insertBefore($nblock);
-                    sprint_editor.afterSort($block.data('uid'));
-                } else {
-                    var $ngrid = $grid.prev('.sp-acc-tab');
-                    if ($ngrid.length > 0) {
-                        $block.appendTo(
-                            $ngrid.children('.sp-acc-tab-container')
-                        );
-                        sprint_editor.afterSort(
-                            $block.data('uid')
-                        );
-                    }
-                }
-            });
-            $buttonsBox.on('click', '.sp-acc-box-dn', function (e) {
-                e.preventDefault();
-
-                var $block = $(this).closest('.sp-acc-box');
-                var $grid = $(this).closest('.sp-acc-tab');
-
-                var $nblock = $block.next('.sp-acc-box');
-                if ($nblock.length > 0) {
-                    $block.insertAfter($nblock);
-                    sprint_editor.afterSort(
-                        $block.data('uid')
-                    );
-                } else {
-                    var $ngrid = $grid.next('.sp-acc-tab');
-                    if ($ngrid.length > 0) {
-                        $block.insertAfter(
-                            $ngrid.children('.sp-acc-tab-container')
-                        );
-                        sprint_editor.afterSort(
-                            $block.data('uid')
-                        );
-                    }
-                }
-            });
-
         }
     };
 });

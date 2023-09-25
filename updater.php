@@ -15,15 +15,15 @@ if ($updater && $updater instanceof \CUpdater) {
         }
     }
 
+    //sprint_editor_rmdir(__DIR__ . '/install/classes/');
 
-    //        sprint_editor_rmdir(__DIR__ . '/install/classes/');
     if (is_dir(__DIR__ . '/install/components/')) {
-        //$updater->CopyFiles("install/components/", "components/");
+        $updater->CopyFiles("install/components/", "components/");
     }
 
     if (is_dir(__DIR__ . '/install/admin/')) {
         $updater->CopyFiles("install/admin/", "admin/");
     }
-    //4.1.1
+    //4.2.1
 
 }

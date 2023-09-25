@@ -1,15 +1,19 @@
-<div class="sp-acc-box" data-uid="{{=it.uid}}">
+<div class="sp-x-box" data-uid="{{=it.uid}}">
     <div class="sp-x-buttons sp-x-buttons-box">
         <div class="sp-x-buttons-group">
             <span class="sp-x-btn sp-x-pp-box-open">&equiv;</span>
-            <span class="sp-x-btn sp-acc-box-handle">{{=it.title}}</span>
+            <span class="sp-x-btn sp-cont-box-handle">{{=it.title}}</span>
             <div class="sp-x-pp-box">
                 <div class="sp-x-pp-group">
-                    <span title="Поднять вверх" class="sp-x-btn sp-acc-box-up">&uarr; Поднять</span>
-                    <span title="Опустить вниз" class="sp-x-btn sp-acc-box-dn">&darr; Опустить</span>
+                    <span title="Копировать блок" class="sp-x-btn sp-x-box-copy">Копировать</span>
+                    <span title="Вырезать блок" class="sp-x-btn sp-x-box-cut">Вырезать</span>
                 </div>
                 <div class="sp-x-pp-group">
-                    <span title="Удалить блок" class="sp-x-btn sp-acc-box-del">x Удалить</span>
+                    <span title="Поднять вверх" class="sp-x-btn sp-cont-box-up">&uarr; Поднять</span>
+                    <span title="Опустить вниз" class="sp-x-btn sp-cont-box-dn">&darr; Опустить</span>
+                </div>
+                <div class="sp-x-pp-group">
+                    <span title="Удалить блок" class="sp-x-btn sp-cont-box-del">x Удалить</span>
                 </div>
             </div>
         </div>
@@ -29,5 +33,5 @@
         {{~}}
     </div>
     {{?}}
-    <div class="sp-acc-box-block"></div>
+    <div class="sp-x-box-block"></div>
 </div>

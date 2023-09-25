@@ -14,15 +14,15 @@
     font-size: 13px;
 }
 
-.sp-block-container .sp-acc-box {
+.sp-block-container .sp-x-box {
     margin: 10px;
 }
 
-.sp-block-container .sp-acc-box-handle {
+.sp-block-container .sp-cont-box-handle {
     cursor: move;
 }
 
-.sp-block-container .sp-acc-box.ui-sortable-helper {
+.sp-block-container .sp-x-box.ui-sortable-helper {
     background: #e0e8ea;
     padding: 10px 10px 20px;
 }

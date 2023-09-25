@@ -28,7 +28,7 @@
     float: right;
 }
 
-.sp-block-accordion .sp-acc-box {
+.sp-block-accordion .sp-x-box {
     margin: 10px;
 }
 
@@ -42,7 +42,13 @@
     background: #e0e8ea;
     padding: 10px 10px 20px;
 }
+
 .sp-block-accordion .sp-acc-tab.ui-sortable-helper {
     background: #e0e8ea;
     /*padding: 10px 10px 20px;*/
+}
+
+.sp-block-accordion .sp-acc-tab .sp-acc-tab-blocks,
+.sp-block-accordion .sp-acc-tab .sp-acc-buttons2 {
+    display: none;
 }
