@@ -371,7 +371,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         e.preventDefault();
         let $grid = $(this).closest('.sp-x-lt');
         let $col = getActiveColumn($grid);
-        $col.find('.sp-x-box').each(function () {
+        $col.children('.sp-x-box').each(function () {
             $(this).removeClass('sp-x-box-collapsed');
         });
         sprint_editor.fireEvent('popup:hide');
@@ -381,7 +381,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         e.preventDefault();
         let $grid = $(this).closest('.sp-x-lt');
         let $col = getActiveColumn($grid);
-        $col.find('.sp-x-box').each(function () {
+        $col.children('.sp-x-box').each(function () {
             $(this).addClass('sp-x-box-collapsed');
         });
         sprint_editor.fireEvent('popup:hide');
@@ -611,7 +611,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         let removeIntent = false;
 
         $column.sortable({
-            items: ".sp-x-box",
+            items: "> .sp-x-box",
             connectWith: ".sp-x-col",
             handle: ".sp-x-box-handle",
             over: function () {
@@ -666,7 +666,9 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             return false;
         }
 
-        $box.hide();
+        if (blockData.meta && blockData.meta.collapsed){
+            $box.addClass('sp-x-box-collapsed')
+        }
 
         if ($container.hasClass('sp-x-box')) {
             $box.insertAfter($container);
@@ -674,9 +676,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             $container.append($box);
         }
 
-        $box.show(250);
-
-        let $el = $box.find('.sp-x-box-block');
+        let $el = $box.children('.sp-x-box-block');
         let entry = sprint_editor.initblock(
             $,
             $el,
@@ -847,7 +847,14 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
                         $(this).children('.sp-x-box-settings')
                     );
 
+                    let meta = {};
+                    if ($(this).hasClass('sp-x-box-collapsed')) {
+                        meta['collapsed'] = true;
+                    }
+
                     blockData.layout = gindex + ',' + cindex;
+                    blockData.meta = meta;
+
                     blocks.push(blockData);
                 });
 
@@ -861,7 +868,6 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             }
 
         });
-
         let resultString = '';
 
         if (currentEditorParams.saveEmpty || (layouts.length > 0 && blocks.length > 0)) {

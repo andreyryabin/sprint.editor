@@ -48,24 +48,58 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
 
     this.afterRender = function () {
         var $container = $el.children('.sp-items');
-        var $buttons = $el.children('.sp-buttons');
 
         $.each(data.blocks, function (index, blockData) {
             addblock(blockData, $container);
         });
 
         $container.sortable({
-            items: "> div",
+            items: "> .sp-x-box",
             handle: ".sp-cont-box-handle",
         });
 
-        $buttons.on('click', '.sp-x-btn', function () {
+        $el.on('click', '.sp-cont-box-add', function () {
             addblock(
                 {
                     name: $(this).data('name')
                 },
                 $container
             );
+        });
+
+
+        $el.on('click', '.sp-cont-box-del', function (e) {
+            e.preventDefault();
+            var $box = $(this).closest('.sp-x-box');
+
+            var uid = $box.data('uid');
+            sprint_editor.beforeDelete(uid);
+
+            $box.hide(250, function () {
+                $box.remove();
+            });
+        });
+
+        $el.on('click', '.sp-cont-box-up', function (e) {
+            e.preventDefault();
+            var $block = $(this).closest('.sp-x-box');
+            var $nblock = $block.prev('.sp-x-box');
+            if ($nblock.length > 0) {
+                $block.insertBefore($nblock);
+                sprint_editor.afterSort($block.data('uid'));
+            }
+        });
+
+        $el.on('click', '.sp-cont-box-dn', function (e) {
+            e.preventDefault();
+            var $block = $(this).closest('.sp-x-box');
+            var $nblock = $block.next('.sp-x-box');
+            if ($nblock.length > 0) {
+                $block.insertAfter($nblock);
+                sprint_editor.afterSort(
+                    $block.data('uid')
+                );
+            }
         });
 
         function addblock(blockData, $container) {
@@ -78,11 +112,7 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
                 compiled: sprint_editor.compileSettings(blockData, blockSettings)
             }));
 
-            $box.hide();
-
             $container.append($box);
-
-            $box.show(250);
 
             var $elBlock = $box.children('.sp-x-box-block');
             var elEntry = sprint_editor.initblock(
@@ -101,43 +131,6 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
                 currentEditorParams
             );
             sprint_editor.registerEntry(uid, elEntry);
-
-
-            var $buttonsBox = $box.children('.sp-x-buttons-box');
-
-            $buttonsBox.on('click', '.sp-cont-box-del', function (e) {
-                e.preventDefault();
-                var $target = $(this).closest('.sp-x-box');
-
-                var uid = $target.data('uid');
-                sprint_editor.beforeDelete(uid);
-
-                $target.hide(250, function () {
-                    $target.remove();
-                });
-            });
-
-            $buttonsBox.on('click', '.sp-cont-box-up', function (e) {
-                e.preventDefault();
-                var $block = $(this).closest('.sp-x-box');
-                var $nblock = $block.prev('.sp-x-box');
-                if ($nblock.length > 0) {
-                    $block.insertBefore($nblock);
-                    sprint_editor.afterSort($block.data('uid'));
-                }
-            });
-
-            $buttonsBox.on('click', '.sp-cont-box-dn', function (e) {
-                e.preventDefault();
-                var $block = $(this).closest('.sp-x-box');
-                var $nblock = $block.next('.sp-x-box');
-                if ($nblock.length > 0) {
-                    $block.insertAfter($nblock);
-                    sprint_editor.afterSort(
-                        $block.data('uid')
-                    );
-                }
-            });
         }
     };
 });

@@ -3,6 +3,7 @@
     position: relative;
     cursor: pointer;
 }
+
 .sp-x-btn-file input[type=file] {
     cursor: pointer;
     direction: ltr;
@@ -12,7 +13,7 @@
     opacity: 0;
     position: absolute;
     top: 0;
-    left:0;
+    left: 0;
     display: block;
 }
 
@@ -67,6 +68,22 @@
 
 .sp-x-box-collapsed > .sp-x-box-block {
     display: none;
+}
+
+.sp-x-box .sp-x-box-collapse {
+    display: inline-block;
+}
+
+.sp-x-box .sp-x-box-expand {
+    display: none;
+}
+
+.sp-x-box.sp-x-box-collapsed .sp-x-box-collapse {
+    display: none;
+}
+
+.sp-x-box.sp-x-box-collapsed .sp-x-box-expand {
+    display: inline-block;
 }
 
 
@@ -171,7 +188,7 @@
 }
 
 .bx-core-adm-dialog div.sp-x-box-description.adm-info-message,
-.sp-x-box-description.adm-info-message{
+.sp-x-box-description.adm-info-message {
     margin: 10px 0 0 0 !important;
 }
 
