@@ -33,3 +33,13 @@
     display: none;
     margin-top: 10px;
 }
+.sp-block-video .sp-note {
+    padding: 10px 0;
+
+}
+.sp-block-video .sp-handle{
+    cursor: pointer;
+}
+.sp-block-video .sp-hidden{
+    display: none;
+}

@@ -3,7 +3,9 @@
 namespace Sprint\Editor\Blocks;
 
 use Sprint\Editor\Tools\Rutube;
+use Sprint\Editor\Tools\UploadMp4;
 use Sprint\Editor\Tools\Vimeo;
+use Sprint\Editor\Tools\Vkontakte;
 use Sprint\Editor\Tools\Youtube;
 
 class Video
@@ -24,6 +26,8 @@ class Video
             Youtube::class,
             Vimeo::class,
             Rutube::class,
+            Vkontakte::class,
+            UploadMp4::class,
         ];
 
         foreach ($services as $service) {

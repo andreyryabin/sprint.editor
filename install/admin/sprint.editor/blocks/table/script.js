@@ -319,7 +319,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 $tr = $table.find('tr').last();
             }
 
-            var colCount = colcount($tr)
+            var colCount = colcount($tr) || 4;
 
             var newtr = '';
             for (var index = 1; index <= colCount; index++) {

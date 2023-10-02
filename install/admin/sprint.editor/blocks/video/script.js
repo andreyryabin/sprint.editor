@@ -30,13 +30,22 @@ sprint_editor.registerBlock('video', function ($, $el, data) {
     };
 
     this.afterRender = function () {
-        var $input = $el.find('.sp-url');
+        var $input = $el.children('.sp-url');
+
+        var $note = $el.children('.sp-note');
+        var $hidden = $note.children('.sp-hidden');
+        var $handle = $note.children('.sp-handle');
 
         getVideo($input.val());
 
         $input.bindWithDelay('input', function () {
             getVideo($(this).val());
         }, 500);
+
+        $handle.on('click', function () {
+            $hidden.toggle()
+        });
+
 
         $el.on('click', '.sp-area1-toggle', function () {
             if ($el.hasClass('sp-show')) {
@@ -47,6 +56,8 @@ sprint_editor.registerBlock('video', function ($, $el, data) {
                 $el.addClass('sp-show');
             }
         });
+
+
     };
 
     function getVideo(someUrl) {
