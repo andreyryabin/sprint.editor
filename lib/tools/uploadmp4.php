@@ -6,13 +6,11 @@ class UploadMp4
 {
     static public function getVideoCode($url, $default = '')
     {
-        $matches = [];
         if (preg_match(
-            '%^(\/upload\/\w+\.mp4)$%i',
-            $url,
-            $matches
+            '%^(\/upload\/.+\.mp4)$%i',
+            $url
         )) {
-            return $matches[1];
+            return $url;
         }
         return $default;
     }
