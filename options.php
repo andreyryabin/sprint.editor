@@ -226,8 +226,8 @@ $taskList = UpgradeManager::getTasks();
 
 <h2><?= GetMessage('SPRINT_EDITOR_HELP') ?></h2>
 <p><?= GetMessage('SPRINT_EDITOR_HELP_WIKI') ?> <br/>
-    <a target="_blank" href="https://bitbucket.org/andrey_ryabin/sprint.editor/wiki/Home">
-        https://bitbucket.org/andrey_ryabin/sprint.editor/wiki/Home
+    <a target="_blank" href="https://github.com/andreyryabin/sprint.editor/wiki">
+        https://github.com/andreyryabin/sprint.editor/wiki
     </a></p>
 
 <p><?= GetMessage('SPRINT_EDITOR_HELP_MARKETPLACE') ?> <br/>
