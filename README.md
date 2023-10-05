@@ -14,3 +14,10 @@
 
 
 
+Особая благодарность
+-------------------------
+Самой лучшей IDE на свете!\
+[![Phpstorm](https://raw.githubusercontent.com/wiki/andreyryabin/sprint.migration/assets/phpstorm.png)](https://www.jetbrains.com/?from=sprint.migration)
+
+А также всем помощникам!\
+[https://github.com/andreyryabin/sprint.editor/blob/master/contributors.txt](https://github.com/andreyryabin/sprint.editor/blob/master/contributors.txt)
