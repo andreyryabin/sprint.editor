@@ -1,4 +1,8 @@
 # Редактор для контент-менеджеров #
+
+[![Latest Stable Version](https://poser.pugx.org/andreyryabin/sprint.editor/v/stable.svg)](https://packagist.org/packages/andreyryabin/sprint.editor/)
+[![Total Downloads](https://img.shields.io/packagist/dt/andreyryabin/sprint.editor.svg?style=flat)](https://packagist.org/packages/andreyryabin/sprint.editor)
+
 * Платформа: 1С-Битрикс
 * Маркетплейс: [http://marketplace.1c-bitrix.ru/solutions/sprint.editor/](http://marketplace.1c-bitrix.ru/solutions/sprint.editor/)
 * Документация: [https://github.com/andreyryabin/sprint.editor/wiki](https://github.com/andreyryabin/sprint.editor/wiki)
