@@ -377,19 +377,12 @@ class AdminEditor
             $param['sort'] = !empty($param['sort']) ? intval($param['sort']) : 500;
             $param['sort'] = ($param['sort'] > 0) ? $param['sort'] : 500;
 
-            if (is_file($rootpath . $blockName . '/style.css')) {
-                self::$css[] = $webpath . $blockName . '/style.css';
-            }
-
             if (!empty($param['css']) && is_array($param['css'])) {
                 foreach ($param['css'] as $css) {
                     self::$css[] = $css;
                 }
             }
 
-            if (is_file($rootpath . $blockName . '/script.js')) {
-                self::$js[] = $webpath . $blockName . '/script.js';
-            }
             if (!empty($param['js']) && is_array($param['js'])) {
                 foreach ($param['js'] as $js) {
                     self::$js[] = $js;
@@ -406,6 +399,14 @@ class AdminEditor
                 foreach ($param[$encodeKey]['css'] as $css) {
                     self::$css[] = $css;
                 }
+            }
+
+            if (is_file($rootpath . $blockName . '/style.css')) {
+                self::$css[] = $webpath . $blockName . '/style.css';
+            }
+
+            if (is_file($rootpath . $blockName . '/script.js')) {
+                self::$js[] = $webpath . $blockName . '/script.js';
             }
 
             if (is_file($rootpath . $blockName . '/template.html')) {
