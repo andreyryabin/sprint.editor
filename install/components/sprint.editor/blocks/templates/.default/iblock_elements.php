@@ -2,9 +2,9 @@
 $elements = Sprint\Editor\Blocks\IblockElements::getList($block);
 ?>
 <div class="sp-iblock-elements">
-    <?php foreach ($elements as $aItem) { ?>
-        <ul>
+    <ul>
+        <?php foreach ($elements as $aItem) { ?>
             <li><a href="<?= $aItem['DETAIL_PAGE_URL'] ?>"><?= $aItem['NAME'] ?></a></li>
-        </ul>
-    <?php } ?>
+        <?php } ?>
+    </ul>
 </div>
