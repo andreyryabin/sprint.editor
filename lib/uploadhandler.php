@@ -63,9 +63,6 @@ class UploadHandler
             'mkdir_mode'          => BX_DIR_PERMISSIONS,
             'max_number_of_files' => 100,
 
-            //            'name_prefix'      => 'img-',
-            //            'save_origin_name' => false,
-
             // Set the following option to 'POST', if your server does not support
 
             'access_control_allow_origin'      => '*',
