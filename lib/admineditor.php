@@ -136,7 +136,7 @@ class AdminEditor
                         'type'    => 'select',
                         'default' => '',
                         'value'   => [
-                            'yes' => 'Показывать элементы',
+                            'yes' => 'Выводить элементы',
                         ],
                     ],
                 ],
