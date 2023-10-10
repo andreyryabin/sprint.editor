@@ -63,8 +63,8 @@ class UploadHandler
             'mkdir_mode'          => BX_DIR_PERMISSIONS,
             'max_number_of_files' => 100,
 
-            'name_prefix'      => 'img-',
-            'save_origin_name' => false,
+            //            'name_prefix'      => 'img-',
+            //            'save_origin_name' => false,
 
             // Set the following option to 'POST', if your server does not support
 
@@ -330,18 +330,6 @@ class UploadHandler
 
     protected function get_file_name($name, $content_range)
     {
-        $ts = microtime(true);
-        $ts = str_replace('.', '-', $ts);
-        $prefix = $this->options['name_prefix'] . $ts . '-' . mt_rand(99, 999);
-
-        if (!empty($name)) {
-            if (!$this->options['save_origin_name']) {
-                $name = $prefix . '-' . $this->bitrixTranslite($name);
-            }
-        } else {
-            $name = $prefix;
-        }
-
         // Keep an existing filename if this is part of a chunked upload:
         $uploaded_bytes = $this->fix_integer_overflow((int)$content_range[1]);
         while (is_file($this->get_upload_path($name))) {

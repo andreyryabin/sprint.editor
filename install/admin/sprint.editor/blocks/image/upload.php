@@ -22,6 +22,7 @@ global $DB;
 if (CModule::IncludeModule('sprint.editor')) {
     $handler = new UploadHandler(
         [
+            'save_origin_name' => true,
             'bitrix_resize' => [
                 'width' => ImageAdminBlock::PREVIEW_WIDTH,
                 'height' => ImageAdminBlock::PREVIEW_HEIGHT,
