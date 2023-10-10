@@ -3,6 +3,7 @@
     width: 100%;
     border-collapse: collapse;
 }
+
 .sp-block-table table tr {
     background: #f7f7f7;
     color: #8a8a8a;
@@ -22,6 +23,7 @@
     border: 1px solid #ccc;
     padding: 5px;
 }
+
 .sp-block-table p {
     margin: 0;
 }
@@ -42,10 +44,16 @@
     margin: 0 10px 10px 0;
 }
 
-.sp-iblock-elements {
-    width: 350px;
-    background: #ddd;
+.sp-iblock-sections {
     padding: 10px;
+    border: 1px solid #c3c3c3;
+    margin: 10px 0;
+}
+
+.sp-iblock-elements {
+    padding: 10px;
+    border: 1px solid #c3c3c3;
+    margin: 10px 0;
 }
 
 .sp-properties {

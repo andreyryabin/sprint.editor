@@ -54,18 +54,6 @@ class AdminEditor
             'layout_enabled' => [
                 'layout_none',
             ],
-            'block_settings' => [
-                'lists' => [
-                    'type' => [
-                        'type'    => 'select',
-                        'default' => 'ul',
-                        'value'   => [
-                            'ul' => 'Маркированный',
-                            'ol' => 'Нумерованный',
-                        ],
-                    ],
-                ],
-            ],
         ];
 
         $userSettingsName = '';
@@ -128,6 +116,32 @@ class AdminEditor
                 'layouts'  => $deflayouts,
             ];
         }
+
+        //обязательные настройки блоков
+        //todo вынести в отдельные методы
+        $userSettings = array_merge_recursive([
+            'block_settings' => [
+                'lists'           => [
+                    'type' => [
+                        'type'    => 'select',
+                        'default' => 'ul',
+                        'value'   => [
+                            'ul' => 'Маркированный',
+                            'ol' => 'Нумерованный',
+                        ],
+                    ],
+                ],
+                'iblock_sections' => [
+                    'display_elements' => [
+                        'type'    => 'select',
+                        'default' => '',
+                        'value'   => [
+                            'yes' => 'Показывать элементы',
+                        ],
+                    ],
+                ],
+            ],
+        ], $userSettings);
 
         return self::renderFile(
             Module::getModuleDir() . '/templates/admin_editor.php', [
