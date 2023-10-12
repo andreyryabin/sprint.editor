@@ -8,16 +8,31 @@ use CModule;
 
 class IblockSections
 {
+    /**
+     * @param array $block   Содержимое блока
+     * @param array $params  Массив с параметрами запроса <br>
+     *                       "select" => ["Список полей для выборки"],<br>
+     *                       "filter" =>  ["Фильтры"],<br>
+     *
+     * @return array
+     */
     static public function getList(
         $block,
-        $select = [],
-        $filter = []
+        $params = [],
     ) {
+        CModule::IncludeModule('iblock');
+
         if (empty($block['iblock_id']) || empty($block['section_ids'])) {
             return [];
         }
 
-        CModule::IncludeModule('iblock');
+        if (isset($params['select']) || isset($params['filter'])) {
+            $select = $params['select'] ?? [];
+            $filter = $params['filter'] ?? [];
+        } else {
+            $select = $params;
+            $filter = [];
+        }
 
         $select = array_merge(
             [
@@ -36,7 +51,10 @@ class IblockSections
         ], $filter);
 
         $dbRes = CIBlockSection::GetList(
-            [], $filter, false, $select
+            [],
+            $filter,
+            false,
+            $select
         );
 
         $unsorted = [];
@@ -54,17 +72,29 @@ class IblockSections
         return $result;
     }
 
+    /**
+     * @param array $block  Содержимое блока
+     * @param array $params Массив с параметрами запроса <br>
+     *                      "select" => ["Список полей для выборки"],<br>
+     *                      "filter" =>  ["Фильтры"],<br>
+     *                      "order" => ["Сортировка"],<br>
+     *                      "navParams" => ["Постраничная навигация"],<br>
+     *
+     * @return array
+     */
     static public function getElements(
         $block,
-        $select = [],
-        $filter = ['ACTIVE' => 'Y'],
-        $navParams = ['nTopCount' => 20]
+        $params = []
     ) {
+        CModule::IncludeModule('iblock');
         if (empty($block['iblock_id']) || empty($block['section_ids'])) {
             return [];
         }
 
-        CModule::IncludeModule('iblock');
+        $select = $params['select'] ?? [];
+        $filter = $params['filter'] ?? ['ACTIVE' => 'Y'];
+        $order = $params['order'] ?? ['SORT' => 'ASC'];
+        $navParams = $params['navParams'] ?? ['nTopCount' => 20];
 
         $select = array_merge(
             [
@@ -84,7 +114,11 @@ class IblockSections
         ], $filter);
 
         $dbRes = CIBlockElement::GetList(
-            [], $filter, false, $navParams, $select
+            $order,
+            $filter,
+            false,
+            $navParams,
+            $select
         );
 
         $result = [];
