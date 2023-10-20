@@ -1,11 +1,13 @@
 {
   "name": "andreyryabin/sprint.editor",
-  "description": "Редактор для контент-менеджеров (1С-Битрикс)",
+  "description": "Редактор для контент-менеджеров",
   "homepage": "http://marketplace.1c-bitrix.ru/solutions/sprint.editor/",
   "type": "bitrix-module",
   "keywords": [
     "bitrix",
-    "editor"
+    "editor",
+    "block",
+    "json",
   ],
   "authors": [
     {
