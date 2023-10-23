@@ -25,6 +25,9 @@ class AdminEditor
             self::registerBlocks('my', false, true);
             self::registerBlocks('my', true, true);
 
+            self::registerBlocks('complex', false, true);
+            self::registerBlocks('complex', true, true);
+
             self::registerLayouts();
             self::registerAssets();
         }
@@ -594,7 +597,7 @@ class AdminEditor
             }
         } else {
             $blocksToolbar = [];
-            foreach (['blocks', 'my'] as $groupname) {
+            foreach (['blocks', 'complex', 'my'] as $groupname) {
                 $filteredItemBlocks = array_filter(
                     $filteredBlocks,
                     function ($block) use ($groupname) {

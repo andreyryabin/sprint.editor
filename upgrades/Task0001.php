@@ -2,6 +2,9 @@
 
 namespace Sprint\Editor;
 
+use CModule;
+use sprint_editor;
+
 class Task0001 extends Upgrade
 {
 
@@ -12,8 +15,8 @@ class Task0001 extends Upgrade
 
     public function execute() {
 
-        /** @var $tmpmodule \sprint_editor */
-        $tmpmodule = \CModule::CreateModuleObject('sprint.editor');
+        /** @var $tmpmodule sprint_editor */
+        $tmpmodule = CModule::CreateModuleObject('sprint.editor');
         $tmpmodule->afterInstallCopyAdmin();
 
         $this->out('Скрипты обновлены');

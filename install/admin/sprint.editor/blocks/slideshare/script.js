@@ -64,7 +64,7 @@ sprint_editor.registerBlock('slideshare', function ($, $el, data) {
 
     function renderPreview($preview, embedUrl) {
         $preview.html(
-            '<iframe width="320" height="180" src="' + embedUrl + '" frameborder="0" allowfullscreen></iframe>'
+            '<iframe width="320" height="180" src="' + embedUrl + '" allowfullscreen></iframe>'
         );
     }
 

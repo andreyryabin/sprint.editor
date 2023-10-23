@@ -422,6 +422,10 @@ a.sp-x-btn:hover,
     top: 15px;
 }
 
+.sp-x-toolbar .sp-x-btn {
+    margin: 1px;
+}
+
 .sp-x-pp-group {
     margin-bottom: 10px;
 }

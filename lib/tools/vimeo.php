@@ -27,7 +27,7 @@ class Vimeo
         $code = self::getVideoCode($url);
         if ($code) {
             return sprintf(
-                '<iframe width="%s" height="%s" src="https://player.vimeo.com/video/%s" frameborder="0" allowfullscreen></iframe>',
+                '<iframe width="%s" height="%s" src="https://player.vimeo.com/video/%s" allowfullscreen></iframe>',
                 $width,
                 $height,
                 $code

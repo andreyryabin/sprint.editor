@@ -102,7 +102,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             e.preventDefault();
 
             var $td = $el.find('td.active');
-            addcol(td, true)
+            addcol($td, true)
             showcolbtns();
         });
 
@@ -233,10 +233,9 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             showcolbtns();
         });
 
-        $el.on('click', '.sp-sel-dn', function (e) {
+        $el.on('click', '.sp-sel-dn', function () {
             var $trs = $el.find('tr.active');
             if ($trs.length > 0) {
-                var $first = $trs.first();
                 var $last = $trs.last();
 
                 var $ntr = $last.next('tr');
@@ -247,11 +246,10 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 $trs.insertAfter($ntr);
             }
         });
-        $el.on('click', '.sp-sel-up', function (e) {
+        $el.on('click', '.sp-sel-up', function () {
             var $trs = $el.find('tr.active');
             if ($trs.length > 0) {
                 var $first = $trs.first();
-                var $last = $trs.last();
                 var $ntr = $first.prev('tr');
                 $trs.insertBefore($ntr);
             }
@@ -300,7 +298,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             }
         }
 
-        function colcount($tr){
+        function colcount($tr) {
             var cnt = 0;
             $tr.find('td').each(function () {
                 if ($(this).attr('colspan')) {
@@ -335,7 +333,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
 
         function addrowAppend($tr) {
-             var colCount = colcount($tr)
+            var colCount = colcount($tr)
 
             var newtr = '';
             for (var index = 1; index <= colCount; index++) {

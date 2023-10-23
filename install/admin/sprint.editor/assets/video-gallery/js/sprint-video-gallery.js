@@ -116,7 +116,7 @@
                 }
 
                 if (type === 'youtube') {
-                    largeThumbnail = '<iframe type="text/html" src="https://www.youtube.com/embed/' + src + '" frameborder="0" allowfullscreen></iframe>';
+                    largeThumbnail = '<iframe type="text/html" src="https://www.youtube.com/embed/' + src + '" allowfullscreen></iframe>';
                 }
 
 

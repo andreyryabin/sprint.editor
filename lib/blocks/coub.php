@@ -2,6 +2,11 @@
 
 namespace Sprint\Editor\Blocks;
 
+use Sprint\Editor\Tools\Coub as CoubTools;
+
+/**
+ * @deprecated use block video
+ */
 class Coub
 {
     static public function getHtml($block, $params = [])
@@ -17,16 +22,6 @@ class Coub
             ], $block, $params
         );
 
-        $matches = [];
-        if (preg_match('/^.*coub.com\/view\/(\w+)/', $block['url'], $matches)) {
-            return sprintf(
-                '<iframe src="//coub.com/embed/%s?muted=false&autostart=false&originalSize=false&startWithHD=false" allowfullscreen="true" frameborder="0" width="%s" height="%s"></iframe>',
-                $matches[1],
-                $block['width'],
-                $block['height']
-            );
-        } else {
-            return '';
-        }
+        return CoubTools::getVideoHtml($block['url'], $block['width'], $block['height']);
     }
 }

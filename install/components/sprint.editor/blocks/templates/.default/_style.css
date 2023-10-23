@@ -32,6 +32,11 @@
     width: 100%;
 }
 
+.sp-video iframe,
+.sp-video-gallery iframe {
+    border-width: 0;
+}
+
 .sp-image-text {
     background: #eee;
     margin: 10px 0 10px;

@@ -7,7 +7,7 @@ class UploadMp4
     static public function getVideoCode($url, $default = '')
     {
         if (preg_match(
-            '%^(\/upload\/.+\.mp4)$%i',
+            '%^(/upload/.+\.mp4)$%i',
             $url
         )) {
             return $url;

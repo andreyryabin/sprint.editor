@@ -7,6 +7,7 @@ use Sprint\Editor\Tools\UploadMp4;
 use Sprint\Editor\Tools\Vimeo;
 use Sprint\Editor\Tools\Vkontakte;
 use Sprint\Editor\Tools\Youtube;
+use Sprint\Editor\Tools\Coub;
 
 class Video
 {
@@ -28,6 +29,7 @@ class Video
             Rutube::class,
             Vkontakte::class,
             UploadMp4::class,
+            Coub::class,
         ];
 
         foreach ($services as $service) {

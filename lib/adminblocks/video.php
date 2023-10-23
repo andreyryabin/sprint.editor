@@ -3,6 +3,7 @@
 namespace Sprint\Editor\AdminBlocks;
 
 use Sprint\Editor\Locale;
+use Sprint\Editor\Tools\Coub;
 use Sprint\Editor\Tools\Rutube;
 use Sprint\Editor\Tools\UploadMp4;
 use Sprint\Editor\Tools\Vimeo;
@@ -29,6 +30,7 @@ class Video
             Rutube::class,
             Vkontakte::class,
             UploadMp4::class,
+            Coub::class,
         ];
 
         $videoHtml = '';

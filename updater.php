@@ -1,7 +1,7 @@
 <?php
 /** @var CUpdater $updater */
 
-if ($updater && $updater instanceof \CUpdater) {
+if ($updater && $updater instanceof CUpdater) {
     //тут нельзя использовать классы модуля, так как их может не быть в обновлении
 
     if (!function_exists('sprint_editor_rmdir')) {
@@ -15,7 +15,18 @@ if ($updater && $updater instanceof \CUpdater) {
         }
     }
 
-    //sprint_editor_rmdir(__DIR__ . '/install/classes/');
+    $paths = [
+        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/complex_image_text/',
+        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/complex_video_text/',
+        '/bitrix/admin/sprint.editor/blocks/complex_image_text/',
+        '/bitrix/admin/sprint.editor/blocks/complex_video_text/',
+        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/coub/',
+        '/bitrix/admin/sprint.editor/blocks/coub/',
+    ];
+
+    foreach ($paths as $path) {
+        sprint_editor_rmdir($_SERVER['DOCUMENT_ROOT'] . $path);
+    }
 
     if (is_dir(__DIR__ . '/install/components/')) {
         //$updater->CopyFiles("install/components/", "components/");

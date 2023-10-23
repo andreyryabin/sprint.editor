@@ -60,7 +60,7 @@
 <textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"></textarea>
 
 <?php if ($firstRun): ?><?php
-    \CModule::IncludeModule('fileman');
+    CModule::IncludeModule('fileman');
     $compParamsLangMess = CComponentParamsManager::GetLangMessages();
     $compParamsLangMess = CUtil::PhpToJSObject($compParamsLangMess, false);
 

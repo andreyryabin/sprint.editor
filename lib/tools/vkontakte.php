@@ -8,7 +8,7 @@ class Vkontakte
     {
         $matches = [];
         if (preg_match(
-            '%vk.com\/video(\-[0-9_]+)%i',
+            '%vk.com/video(-[0-9_]+)%i',
             $url,
             $matches
         )) {
@@ -29,7 +29,7 @@ class Vkontakte
             [$oid, $videoId] = explode('_', $code);
 
             return sprintf(
-                '<iframe src="https://vk.com/video_ext.php?oid=%s&id=%s&hd=2" width="%s" height="%s" allow="autoplay; encrypted-media; fullscreen; picture-in-picture;" frameborder="0" allowfullscreen></iframe>',
+                '<iframe src="https://vk.com/video_ext.php?oid=%s&id=%s&hd=2" width="%s" height="%s" allow="autoplay; encrypted-media; fullscreen; picture-in-picture;" allowfullscreen></iframe>',
                 $oid,
                 $videoId,
                 $width,

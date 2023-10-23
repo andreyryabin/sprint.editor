@@ -1,25 +1,9 @@
-<?php /** @var $block array */ ?><?php
-
-/*
-$preview = Sprint\Editor\Blocks\Image::getImage($block['preview'], array(
-    'width' => 1024,
-    'height' => 768,
-    'exact' => 0,
-    //'jpg_quality' => 75
-));
-*/
-
-$text = Sprint\Editor\Blocks\Text::getValue($block['text']);
-
-$video = Sprint\Editor\Blocks\Video::getHtml(
-    $block['video'], [
-        'width'  => 640,
-        'height' => 480,
-    ]
-);
-
-?>
+<?php /** @var $block array */ ?>
 <div class="sp-video-text">
-    <div><?= $video ?></div>
-    <div><?= $text ?></div>
+    <?php
+
+    echo "<pre>";print_r($block);/*debug*/echo "</pre>";
+    $this->includeBlock(array_merge($block['video'], ['name' => 'video']));
+    $this->includeBlock(array_merge($block['text'], ['name' => 'text']));
+    ?>
 </div>

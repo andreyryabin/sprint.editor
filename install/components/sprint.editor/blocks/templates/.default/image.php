@@ -8,5 +8,5 @@ $image = Sprint\Editor\Blocks\Image::getImage(
     ]
 );
 ?><?php if ($image) { ?>
-    <div class="sp-image"><img alt="<?= $image['DESCRIPTION'] ?>" src="<?= $image['SRC'] ?>"></div>
+    <div class="sp-image"><img loading="lazy" alt="<?= $image['DESCRIPTION'] ?>" src="<?= $image['SRC'] ?>" width="<?= $image['WIDTH'] ?>" height="<?= $image['HEIGHT'] ?>"></div>
 <?php } ?>
