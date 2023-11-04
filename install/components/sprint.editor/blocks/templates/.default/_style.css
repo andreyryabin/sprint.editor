@@ -199,3 +199,17 @@
 .sp-accordion-title__active:after {
     content: "\2796";
 }
+
+.sp-complex-table {
+    display: table;
+    table-layout: fixed;
+    border-spacing: 10px;
+}
+
+.sp-complex-row {
+    display: table-row;
+}
+
+.sp-complex-col {
+    display: table-cell;
+}

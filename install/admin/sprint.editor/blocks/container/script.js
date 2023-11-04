@@ -124,12 +124,6 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
                 currentEditorParams
             );
 
-            sprint_editor.initblockAreas(
-                $,
-                $elBlock,
-                elEntry,
-                currentEditorParams
-            );
             sprint_editor.registerEntry(uid, elEntry);
         }
     };

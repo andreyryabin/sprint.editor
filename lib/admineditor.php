@@ -146,22 +146,23 @@ class AdminEditor
             ],
         ], $userSettings);
 
-        return self::renderFile(
-            Module::getModuleDir() . '/templates/admin_editor.php', [
-                'jsonValue'        => json_encode(Locale::convertToUtf8IfNeed($value)),
-                'blocksToolbar'    => $blocksToolbar,
-                'layoutsToolbar'   => $layoutsToolbar,
-                'templates'        => Locale::convertToWin1251IfNeed(self::$templates),
-                'jsonParameters'   => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
-                'jsonUserSettings' => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
-                'enableChange'     => $enableChange,
-                'userSettingsName' => $userSettingsName,
-                'inputName'        => $params['inputName'],
-                'uniqId'           => $params['uniqId'],
-                'editorName'       => $params['editorName'],
-                'saveEmpty'        => $saveEmpty,
-                'wideMode'         => $wideMode,
-                'firstRun'         => (self::$initCounts == 1) ? 1 : 0,
+        return Module::templater(
+            '/templates/admin_editor.php',
+            [
+                'jsonValue'          => json_encode(Locale::convertToUtf8IfNeed($value)),
+                'jsonBlocksToolbar'  => json_encode(Locale::convertToUtf8IfNeed($blocksToolbar)),
+                'jsonLayoutsToolbar' => json_encode(Locale::convertToUtf8IfNeed($layoutsToolbar)),
+                'jsonParameters'     => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
+                'jsonUserSettings'   => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
+                'templates'          => Locale::convertToWin1251IfNeed(self::$templates),
+                'enableChange'       => $enableChange,
+                'userSettingsName'   => $userSettingsName,
+                'inputName'          => $params['inputName'],
+                'uniqId'             => $params['uniqId'],
+                'editorName'         => $params['editorName'],
+                'saveEmpty'          => $saveEmpty,
+                'wideMode'           => $wideMode,
+                'firstRun'           => (self::$initCounts == 1) ? 1 : 0,
             ]
         );
     }
@@ -322,16 +323,11 @@ class AdminEditor
     {
         global $APPLICATION;
 
-        if (Module::getDbOption('load_jquery') == 'yes') {
-            $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js');
-        } else {
-            CUtil::InitJSCore(["jquery"]);
-        }
-
+        CUtil::InitJSCore(["jquery"]);
         CUtil::InitJSCore(['translit']);
 
         if (Module::getDbOption('load_jquery_ui') == 'yes') {
-            $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-ui-1.12.1.custom/jquery-ui.min.js');
+            $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-ui-1.13.2.custom/jquery-ui.js');
         }
 
         if (Module::getDbOption('load_dotjs') == 'yes') {
@@ -551,7 +547,7 @@ class AdminEditor
         }
 
         return array_filter(
-            $layouts,
+            array_values($layouts),
             function ($layout) {
                 return !empty($layout['title']);
             }
@@ -627,7 +623,7 @@ class AdminEditor
     protected static function getLayoutsToolbar($userSettings, $filteredLayouts)
     {
         if (!empty($userSettings['layout_toolbar'])) {
-            $layoutsToolbar = [];
+            $layoutsToolbar = $userSettings['layout_toolbar'];
         } else {
             $layoutsToolbar = [
                 [
@@ -642,18 +638,6 @@ class AdminEditor
                 return !empty($toolbarItem['blocks']);
             }
         );
-    }
-
-    public static function renderFile($file, $vars = [])
-    {
-        if (is_array($vars)) {
-            extract($vars, EXTR_SKIP);
-        }
-
-        ob_start();
-        include $file;
-
-        return ob_get_clean();
     }
 
     protected static function sortByNum($input, $key)

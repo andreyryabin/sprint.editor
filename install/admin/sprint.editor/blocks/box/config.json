@@ -1,5 +1,7 @@
 {
   "templates": [
-    "layout.html"
+    "layout.html",
+    "toolbar-popup.html",
+    "toolbar-footer.html"
   ]
 }

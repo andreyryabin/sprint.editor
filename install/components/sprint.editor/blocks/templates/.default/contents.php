@@ -1,8 +1,13 @@
-<?php /** @var $block array */ ?>
+<?php /** @var $block array */
+/** @var $this SprintEditorBlocksComponent */
+
+$elements = Sprint\Editor\Blocks\contents::getElements($block, $this);
+
+?>
 <div class="sp-contents">
     <div class="sp-contents_title"><?= GetMessage('SPRINT_EDITOR_block_contents_title') ?></div>
     <ul class="sp-contents_elements">
-        <?php foreach ($block['elements'] as $item) {
+        <?php foreach ($elements as $item) {
             $cssclass = 'level' . $item['level'];
             $margin = ($item['level'] - 1) * 40;
             ?>

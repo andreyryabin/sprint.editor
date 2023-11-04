@@ -112,6 +112,18 @@ class Module
 
         return $dir;
     }
+
+    public static function templater($file, $vars = [])
+    {
+        if (is_array($vars)) {
+            extract($vars, EXTR_SKIP);
+        }
+
+        ob_start();
+        include self::getModuleDir() . $file;
+
+        return ob_get_clean();
+    }
 }
 
 

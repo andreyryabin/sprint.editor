@@ -1,0 +1,13 @@
+<div class="sp-x-footer">
+    <div class="sp-x-buttons sp-x-buttons-lt2">
+        {{~it.toolbar :group}}
+        <div class="sp-x-pp-group">
+            {{~group.blocks :block}}
+            <span class="sp-x-btn sp-x-btn-{{=block.name}}" data-name="{{=block.name}}">
+                {{=block.button || block.title}}
+            </span>
+            {{~}}
+        </div>
+        {{~}}
+    </div>
+</div>

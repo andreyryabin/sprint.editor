@@ -29,6 +29,10 @@
     width: 100%;
 }
 
+.sp-table.sp-table-fixed {
+    table-layout: fixed;
+}
+
 .sp-table .sp-row {
     display: table-row;
 }
@@ -38,7 +42,17 @@
     vertical-align: top;
 }
 
-.sp-note {
+.sp-table-fixed .sp-col .sp-area {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.sp-table-fixed .sp-col:last-child .sp-area {
+    margin-right: 0;
+}
+
+
+.sp-note, .sp-x-note {
     font-size: 12px !important;
     color: #aaa !important;
 }
@@ -49,10 +63,15 @@
     margin: 10px;
 }
 
+.sp-x-box-caption {
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
 .sp-x-editor-simple .sp-x-box {
     /*margin: 0 0 10px;*/
 }
-
 
 .sp-x-box-copied {
     background: #FFEBC1;
@@ -65,6 +84,27 @@
     border: 2px solid #d00;
     padding: 5px;
 }
+
+.sp-x-box-hidden > .sp-x-buttons-box .sp-x-btn-title {
+    text-decoration: line-through;
+}
+
+.sp-x-box .sp-x-box-hide {
+    display: inline-block;
+}
+
+.sp-x-box .sp-x-box-show {
+    display: none;
+}
+
+.sp-x-box.sp-x-box-hidden .sp-x-box-hide {
+    display: none;
+}
+
+.sp-x-box.sp-x-box-hidden .sp-x-box-show {
+    display: inline-block;
+}
+
 
 .sp-x-box-collapsed > .sp-x-box-block {
     display: none;
@@ -422,9 +462,11 @@ a.sp-x-btn:hover,
     top: 15px;
 }
 
-.sp-x-toolbar .sp-x-btn {
+.sp-x-toolbar .sp-x-btn,
+.sp-x-buttons-lt2 .sp-x-btn {
     margin: 1px;
 }
+
 
 .sp-x-pp-group {
     margin-bottom: 10px;
@@ -476,9 +518,15 @@ a.sp-x-btn:hover,
 }
 
 .sp-x-col-tab {
-    /*background: #FFEBC1;*/
+    border-radius: 5px;
+    margin: 0 1px;
 }
 
 .sp-x-col-tab.sp-x-active {
-    /*background: #ddb9aa;*/
+    border-color: #FDBF3B;
+    background: #FFEBC1;
+}
+
+.sp-x-box iframe {
+    border-width: 0;
 }

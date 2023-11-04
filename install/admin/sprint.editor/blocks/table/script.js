@@ -71,6 +71,8 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
         var $table = $el.find('table');
         var $editor = null;
 
+        var $fake = $el.find('.fake-button-pane');
+
         showcolbtns();
 
         $el.on('keydown', function (e) {
@@ -416,6 +418,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             if ($cell.hasClass('inited')) {
                 return;
             }
+
             $cell.addClass('inited');
 
             if ($editor) {
@@ -445,7 +448,9 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 ],
             }).focus();
 
-
+            $fake.height(
+                $cell.find('.trumbowyg-button-pane').height()
+            );
         }
     };
 

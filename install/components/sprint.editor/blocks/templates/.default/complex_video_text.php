@@ -1,4 +1,4 @@
-<?php /** @var $block array */ ?>
+<?php /** @var $block array */?>
 <div class="sp-video-text">
     <?php
     $this->includeBlock(array_merge($block['video'], ['name' => 'video']));

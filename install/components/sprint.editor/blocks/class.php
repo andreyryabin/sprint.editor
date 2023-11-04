@@ -201,7 +201,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return Sprint\Editor\AdminEditor::prepareValueArray($value);
     }
 
-    protected function outJson($value)
+    public function outJson($value)
     {
         $this->includedBlocks = 0;
         $this->layoutIndex = 0;
@@ -215,7 +215,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
 
         $this->includeHeader($value['blocks'], $this->arParams);
-
 
         foreach ($value['blocks'] as $block) {
             $pos = $block['layout'];
@@ -241,7 +240,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $this->includeFooter($this->arParams);
     }
 
-    protected function registerJs($path)
+    public function registerJs($path)
     {
         if (empty($path)) {
             return false;
@@ -254,7 +253,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return true;
     }
 
-    protected function registerCss($path)
+    public function registerCss($path)
     {
         if (empty($path)) {
             return false;
@@ -267,7 +266,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         return true;
     }
 
-    protected function includeBlock($block)
+    public function includeBlock($block)
     {
         $root = Module::getDocRoot();
 
@@ -380,5 +379,10 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
 
         return false;
+    }
+
+    public function getLayoutsBlocks()
+    {
+        return $this->preparedBlocks;
     }
 }

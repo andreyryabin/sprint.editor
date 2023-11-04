@@ -69,8 +69,9 @@ class UserTypeEditor
             ]
         );
 
-        return AdminEditor::renderFile(
-            Module::getModuleDir() . '/templates/user_type.php', [
+        return Module::templater(
+            '/templates/user_type.php',
+            [
                 'inputName'     => $arHtmlControl['NAME'],
                 'settings'      => $settings,
                 'userfiles'     => $userfiles,

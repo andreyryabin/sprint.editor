@@ -12,8 +12,8 @@
  * @var $wideMode
  *
  * @var $firstRun
- * @var $layoutsToolbar
- * @var $blocksToolbar
+ * @var $jsonLayoutsToolbar
+ * @var $jsonBlocksToolbar
  *
  * @var $enableChange
  * @var $jsonUserSettings
@@ -22,41 +22,7 @@
  * @var $templates
  */
 ?>
-<div class="sp-x-editor<?= $uniqId ?>">
-    <div class="sp-x-editor-lt"></div>
-    <?php if ($enableChange && !empty($layoutsToolbar)) { ?>
-        <div class="sp-x-footer">
-            <div class="sp-x-buttons sp-x-buttons-lt2">
-                <?php foreach ($layoutsToolbar as $aGroup) {
-                    if (!empty($aGroup['blocks'])) { ?>
-                        <div class="sp-x-pp-group">
-                            <?php foreach ($aGroup['blocks'] as $aBlock) { ?>
-                                <span class="sp-x-btn sp-x-btn-<?= $aBlock['name'] ?>" data-name="<?= $aBlock['name'] ?>">
-                                    <?= $aBlock['button'] ?? $aBlock['title'] ?>
-                                </span>
-                            <?php } ?>
-                        </div>
-                    <?php }
-                } ?>
-            </div>
-        </div>
-    <?php } ?>
-</div>
-<script type="text/html" id="sp-x-template-pp-blocks<?= $uniqId ?>">
-    <div class="sp-x-toolbar sp-x-toolbar-<?= $userSettingsName ?>">
-        <?php foreach ($blocksToolbar as $aGroup) { ?>
-            <div class="sp-x-pp-group">
-                <div class="sp-x-pp-group-title"><?= $aGroup['title'] ?></div>
-                <?php foreach ($aGroup['blocks'] as $aBlock) { ?>
-                    <span class="sp-x-btn sp-x-btn-<?= $aBlock['name'] ?>" data-name="<?= $aBlock['name'] ?>">
-                        <?= $aBlock['button'] ?? $aBlock['title'] ?>
-                    </span>
-                <?php } ?>
-            </div>
-        <?php } ?>
-    </div>
-</script>
-
+<div class="sp-x-editor<?= $uniqId ?>"></div>
 <textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"></textarea>
 
 <?php if ($firstRun): ?><?php
@@ -97,6 +63,8 @@
             saveEmpty: <?=$saveEmpty?>,
             userSettingsName: "<?=$userSettingsName?>",
             jsonUserSettings: <?=$jsonUserSettings?>,
+            jsonLayoutsToolbar: <?=$jsonLayoutsToolbar?>,
+            jsonBlocksToolbar: <?=$jsonBlocksToolbar?>,
         }, {
             jsonValue: <?=$jsonValue?>
         });

@@ -1,4 +1,4 @@
-sprint_editor.registerBlock('contents', function ($, $el, data) {
+sprint_editor.registerBlock('contents', function ($, $el, data, settings) {
 
     data = $.extend({
         selectors: [],
@@ -6,6 +6,11 @@ sprint_editor.registerBlock('contents', function ($, $el, data) {
     }, data);
 
     var all = ['h1', 'h2', 'h3', 'h4', 'h5'];
+
+    if (settings.taglist && settings.taglist.value) {
+        all = settings.taglist;
+    }
+
 
     var checked = [];
     $.each(all, function (index, val) {

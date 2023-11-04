@@ -1,0 +1,19 @@
+{
+  "title": "Видео с текстом",
+  "sort": "910",
+  "layouts": [
+    {
+      "title": "",
+      "css": "",
+      "columns": [
+        {
+          "css": "",
+          "blocks": [
+            "video",
+            "text"
+          ]
+        }
+      ]
+    }
+  ]
+}

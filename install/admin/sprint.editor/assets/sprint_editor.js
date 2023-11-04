@@ -6,7 +6,6 @@ var sprint_editor = {
     _events: {},
     _entries: {},
     _uidcounter: 0,
-    _imagesdelete: {},
     _submitcnt: 0,
     _clipboardUid: 'sprint-editor-cb02',
 
@@ -96,12 +95,12 @@ var sprint_editor = {
         return func(data);
     },
 
-    markImagesForDelete: function (items) {
-        this._imagesdelete = jQuery.extend({}, this._imagesdelete, items);
-    },
-
     initblock: function ($, $el, name, blockData, blockSettings, currentEditorParams) {
         name = sprint_editor.hasBlockMethod(name) ? name : 'dump';
+
+        blockData = $.extend(blockData, {
+            name: name,
+        });
 
         let method = sprint_editor.getBlockMethod(name);
         let entry = new method(
@@ -119,36 +118,29 @@ var sprint_editor = {
             entry.afterRender();
         }
 
-        return entry;
-    },
-
-    initblockAreas: function ($, $el, entry, currentEditorParams) {
         if (entry && typeof entry.getAreas == 'function') {
             let areas = entry.getAreas();
-            let entryData = entry.getData();
             for (let prop in areas) {
                 if (areas.hasOwnProperty(prop)) {
                     let area = areas[prop];
                     area.blockSettings = area.blockSettings || {};
-
-                    let areaData = {};
-                    if (area.dataFrom) {
-                        areaData[area.dataFrom] = entryData[area.dataKey];
-                    } else {
-                        areaData = entryData[area.dataKey];
-                    }
-
                     area.block = sprint_editor.initblock(
                         $,
                         $el.find(area.container),
                         area.blockName,
-                        areaData,
+                        blockData[area.dataKey],
                         area.blockSettings,
                         currentEditorParams
                     );
                 }
             }
         }
+
+        return entry;
+    },
+
+    initblockAreas: function ($, $el, entry, currentEditorParams) {
+        console.log('initblockAreas deprecated');
     },
 
     beforeDelete: function (uid) {
@@ -221,13 +213,8 @@ var sprint_editor = {
         return false;
     },
 
-    collectData: function (uid) {
+    collectDataFromEntry: function (entry) {
         let blockData = {};
-        if (!sprint_editor.hasEntry(uid)) {
-            return blockData;
-        }
-
-        let entry = sprint_editor.getEntry(uid);
 
         if (typeof entry.collectData !== 'function') {
             return blockData;
@@ -243,16 +230,19 @@ var sprint_editor = {
         for (let prop in areas) {
             if (areas.hasOwnProperty(prop)) {
                 let area = areas[prop];
-                let adata = area.block.collectData();
-                if (area.dataFrom) {
-                    blockData[area.dataKey] = adata[area.dataFrom];
-                } else {
-                    blockData[area.dataKey] = adata;
-                }
-
+                blockData[area.dataKey] = sprint_editor.collectDataFromEntry(area.block);
             }
         }
 
+        return blockData;
+    },
+
+    collectData: function (uid) {
+        let blockData = {};
+        let entry = sprint_editor.getEntry(uid);
+        if (entry) {
+            blockData = sprint_editor.collectDataFromEntry(entry);
+        }
         return blockData;
     },
 
@@ -342,6 +332,7 @@ var sprint_editor = {
         if (renderVars) {
 
             renderVars['uid'] = uid;
+            renderVars['blockName'] = blockData['name'];
             renderVars['enableChange'] = params.enableChange;
             renderVars['compiled'] = sprint_editor.compileSettings(blockData, blockSettings);
 

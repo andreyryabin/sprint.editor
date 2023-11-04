@@ -1,4 +1,3 @@
-
 .sp-block-gallery .sp-item {
     position: relative;
     width: 98px;
@@ -8,7 +7,6 @@
     border: 2px solid #eee;
     cursor: pointer;
     margin: 3px;
-    float: left;
 }
 
 .sp-block-gallery .sp-item img {
@@ -21,18 +19,12 @@
     width: 98px;
     height: 55px;
     margin: 3px;
-    float: left;
 }
 
 .sp-block-gallery .sp-item-desc {
     width: 300px;
 }
 
-.sp-block-gallery .sp-edit {
-    background: #ddd;
-    display: none;
-    padding: 10px;
-}
 
 .sp-block-gallery .sp-x-active {
     border: 2px solid #d00;
@@ -43,20 +35,31 @@
     background: #eee;
     min-height: 55px;
     padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .sp-block-gallery .sp-source {
     background: #FFEBC1;
-    display: none;
     padding: 10px;
 }
 
-.sp-block-gallery.sp-show .sp-source {
+.sp-block-gallery .sp-edit {
+    background: #ddd;
+    padding: 10px;
+    display: none;
+}
+
+.sp-block-gallery.sp-editable .sp-source {
+    display: none;
+}
+
+.sp-block-gallery.sp-editable .sp-edit {
     display: block;
 }
 
 .sp-block-gallery .sp-download-url {
-    width: 300px;
+    width: 50%
 }
 
 .sp-block-gallery .sp-field {

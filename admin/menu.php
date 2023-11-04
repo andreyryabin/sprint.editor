@@ -24,7 +24,17 @@ $aMenu = [
             'text' => GetMessage('SPRINT_EDITOR_PACKS_PAGE'),
             'url'  => 'sprint_editor.php?' . http_build_query(
                     [
-                        'lang' => LANGUAGE_ID,
+                        'lang'     => LANGUAGE_ID,
+                        'showpage' => 'packs_builder',
+                    ]
+                ),
+        ],
+        [
+            'text' => GetMessage('SPRINT_EDITOR_COMPLEX_BUILDER'),
+            'url'  => 'sprint_editor.php?' . http_build_query(
+                    [
+                        'lang'     => LANGUAGE_ID,
+                        'showpage' => 'complex_builder',
                     ]
                 ),
         ],

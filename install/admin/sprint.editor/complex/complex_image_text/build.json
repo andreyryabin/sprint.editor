@@ -1,0 +1,19 @@
+{
+  "title": "Картинка с текстом",
+  "sort": "920",
+  "layouts": [
+    {
+      "title": "",
+      "css": "",
+      "columns": [
+        {
+          "css": "",
+          "blocks": [
+            "image",
+            "text"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -22,9 +22,7 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
             if (uid && itemsCollection[uid]) {
                 data.items.push(itemsCollection[uid]);
             }
-
         });
-
 
         return data;
     };
@@ -37,10 +35,7 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
 
 
         $el.on('click', '.sp-item-del', function () {
-            var $image = $el.find('.sp-x-active');
-            deletefiles($image.data('uid'));
-            $image.remove();
-            closeedit();
+            removeedit($el.find('.sp-x-active'));
         });
 
         $el.on('click', '.sp-item-add', function () {
@@ -57,11 +52,7 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
         });
 
         $el.on('click', '.sp-item', function () {
-            $el.find('.sp-item').removeClass('sp-x-active');
-            $(this).addClass('sp-x-active');
-            var uid = $(this).data('uid');
-
-            openedit(uid);
+            openedit($(this));
         });
 
 
@@ -77,9 +68,7 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
             },
             beforeStop: function (event, ui) {
                 if (removeIntent) {
-                    deletefiles(ui.item.data('uid'));
-                    ui.item.remove();
-                    closeedit();
+                    removeedit(ui.item);
                 } else {
                     ui.item.removeAttr('style');
                 }
@@ -89,7 +78,19 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
 
     };
 
-    var openedit = function (uid) {
+    var openedit = function ($item) {
+
+        if ($item.hasClass('sp-x-active')) {
+            $item.removeClass('sp-x-active')
+            $el.find('.sp-edit').hide();
+            return;
+        }
+
+        $el.find('.sp-item').removeClass('sp-x-active');
+
+        $item.addClass('sp-x-active');
+        var uid = $item.data('uid');
+
         if (!itemsCollection[uid]) {
             return;
         }
@@ -154,8 +155,24 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
     };
 
-    var closeedit = function () {
-        $el.find('.sp-edit').hide(250).empty();
+
+    var removeedit = function ($image) {
+        var $prev = $image.prev('.sp-item');
+
+        $image.remove();
+
+        if ($prev.length > 0) {
+            openedit($prev);
+            return;
+        }
+
+        var $last = $el.find('.sp-item').last();
+        if ($last.length > 0) {
+            openedit($last);
+            return;
+        }
+
+        $el.find('.sp-edit').hide();
     };
 
     var renderitem = function (uid) {
@@ -181,18 +198,5 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
             }));
         }
     };
-
-    var deletefiles = function (uid) {
-        if (uid && itemsCollection[uid]) {
-            var items = {};
-            items[uid] = itemsCollection[uid];
-
-            sprint_editor.markImagesForDelete(items);
-        }
-    };
-
-    this.beforeDelete = function () {
-        sprint_editor.markImagesForDelete(itemsCollection);
-    }
 
 });

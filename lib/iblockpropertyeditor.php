@@ -83,8 +83,9 @@ class IblockPropertyEditor
         $settings = $settings['USER_TYPE_SETTINGS'];
         $userfiles = AdminEditor::getUserSettingsFiles();
 
-        return AdminEditor::renderFile(
-            Module::getModuleDir() . '/templates/iblock_property.php', [
+        return Module::templater(
+            '/templates/iblock_property.php',
+            [
                 'inputName' => $strHTMLControlName['NAME'],
                 'settings'  => $settings,
                 'userfiles' => $userfiles,

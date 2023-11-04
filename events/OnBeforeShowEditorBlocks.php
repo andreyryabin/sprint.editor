@@ -59,6 +59,14 @@ AddEventHandler(
                         ]
                     );
                 }
+            } elseif ($block['name'] == 'complex_video_text') {
+                if (isset($block['preview'])) {
+                    $oldPrev = $block['preview'];
+                    unset($block['preview']);
+                    if (!isset($block['video']['preview'])) {
+                        $block['video']['preview'] = $oldPrev;
+                    }
+                }
             }
         }
     }

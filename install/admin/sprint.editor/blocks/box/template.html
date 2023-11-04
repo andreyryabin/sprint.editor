@@ -5,9 +5,9 @@
             <span class="sp-x-btn sp-x-pp-box-open">&equiv;</span>
             {{?}}
             {{?it.enableChange}}
-            <span title="{{=it.hint}}" class="sp-x-btn sp-x-box-handle">{{=it.title}}</span>
+            <span title="{{=it.hint}}" class="sp-x-btn sp-x-btn-title sp-x-box-handle">{{=it.title}}</span>
             {{??}}
-            <span title="{{=it.hint}}" class="sp-x-btn">{{=it.title}}</span>
+            <span title="{{=it.hint}}" class="sp-x-btn sp-x-btn-title">{{=it.title}}</span>
             {{?}}
             {{?it.enableChange}}
             <div class="sp-x-pp-box">
@@ -21,11 +21,16 @@
                     <span title="Опустить вниз" class="sp-x-btn sp-x-box-dn">&darr; Опустить</span>
                 </div>
                 <div class="sp-x-pp-group">
+                    <span title="Скрыть" class="sp-x-btn sp-x-box-hide">Скрыть</span>
+                    <span title="Показать" class="sp-x-btn sp-x-box-show">Показать</span>
                     <span title="Свернуть" class="sp-x-btn sp-x-box-collapse">Свернуть</span>
                     <span title="Развернуть" class="sp-x-btn sp-x-box-expand">Развернуть</span>
                 </div>
                 <div class="sp-x-pp-group">
                     <span title="Удалить блок" class="sp-x-btn sp-x-box-del">x Удалить</span>
+                </div>
+                <div class="sp-x-pp-group">
+                    <div class="sp-x-note">Название блока: {{=it.blockName}}</div>
                 </div>
             </div>
             {{?}}

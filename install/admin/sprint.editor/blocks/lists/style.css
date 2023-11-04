@@ -8,7 +8,10 @@
 }
 
 .sp-block-lists .sp-item input {
-    width: 78%;
+    width: calc(95% - 96px);
+    min-width: 10px;
+    padding: 0;
+    text-indent: 5px;
 }
 
 .sp-block-lists .sp-item-group{

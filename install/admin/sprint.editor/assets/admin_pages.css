@@ -1,0 +1,158 @@
+.sp-table {
+    display: table;
+}
+
+.sp-table .sp-row {
+    display: table-row;
+}
+
+
+.sp-x-lt {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.sp-x-lt .sp-table {
+    background: #fff;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.sp-x-lt .sp-x-caption {
+    padding: 6px;
+    line-height: 16px;
+    font-size: 13px;
+    display: inline-block;
+    margin-left: 10px;
+    border-bottom: 1px solid #ccc;
+    min-width: 200px;
+}
+
+.sp-x-lt .sp-x-caption:focus {
+    outline: 0 solid transparent;
+}
+
+.sp-x-lt .sp-x-lt-header {
+    margin-bottom: 10px;
+}
+
+.sp-x-lt .sp-x-del {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    text-align: center;
+    user-select: none;
+    outline: none;
+    border: 1px solid #ccc;
+    padding: 6px;
+    min-width: 18px;
+    line-height: 16px;
+}
+
+.sp-x-lt .sp-x-del:hover {
+    background: #ededed;
+}
+
+
+.sp-side-left {
+    padding-right: 40px;
+}
+
+.sp-x-lt .sp-x-sortable {
+    height: 40px;
+    border: 1px solid #ccc;
+    display: table-cell;
+}
+
+.sp-x-lt .sp-x-block {
+    display: block;
+    cursor: move;
+    background: #eee;
+    margin: 2px;
+    padding: 10px;
+    text-align: center;
+}
+
+.sp-x-header {
+    background-color: #e3ecee;
+    border: 1px solid #c4ced2;
+    padding: 10px;
+    margin-bottom: 10px
+}
+
+.sp-x-header input[name=block_title] {
+    width: 365px
+}
+
+.sp-x-header input[name=block_name] {
+    width: 300px
+}
+
+.sp-x-toolbar {
+    margin: 10px 0;
+    font-size: 0;
+    max-width: 500px;
+    min-width: 250px;
+}
+
+.sp-x-pp-group {
+    margin-bottom: 10px;
+}
+
+.sp-x-pp-group-title {
+    font-weight: bold;
+    font-size: 13px;
+    padding: 4px;
+    margin: 2px;
+    min-width: 18px;
+}
+
+.sp-x-toolbar .sp-x-block {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    text-align: center;
+    user-select: none;
+    outline: none;
+    border: 1px solid #ccc;
+    padding: 6px;
+    min-width: 18px;
+    line-height: 16px;
+    margin: 1px;
+}
+
+.sp-x-toolbar .sp-x-block:hover {
+    background: #ededed;
+}
+
+
+a.sp-link, a.sp-link:link {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    text-align: center;
+    user-select: none;
+    border: 1px solid #ccc;
+    padding: 6px;
+    min-width: 18px;
+    line-height: 16px;
+    color: black;
+    margin-bottom: 10px;
+}
+
+a.sp-link:hover {
+    background: #ededed;
+}
+
+a.sp-link:active,
+a.sp-link.sp-link-active {
+    background: #cecece;
+}
+
+a.sp-link-new, a.sp-link-new:link {
+    /*border-radius: 5px;*/
+}
+
