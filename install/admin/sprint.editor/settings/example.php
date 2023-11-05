@@ -5,7 +5,7 @@
  */
 
 $settings = [
-    'title'           => 'Редактор с колонками',
+    'title'            => 'Редактор с колонками',
 
     //Разрешить изменение структуры материала, перекрывает настройку "Отключить добавление блоков"
     //'enable_change' => true,
@@ -14,7 +14,7 @@ $settings = [
     //'wide_mode'     => true,
 
     //Пример пользовательских настроек для сеток
-    'layout_settings' => [
+    'layout_settings'  => [
         'type1' => [],
         'type2' => [
             //            'param1' => [
@@ -38,7 +38,7 @@ $settings = [
     ],
 
     //Доступные классы колонок для сеток
-    'layout_classes'  => [
+    'layout_classes'   => [
         'type1' => [],
         'type2' => [
             ['col-md-3', 'col-md-4', 'col-md-6', 'col-md-8', 'col-md-9', 'col-md-12'],
@@ -52,7 +52,7 @@ $settings = [
     ],
 
     //Классы колонок для сеток по умолчанию
-    'layout_defaults' => [
+    'layout_defaults'  => [
         'type1' => '',
         'type2' => 'col-md-6',
         'type3' => 'col-md-4',
@@ -60,7 +60,7 @@ $settings = [
     ],
 
     //Названия классов для колонок
-    'layout_titles'   => [
+    'layout_titles'    => [
         'col-md-12' => '100%',
         'col-md-9'  => '75%',
         'col-md-8'  => '66.66%',
@@ -70,7 +70,7 @@ $settings = [
     ],
 
     //Названия блоков переопределяющие значения по умолчанию
-    'block_titles'    => [
+    'block_titles'     => [
         //'text' => 'Текст',
     ],
     /* параметр заменяет значения по умолчанию, заданные в файлах config.json блоков
@@ -109,7 +109,7 @@ $settings = [
     //    ],
 
     //Настройки блоков
-    'block_settings'  => [
+    'block_settings'   => [
         'htag'            => [
             //список тегов для заголовка
             'taglist' => [
@@ -152,6 +152,25 @@ $settings = [
                     'sp-text-3' => 'Стиль 3',
                 ],
             ],
+
+            'toolbar' => [
+                'type'  => 'hidden',
+                'value' => [
+                    [
+                        'viewHTML',
+                        'link',
+                        'strong',
+                        'em',
+                        'underline',
+                        'del',
+                    ],
+                    [
+                        'justifyLeft',
+                        'justifyCenter',
+                        'justifyRight',
+                    ],
+                ],
+            ],
         ],
         'lists'           => [
             'type' => [
@@ -179,20 +198,50 @@ $settings = [
         ],
     ],
 
+    //Настройки блков внутри составных
+    'complex_settings' => [
+        //название составного блока
+        'complex_image_text' => [
+            //название вложенного блока
+            'text' => [
+                //название настройки вложенного блока
+                //поддерживается только 'type'=>'hidden'
+                'toolbar' => [
+                    'type'  => 'hidden',
+                    'value' => [
+                        [
+                            'viewHTML',
+                            'link',
+                            'strong',
+                            'em',
+                            'underline',
+                            'del',
+                        ],
+                        [
+                            'justifyLeft',
+                            'justifyCenter',
+                            'justifyRight',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+
     //Отключить указанные блоки (если используется, то block_enabled уже не обрабатывается)
-    'block_disabled'  => [
+    'block_disabled'   => [
         //'slideshare'
     ],
 
     //Разрешить добавление указанных блоков
-    'block_enabled'   => [
+    'block_enabled'    => [
         //        'htag',
         //        'text',
         //        'gallery'
     ],
 
     //Разрешить добавление указанных сеток
-    'layout_enabled'  => [
+    'layout_enabled'   => [
         //        'layout_1',
         //        'layout_2',
         //        'layout_3',
@@ -202,7 +251,7 @@ $settings = [
     //Сниппеты для блока "Сниппет"
     //Файлы сниппетов хранятся в папке /local/admin/sprint.editor/snippets или в /bitrix/admin/sprint.editor/snippets
     //Данный путь можно переопределить в шаблоне блока snippet.php
-    'snippets'        => [
+    'snippets'         => [
         [
             'file'        => 'example.php',
             'title'       => 'example',

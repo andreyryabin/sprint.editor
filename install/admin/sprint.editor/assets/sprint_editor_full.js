@@ -661,7 +661,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         }
 
         if (!sprint_editor.hasBlockParams(blockData.name)) {
-            return false;
+            sprint_editor.registerDump(blockData);
         }
 
         let uid = sprint_editor.makeUid();
@@ -695,12 +695,18 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         }
 
         let $el = $box.children('.sp-x-box-block');
-        let entry = sprint_editor.initblock($, $el, blockData.name, blockData, blockSettings, currentEditorParams);
+        let entry = sprint_editor.initblock(
+            $,
+            $el,
+            blockData.name,
+            blockData,
+            blockSettings,
+            currentEditorParams
+        );
 
         sprint_editor.registerEntry(uid, entry);
 
         return $box;
-        // scrollTo($el);
     }
 
     function packLoad(packname) {

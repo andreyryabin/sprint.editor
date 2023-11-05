@@ -26,42 +26,33 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
                 return false;
             }
 
-            var btns = [];
-            var cssList = {};
-            var plugins = {};
+            let btns = [];
+            let csslist = {};
+            let plugins = {};
 
-            if (settings.csslist && settings.csslist.value) {
-                cssList = settings.csslist.value;
-
-                plugins = {
-                    mycss: {
-                        cssList: cssList
-                    }
-                };
-
-                btns = [
-                    ['viewHTML'],
-                    ['formatting'],
-                    ['myCss'],
-                    ['strong', 'em', 'underline', 'del'],
-                    ['link','specialChars'],
-                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-                    ['unorderedList', 'orderedList'],
-                    ['removeformat']
-                ];
-
+            if (settings.toolbar && settings.toolbar.value) {
+                btns = settings.toolbar.value.slice();
             } else {
                 btns = [
                     ['viewHTML'],
-                    ['formatting'],
+                    ['formatting', 'link', 'specialChars'],
                     ['strong', 'em', 'underline', 'del'],
-                    ['link','specialChars'],
                     ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
                     ['unorderedList', 'orderedList'],
                     ['removeformat']
                 ]
             }
 
+            if (settings.csslist && settings.csslist.value) {
+                csslist = settings.csslist.value;
+                btns.push(['myCss']);
+
+                plugins = {
+                    mycss: {
+                        cssList: csslist
+                    }
+                }
+            }
 
             $el.find('.sp-text').trumbowyg({
                 svgPath: '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',

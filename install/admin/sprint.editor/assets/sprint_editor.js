@@ -1,6 +1,5 @@
 var sprint_editor = {
     _templates: {},
-    _tplcache: {},
     _parameters: {},
     _registered: {},
     _events: {},
@@ -11,10 +10,6 @@ var sprint_editor = {
 
     registerBlock: function (name, method) {
         this._registered[name] = method;
-    },
-
-    registerTemplates: function (templates) {
-        this._templates = templates
     },
 
     registerParameters: function (parameters) {
@@ -45,12 +40,44 @@ var sprint_editor = {
         return (this._registered[name]) ? this._registered[name] : false;
     },
 
+    setBlockParams: function (name, params) {
+        this._parameters[name] = params;
+    },
+
     hasBlockParams: function (name) {
         return !!this._parameters[name];
     },
 
     getBlockParams: function (name) {
         return (this._parameters[name]) ? this._parameters[name] : false;
+    },
+
+    registerDump(blockData) {
+        if (!blockData.name) {
+            return;
+        }
+
+        this.setBlockParams(blockData.name, {
+            'title': blockData.name,
+            'hint': '',
+            'sort': 100,
+        });
+
+        this.registerTemplate(
+            blockData.name,
+            '<div class="sp-x-dump-error">Block not found</div>'
+        );
+
+        this.registerBlock(blockData.name, function ($, $el, data) {
+            this.getData = function () {
+                return data;
+            };
+            this.collectData = function () {
+                return data;
+            };
+            this.afterRender = function () {
+            };
+        });
     },
 
     getBlockTitle: function (name) {
@@ -71,18 +98,18 @@ var sprint_editor = {
     },
 
     renderTemplate: function (name, data) {
-        if (!this._tplcache[name]) {
+        if (!this._templates[name]) {
             let $tpl = jQuery('#sp-x-template-' + name);
             if ($tpl.length > 0) {
-                this._tplcache[name] = $tpl.html();
+                this._templates[name] = $tpl.html();
             } else {
-                this._tplcache[name] = '';
+                this._templates[name] = '';
             }
         }
 
         if (window.doT) {
             let func = window.doT.template(
-                this._tplcache[name]
+                this._templates[name]
             );
             return func(data);
         }
@@ -96,11 +123,13 @@ var sprint_editor = {
     },
 
     initblock: function ($, $el, name, blockData, blockSettings, currentEditorParams) {
-        name = sprint_editor.hasBlockMethod(name) ? name : 'dump';
-
         blockData = $.extend(blockData, {
             name: name,
         });
+
+        if (!sprint_editor.hasBlockMethod(name)) {
+            sprint_editor.registerDump(blockData)
+        }
 
         let method = sprint_editor.getBlockMethod(name);
         let entry = new method(
@@ -123,13 +152,17 @@ var sprint_editor = {
             for (let prop in areas) {
                 if (areas.hasOwnProperty(prop)) {
                     let area = areas[prop];
-                    area.blockSettings = area.blockSettings || {};
+                    let areaSettings = sprint_editor.getComplexSettings(
+                        name,
+                        area.blockName,
+                        currentEditorParams
+                    );
                     area.block = sprint_editor.initblock(
                         $,
                         $el.find(area.container),
                         area.blockName,
                         blockData[area.dataKey],
-                        area.blockSettings,
+                        areaSettings,
                         currentEditorParams
                     );
                 }
@@ -457,7 +490,6 @@ var sprint_editor = {
     },
 
     getBlockSettings: function (name, params) {
-        let blockSettings = {};
         if (
             params.hasOwnProperty('jsonUserSettings') &&
             params.jsonUserSettings.hasOwnProperty('block_settings') &&
@@ -467,20 +499,28 @@ var sprint_editor = {
             return params.jsonUserSettings.block_settings[name];
 
         }
-        return blockSettings;
+        return {};
     },
+    getComplexSettings: function (complexName, blockName, params) {
+        if (
+            params.hasOwnProperty('jsonUserSettings') &&
+            params.jsonUserSettings.hasOwnProperty('complex_settings') &&
+            params.jsonUserSettings.complex_settings.hasOwnProperty(complexName) &&
+            params.jsonUserSettings.complex_settings[complexName].hasOwnProperty(blockName)
+        ) {
+            return params.jsonUserSettings.complex_settings[complexName][blockName];
 
+        }
+        return {};
+    },
     getLayoutSettings: function (name, params) {
-        let layoutSettings = {};
-
         if (params.hasOwnProperty('jsonUserSettings') &&
             params.jsonUserSettings.hasOwnProperty('layout_settings') &&
             params.jsonUserSettings.layout_settings.hasOwnProperty(name)
         ) {
             return params.jsonUserSettings.layout_settings[name];
-
         }
-        return layoutSettings;
+        return {};
     },
 
     getSnippets: function (params) {
@@ -524,5 +564,6 @@ var sprint_editor = {
         });
 
         return settval;
-    }
+    },
+
 };

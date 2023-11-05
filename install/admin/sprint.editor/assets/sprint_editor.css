@@ -85,6 +85,12 @@
     padding: 5px;
 }
 
+.sp-x-dump-error {
+    color: #f00;
+    text-align: center;
+    border-bottom: 1px solid;
+}
+
 .sp-x-box-hidden > .sp-x-buttons-box .sp-x-btn-title {
     text-decoration: line-through;
 }

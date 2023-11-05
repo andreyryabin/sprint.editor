@@ -27,6 +27,8 @@ if ($updater && $updater instanceof CUpdater) {
         '/bitrix/admin/sprint.editor/blocks/coub/',
         '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/slideshare/',
         '/bitrix/admin/sprint.editor/blocks/slideshare/',
+        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/dump/',
+        '/bitrix/admin/sprint.editor/blocks/dump/',
         '/bitrix/modules/sprint.editor/admin/includes/',
         '/bitrix/modules/sprint.editor/classes/',
         '/bitrix/modules/sprint.editor/install/admin/sprint.editor/assets/jquery-ui-1.12.1.custom/',
