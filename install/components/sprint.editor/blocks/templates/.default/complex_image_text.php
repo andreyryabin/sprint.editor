@@ -1,7 +1,15 @@
-<?php /** @var $block array */ ?>
-<div class="sp-image-text">
-    <?php
-    $this->includeBlock(array_merge($block['image'], ['name' => 'image']));
-    $this->includeBlock(array_merge($block['text'], ['name' => 'text']));
-    ?>
+<?php 
+/**
+ * @var $block array
+ * @var $this SprintEditorBlocksComponent
+ */
+?><div class="sp-complex sp-complex_image_text">
+<div class="sp-complex-table"><div class="sp-complex-row">
+<div class="sp-complex-col">
+<?php $this->includeBlock($block['image']);?>
+</div>
+<div class="sp-complex-col">
+<?php $this->includeBlock($block['text']);?>
+</div>
+</div></div>
 </div>

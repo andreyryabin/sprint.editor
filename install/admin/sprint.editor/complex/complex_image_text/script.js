@@ -1,16 +1,16 @@
 sprint_editor.registerBlock('complex_image_text', function ($, $el, data) {
     var areas = [
-        {
-            dataKey: 'image',
-            blockName: 'image',
-            container: '.sp-area1'
-        },
-        {
-            dataKey: 'text',
-            blockName: 'text',
-            container: '.sp-area2'
-        }
-    ];
+    {
+        "blockName": "image",
+        "dataKey": "image",
+        "container": ".sp-area-1"
+    },
+    {
+        "blockName": "text",
+        "dataKey": "text",
+        "container": ".sp-area-2"
+    }
+];
 
     this.getData = function () {
         return data;

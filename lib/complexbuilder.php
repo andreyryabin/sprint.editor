@@ -201,23 +201,14 @@ class ComplexBuilder
             throw new ComplexBuilderException('Укажите заголовок блока');
         }
 
+        if (empty($buildJson['sort']) || !is_numeric($buildJson['sort'])) {
+            $buildJson['sort'] = 500;
+        }
+
         $adminBlockPath = self::createPath(self::getAdminBlockPath($blockName));
 
-        $areas = [];
-
-        $aindex = 1;
-        foreach ($buildJson['layouts'] as $layout) {
-            foreach ($layout['columns'] as $column) {
-                foreach ($column['blocks'] as $bname) {
-                    $areas[] = [
-                        'dataKey'   => $bname . $aindex,
-                        'blockName' => $bname,
-                        'container' => '.sp-area-' . $aindex,
-                    ];
-                    $aindex++;
-                }
-            }
-        }
+        $layouts = self::convertBuild($buildJson['layouts']);;
+        $areas = self::extractAreas($layouts);
 
         file_put_contents(
             $adminBlockPath . 'build.json',
@@ -238,24 +229,13 @@ class ComplexBuilder
             )
         );
 
-        /*file_put_contents(
-            $path . 'style.css',
-            Module::templater(
-                '/templates/complex_block/style.css.php',
-                [
-                    'blockName' => $blockName,
-                    'areas'     => $areas,
-                ]
-            )
-        );*/
-
         file_put_contents(
             $adminBlockPath . 'template.html',
             Module::templater(
                 '/templates/complex_block/template-html.php',
                 [
                     'blockName' => $blockName,
-                    'layouts'   => $buildJson['layouts'],
+                    'layouts'   => $layouts,
                 ]
             )
         );
@@ -264,8 +244,8 @@ class ComplexBuilder
             $adminBlockPath . 'config.json',
             json_encode([
                 'title' => $buildJson['title'],
-                'sort'  => $buildJson['sort'] ?: 500,
-            ], JSON_PRETTY_PRINT)
+                'sort'  => $buildJson['sort'],
+            ], JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE)
         );
 
         $componentTemplatePath = self::getComponentTemplatePath();
@@ -276,7 +256,7 @@ class ComplexBuilder
                 '/templates/complex_block/template-php.php',
                 [
                     'blockName' => $blockName,
-                    'layouts'   => $buildJson['layouts'],
+                    'layouts'   => $layouts,
                 ]
             )
         );
@@ -337,5 +317,51 @@ class ComplexBuilder
         if (is_file($file)) {
             unlink($file);
         }
+    }
+
+    protected static function convertBuild($layouts)
+    {
+        $bcounter = [];
+        $aindex = 1;
+
+        foreach ($layouts as $lindex => $layout) {
+            foreach ($layout['columns'] as $cindex => $column) {
+                foreach ($column['blocks'] as $bindex => $bname) {
+                    $column['blocks'][$bindex] = [
+                        'blockName' => $bname,
+                        'dataKey'   => $bname . ($bcounter[$bname] ?? ''),
+                        'container' => '.sp-area-' . $aindex,
+                        'areaclass' => 'sp-area-' . $aindex,
+                    ];
+                    if (isset($bcounter[$bname])) {
+                        $bcounter[$bname]++;
+                    } else {
+                        $bcounter[$bname] = 1;
+                    }
+                    $aindex++;
+                }
+                $layout['columns'][$cindex] = $column;
+            }
+            $layouts[$lindex] = $layout;
+        }
+
+        return $layouts;
+    }
+
+    protected static function extractAreas($layouts)
+    {
+        $areas = [];
+        foreach ($layouts as $layout) {
+            foreach ($layout['columns'] as $column) {
+                foreach ($column['blocks'] as $block) {
+                    $areas[] = [
+                        'blockName' => $block['blockName'],
+                        'dataKey'   => $block['dataKey'],
+                        'container' => $block['container'],
+                    ];
+                }
+            }
+        }
+        return $areas;
     }
 }

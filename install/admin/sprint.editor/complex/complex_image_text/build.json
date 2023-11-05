@@ -1,19 +1,21 @@
 {
-  "title": "Картинка с текстом",
-  "sort": "920",
-  "layouts": [
-    {
-      "title": "",
-      "css": "",
-      "columns": [
+    "title": "Картинка с текстом",
+    "sort": "100",
+    "layouts": [
         {
-          "css": "",
-          "blocks": [
-            "image",
-            "text"
-          ]
+            "title": "",
+            "columns": [
+                {
+                    "blocks": [
+                        "image"
+                    ]
+                },
+                {
+                    "blocks": [
+                        "text"
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

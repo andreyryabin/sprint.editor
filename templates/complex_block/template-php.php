@@ -11,7 +11,6 @@ echo <<<HEAD
  */
 ?>
 HEAD;
-$aindex = 1;
 $strings = [];
 
 $strings[] = '<div class="sp-complex sp-' . $blockName . '">';
@@ -26,9 +25,8 @@ foreach ($layouts as $lindex => $layout) {
             $strings[] = '<div class="sp-complex-col">';
         }
 
-        foreach ($column['blocks'] as $blockName) {
-            $strings[] = '<?php $this->includeBlock($block[\'' . $blockName . $aindex . '\']);?>';
-            $aindex++;
+        foreach ($column['blocks'] as $cblock) {
+            $strings[] = '<?php $this->includeBlock($block[\'' . $cblock['dataKey'] . '\']);?>';
         }
 
         if ($cnt > 1) {

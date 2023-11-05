@@ -3,7 +3,6 @@
  * @var $blockName
  * @var $layouts
  */
-$aindex = 1;
 ?><?php foreach ($layouts as $lindex => $layout) { ?>
     <?php if (!empty($layout['title'])) { ?>
         <div class="sp-x-box-caption"><?= $layout['title'] ?></div>
@@ -12,10 +11,9 @@ $aindex = 1;
         <div class="sp-row">
             <?php foreach ($layout['columns'] as $cindex => $column) { ?>
                 <div class="sp-col">
-                    <?php foreach ($column['blocks'] as $blockName) { ?>
-                        <div class="sp-area sp-area-<?= $aindex ?>"></div>
-                        <?php $aindex++;
-                    } ?>
+                    <?php foreach ($column['blocks'] as $cblock) { ?>
+                        <div class="sp-area <?= $cblock['areaclass'] ?>"></div>
+                    <?php } ?>
                 </div>
             <?php } ?>
         </div>

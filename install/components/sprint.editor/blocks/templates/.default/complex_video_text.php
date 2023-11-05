@@ -1,7 +1,9 @@
-<?php /** @var $block array */?>
-<div class="sp-video-text">
-    <?php
-    $this->includeBlock(array_merge($block['video'], ['name' => 'video']));
-    $this->includeBlock(array_merge($block['text'], ['name' => 'text']));
-    ?>
+<?php 
+/**
+ * @var $block array
+ * @var $this SprintEditorBlocksComponent
+ */
+?><div class="sp-complex sp-complex_video_text">
+<?php $this->includeBlock($block['video']);?>
+<?php $this->includeBlock($block['text']);?>
 </div>

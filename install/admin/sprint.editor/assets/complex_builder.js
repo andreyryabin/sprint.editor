@@ -17,9 +17,17 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
     $editor.append($blockToolbar);
 
     let $blockTitle = $form.find('input[name=block_title]');
+    let $blockSort = $form.find('input[name=block_sort]');
 
-    if (currentEditorValue && currentEditorValue.hasOwnProperty('title')) {
+    if (currentEditorValue.hasOwnProperty('title')) {
         $blockTitle.val(currentEditorValue['title']);
+    }
+
+    if (currentEditorValue.hasOwnProperty('sort')) {
+        $blockSort.val(currentEditorValue['sort']);
+    }
+
+    if (currentEditorValue.hasOwnProperty('layouts')) {
         $.each(currentEditorValue['layouts'], function (index, layout) {
             addLayout(layout);
         });
@@ -106,7 +114,7 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
         html += '<div class="sp-table">';
         html += '<div class="sp-row">';
         $.each(layout['columns'], function (index, column) {
-            html += '<div class="sp-x-sortable">';
+            html += '<div class="sp-col sp-x-sortable">';
             $.each(column['blocks'], function (index, blockName) {
                 let blockTitle = register_blocks[blockName] || blockName;
                 html += '<span class="sp-x-block" data-name="' + blockName + '">' + blockTitle + '</span>';
@@ -186,21 +194,19 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
                 });
 
                 columns.push({
-                    'css': '',
                     'blocks': blocks
                 })
             });
 
             layouts.push({
                 'title': caption,
-                'css': '',
                 'columns': columns
             })
         });
 
         return JSON.stringify({
             'title': $blockTitle.val(),
-            'sort': 500,
+            'sort': $blockSort.val(),
             'layouts': layouts
         });
     }

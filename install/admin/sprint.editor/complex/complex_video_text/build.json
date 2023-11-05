@@ -1,19 +1,17 @@
 {
-  "title": "Видео с текстом",
-  "sort": "910",
-  "layouts": [
-    {
-      "title": "",
-      "css": "",
-      "columns": [
+    "title": "Видео с текстом",
+    "sort": "100",
+    "layouts": [
         {
-          "css": "",
-          "blocks": [
-            "video",
-            "text"
-          ]
+            "title": "",
+            "columns": [
+                {
+                    "blocks": [
+                        "video",
+                        "text"
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

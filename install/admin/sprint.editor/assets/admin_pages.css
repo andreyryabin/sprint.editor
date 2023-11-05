@@ -6,6 +6,9 @@
     display: table-row;
 }
 
+.sp-table .sp-col {
+    display: table-cell;
+}
 
 .sp-x-lt {
     position: relative;
@@ -62,7 +65,6 @@
 .sp-x-lt .sp-x-sortable {
     height: 40px;
     border: 1px solid #ccc;
-    display: table-cell;
 }
 
 .sp-x-lt .sp-x-block {
@@ -156,3 +158,10 @@ a.sp-link-new, a.sp-link-new:link {
     /*border-radius: 5px;*/
 }
 
+.sp-x-field {
+    margin-top: 10px;
+}
+
+.sp-x-field:first-child {
+    margin-top: 0;
+}

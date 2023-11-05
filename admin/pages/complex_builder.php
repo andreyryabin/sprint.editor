@@ -118,9 +118,25 @@ $currentEditorValue = CUtil::PhpToJSObject(
                                     <input name="block_name" placeholder="block_123" type="text" value="<?= $request->getPost('block_name') ?>">
                                 <?php } ?>
                             </div>
-                            <div class="sp-x-field" style="margin-top: 10px;"><strong>Заголовок</strong></div>
                             <div class="sp-x-field">
-                                <input name="block_title" placeholder="Составной блок" type="text" value="<?= $request->getPost('block_title') ?>">
+                                <div class="sp-table">
+                                    <div class="sp-row">
+                                        <div class="sp-col">
+                                            <strong>Заголовок</strong>
+                                        </div>
+                                        <div class="sp-col">
+                                            <strong>Сортировка</strong>
+                                        </div>
+                                    </div>
+                                    <div class="sp-row">
+                                        <div class="sp-col">
+                                            <input name="block_title" placeholder="Составной блок" type="text" value="">
+                                        </div>
+                                        <div class="sp-col">
+                                            <input name="block_sort" placeholder="Сортировка" type="text" value="">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div id="complex_builder_editor"></div>
