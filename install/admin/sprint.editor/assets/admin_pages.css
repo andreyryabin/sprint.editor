@@ -10,6 +10,10 @@
     display: table-cell;
 }
 
+.sp-table.sp-table-spacing{
+    border-spacing: 5px;
+}
+
 .sp-x-lt {
     position: relative;
     margin-bottom: 10px;
@@ -86,7 +90,9 @@
 .sp-x-header input[name=block_title] {
     width: 365px
 }
-
+.sp-x-header input[name=block_sort] {
+    width: 100px
+}
 .sp-x-header input[name=block_name] {
     width: 300px
 }

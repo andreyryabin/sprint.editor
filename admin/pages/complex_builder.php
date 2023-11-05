@@ -109,32 +109,38 @@ $currentEditorValue = CUtil::PhpToJSObject(
                     <form action="" method="post">
                         <?= bitrix_sessid_post() ?>
                         <div class="sp-x-header">
-                            <div class="sp-x-field"><strong>Название блока</strong></div>
-                            <div class="sp-x-field">
-                                <?php if ($currentBlockName) { ?>
-                                    <?= $currentBlockName ?>
-                                <?php } else { ?>
-                                    complex_
-                                    <input name="block_name" placeholder="block_123" type="text" value="<?= $request->getPost('block_name') ?>">
-                                <?php } ?>
-                            </div>
-                            <div class="sp-x-field">
-                                <div class="sp-table">
-                                    <div class="sp-row">
-                                        <div class="sp-col">
-                                            <strong>Заголовок</strong>
-                                        </div>
-                                        <div class="sp-col">
-                                            <strong>Сортировка</strong>
-                                        </div>
+                            <div class="sp-table sp-table-spacing">
+                                <div class="sp-row">
+                                    <div class="sp-col">
+                                        <strong>Название блока</strong>
                                     </div>
-                                    <div class="sp-row">
-                                        <div class="sp-col">
-                                            <input name="block_title" placeholder="Составной блок" type="text" value="">
-                                        </div>
-                                        <div class="sp-col">
-                                            <input name="block_sort" placeholder="Сортировка" type="text" value="">
-                                        </div>
+                                </div>
+                                <div class="sp-row">
+                                    <div class="sp-col">
+                                        <?php if ($currentBlockName) { ?>
+                                            <?= $currentBlockName ?>
+                                        <?php } else { ?>
+                                            complex_
+                                            <input name="block_name" placeholder="block_123" type="text" value="<?= $request->getPost('block_name') ?>">
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sp-table sp-table-spacing">
+                                <div class="sp-row">
+                                    <div class="sp-col">
+                                        <strong>Заголовок</strong>
+                                    </div>
+                                    <div class="sp-col">
+                                        <strong>Сортировка</strong>
+                                    </div>
+                                </div>
+                                <div class="sp-row">
+                                    <div class="sp-col">
+                                        <input name="block_title" placeholder="Составной блок" type="text" value="">
+                                    </div>
+                                    <div class="sp-col">
+                                        <input name="block_sort" placeholder="500" type="text" value="">
                                     </div>
                                 </div>
                             </div>

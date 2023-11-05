@@ -26,19 +26,21 @@ class ComplexBuilder
 
     public static function getComplexBlocks()
     {
-        return array_filter(
+        $filteredBlocks = array_filter(
             self::$allblocks,
             function ($block) {
                 return ($block['groupname'] == 'complex' && $block['iscomplex']);
             }
         );
+
+        return self::sortByNum($filteredBlocks, 'sort');
     }
 
     public static function getBlocksToolbar()
     {
         $blocksToolbar = [];
         foreach (['blocks', 'my'] as $groupname) {
-            $filteredItemBlocks = array_filter(
+            $filteredBlocks = array_filter(
                 self::$allblocks,
                 function ($block) use ($groupname) {
                     return ($block['groupname'] == $groupname);
@@ -46,7 +48,7 @@ class ComplexBuilder
             );
             $blocksToolbar[] = [
                 'title'  => GetMessage('SPRINT_EDITOR_group_' . $groupname),
-                'blocks' => self::sortByNum($filteredItemBlocks, 'sort'),
+                'blocks' => self::sortByNum($filteredBlocks, 'sort'),
             ];
         }
 
