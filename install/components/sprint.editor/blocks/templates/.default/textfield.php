@@ -1,3 +1,3 @@
 <?php /** @var $block array */
-?><?= $block['value'] ?>
 
+echo $block['value'];
