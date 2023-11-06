@@ -1,4 +1,14 @@
 {
   "title": "Список",
-  "sort": "30"
+  "sort": "30",
+  "settings": {
+    "type": {
+      "type": "select",
+      "default": "ul",
+      "value": {
+        "ul": "Маркированный",
+        "ol": "Нумерованный"
+      }
+    }
+  }
 }

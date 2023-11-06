@@ -1,46 +1,48 @@
 <?php
 /** @global $APPLICATION CMain */
 
-use Sprint\Editor\Exceptions\ComplexBuilderException;
+use Sprint\Editor\ComplexBuilder;
+use Sprint\Editor\Exceptions\AdminPageException;
 
 global $APPLICATION;
 $APPLICATION->SetTitle(GetMessage('SPRINT_EDITOR_COMPLEX_BUILDER'));
 
 $request = Bitrix\Main\Context::getCurrent()->getRequest();
-Sprint\Editor\ComplexBuilder::init();
+ComplexBuilder::init();
 
-$currentBlockName = (string)$request->get('currentBlockName');
+$currentBlockId = (string)$request->get('currentBlockId');
+$currentBuildJson = ComplexBuilder::getBuildJson($currentBlockId);
+$currentBlockId = $currentBuildJson ? $currentBlockId : '';
 
-$currentEditorValue = Sprint\Editor\ComplexBuilder::getBuildJson($currentBlockName);
-$currentBlockName = $currentEditorValue ? $currentBlockName : '';
-
+$newBlockId = '';
 $lastErr = '';
 
 if ($request->isPost() && check_bitrix_sessid()) {
-    $currentEditorValue = $request->getPost('block_template');
-
     if ($request->getPost('save_block')) {
         try {
-            if ($currentBlockName) {
-                Sprint\Editor\ComplexBuilder::updateBlock(
-                    $currentBlockName,
-                    $currentEditorValue,
+            $currentBuildJson = $request->getPost('block_content');
+
+            if ($currentBlockId) {
+                ComplexBuilder::updateBlock(
+                    $currentBlockId,
+                    $currentBuildJson,
                 );
             } else {
-                $currentBlockName = Sprint\Editor\ComplexBuilder::createBlock(
-                    $request->getPost('block_name'),
-                    $currentEditorValue
+                $newBlockId = $request->getPost('block_id');
+                $currentBlockId = ComplexBuilder::createBlock(
+                    $newBlockId,
+                    $currentBuildJson
                 );
             }
 
             LocalRedirect(
                 'sprint_editor.php?' . http_build_query([
-                    'lang'             => LANGUAGE_ID,
-                    'currentBlockName' => $currentBlockName,
-                    'showpage'         => $request->get('showpage'),
+                    'lang'           => LANGUAGE_ID,
+                    'currentBlockId' => $currentBlockId,
+                    'showpage'       => $request->get('showpage'),
                 ])
             );
-        } catch (ComplexBuilderException $e) {
+        } catch (AdminPageException $e) {
             $lastErr = (new CAdminMessage(
                 [
                     "MESSAGE" => $e->getMessage(),
@@ -51,7 +53,7 @@ if ($request->isPost() && check_bitrix_sessid()) {
         }
     }
     if ($request->getPost('delete_block')) {
-        Sprint\Editor\ComplexBuilder::deleteBlock($currentBlockName);
+        ComplexBuilder::deleteBlock($currentBlockId);
         LocalRedirect(
             'sprint_editor.php?' . http_build_query([
                 'lang'     => LANGUAGE_ID,
@@ -61,16 +63,16 @@ if ($request->isPost() && check_bitrix_sessid()) {
     }
 }
 
-$complexBlocks = Sprint\Editor\ComplexBuilder::getComplexBlocks();
-$blocksToolbar = Sprint\Editor\ComplexBuilder::getBlocksToolbar();
+$complexBlocks = ComplexBuilder::getComplexBlocks();
+$blocksToolbar = ComplexBuilder::getBlocksToolbar();
 
 $currentEditorParams = CUtil::PhpToJSObject([
     "uniqid"  => "complex_builder",
     "toolbar" => $blocksToolbar,
 ]);
 
-$currentEditorValue = CUtil::PhpToJSObject(
-    json_decode($currentEditorValue, true)
+$currentBuildJson = CUtil::PhpToJSObject(
+    json_decode($currentBuildJson, true)
 );
 
 ?>
@@ -82,23 +84,23 @@ $currentEditorValue = CUtil::PhpToJSObject(
             <tr class="">
                 <td class="adm-detail-valign-top" style="width: 40%">
                     <div class="sp-side-left">
-                        <a class="sp-link sp-link-new <?= ($currentBlockName == '' ? 'sp-link-active' : '') ?>"
+                        <a class="sp-link sp-link-new <?= ($currentBlockId == '' ? 'sp-link-active' : '') ?>"
                            href="<?= 'sprint_editor.php?' . http_build_query(
                                [
-                                   'lang'             => LANGUAGE_ID,
-                                   'currentBlockName' => '',
-                                   'showpage'         => $request->get('showpage'),
+                                   'lang'           => LANGUAGE_ID,
+                                   'currentBlockId' => '',
+                                   'showpage'       => $request->get('showpage'),
                                ]
-                           ) ?>">Новый блок</a>
+                           ) ?>"><?= GetMessage('SPRINT_EDITOR_new_block') ?></a>
                     </div>
                     <div class="sp-side-left">
                         <?php foreach ($complexBlocks as $complexBlock) { ?>
-                            <a class="sp-link <?= ($currentBlockName == $complexBlock['name'] ? 'sp-link-active' : '') ?>"
+                            <a class="sp-link <?= ($currentBlockId == $complexBlock['name'] ? 'sp-link-active' : '') ?>"
                                href="<?= 'sprint_editor.php?' . http_build_query(
                                    [
-                                       'lang'             => LANGUAGE_ID,
-                                       'currentBlockName' => $complexBlock['name'],
-                                       'showpage'         => $request->get('showpage'),
+                                       'lang'           => LANGUAGE_ID,
+                                       'currentBlockId' => $complexBlock['name'],
+                                       'showpage'       => $request->get('showpage'),
                                    ]
                                ) ?>"><?= $complexBlock['title'] ?></a>
                         <?php } ?>
@@ -112,16 +114,16 @@ $currentEditorValue = CUtil::PhpToJSObject(
                             <div class="sp-table sp-table-spacing">
                                 <div class="sp-row">
                                     <div class="sp-col">
-                                        <strong>Название блока</strong>
+                                        <strong><?= GetMessage('SPRINT_EDITOR_block_id') ?></strong>
                                     </div>
                                 </div>
                                 <div class="sp-row">
                                     <div class="sp-col">
-                                        <?php if ($currentBlockName) { ?>
-                                            <?= $currentBlockName ?>
+                                        <?php if ($currentBlockId) { ?>
+                                            <?= $currentBlockId ?>
                                         <?php } else { ?>
                                             complex_
-                                            <input name="block_name" placeholder="block_123" type="text" value="<?= $request->getPost('block_name') ?>">
+                                            <input name="block_id" placeholder="block_123" type="text" value="<?= $newBlockId ?>">
                                         <?php } ?>
                                     </div>
                                 </div>
@@ -129,15 +131,15 @@ $currentEditorValue = CUtil::PhpToJSObject(
                             <div class="sp-table sp-table-spacing">
                                 <div class="sp-row">
                                     <div class="sp-col">
-                                        <strong>Заголовок</strong>
+                                        <strong><?= GetMessage('SPRINT_EDITOR_block_title') ?></strong>
                                     </div>
                                     <div class="sp-col">
-                                        <strong>Сортировка</strong>
+                                        <strong><?= GetMessage('SPRINT_EDITOR_block_sort') ?></strong>
                                     </div>
                                 </div>
                                 <div class="sp-row">
                                     <div class="sp-col">
-                                        <input name="block_title" placeholder="Составной блок" type="text" value="">
+                                        <input name="block_title" placeholder="<?= GetMessage('SPRINT_EDITOR_complex_block') ?>" type="text" value="">
                                     </div>
                                     <div class="sp-col">
                                         <input name="block_sort" placeholder="500" type="text" value="">
@@ -146,10 +148,10 @@ $currentEditorValue = CUtil::PhpToJSObject(
                             </div>
                         </div>
                         <div id="complex_builder_editor"></div>
-                        <textarea name="block_template" id="complex_builder_result" style="display: none;"></textarea>
+                        <textarea name="block_content" id="complex_builder_result" style="display: none;"></textarea>
                         <div style="background-color: #e3ecee;border: 1px solid #c4ced2;padding: 10px;margin-bottom: 10px">
                             <input class="adm-btn" name="save_block" value="<?= GetMessage('SPRINT_EDITOR_pack_save') ?>" type="submit">
-                            <?php if ($currentBlockName) { ?>
+                            <?php if ($currentBlockId) { ?>
                                 <input class="adm-btn" name="delete_block" value="<?= GetMessage('SPRINT_EDITOR_pack_delete') ?>" type="submit">
                             <?php } ?>
                         </div>
@@ -163,6 +165,6 @@ $currentEditorValue = CUtil::PhpToJSObject(
 
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
-        complex_builder($, <?=$currentEditorParams?>, <?=$currentEditorValue?>);
+        complex_builder($, <?=$currentEditorParams?>, <?=$currentBuildJson?>);
     });
 </script>

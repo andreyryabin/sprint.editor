@@ -1,4 +1,29 @@
 {
     "title": "Картинка с текстом",
-    "sort": "100"
+    "sort": "100",
+    "complex_settings": {
+        "text": {
+            "toolbar": {
+                "type": "hidden",
+                "value": [
+                    [
+                        "viewHTML",
+                        "link",
+                        "strong",
+                        "em",
+                        "underline",
+                        "del"
+                    ],
+                    [
+                        "justifyLeft",
+                        "justifyCenter",
+                        "justifyRight"
+                    ],
+                    [
+                        "removeformat"
+                    ]
+                ]
+            }
+        }
+    }
 }

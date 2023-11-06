@@ -4,7 +4,7 @@ namespace Sprint\Editor;
 
 use CUtil;
 use DirectoryIterator;
-use Sprint\Editor\Exceptions\ComplexBuilderException;
+use Sprint\Editor\Exceptions\AdminPageException;
 
 class ComplexBuilder
 {
@@ -91,28 +91,28 @@ class ComplexBuilder
                 continue;
             }
 
-            $blockName = $item->getFilename();
+            $blockId = $item->getFilename();
 
             if ($checkname) {
-                if (strpos($blockName, $groupname) !== 0) {
+                if (strpos($blockId, $groupname) !== 0) {
                     continue;
                 }
             }
 
             $param = [];
-            if (is_file($rootpath . $blockName . '/config.json')) {
-                $param = file_get_contents($rootpath . $blockName . '/config.json');
+            if (is_file($rootpath . $blockId . '/config.json')) {
+                $param = file_get_contents($rootpath . $blockId . '/config.json');
                 $param = json_decode($param, true);
             }
 
             $isComplex = false;
-            if (is_file($rootpath . $blockName . '/build.json')) {
+            if (is_file($rootpath . $blockId . '/build.json')) {
                 $isComplex = true;
             }
 
             if (!empty($param['title'])) {
-                self::$allblocks[$blockName] = [
-                    'name'      => $blockName,
+                self::$allblocks[$blockId] = [
+                    'name'      => $blockId,
                     'groupname' => $groupname,
                     'islocal'   => $islocal,
                     'title'     => $param['title'],
@@ -125,10 +125,10 @@ class ComplexBuilder
         return true;
     }
 
-    public static function getBuildJson(string $blockName)
+    public static function getBuildJson(string $blockId)
     {
-        if (isset(self::$allblocks[$blockName])) {
-            $block = self::$allblocks[$blockName];
+        if (isset(self::$allblocks[$blockId])) {
+            $block = self::$allblocks[$blockId];
 
             if ($block['iscomplex']) {
                 $blockPath = self::getGroupPath($block['groupname'], $block['islocal']) . $block['name'] . '/';
@@ -150,33 +150,25 @@ class ComplexBuilder
     }
 
     /**
-     * @throws ComplexBuilderException
+     * @throws AdminPageException
      */
-    public static function createBlock($blockName, string $buildJson)
+    public static function createBlock($blockId, string $buildJson)
     {
-        if (strpos($blockName, 'complex_') !== 0) {
-            $blockName = 'complex_' . $blockName;
+        if (strpos($blockId, 'complex_') !== 0) {
+            $blockId = 'complex_' . $blockId;
         }
 
-        if (is_file(self::getAdminBlockPath($blockName) . 'script.js')) {
-            throw new ComplexBuilderException('Такой блок уже есть');
+        if (is_file(self::getAdminBlockPath($blockId) . 'script.js')) {
+            throw new AdminPageException(GetMessage('SPRINT_EDITOR_complex_err_exists'));
         }
 
-        return self::saveBlock($blockName, $buildJson);
+        return self::updateBlock($blockId, $buildJson);
     }
 
-    /**
-     * @throws ComplexBuilderException
-     */
-    public static function updateBlock($blockName, string $buildJson)
+    public static function deleteBlock($blockId)
     {
-        return self::saveBlock($blockName, $buildJson);
-    }
-
-    public static function deleteBlock($blockName)
-    {
-        if (isset(self::$allblocks[$blockName])) {
-            $block = self::$allblocks[$blockName];
+        if (isset(self::$allblocks[$blockId])) {
+            $block = self::$allblocks[$blockId];
             if ($block['iscomplex']) {
                 $blockPath = self::getGroupPath($block['groupname'], $block['islocal']) . $block['name'] . '/';
                 self::deletePath($blockPath);
@@ -186,28 +178,28 @@ class ComplexBuilder
     }
 
     /**
-     * @throws ComplexBuilderException
+     * @throws AdminPageException
      */
-    protected static function saveBlock($blockName, string $buildJson)
+    public static function updateBlock($blockId, string $buildJson)
     {
-        if (empty($blockName)) {
-            throw new ComplexBuilderException('Укажите название блока');
+        if (empty($blockId)) {
+            throw new AdminPageException(GetMessage('SPRINT_EDITOR_complex_err_name'));
         }
 
         $buildJson = json_decode($buildJson, true);
         if (!is_array($buildJson)) {
-            throw new ComplexBuilderException('Задайте содержимое блока');
+            throw new AdminPageException(GetMessage('SPRINT_EDITOR_complex_err_build'));
         }
 
         if (empty($buildJson['title'])) {
-            throw new ComplexBuilderException('Укажите заголовок блока');
+            throw new AdminPageException(GetMessage('SPRINT_EDITOR_complex_err_title'));
         }
 
         if (empty($buildJson['sort']) || !is_numeric($buildJson['sort'])) {
             $buildJson['sort'] = 500;
         }
 
-        $adminBlockPath = self::createPath(self::getAdminBlockPath($blockName));
+        $adminBlockPath = self::createPath(self::getAdminBlockPath($blockId));
 
         $layouts = self::convertBuild($buildJson['layouts']);;
         $areas = self::extractAreas($layouts);
@@ -225,7 +217,7 @@ class ComplexBuilder
             Module::templater(
                 '/templates/complex_block/script.js.php',
                 [
-                    'blockName' => $blockName,
+                    'blockName' => $blockId,
                     'areas'     => $areas,
                 ]
             )
@@ -236,34 +228,45 @@ class ComplexBuilder
             Module::templater(
                 '/templates/complex_block/template-html.php',
                 [
-                    'blockName' => $blockName,
+                    'blockName' => $blockId,
                     'layouts'   => $layouts,
                 ]
             )
         );
 
         file_put_contents(
-            $adminBlockPath . 'config.json',
-            json_encode([
-                'title' => $buildJson['title'],
-                'sort'  => $buildJson['sort'],
-            ], JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE)
-        );
-
-        $componentTemplatePath = self::getComponentTemplatePath();
-
-        file_put_contents(
-            $componentTemplatePath . $blockName . '.php',
+            self::getComponentTemplatePath() . $blockId . '.php',
             Module::templater(
                 '/templates/complex_block/template-php.php',
                 [
-                    'blockName' => $blockName,
+                    'blockName' => $blockId,
                     'layouts'   => $layouts,
                 ]
             )
         );
 
-        return $blockName;
+        $configJson = [];
+        //update config if exists
+        if (is_file($adminBlockPath . 'config.json')) {
+            $configJson = file_get_contents($adminBlockPath . 'config.json');
+            $configJson = json_decode($configJson, true);
+            $configJson = is_array($configJson) ? $configJson : [];
+        }
+
+        file_put_contents(
+            $adminBlockPath . 'config.json',
+            json_encode(
+                array_merge(
+                    $configJson,
+                    [
+                        'title' => $buildJson['title'],
+                        'sort'  => $buildJson['sort'],
+                    ]
+                ), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE
+            )
+        );
+
+        return $blockId;
     }
 
     protected static function getComponentTemplatePath()
@@ -278,10 +281,10 @@ class ComplexBuilder
         return $path;
     }
 
-    protected static function getAdminBlockPath($blockName)
+    protected static function getAdminBlockPath($blockId)
     {
-        $local = $_SERVER['DOCUMENT_ROOT'] . '/local/admin/sprint.editor/complex/' . $blockName . '/';
-        $path = $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/complex/' . $blockName . '/';
+        $local = $_SERVER['DOCUMENT_ROOT'] . '/local/admin/sprint.editor/complex/' . $blockId . '/';
+        $path = $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/complex/' . $blockId . '/';
 
         if (is_dir($local)) {
             return $local;
@@ -311,11 +314,9 @@ class ComplexBuilder
         return rmdir($dir);
     }
 
-    protected static function deleteComponentTemplate($blockName)
+    protected static function deleteComponentTemplate($blockId)
     {
-        $componentTemplatePath = self::getComponentTemplatePath();
-
-        $file = $componentTemplatePath . $blockName . '.php';
+        $file = self::getComponentTemplatePath() . $blockId . '.php';
         if (is_file($file)) {
             unlink($file);
         }

@@ -4,6 +4,13 @@
   "templates": [
     "select.html"
   ],
-  "js": [
-  ]
+  "settings": {
+    "display_elements": {
+      "type": "select",
+      "default": "",
+      "value": {
+        "yes": "Выводить элементы"
+      }
+    }
+  }
 }

@@ -10,7 +10,7 @@
     display: table-cell;
 }
 
-.sp-table.sp-table-spacing{
+.sp-table.sp-table-spacing {
     border-spacing: 5px;
 }
 
@@ -88,13 +88,23 @@
 }
 
 .sp-x-header input[name=block_title] {
-    width: 365px
+    width: 360px
 }
+
 .sp-x-header input[name=block_sort] {
     width: 100px
 }
-.sp-x-header input[name=block_name] {
+
+.sp-x-header input[name=block_id] {
     width: 300px
+}
+
+.sp-x-header input[name=pack_title] {
+    width: 360px
+}
+
+.sp-x-header input[name=pack_id] {
+    width: 365px
 }
 
 .sp-x-toolbar {

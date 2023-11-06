@@ -7,12 +7,14 @@ use DirectoryIterator;
 
 class AdminEditor
 {
-    protected static $initCounts = 0;
-    protected static $css        = [];
-    protected static $js         = [];
-    protected static $allblocks  = [];
-    protected static $alllayouts = [];
-    protected static $templates  = [];
+    protected static $initCounts          = 0;
+    protected static $css                 = [];
+    protected static $js                  = [];
+    protected static $allblocks           = [];
+    protected static $alllayouts          = [];
+    protected static $templates           = [];
+    protected static $baseBlockSettings   = [];
+    protected static $baseComplexSettings = [];
 
     public static function init($params)
     {
@@ -54,9 +56,11 @@ class AdminEditor
 
         //default setings (simple editor)
         $userSettings = [
-            'layout_enabled' => [
+            'layout_enabled'   => [
                 'layout_none',
             ],
+            'block_settings'   => [],
+            'complex_settings' => [],
         ];
 
         $userSettingsName = '';
@@ -121,30 +125,15 @@ class AdminEditor
         }
 
         //обязательные настройки блоков
-        //todo вынести в отдельные методы
-        $userSettings = array_merge_recursive([
-            'block_settings' => [
-                'lists'           => [
-                    'type' => [
-                        'type'    => 'select',
-                        'default' => 'ul',
-                        'value'   => [
-                            'ul' => 'Маркированный',
-                            'ol' => 'Нумерованный',
-                        ],
-                    ],
-                ],
-                'iblock_sections' => [
-                    'display_elements' => [
-                        'type'    => 'select',
-                        'default' => '',
-                        'value'   => [
-                            'yes' => 'Выводить элементы',
-                        ],
-                    ],
-                ],
-            ],
-        ], $userSettings);
+        $userSettings['block_settings'] = array_merge(
+            self::$baseBlockSettings,
+            $userSettings['block_settings']
+        );
+
+        $userSettings['complex_settings'] = array_merge(
+            self::$baseComplexSettings,
+            $userSettings['complex_settings']
+        );
 
         return Module::templater(
             '/templates/admin_editor.php',
@@ -178,9 +167,10 @@ class AdminEditor
 
         return array_merge(
             [
-                'title'          => $settingsName,
-                'layout_classes' => [],
-                'block_settings' => [],
+                'title'            => $settingsName,
+                'layout_classes'   => [],
+                'block_settings'   => [],
+                'complex_settings' => [],
             ], $settings
         );
     }
@@ -433,11 +423,21 @@ class AdminEditor
                 }
             }
 
+            if (!empty($param['settings']) && is_array($param['settings'])) {
+                self::$baseBlockSettings[$blockName] = $param['settings'];
+            }
+
+            if (!empty($param['complex_settings']) && is_array($param['complex_settings'])) {
+                self::$baseComplexSettings[$blockName] = $param['complex_settings'];
+            }
+
             unset($param['templates']);
             unset($param['css']);
             unset($param['js']);
             unset($param['isUtf8']);
             unset($param['isWin1251']);
+            unset($param['settings']);
+            unset($param['complex_settings']);
 
             self::$allblocks[$blockName] = $param;
         }

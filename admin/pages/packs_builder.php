@@ -1,53 +1,73 @@
 <?php
 /** @global $APPLICATION CMain */
+
+use Sprint\Editor\Exceptions\AdminPageException;
+use Sprint\Editor\PackBuilder;
+
 global $APPLICATION;
 $APPLICATION->SetTitle(GetMessage('SPRINT_EDITOR_PACKS_PAGE'));
 
 $request = Bitrix\Main\Context::getCurrent()->getRequest();
-$packsDir = Sprint\Editor\Module::getPacksDir();
 
 $currentUserSettingsName = (string)$request->get('currentUserSettingsName');
 $currentPackId = (string)$request->get('currentPackId');
 
-if ($request->isPost() && check_bitrix_sessid()) {
-    if ($request->getPost('delete_pack')) {
-        $file = $packsDir . $currentPackId . '.json';
-        if ($currentPackId && is_file($file)) {
-            unlink($file);
+$currentPackTitle = PackBuilder::getPackTitle($currentPackId);
+$currentPackJson = PackBuilder::getPackJson($currentPackId);
 
+$currentPackId = $currentPackJson ? $currentPackId : '';
+
+$newPackId = '';
+$lastErr = '';
+
+if ($request->isPost() && check_bitrix_sessid()) {
+    if ($request->getPost('save_pack')) {
+        try {
+            $currentPackJson = $request->getPost('pack_content');
+            $currentPackTitle = $request->getPost('pack_title');
+
+            if ($currentPackId) {
+                PackBuilder::updateBlock(
+                    $currentPackId,
+                    $currentPackJson,
+                    $currentPackTitle,
+                    $currentUserSettingsName
+                );
+            } else {
+                $newPackId = $request->getPost('pack_id');
+
+                $currentPackId = PackBuilder::createPack(
+                    $newPackId,
+                    $currentPackJson,
+                    $currentPackTitle,
+                    $currentUserSettingsName
+                );
+            }
             LocalRedirect(
                 'sprint_editor.php?' . http_build_query([
                     'lang'                    => LANGUAGE_ID,
                     'currentUserSettingsName' => $currentUserSettingsName,
+                    'currentPackId'           => $currentPackId,
                     'showpage'                => $request->get('showpage'),
                 ])
             );
+        } catch (AdminPageException $e) {
+            $lastErr = (new CAdminMessage(
+                [
+                    "MESSAGE" => $e->getMessage(),
+                    'HTML'    => true,
+                    'TYPE'    => 'ERROR',
+                ]
+            ))->Show();
         }
     }
-    if ($request->getPost('save_pack')) {
-        $packContentJson = $request->getPost('pack_content');
-        $packContent = json_decode($packContentJson, true);
-        $packContent = is_array($packContent) ? $packContent : [];
-        $packContent = array_merge([
-            'version' => 2,
-            'blocks'  => [],
-            'layouts' => [],
-        ], $packContent, [
-            'packname'         => (string)$request->getPost('pack_title'),
-            'userSettingsName' => $currentUserSettingsName,
-        ]);
 
-        $packContentJson = json_encode($packContent, JSON_UNESCAPED_UNICODE);
-
-        $currentPackId = ($currentPackId) ? $currentPackId : md5($packContentJson);
-
-        file_put_contents($packsDir . $currentPackId . '.json', $packContentJson);
-
+    if ($request->getPost('delete_pack')) {
+        PackBuilder::deletePack($currentPackId);
         LocalRedirect(
             'sprint_editor.php?' . http_build_query([
                 'lang'                    => LANGUAGE_ID,
                 'currentUserSettingsName' => $currentUserSettingsName,
-                'currentPackId'           => $currentPackId,
                 'showpage'                => $request->get('showpage'),
             ])
         );
@@ -55,29 +75,7 @@ if ($request->isPost() && check_bitrix_sessid()) {
 }
 
 $userfiles = Sprint\Editor\AdminEditor::getUserSettingsFiles();
-$packs = Sprint\Editor\AdminEditor::registerPacks($currentUserSettingsName);
-
-$packContentJson = '';
-$currentPackName = '';
-if ($currentPackId) {
-    if (is_file($packsDir . $currentPackId . '.json')) {
-        $packContentJson = file_get_contents($packsDir . $currentPackId . '.json');
-        $packContent = json_decode($packContentJson, true);
-        $currentPackName = (string)($packContent['packname'] ?? '');
-    }
-}
-
-$editorParams = [
-    'uniqId'       => 'uniqId',
-    'value'        => $packContentJson,
-    'inputName'    => 'pack_content',
-    'defaultValue' => '',
-    'userSettings' => [
-        'SETTINGS_NAME'  => $currentUserSettingsName,
-        'DISABLE_CHANGE' => '',
-        'WIDE_MODE'      => '',
-    ],
-];
+$registeredPacks = Sprint\Editor\AdminEditor::registerPacks($currentUserSettingsName);
 
 ?>
 <div class="adm-detail-content" style="padding: 0">
@@ -112,7 +110,7 @@ $editorParams = [
                            ) ?>">Новый макет</a>
                     </div>
                     <div class="sp-side-left">
-                        <?php foreach ($packs as $pack) { ?>
+                        <?php foreach ($registeredPacks as $pack) { ?>
                             <a class="sp-link <?= ($currentPackId == $pack['name'] ? 'sp-link-active' : '') ?>"
                                href="<?= 'sprint_editor.php?' . http_build_query(
                                    [
@@ -126,13 +124,48 @@ $editorParams = [
                     </div>
                 </td>
                 <td class="adm-detail-valign-top" style="width: 60%">
+                    <?= $lastErr ?>
                     <form action="" method="post">
                         <?= bitrix_sessid_post() ?>
-                        <div style="background-color: #e3ecee;border: 1px solid #c4ced2;padding: 10px;margin-bottom: 10px">
-                            <?= GetMessage('SPRINT_EDITOR_pack_name') ?><br/>
-                            <input style="width: 78%" name="pack_title" value="<?= $currentPackName ?>" type="text">
+                        <div class="sp-x-header">
+                            <div class="sp-table sp-table-spacing">
+                                <div class="sp-row">
+                                    <div class="sp-col">
+                                        <strong><?= GetMessage('SPRINT_EDITOR_pack_id') ?></strong>
+                                    </div>
+                                </div>
+                                <div class="sp-row">
+                                    <div class="sp-col">
+                                        <?php if ($currentPackId) { ?>
+                                            <?= $currentPackId ?>
+                                        <?php } else { ?>
+                                            <input name="pack_id" placeholder="pack_file_name" type="text" value="<?= $newPackId ?>">
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="sp-row">
+                                    <div class="sp-col">
+                                        <strong><?= GetMessage('SPRINT_EDITOR_pack_title') ?></strong>
+                                    </div>
+                                </div>
+                                <div class="sp-row">
+                                    <div class="sp-col">
+                                        <input name="pack_title" value="<?= $currentPackTitle ?>" type="text">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <?= Sprint\Editor\AdminEditor::init($editorParams); ?>
+                        <?= Sprint\Editor\AdminEditor::init([
+                            'uniqId'       => 'uniqId',
+                            'value'        => $currentPackJson,
+                            'inputName'    => 'pack_content',
+                            'defaultValue' => '',
+                            'userSettings' => [
+                                'SETTINGS_NAME'  => $currentUserSettingsName,
+                                'DISABLE_CHANGE' => '',
+                                'WIDE_MODE'      => '',
+                            ],
+                        ]); ?>
                         <div style="background-color: #e3ecee;border: 1px solid #c4ced2;padding: 10px;margin-bottom: 10px">
                             <input class="adm-btn" name="save_pack" value="<?= GetMessage('SPRINT_EDITOR_pack_save') ?>" type="submit">
                             <?php if ($currentPackId) { ?>

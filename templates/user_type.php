@@ -15,7 +15,7 @@
         <?php elseif ($code == 'SETTINGS_NAME'):?>
             <select style="width: 250px" name="<?= $inputName?>[<?=$code?>]">
                 <?php foreach ($userfiles as $userFileValue => $userFileTitle):?>
-                <option <?php if($val == $userFileValue) echo 'selected="selected"';?> value="<?=$userFileValue?>"><?=$userFileTitle?> (<?=$userFileValue?>)</option>
+                <option <?php if($val == $userFileValue) echo 'selected="selected"';?> value="<?=$userFileValue?>"><?=$userFileTitle?></option>
                 <?php endforeach;?>
             </select>
         <?php else:?>

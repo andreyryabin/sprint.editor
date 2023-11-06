@@ -788,9 +788,8 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
         }
     }
 
-    function saveToString(packname, $selectors) {
-        packname = packname || '';
-        $selectors = $selectors || $editor.find('.sp-x-lt');
+    function saveToString() {
+        let $selectors = $editor.find('.sp-x-lt');
 
         let blocks = [];
         let layouts = [];
@@ -871,9 +870,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
         if (currentEditorParams.saveEmpty || (layouts.length > 0 && blocks.length > 0)) {
             resultString = sprint_editor.safeStringify({
-                packname: packname,
                 version: 2,
-                userSettingsName: currentEditorParams.userSettingsName,
                 blocks: blocks,
                 layouts: layouts
             });
