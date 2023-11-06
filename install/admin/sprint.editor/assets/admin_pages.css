@@ -12,6 +12,7 @@
 
 .sp-table.sp-table-spacing {
     border-spacing: 5px;
+    border-collapse:separate;
 }
 
 .sp-x-lt {
