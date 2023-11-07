@@ -366,28 +366,24 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
     $editor.on('click', '.sp-x-box-hide', function (e) {
         e.preventDefault();
         let $box = $(this).closest('.sp-x-box');
-        $box.addClass('sp-x-box-hidden');
-        sprint_editor.fireEvent('popup:hide');
-    });
-
-    $editor.on('click', '.sp-x-box-show', function (e) {
-        e.preventDefault();
-        let $box = $(this).closest('.sp-x-box');
-        $box.removeClass('sp-x-box-hidden');
+        if ($box.hasClass('sp-x-box-hidden')) {
+            $box.removeClass('sp-x-box-hidden');
+            $box.removeClass('sp-x-box-collapsed');
+        } else {
+            $box.addClass('sp-x-box-hidden');
+            $box.addClass('sp-x-box-collapsed');
+        }
         sprint_editor.fireEvent('popup:hide');
     });
 
     $editor.on('click', '.sp-x-box-collapse', function (e) {
         e.preventDefault();
         let $box = $(this).closest('.sp-x-box');
-        $box.addClass('sp-x-box-collapsed');
-        sprint_editor.fireEvent('popup:hide');
-    });
-
-    $editor.on('click', '.sp-x-box-expand', function (e) {
-        e.preventDefault();
-        let $box = $(this).closest('.sp-x-box');
-        $box.removeClass('sp-x-box-collapsed');
+        if ($box.hasClass('sp-x-box-collapsed')) {
+            $box.removeClass('sp-x-box-collapsed');
+        } else {
+            $box.addClass('sp-x-box-collapsed');
+        }
         sprint_editor.fireEvent('popup:hide');
     });
 

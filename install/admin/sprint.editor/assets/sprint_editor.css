@@ -91,45 +91,44 @@
     border-bottom: 1px solid;
 }
 
+.sp-x-box-description {
+    background:#e6e5be;
+    background:-webkit-linear-gradient(top, rgba(244,233,141,.3), rgba(232,209,62,.3), rgba(225,194,40,.3));
+    background:-moz-linear-gradient(top, rgba(244,233,141,.3), rgba(232,209,62,.3), rgba(225,194,40,.3));
+    background:-ms-linear-gradient(top, rgba(244,233,141,.3), rgba(232,209,62,.3), rgba(225,194,40,.3));
+    background:-o-linear-gradient(top, rgba(244,233,141,.3), rgba(232,209,62,.3), rgba(225,194,40,.3));
+    background:linear-gradient(top, rgba(244,233,141,.3), rgba(232,209,62,.3), rgba(225,194,40,.3));
+    border-radius:5px;
+    border:1px solid;
+    border-color:#d3c6a3 #cabc90 #c1b37f #c9bc8f;
+    -webkit-box-shadow:inset 0 1px 0 #fff;
+    box-shadow:inset 0 1px 0 #fff;
+    color:#716536;
+    display:inline-block;
+    margin-top: 10px;
+    font-size:13px;
+    line-height:18px;
+    text-shadow:0 1px 0 rgba(255,255,255, 0.7);
+    padding:15px 30px 15px 18px;
+    position:relative;
+}
+
 .sp-x-box-hidden > .sp-x-buttons-box .sp-x-btn-title {
     text-decoration: line-through;
 }
 
-.sp-x-box .sp-x-box-hide {
-    display: inline-block;
-}
-
-.sp-x-box .sp-x-box-show {
-    display: none;
-}
-
 .sp-x-box.sp-x-box-hidden .sp-x-box-hide {
-    display: none;
+    background: #cecece;
 }
 
-.sp-x-box.sp-x-box-hidden .sp-x-box-show {
-    display: inline-block;
-}
-
-
-.sp-x-box-collapsed > .sp-x-box-block {
-    display: none;
-}
-
-.sp-x-box .sp-x-box-collapse {
-    display: inline-block;
-}
-
-.sp-x-box .sp-x-box-expand {
+.sp-x-box-collapsed .sp-x-box-block,
+.sp-x-box-collapsed .sp-x-box-settings,
+.sp-x-box-collapsed .sp-x-box-description {
     display: none;
 }
 
 .sp-x-box.sp-x-box-collapsed .sp-x-box-collapse {
-    display: none;
-}
-
-.sp-x-box.sp-x-box-collapsed .sp-x-box-expand {
-    display: inline-block;
+    background: #cecece;
 }
 
 
@@ -231,11 +230,6 @@
     position: absolute;
     left: -40px;
     top: -15px;
-}
-
-.bx-core-adm-dialog div.sp-x-box-description.adm-info-message,
-.sp-x-box-description.adm-info-message {
-    margin: 10px 0 0 0 !important;
 }
 
 .sp-x-separator-handle.sp-x-toolbar-open {
@@ -468,6 +462,7 @@ a.sp-x-btn:hover,
     top: 15px;
 }
 
+.sp-x-pp-box .sp-x-btn,
 .sp-x-toolbar .sp-x-btn,
 .sp-x-buttons-lt2 .sp-x-btn {
     margin: 1px;
