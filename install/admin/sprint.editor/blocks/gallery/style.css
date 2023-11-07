@@ -1,5 +1,5 @@
 .sp-block-gallery .sp-item {
-    position: relative;
+    /*position: relative;*/
     width: 98px;
     height: 55px;
     background: #ccc;
@@ -7,6 +7,7 @@
     border: 2px solid #eee;
     cursor: pointer;
     margin: 3px;
+    float: left;
 }
 
 .sp-block-gallery .sp-item img {
@@ -19,6 +20,7 @@
     width: 98px;
     height: 55px;
     margin: 3px;
+    float: left;
 }
 
 .sp-block-gallery .sp-item-desc {
@@ -35,8 +37,8 @@
     background: #eee;
     min-height: 55px;
     padding: 5px;
-    display: flex;
-    flex-wrap: wrap;
+    /*display: flex;*/
+    /*flex-wrap: wrap;*/
 }
 
 .sp-block-gallery .sp-source {

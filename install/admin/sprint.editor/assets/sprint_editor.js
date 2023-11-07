@@ -133,6 +133,8 @@ var sprint_editor = {
     },
 
     initblock: function ($, $el, name, blockData, blockSettings, currentEditorParams) {
+        blockData = blockData || {}
+
         blockData['name'] = name;
 
         if (!sprint_editor.hasBlockMethod(name)) {

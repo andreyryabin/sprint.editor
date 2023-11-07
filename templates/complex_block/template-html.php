@@ -3,20 +3,26 @@
  * @var $blockName
  * @var $layouts
  */
-?><?php foreach ($layouts as $lindex => $layout) { ?>
-    <?php if (!empty($layout['title'])) { ?>
-        <div class="sp-x-box-caption"><?= $layout['title'] ?></div>
-    <?php } ?>
-    <div class="sp-table sp-table-fixed">
-        <div class="sp-row">
-            <?php foreach ($layout['columns'] as $cindex => $column) { ?>
-                <div class="sp-col">
-                    <?php foreach ($column['blocks'] as $cblock) { ?>
-                        <div class="sp-area <?= $cblock['areaclass'] ?>"></div>
-                    <?php } ?>
-                </div>
-            <?php } ?>
-        </div>
-    </div>
-<?php } ?>
 
+$strings = [];
+
+foreach ($layouts as $lindex => $layout) {
+    if (!empty($layout['title'])) {
+        $strings[] = '<div class="sp-x-box-caption">' . $layout['title'] . '</div>';
+    }
+    $strings[] = '<div class="sp-table sp-table-fixed">';
+    $strings[] = '<div class="sp-row">';
+
+    foreach ($layout['columns'] as $cindex => $column) {
+        $strings[] = '<div class="sp-col">';
+        foreach ($column['blocks'] as $cblock) {
+            $strings[] = '<div class="sp-area ' . $cblock['areaclass'] . '"></div>';
+        }
+        $strings[] = '</div>';
+    }
+
+    $strings[] = ' </div>';
+    $strings[] = ' </div>';
+}
+
+echo implode(PHP_EOL, $strings);

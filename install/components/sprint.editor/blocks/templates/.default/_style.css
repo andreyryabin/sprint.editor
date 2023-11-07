@@ -200,4 +200,5 @@
 
 .sp-complex-col {
     display: table-cell;
+    vertical-align: top;
 }

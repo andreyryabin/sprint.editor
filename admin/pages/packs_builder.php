@@ -150,7 +150,7 @@ $registeredPacks = Sprint\Editor\AdminEditor::registerPacks($currentUserSettings
                                 </div>
                                 <div class="sp-row">
                                     <div class="sp-col">
-                                        <input name="pack_title" value="<?= $currentPackTitle ?>" type="text">
+                                        <input name="pack_title" placeholder="<?= GetMessage('SPRINT_EDITOR_new_pack') ?>" value="<?= $currentPackTitle ?>" type="text">
                                     </div>
                                 </div>
                             </div>
