@@ -151,9 +151,9 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             e.preventDefault();
             var $target = $(this).closest('.sp-acc-tab');
 
-            $target.hide(250, function () {
+            $target.animate({opacity: 0}, 250, function () {
                 $target.remove();
-            });
+            })
         });
         $el.on('click', '.sp-acc-up', function (e) {
             e.preventDefault();
@@ -179,9 +179,9 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             var uid = $box.data('uid');
             sprint_editor.beforeDelete(uid);
 
-            $box.hide(250, function () {
+            $box.animate({opacity: 0}, 250, function () {
                 $box.remove();
-            });
+            })
         });
         $el.on('click', '.sp-acc-box-up', function (e) {
             e.preventDefault();
@@ -256,7 +256,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
 
             var $box = $(sprint_editor.renderTemplate('accordion-box', {
                 uid: uid,
-                title: sprint_editor.getBlockTitle(blockData.name),
+                title: sprint_editor.getBlockTitle(blockData.name, currentEditorParams),
                 compiled: sprint_editor.compileSettings(blockData, blockSettings)
             }));
 

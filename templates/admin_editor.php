@@ -2,7 +2,7 @@
 /**
  * @var $jsonValue
  *
- * @var $jsonParameters
+ * @var $jsonBlocksConfigs
  * @var $jsonTemplates
  *
  * @var $uniqId
@@ -25,7 +25,7 @@
 <div class="sp-x-editor<?= $uniqId ?>"></div>
 <textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"></textarea>
 
-<?php if ($firstRun): ?><?php
+<?php if ($firstRun) {
     CModule::IncludeModule('fileman');
     $compParamsLangMess = CComponentParamsManager::GetLangMessages();
     $compParamsLangMess = CUtil::PhpToJSObject($compParamsLangMess, false);
@@ -33,25 +33,26 @@
     $sprintEditorLangMess = \Sprint\Editor\Locale::GetLangMessages();
     $sprintEditorLangMess = CUtil::PhpToJSObject($sprintEditorLangMess, false);
 
+    $scripts = [];
+    foreach ($templates as $templateName => $templateHtml) {
+        $scripts[] = '<script type="text/html" id="sp-x-template-' . $templateName . '">';
+        $scripts[] = $templateHtml;
+        $scripts[] = ' </script>';
+    }
+    echo implode(PHP_EOL, $scripts);
     ?>
-    <?php foreach ($templates as $templateName => $templateHtml): ?>
-        <script type="text/html" id="sp-x-template-<?= $templateName ?>">
-            <?= $templateHtml ?>
-        </script>
-    <?php endforeach; ?>
-
     <script type="text/javascript">
         BX.message(<?=$compParamsLangMess?>);
         BX.message(<?=$sprintEditorLangMess?>);
 
-        sprint_editor.registerParameters(<?=$jsonParameters?>);
+        sprint_editor.registerConfigs(<?=$jsonBlocksConfigs?>);
 
         jQuery(window).focus(function () {
             sprint_editor.fireEvent('window:focus');
         });
 
     </script>
-<?php endif; ?>
+<?php } ?>
 
 <script type="text/javascript">
     jQuery(document).ready(function ($) {

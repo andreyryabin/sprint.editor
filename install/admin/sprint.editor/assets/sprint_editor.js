@@ -1,6 +1,6 @@
 var sprint_editor = {
     _templates: {},
-    _parameters: {},
+    _configs: {},
     _registered: {},
     _events: {},
     _entries: {},
@@ -12,8 +12,8 @@ var sprint_editor = {
         this._registered[name] = method;
     },
 
-    registerParameters: function (parameters) {
-        this._parameters = parameters
+    registerConfigs: function (blocksConfigs) {
+        this._configs = blocksConfigs
     },
 
     registerTemplate: function (name, html) {
@@ -40,16 +40,26 @@ var sprint_editor = {
         return (this._registered[name]) ? this._registered[name] : false;
     },
 
-    setBlockParams: function (name, params) {
-        this._parameters[name] = params;
+    setBlockConfig: function (name, params) {
+        this._configs[name] = params;
     },
 
-    hasBlockParams: function (name) {
-        return !!this._parameters[name];
+    hasBlockConfig: function (name) {
+        return !!this._configs[name];
     },
 
-    getBlockParams: function (name) {
-        return (this._parameters[name]) ? this._parameters[name] : false;
+    getBlockConfig: function (name, currentEditorParams) {
+        currentEditorParams = currentEditorParams || {}
+
+        if (this._configs[name]) {
+            return Object.assign(
+                {},
+                this._configs[name],
+                this.getBlockCustomConfig(name, currentEditorParams)
+            );
+        }
+
+        return false;
     },
 
     registerDump(blockData) {
@@ -57,7 +67,7 @@ var sprint_editor = {
             return;
         }
 
-        this.setBlockParams(blockData.name, {
+        this.setBlockConfig(blockData.name, {
             'title': blockData.name,
             'hint': '',
             'sort': 100,
@@ -80,20 +90,20 @@ var sprint_editor = {
         });
     },
 
-    getBlockTitle: function (name) {
-        let params = this.getBlockParams(name);
-        if (params && params['title']) {
-            return params['title'];
+    getBlockTitle: function (name, currentEditorParams) {
+        let blockConfig = this.getBlockConfig(name, currentEditorParams);
+        if (blockConfig && blockConfig['title']) {
+            return blockConfig['title'];
         }
         return '';
     },
 
     getBlockWebPath: function (blockName) {
-        let values = this.getBlockParams(blockName);
-        if (values.islocal) {
-            return '/local/admin/sprint.editor/' + values.groupname + '/' + values.name;
+        let values = this.getBlockConfig(blockName);
+        if (values['islocal']) {
+            return '/local/admin/sprint.editor/' + values['groupname'] + '/' + values['name'];
         } else {
-            return '/bitrix/admin/sprint.editor/' + values.groupname + '/' + values.name;
+            return '/bitrix/admin/sprint.editor/' + values['groupname'] + '/' + values['name'];
         }
     },
 
@@ -123,9 +133,7 @@ var sprint_editor = {
     },
 
     initblock: function ($, $el, name, blockData, blockSettings, currentEditorParams) {
-        blockData = $.extend(blockData, {
-            name: name,
-        });
+        blockData['name'] = name;
 
         if (!sprint_editor.hasBlockMethod(name)) {
             sprint_editor.registerDump(blockData)
@@ -360,16 +368,15 @@ var sprint_editor = {
         return prefix + this._uidcounter + uniq;
     },
 
-    renderBlock: function (blockData, blockSettings, uid, params) {
-        let renderVars = this.getBlockParams(blockData.name);
-        if (renderVars) {
+    renderBlock: function (blockData, blockSettings, uid, currentEditorParams) {
+        let blockConfig = this.getBlockConfig(blockData.name, currentEditorParams);
+        if (blockConfig) {
+            blockConfig['uid'] = uid;
+            blockConfig['blockName'] = blockData['name'];
+            blockConfig['enableChange'] = currentEditorParams.enableChange;
+            blockConfig['compiled'] = sprint_editor.compileSettings(blockData, blockSettings);
 
-            renderVars['uid'] = uid;
-            renderVars['blockName'] = blockData['name'];
-            renderVars['enableChange'] = params.enableChange;
-            renderVars['compiled'] = sprint_editor.compileSettings(blockData, blockSettings);
-
-            return this.renderTemplate('box', renderVars);
+            return this.renderTemplate('box', blockConfig);
         }
         return '';
     },
@@ -489,14 +496,26 @@ var sprint_editor = {
         return cssname;
     },
 
-    getBlockSettings: function (name, params) {
+    getBlockCustomConfig: function (name, currentEditorParams) {
         if (
-            params.hasOwnProperty('jsonUserSettings') &&
-            params.jsonUserSettings.hasOwnProperty('block_settings') &&
-            params.jsonUserSettings.block_settings.hasOwnProperty(name)
+            currentEditorParams.hasOwnProperty('jsonUserSettings') &&
+            currentEditorParams.jsonUserSettings.hasOwnProperty('block_configs') &&
+            currentEditorParams.jsonUserSettings.block_configs.hasOwnProperty(name)
 
         ) {
-            return params.jsonUserSettings.block_settings[name];
+            return currentEditorParams.jsonUserSettings.block_configs[name];
+
+        }
+        return {};
+    },
+    getBlockSettings: function (name, currentEditorParams) {
+        if (
+            currentEditorParams.hasOwnProperty('jsonUserSettings') &&
+            currentEditorParams.jsonUserSettings.hasOwnProperty('block_settings') &&
+            currentEditorParams.jsonUserSettings.block_settings.hasOwnProperty(name)
+
+        ) {
+            return currentEditorParams.jsonUserSettings.block_settings[name];
 
         }
         return {};
@@ -509,7 +528,6 @@ var sprint_editor = {
             params.jsonUserSettings.complex_settings[complexName].hasOwnProperty(blockName)
         ) {
             return params.jsonUserSettings.complex_settings[complexName][blockName];
-
         }
         return {};
     },

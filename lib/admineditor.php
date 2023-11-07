@@ -141,7 +141,7 @@ class AdminEditor
                 'jsonValue'          => json_encode(Locale::convertToUtf8IfNeed($value)),
                 'jsonBlocksToolbar'  => json_encode(Locale::convertToUtf8IfNeed($blocksToolbar)),
                 'jsonLayoutsToolbar' => json_encode(Locale::convertToUtf8IfNeed($layoutsToolbar)),
-                'jsonParameters'     => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
+                'jsonBlocksConfigs'  => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
                 'jsonUserSettings'   => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
                 'templates'          => Locale::convertToWin1251IfNeed(self::$templates),
                 'enableChange'       => $enableChange,
@@ -658,14 +658,14 @@ class AdminEditor
         return $input;
     }
 
-    protected static function sortBlocksByUserSettings($userSettings, array $filteredItemBlocks)
+    protected static function sortBlocksByUserSettings($userSettings, array $filteredBlocks)
     {
         $sortMethod = $userSettings['block_sort'] ?? '';
 
         if ($sortMethod == 'title') {
-            return self::sortByStr($filteredItemBlocks, 'title');
+            return self::sortByStr($filteredBlocks, 'title');
         } else {
-            return self::sortByNum($filteredItemBlocks, 'sort');
+            return self::sortByNum($filteredBlocks, 'sort');
         }
     }
 }

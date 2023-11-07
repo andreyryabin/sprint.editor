@@ -550,7 +550,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
 
             if ($box && !$handler.hasClass('sp-x-lastblock')) {
                 $box.closest('.sp-x-lt').find('.sp-x-lastblock').html(
-                    BX.message('SPRINT_EDITOR_add') + ' ' + sprint_editor.getBlockTitle(name)
+                    BX.message('SPRINT_EDITOR_add') + ' ' + sprint_editor.getBlockTitle(name, currentEditorParams)
                 ).data('name', name).show();
             }
         }
@@ -660,7 +660,7 @@ function sprint_editor_full($, currentEditorParams, currentEditorValue) {
             return false;
         }
 
-        if (!sprint_editor.hasBlockParams(blockData.name)) {
+        if (!sprint_editor.hasBlockConfig(blockData.name)) {
             sprint_editor.registerDump(blockData);
         }
 

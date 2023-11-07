@@ -75,9 +75,9 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
             var uid = $box.data('uid');
             sprint_editor.beforeDelete(uid);
 
-            $box.hide(250, function () {
+            $box.animate({opacity: 0}, 250, function () {
                 $box.remove();
-            });
+            })
         });
 
         $el.on('click', '.sp-cont-box-up', function (e) {
@@ -108,7 +108,7 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
 
             var $box = $(sprint_editor.renderTemplate('container-box', {
                 uid: uid,
-                title: sprint_editor.getBlockTitle(blockData.name),
+                title: sprint_editor.getBlockTitle(blockData.name, currentEditorParams),
                 compiled: sprint_editor.compileSettings(blockData, blockSettings)
             }));
 
