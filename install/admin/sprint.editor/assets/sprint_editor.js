@@ -419,6 +419,7 @@ var sprint_editor = {
         return {
             name: setName,
             title: setParams.title || setName,
+            size: setParams.size || 20,
             type: setParams.type,
             value: setValue,
         };
@@ -844,7 +845,7 @@ var sprint_editor = {
                 let $ngrid = $grid.next('.sp-x-lt');
                 if ($ngrid.length > 0) {
                     let $ncol = getActiveColumn($ngrid);
-                    let $head = $ncol.find('.sp-x-col-settings');
+                    let $head = $ncol.find('.sp-x-col-classes');
                     if ($head.length > 0) {
                         $block.insertAfter($head);
                         sprint_editor.afterSort($block.data('uid'));
@@ -980,7 +981,8 @@ var sprint_editor = {
         $editor.on('click', '.sp-x-col-tab', function () {
             selectColumn($(this).data('uid'));
         });
-        $editor.on('click', '.sp-x-box-settings span', function () {
+
+        $editor.on('click', '.sp-x-box-settings .sp-x-btn', function () {
             let $span = $(this);
             $span.siblings('span').removeClass('sp-x-active');
             $span.toggleClass('sp-x-active');
@@ -989,18 +991,19 @@ var sprint_editor = {
             let $group = $span.parent();
 
             sprint_editor.changeSettings(
-                $block.data('uid'), $group.data('name'),
+                $block.data('uid'),
+                $group.data('name'),
                 $span.hasClass('sp-x-active') ? $span.data('value') : ''
             );
         });
 
-        $editor.on('click', '.sp-x-lt-settings span', function () {
+        $editor.on('click', '.sp-x-lt-settings .sp-x-btn', function () {
             let $span = $(this);
             $span.siblings('span').removeClass('sp-x-active');
             $span.toggleClass('sp-x-active');
         });
 
-        $editor.on('click', '.sp-x-col-settings span', function () {
+        $editor.on('click', '.sp-x-col-classes .sp-x-btn', function () {
             let $span = $(this);
             $span.siblings('span').removeClass('sp-x-active');
             $span.toggleClass('sp-x-active');
@@ -1401,15 +1404,13 @@ var sprint_editor = {
             $editor.find('.sp-x-lt').each(function (gindex) {
                 let columns = [];
 
-                // let lttitle = $(this).find('.sp-x-lt-title').text();
-                // let lttitle = BX.message('SPRINT_EDITOR_lt_default');
-
+                let $ltbuttons = $(this).children('.sp-x-buttons-lt1');
 
                 let ltsettings = sprint_editor.collectSettings(
-                    $(this).children('.sp-x-buttons-lt1').children('.sp-x-lt-settings')
+                    $ltbuttons.children('.sp-x-lt-settings')
                 );
 
-                $(this).find('.sp-x-col-tab').each(function (cindex) {
+                $ltbuttons.find('.sp-x-col-tab').each(function (cindex) {
                     let $tab = $(this);
 
                     let columnUid = $tab.data('uid');
@@ -1420,7 +1421,7 @@ var sprint_editor = {
                     let coltitle = $title.text();
 
                     let colclasses = [];
-                    $col.children('.sp-x-col-settings').find('.sp-x-active').each(function () {
+                    $col.children('.sp-x-col-classes').find('.sp-x-active').each(function () {
                         colclasses.push($.trim($(this).data('value')));
                     });
 
@@ -1448,7 +1449,9 @@ var sprint_editor = {
                             return true;
                         }
 
-                        blockData.settings = sprint_editor.collectSettings($(this).children('.sp-x-box-settings'));
+                        blockData.settings = sprint_editor.collectSettings(
+                            $(this).children('.sp-x-box-settings')
+                        );
 
                         let meta = {};
                         if ($(this).hasClass('sp-x-box-collapsed')) {

@@ -113,17 +113,14 @@
     position: relative;
 }
 
-.sp-x-btn.sp-x-col-tab.sp-x-active {
-    border-color: #FDBF3B;
-    background: #FFEBC1;
-}
 
 .sp-x-box-hidden > .sp-x-buttons-box .sp-x-btn-title {
     text-decoration: line-through;
 }
 
 .sp-x-box.sp-x-box-hidden .sp-x-box-hide {
-    background: #cecece;
+    /*background: #cecece;*/
+    background: #e5e5e5;
 }
 
 .sp-x-box-collapsed .sp-x-box-block,
@@ -133,7 +130,8 @@
 }
 
 .sp-x-box.sp-x-box-collapsed .sp-x-box-collapse {
-    background: #cecece;
+    /*background: #cecece;*/
+    background: #e5e5e5;
 }
 
 
@@ -195,8 +193,8 @@
     margin: 10px 10px 0;
 }
 
-.bx-core-adm-dialog div.sp-x-col-settings,
-.sp-x-col-settings {
+.bx-core-adm-dialog div.sp-x-col-classes,
+.sp-x-col-classes {
     margin: 10px 10px 0;
 }
 
@@ -244,7 +242,7 @@
 }
 
 .sp-x-lt.sp-x-hidden .sp-x-box,
-.sp-x-lt.sp-x-hidden .sp-x-col-settings,
+.sp-x-lt.sp-x-hidden .sp-x-col-classes,
 .sp-x-lt.sp-x-hidden .sp-x-buttons-lt2 {
     display: none;
 }
@@ -259,20 +257,12 @@
 
 .bx-core-adm-dialog div.sp-x-buttons.sp-x-buttons-box,
 .sp-x-buttons.sp-x-buttons-box {
-    /*text-align: center;*/
-    /*margin: 0 0 10px;*/
     display: inline-block;
-    /*margin: 0 10px 10px 0;*/
 }
 
 .sp-x-buttons-group {
     display: inline-block;
     margin: 0 10px 10px 0;
-    /*display: block;*/
-    /*position: absolute;*/
-    /*right: 0;*/
-    /*top: 0;*/
-    /*float: right;*/
 }
 
 .sp-x-box-handle,
@@ -286,35 +276,16 @@
     padding: 10px 10px 20px;
 }
 
-.sp-x-lt-settings {
-    /*margin-bottom: 10px;*/
-}
-
 .sp-x-settings-group,
 .sp-x-lt-tabs {
-    /*display: none;*/
-    /*padding: 8px;*/
     display: inline-block;
-    /*border-radius: 4px;*/
-    /*padding: 8px;*/
-
-    /*border-radius: 4px;*/
     margin: 0 10px 10px 0;
-    /*background: #eee;*/
-
-    /*margin-bottom: 8px;*/
-    /*display: inline-block;*/
-
 }
 
-.sp-x-lt-settings span,
-.sp-x-col-settings span,
-.sp-x-box-settings span,
 .sp-x-btn,
-.bx-core-adm-dialog .sp-x-lt-settings span,
-.bx-core-adm-dialog .sp-x-col-settings span,
-.bx-core-adm-dialog .sp-x-box-settings span,
-.bx-core-adm-dialog .sp-x-btn {
+.sp-x-col-tab,
+.bx-core-adm-dialog .sp-x-btn,
+.bx-core-adm-dialog .sp-x-col-tab {
     display: inline-block;
     cursor: pointer;
     font-size: 13px;
@@ -324,13 +295,43 @@
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-    -o-user-select: none;
     outline: none;
-    border: 1px solid #ccc;
     padding: 6px;
     min-width: 18px;
     line-height: 16px;
+    border: 1px solid #ccc;
 }
+
+.sp-x-txt {
+    display: inline-block;
+    font-size: 13px;
+    text-decoration: none;
+    text-align: center;
+    outline: none;
+    padding: 6px;
+    min-width: 18px;
+    line-height: 16px;
+    /*border: 1px solid #ccc;*/
+    cursor: default;
+    /*background: #e5e5e5;*/
+}
+
+.sp-x-txt input[type=text] {
+    /*all: unset;*/
+    outline: none;
+    text-align: left;
+    /*border-bottom: 1px solid #ccc;*/
+    cursor: text;
+}
+
+.sp-x-lt-tabs,
+.bx-core-adm-dialog div.sp-x-lt-tabs,
+.sp-x-settings-group,
+.bx-core-adm-dialog div.sp-x-settings-group {
+    /*border: 1px solid #ccc;*/
+    /*border-radius: 5px;*/
+}
+
 
 a.sp-x-btn,
 .bx-core-adm-dialog a.sp-x-btn {
@@ -372,22 +373,19 @@ a.sp-x-btn,
 
 }
 
-.sp-x-lt-settings span:before,
-.sp-x-col-settings span:before,
-.sp-x-box-settings span:before,
+.sp-x-col-tab:before,
 .sp-x-btn:before {
     display: inline-block;
     vertical-align: middle;
     /*padding-right: 5px;*/
 }
 
-.sp-x-lt-settings span:hover,
-.sp-x-col-settings span:hover,
-.sp-x-box-settings span:hover,
 .sp-x-btn:hover,
+.sp-x-col-tab:hover,
 a.sp-x-btn:hover,
 .bx-core-adm-dialog a.sp-x-btn:hover {
-    background: #ededed;
+    background: #e5e5e5;
+    /*background: #eee;*/
     /*box-shadow:*/
     /*inset rgba(0,0,0,.5) 0 -1px 1px,*/
     /*inset rgba(0,0,0,.2) 0 1px,*/
@@ -395,20 +393,18 @@ a.sp-x-btn:hover,
     /*rgba(0,0,0,.2) 0 1px 1px;*/
 }
 
-.sp-x-lt-settings span.sp-x-active,
-.sp-x-col-settings span.sp-x-active,
-.sp-x-box-settings span.sp-x-active,
 .sp-x-btn.sp-x-active,
-.sp-x-lt-settings span:active,
-.sp-x-col-settings span:active,
-.sp-x-box-settings span:active,
 .sp-x-btn:active {
-    /*border: none;*/
-    background: #cecece;
+    /*background: #cecece;*/
+    background: #e5e5e5;
     /*box-shadow:*/
     /*inset rgba(0,0,0,.8) 0 1px 2px,*/
     /*inset rgba(0,0,0,.05) 0 -1px 0,*/
     /*#fff 0 1px 1px;*/
+}
+
+.sp-x-col-tab.sp-x-active {
+    background: #FFEBC1;
 }
 
 .sp-x-pp-box,
@@ -418,17 +414,12 @@ a.sp-x-btn:hover,
 .sp-x-toolbar,
 .bx-core-adm-dialog div.sp-x-toolbar {
     display: none;
-
     max-width: 500px;
     min-width: 250px;
-
     background: #f5f9f9;
-    /*border: 1px solid #;*/
     padding: 10px;
     z-index: 40;
     position: absolute;
-    /*left: 0;*/
-    /*border-radius: 4px;*/
     font-size: 0;
     box-shadow: inset rgba(0, 0, 0, .5) 0 -1px 1px,
     inset rgba(0, 0, 0, .2) 0 1px,
@@ -499,8 +490,8 @@ a.sp-x-btn:hover,
 .bx-core-adm-dialog div.sp-x-settings-group,
 .sp-x-lt-tabs,
 .bx-core-adm-dialog div.sp-x-lt-tabs,
-.sp-x-col-settings,
-.bx-core-adm-dialog div.sp-x-col-settings,
+.sp-x-col-classes,
+.bx-core-adm-dialog div.sp-x-col-classes,
 .sp-x-box-settings,
 .bx-core-adm-dialog div.sp-x-box-settings,
 .sp-x-lt-settings,
@@ -516,11 +507,6 @@ a.sp-x-btn:hover,
     /*text-align: center;*/
     /*text-align: left;*/
     font-size: 0;
-}
-
-.sp-x-col-tab {
-    border-radius: 5px;
-    margin: 0 1px;
 }
 
 .sp-x-box iframe {

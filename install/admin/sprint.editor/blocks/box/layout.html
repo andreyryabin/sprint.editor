@@ -1,7 +1,7 @@
 <div class="sp-x-lt">
     <div class="sp-x-buttons sp-x-buttons-lt1">
         {{?it.enableChange}}
-        <div class="sp-x-buttons-group sp-x-pp-lt-hover">
+        <div class="sp-x-buttons-group">
             <span class="sp-x-btn sp-x-pp-lt-open">&equiv;</span>
             <div class="sp-x-pp-lt">
                 <div class="sp-x-pp-group">
@@ -36,7 +36,7 @@
         {{?}}
         <div class="sp-x-lt-tabs" {{?it.columns.length== 1}}style="display:none" {{?}}>
             {{~it.columns :col}}
-            <span class="sp-x-btn sp-x-col-tab" data-uid="{{=col.uid}}">
+            <span class="sp-x-col-tab" data-uid="{{=col.uid}}">
                 <span class="sp-x-col-title">{{=col.title}}</span>
                 <span class="sp-x-col-index"></span>
             </span>
@@ -53,7 +53,7 @@
         {{~it.columns :col}}
         <div class="sp-x-col" data-uid="{{=col.uid}}">
             {{?col.column_classes }}
-            <div class="sp-x-col-settings">{{=col.column_classes}}</div>
+            <div class="sp-x-col-classes">{{=col.column_classes}}</div>
             {{?}}
         </div>
         {{~}}

@@ -3,14 +3,14 @@
     {{?item.type=="select"}}
     {{~item.options :option}}
     {{?option.selected}}
-    <span class="sp-x-active" data-value="{{!option.value}}">{{=option.title}}</span>
+    <span class="sp-x-btn sp-x-active" data-value="{{!option.value}}">{{=option.title}}</span>
     {{??}}
-    <span data-value="{{!option.value}}">{{=option.title}}</span>
+    <span class="sp-x-btn" data-value="{{!option.value}}">{{=option.title}}</span>
     {{?}}
     {{~}}
     {{?}}
     {{?item.type=="text"}}
-    <span>{{=item.title}} <input value="{{!item.value}}" type="text"/></span>
+    <span class="sp-x-txt">{{=item.title}}: <input size="{{!item.size}}" value="{{!item.value}}" type="text"/></span>
     {{?}}
 </div>
 {{~}}
