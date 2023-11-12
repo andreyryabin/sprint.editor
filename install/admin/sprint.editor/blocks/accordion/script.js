@@ -257,7 +257,10 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             var $box = $(sprint_editor.renderTemplate('accordion-box', {
                 uid: uid,
                 title: sprint_editor.getBlockTitle(blockData.name, currentEditorParams),
-                compiled: sprint_editor.compileSettings(blockData, blockSettings)
+                box_settings: sprint_editor.renderTemplate(
+                    'box-settings',
+                    sprint_editor.compileSettings(blockData, blockSettings)
+                ),
             }));
 
             $tabblocks.append($box);

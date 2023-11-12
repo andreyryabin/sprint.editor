@@ -1,6 +1,8 @@
 {
   "templates": [
     "layout.html",
+    "settings.html",
+    "classes.html",
     "toolbar-popup.html",
     "toolbar-footer.html"
   ]

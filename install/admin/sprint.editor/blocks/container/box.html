@@ -18,20 +18,8 @@
             </div>
         </div>
     </div>
-    {{?it.compiled && it.compiled.length > 0}}
-    <div class="sp-x-box-settings">
-        {{~it.compiled :item}}
-        <div data-name="{{!item.name}}" class="sp-x-settings-group">
-            {{~item.options :option}}
-            {{?option.selected}}
-            <span class="sp-x-active" data-value="{{!option.value}}">{{=option.title}}</span>
-            {{??}}
-            <span data-value="{{!option.value}}">{{=option.title}}</span>
-            {{?}}
-            {{~}}
-        </div>
-        {{~}}
-    </div>
+    {{?it.box_settings}}
+    <div class="sp-x-box-settings">{{=it.box_settings}}</div>
     {{?}}
     <div class="sp-x-box-block"></div>
 </div>

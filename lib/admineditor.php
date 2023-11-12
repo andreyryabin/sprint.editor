@@ -44,16 +44,6 @@ class AdminEditor
             ], $params
         );
 
-        $enableChange = 0;
-        if (empty($params['userSettings']['DISABLE_CHANGE'])) {
-            $enableChange = 1;
-        }
-
-        $wideMode = 1;
-        if (empty($params['userSettings']['WIDE_MODE'])) {
-            $wideMode = 0;
-        }
-
         //default setings (simple editor)
         $userSettings = [
             'layout_enabled'   => [
@@ -71,14 +61,6 @@ class AdminEditor
         if ($userSettingsName) {
             self::registerSettingsAssets($userSettingsName);
             $userSettings = self::loadSettings($userSettingsName);
-        }
-
-        //для редактора макетов показываем сетки всегда даже если отключены
-        $saveEmpty = 0;
-        if ($params['inputName'] == 'pack_content') {
-            unset($userSettings['layout_enabled']);
-            unset($userSettings['layout_toolbar']);
-            $saveEmpty = 1;
         }
 
         $filteredBlocks = self::filterBlocks($userSettings);
@@ -135,6 +117,28 @@ class AdminEditor
             $userSettings['complex_settings']
         );
 
+        //для редактора макетов показываем сетки всегда даже если отключены
+        $saveEmpty = false;
+        if ($params['inputName'] == 'pack_content') {
+            unset($userSettings['layout_enabled']);
+            unset($userSettings['layout_toolbar']);
+            $saveEmpty = true;
+        }
+
+        if (isset($userSettings['wide_mode'])) {
+            $wideMode = (bool)$userSettings['wide_mode'];
+            unset($userSettings['wide_mode']);
+        } else {
+            $wideMode = (bool)($params['userSettings']['WIDE_MODE'] ?? false);
+        }
+
+        if (isset($userSettings['enable_change'])) {
+            $enableChange = (bool)$userSettings['enable_change'];
+            unset($userSettings['enable_change']);
+        } else {
+            $enableChange = !($params['userSettings']['DISABLE_CHANGE'] ?? true);
+        }
+
         return Module::templater(
             '/templates/admin_editor.php',
             [
@@ -143,14 +147,14 @@ class AdminEditor
                 'jsonLayoutsToolbar' => json_encode(Locale::convertToUtf8IfNeed($layoutsToolbar)),
                 'jsonBlocksConfigs'  => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
                 'jsonUserSettings'   => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
-                'templates'          => Locale::convertToWin1251IfNeed(self::$templates),
-                'enableChange'       => $enableChange,
+                'jsonTemplates'      => json_encode(Locale::convertToWin1251IfNeed(self::$templates)),
                 'userSettingsName'   => $userSettingsName,
                 'inputName'          => $params['inputName'],
                 'uniqId'             => $params['uniqId'],
                 'editorName'         => $params['editorName'],
                 'saveEmpty'          => $saveEmpty,
                 'wideMode'           => $wideMode,
+                'enableChange'       => $enableChange,
                 'firstRun'           => (self::$initCounts == 1) ? 1 : 0,
             ]
         );
@@ -330,8 +334,6 @@ class AdminEditor
         }
 
         $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor.js?2');
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor_full.js?2');
-
         foreach (self::$js as $val) {
             $APPLICATION->AddHeadScript($val);
         }

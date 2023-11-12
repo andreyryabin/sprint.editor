@@ -42,42 +42,18 @@
             </span>
             {{~}}
         </div>
-        {{?it.compiled.length > 0}}
-        <div class="sp-x-lt-settings" title="Настройка сетки, общая для всех колонок">
-            {{~it.compiled :item}}
-            <div data-name="{{!item.name}}" class="sp-x-settings-group">
-                {{~item.options :option}}
-                {{?option.selected}}
-                <span class="sp-x-active" title="{{!option.value}}" data-value="{{!option.value}}">{{=option.title}}</span>
-                {{??}}
-                <span title="{{!option.value}}" data-value="{{!option.value}}">{{=option.title}}</span>
-                {{?}}
-                {{~}}
-            </div>
-            {{~}}
-        </div>
+        {{?it.layout_settings}}
+        <div class="sp-x-lt-settings">{{=it.layout_settings}}</div>
         {{?}}
     </div>
-    {{?it.enableChange || it.compiled.length > 0 || it.columns.length > 1}}
+    {{?it.enableChange || it.layout_settings || it.columns.length > 1}}
     <div class="sp-x-separator sp-x-separator-lt"></div>
     {{?}}
     <div class="sp-x-lt-row">
         {{~it.columns :col}}
         <div class="sp-x-col" data-uid="{{=col.uid}}">
-            {{?col.compiled.length > 0}}
-            <div class="sp-x-col-settings" title="Настройка выбранной колонки">
-                {{~col.compiled :item}}
-                <div class="sp-x-settings-group">
-                    {{~item.options :option}}
-                    {{?option.selected}}
-                    <span title="{{!option.value}}" data-value="{{!option.value}}" class="sp-x-active">{{=option.title}}</span>
-                    {{??}}
-                    <span title="{{!option.value}}" data-value="{{!option.value}}">{{=option.title}}</span>
-                    {{?}}
-                    {{~}}
-                </div>
-                {{~}}
-            </div>
+            {{?col.column_classes }}
+            <div class="sp-x-col-settings">{{=col.column_classes}}</div>
             {{?}}
         </div>
         {{~}}

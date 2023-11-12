@@ -39,6 +39,9 @@ if ($updater && $updater instanceof CUpdater) {
         '/bitrix/modules/sprint.editor/install/admin/sprint.editor/assets/jquery-1.11.1.min.js',
         '/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js',
 
+        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/assets/sprint_editor_full.js',
+        '/bitrix/admin/sprint.editor/assets/sprint_editor_full.js',
+
         '/bitrix/modules/sprint.editor/install/components/sprint.editor/blocks/templates/.default/coub.php',
         '/bitrix/components/sprint.editor/blocks/templates/.default/coub.php',
         '/bitrix/modules/sprint.editor/install/components/sprint.editor/blocks/templates/.default/slideshare.php',
@@ -73,7 +76,7 @@ if ($updater && $updater instanceof CUpdater) {
     }
 
     if (is_dir(__DIR__ . '/install/components/')) {
-        $updater->CopyFiles("install/components/", "components/");
+        //$updater->CopyFiles("install/components/", "components/");
     }
 
     if (is_dir(__DIR__ . '/install/admin/')) {

@@ -1,0 +1,11 @@
+{{~it :item}}
+<div class="sp-x-settings-group">
+    {{~item.options :option}}
+    {{?option.selected}}
+    <span data-value="{{!option.value}}" class="sp-x-active">{{=option.title}}</span>
+    {{??}}
+    <span data-value="{{!option.value}}">{{=option.title}}</span>
+    {{?}}
+    {{~}}
+</div>
+{{~}}

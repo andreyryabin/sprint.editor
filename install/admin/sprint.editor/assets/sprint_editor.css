@@ -230,17 +230,13 @@
     margin-bottom: 13px;
 }
 
-.bx-core-adm-dialog .sp-x-separator-handle,
-.sp-x-separator-handle {
+.bx-core-adm-dialog .sp-x-separator .sp-x-toolbar-open,
+.sp-x-separator .sp-x-toolbar-open {
     position: absolute;
-    left: -40px;
     top: -15px;
-}
-
-.sp-x-separator-handle.sp-x-toolbar-open {
-    position: absolute;
     left: -50px;
     background: #fff;
+    /*display: none;*/
 }
 
 .sp-x-lt.sp-x-hidden {
@@ -248,7 +244,6 @@
 }
 
 .sp-x-lt.sp-x-hidden .sp-x-box,
-    /*.sp-x-lt.sp-x-hidden .sp-x-lt-settings,*/
 .sp-x-lt.sp-x-hidden .sp-x-col-settings,
 .sp-x-lt.sp-x-hidden .sp-x-buttons-lt2 {
     display: none;

@@ -109,7 +109,10 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
             var $box = $(sprint_editor.renderTemplate('container-box', {
                 uid: uid,
                 title: sprint_editor.getBlockTitle(blockData.name, currentEditorParams),
-                compiled: sprint_editor.compileSettings(blockData, blockSettings)
+                box_settings: sprint_editor.renderTemplate(
+                    'box-settings',
+                    sprint_editor.compileSettings(blockData, blockSettings)
+                ),
             }));
 
             $container.append($box);

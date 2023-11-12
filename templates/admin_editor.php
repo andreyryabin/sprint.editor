@@ -8,18 +8,19 @@
  * @var $uniqId
  * @var $inputName
  * @var $editorName
+ *
  * @var $saveEmpty
  * @var $wideMode
+ * @var $enableChange
  *
  * @var $firstRun
  * @var $jsonLayoutsToolbar
  * @var $jsonBlocksToolbar
  *
- * @var $enableChange
  * @var $jsonUserSettings
  * @var $userSettingsName
  *
- * @var $templates
+ * @var $jsonTemplates
  */
 ?>
 <div class="sp-x-editor<?= $uniqId ?>"></div>
@@ -32,21 +33,13 @@
 
     $sprintEditorLangMess = \Sprint\Editor\Locale::GetLangMessages();
     $sprintEditorLangMess = CUtil::PhpToJSObject($sprintEditorLangMess, false);
-
-    $scripts = [];
-    foreach ($templates as $templateName => $templateHtml) {
-        $scripts[] = '<script type="text/html" id="sp-x-template-' . $templateName . '">';
-        $scripts[] = $templateHtml;
-        $scripts[] = ' </script>';
-    }
-    echo implode(PHP_EOL, $scripts);
     ?>
     <script type="text/javascript">
         BX.message(<?=$compParamsLangMess?>);
         BX.message(<?=$sprintEditorLangMess?>);
 
         sprint_editor.registerConfigs(<?=$jsonBlocksConfigs?>);
-
+        sprint_editor.registerTemplates(<?=$jsonTemplates?>);
         jQuery(window).focus(function () {
             sprint_editor.fireEvent('window:focus');
         });
@@ -56,18 +49,16 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
-        sprint_editor_full($, {
+        sprint_editor.createInstance($, {
             uniqid: "<?= $uniqId ?>",
             editorName: "<?= $editorName ?>",
-            enableChange: <?=$enableChange?>,
-            wideMode: <?=$wideMode?>,
-            saveEmpty: <?=$saveEmpty?>,
             userSettingsName: "<?=$userSettingsName?>",
-            jsonUserSettings: <?=$jsonUserSettings?>,
-            jsonLayoutsToolbar: <?=$jsonLayoutsToolbar?>,
-            jsonBlocksToolbar: <?=$jsonBlocksToolbar?>,
-        }, {
-            jsonValue: <?=$jsonValue?>
-        });
+            enableChange: <?=($enableChange ? 'true' : 'false')?>,
+            wideMode: <?=($wideMode ? 'true' : 'false')?>,
+            saveEmpty: <?=($saveEmpty ? 'true' : 'false')?>,
+            userSettings: <?=$jsonUserSettings?>,
+            layoutsToolbar: <?=$jsonLayoutsToolbar?>,
+            blocksToolbar: <?=$jsonBlocksToolbar?>,
+        }, <?=$jsonValue?>);
     });
 </script>

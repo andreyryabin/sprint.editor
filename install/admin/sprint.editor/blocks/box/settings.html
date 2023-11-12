@@ -1,0 +1,16 @@
+{{~it :item}}
+<div data-name="{{!item.name}}" data-type="{{!item.type}}" class="sp-x-settings-group">
+    {{?item.type=="select"}}
+    {{~item.options :option}}
+    {{?option.selected}}
+    <span class="sp-x-active" data-value="{{!option.value}}">{{=option.title}}</span>
+    {{??}}
+    <span data-value="{{!option.value}}">{{=option.title}}</span>
+    {{?}}
+    {{~}}
+    {{?}}
+    {{?item.type=="text"}}
+    <span>{{=item.title}} <input value="{{!item.value}}" type="text"/></span>
+    {{?}}
+</div>
+{{~}}
