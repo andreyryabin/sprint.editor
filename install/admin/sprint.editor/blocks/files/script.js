@@ -45,7 +45,7 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
             if (globalUid && itemsCollection[globalUid]) {
                 itemsCollection[globalUid].desc = $(this).val();
             }
-        }, 500);
+        });
 
         $btninput.fileupload({
             dropZone: $el,
@@ -74,16 +74,6 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
         }).prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
-
-        $el.on('click', '.sp-files-toggle', function () {
-            if ($el.hasClass('sp-show')) {
-                $el.find('.sp-source').hide(250);
-                $el.removeClass('sp-show');
-            } else {
-                $el.find('.sp-source').show(250);
-                $el.addClass('sp-show');
-            }
-        });
 
         $el.on('click', '.sp-item-del', function () {
             $el.find('.sp-x-active').remove();
@@ -157,8 +147,11 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
 
             }
         });
-    };
 
+        if (!data.files || !data.files.length) {
+            closeedit();
+        }
+    };
     var renderitem = function (uid) {
         if (!itemsCollection[uid]) {
             return;
@@ -185,15 +178,15 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
 
     var closeedit = function () {
         globalUid = false;
-        $el.find('.sp-edit').hide(250);
         $el.find('.sp-item-desc').val('');
+        $el.removeClass('sp-editable');
     };
 
     var openedit = function (uid) {
         if (itemsCollection[uid]) {
             globalUid = uid;
             $el.find('.sp-item-desc').val(itemsCollection[uid].desc);
-            $el.find('.sp-edit').show(250);
+            $el.addClass('sp-editable');
         }
     };
 

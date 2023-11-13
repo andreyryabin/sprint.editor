@@ -148,7 +148,6 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             }
         });
 
-
         if (!data.images || !data.images.length) {
             closeedit();
         }
@@ -180,7 +179,6 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
     var closeedit = function () {
         globalUid = false;
         $el.find('.sp-item-desc').val('');
-
         $el.removeClass('sp-editable');
     };
 
