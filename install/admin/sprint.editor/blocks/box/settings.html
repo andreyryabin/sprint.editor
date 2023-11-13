@@ -10,7 +10,8 @@
     {{~}}
     {{?}}
     {{?item.type=="text"}}
-    <span class="sp-x-txt">{{=item.title}}: <input size="{{!item.size}}" value="{{!item.value}}" type="text"/></span>
+    <span class="sp-x-txt-title">{{=item.title}}:</span>
+    <span class="sp-x-txt-input" contenteditable="true">{{=item.value}}</span>
     {{?}}
 </div>
 {{~}}

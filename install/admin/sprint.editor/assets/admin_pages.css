@@ -34,10 +34,12 @@
     margin-left: 10px;
     border-bottom: 1px solid #ccc;
     min-width: 200px;
+    cursor: text;
+    outline: none;
 }
 
 .sp-x-lt .sp-x-caption:focus {
-    outline: 0 solid transparent;
+    /*outline: 0 solid transparent;*/
 }
 
 .sp-x-lt .sp-x-lt-header {

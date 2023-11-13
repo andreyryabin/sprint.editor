@@ -378,9 +378,9 @@ var sprint_editor = {
                 }
             }
             if (type === 'text') {
-                let $input = jQuery(this).find('input').first();
+                let $input = jQuery(this).children('.sp-x-txt-input');
                 if ($input.length > 0) {
-                    settval[name] = $input.val();
+                    settval[name] = $input.text();
                 }
             }
         });
@@ -1007,6 +1007,20 @@ var sprint_editor = {
             let $span = $(this);
             $span.siblings('span').removeClass('sp-x-active');
             $span.toggleClass('sp-x-active');
+        });
+
+        $editor.on("paste", '.sp-x-txt-input', function (e) {
+            e.preventDefault();
+
+            var text = e.originalEvent.clipboardData.getData("text/plain");
+            text = text.replace(/(\r\n|\n|\r)/gm, "");
+            document.execCommand("insertText", false, text);
+        });
+
+        $editor.on("keypress", '.sp-x-txt-input', function (e) {
+            if (e.keyCode === 13) {
+                return false;
+            }
         });
 
         function popupHide() {

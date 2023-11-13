@@ -302,7 +302,7 @@
     border: 1px solid #ccc;
 }
 
-.sp-x-txt {
+.sp-x-txt-title {
     display: inline-block;
     font-size: 13px;
     text-decoration: none;
@@ -311,9 +311,28 @@
     padding: 6px;
     min-width: 18px;
     line-height: 16px;
-    /*border: 1px solid #ccc;*/
-    cursor: default;
-    /*background: #e5e5e5;*/
+    border: 1px solid #ccc;
+    /*border-right: none;*/
+    background: #e5e5e5;
+}
+
+.sp-x-txt-input {
+    cursor: text;
+    text-align: left;
+
+    display: inline-block;
+    font-size: 13px;
+    text-decoration: none;
+    outline: none;
+    /*padding: 6px 0 6px 0;*/
+    padding: 6px;
+    min-width: 36px;
+    line-height: 16px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.sp-x-txt-input:focus {
+    /*outline: 0 solid transparent;*/
 }
 
 .sp-x-txt input[type=text] {

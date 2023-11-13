@@ -58,6 +58,20 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
         }
     });
 
+    $editor.on("paste", '.sp-x-caption', function (e) {
+        e.preventDefault();
+
+        var text = e.originalEvent.clipboardData.getData("text/plain");
+        text = text.replace(/(\r\n|\n|\r)/gm, "");
+        document.execCommand("insertText", false, text);
+    });
+
+    $editor.on("keypress", '.sp-x-caption', function (e) {
+        if (e.keyCode === 13) {
+            return false;
+        }
+    });
+
     $form.on('submit', function () {
         let resultString = saveToString();
 
@@ -124,21 +138,6 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
         html += '</div></div></div>';
 
         var $layot = $(html)
-
-        var $caption = $layot.find('.sp-x-caption');
-
-        $caption.get(0).addEventListener("paste", function (e) {
-            e.preventDefault();
-            var text = e.clipboardData.getData("text/plain");
-            text = text.replace(/(\r\n|\n|\r)/gm, "");
-            document.execCommand("insertText", false, text);
-        });
-
-        $caption.on("keypress", function (e) {
-            if (e.keyCode === 13) {
-                return false;
-            }
-        });
 
         $container.append($layot);
 
