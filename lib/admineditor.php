@@ -614,12 +614,12 @@ class AdminEditor
             }
         }
 
-        return array_filter(
+        return array_values(array_filter(
             $blocksToolbar,
             function ($toolbarItem) {
                 return !empty($toolbarItem['blocks']);
             }
-        );
+        ));
     }
 
     protected static function getLayoutsToolbar($userSettings, $filteredLayouts)
