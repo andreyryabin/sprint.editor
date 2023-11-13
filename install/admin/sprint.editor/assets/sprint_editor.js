@@ -127,7 +127,9 @@ var sprint_editor = {
     },
 
     initblock: function ($, $el, name, blockData, blockSettings, currentEditorParams) {
-        blockData = blockData || {}
+        blockData = blockData || {};
+        blockSettings = blockSettings || {};
+        currentEditorParams = currentEditorParams || {};
 
         blockData['name'] = name;
 
@@ -492,7 +494,7 @@ var sprint_editor = {
     },
 
     getBlockCustomConfig: function (name, currentEditorParams) {
-        if (
+        if (currentEditorParams &&
             currentEditorParams.hasOwnProperty('userSettings') &&
             currentEditorParams.userSettings.hasOwnProperty('block_configs') &&
             currentEditorParams.userSettings.block_configs.hasOwnProperty(name)
@@ -504,7 +506,7 @@ var sprint_editor = {
     },
 
     getBlockSettings: function (name, currentEditorParams) {
-        if (
+        if (currentEditorParams &&
             currentEditorParams.hasOwnProperty('userSettings') &&
             currentEditorParams.userSettings.hasOwnProperty('block_settings') &&
             currentEditorParams.userSettings.block_settings.hasOwnProperty(name)
@@ -517,7 +519,7 @@ var sprint_editor = {
     },
 
     getComplexSettings: function (complexName, blockName, currentEditorParams) {
-        if (
+        if (currentEditorParams &&
             currentEditorParams.hasOwnProperty('userSettings') &&
             currentEditorParams.userSettings.hasOwnProperty('complex_settings') &&
             currentEditorParams.userSettings.complex_settings.hasOwnProperty(complexName) &&
@@ -529,7 +531,8 @@ var sprint_editor = {
     },
 
     getLayoutSettings: function (name, currentEditorParams) {
-        if (currentEditorParams.hasOwnProperty('userSettings') &&
+        if (currentEditorParams &&
+            currentEditorParams.hasOwnProperty('userSettings') &&
             currentEditorParams.userSettings.hasOwnProperty('layout_settings') &&
             currentEditorParams.userSettings.layout_settings.hasOwnProperty(name)
         ) {
@@ -540,7 +543,8 @@ var sprint_editor = {
 
 
     getColumnClasses: function (name, currentEditorParams) {
-        if (currentEditorParams.hasOwnProperty('userSettings') &&
+        if (currentEditorParams &&
+            currentEditorParams.hasOwnProperty('userSettings') &&
             currentEditorParams.userSettings.hasOwnProperty('layout_classes') &&
             currentEditorParams.userSettings.layout_classes.hasOwnProperty(name) &&
             (currentEditorParams.userSettings.layout_classes[name].length > 0)
@@ -552,7 +556,7 @@ var sprint_editor = {
     },
 
     getClassesTitles: function (currentEditorParams) {
-        if (
+        if (currentEditorParams &&
             currentEditorParams.hasOwnProperty('userSettings') &&
             currentEditorParams.userSettings.hasOwnProperty('layout_titles')
         ) {
@@ -561,12 +565,12 @@ var sprint_editor = {
         return {};
     },
 
-    getSnippets: function (params) {
-        if (
-            params.hasOwnProperty('userSettings') &&
-            params.userSettings.hasOwnProperty('snippets')
+    getSnippets: function (currentEditorParams) {
+        if (currentEditorParams &&
+            currentEditorParams.hasOwnProperty('userSettings') &&
+            currentEditorParams.userSettings.hasOwnProperty('snippets')
         ) {
-            return params.userSettings.snippets;
+            return currentEditorParams.userSettings.snippets;
         }
         return [];
     },
