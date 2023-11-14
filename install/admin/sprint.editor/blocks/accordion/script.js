@@ -60,9 +60,10 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
 
     this.afterRender = function () {
         var $container = $el.children('.sp-acc-container');
+        var $addTabBtn = $el.children('.sp-acc-add');
 
         $.each(data.items, function (index, item) {
-            addTab(item, false);
+            addTab(item);
         });
 
         sprint_editor.listenEvent('clipboard:check', function () {
@@ -80,39 +81,11 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             handle: ".sp-acc-tab-handle",
         });
 
-        $el.on('click', '.sp-acc-add', function (e) {
+        $addTabBtn.on('click', function (e) {
             addTab({
                 title: '',
                 blocks: []
-            }, true);
-        });
-
-        /*$el.on('click', '.sp-acc-buttons1', function (event) {
-            if ($(event.target).hasClass('sp-acc-buttons1')) {
-                var $tab = $(event.target).closest('.sp-acc-tab');
-
-                showTab($tab)
-
-                sprint_editor.fireEvent('popup:hide');
-            }
-        });
-
-        $el.on('click', '.sp-acc-tab-handle', function (event) {
-            var $tab = $(event.target).closest('.sp-acc-tab');
-
-            showTab($tab)
-
-            sprint_editor.fireEvent('popup:hide');
-        });*/
-
-        $el.on('click', '.sp-acc-box-add', function () {
-            var $tabblocks = $(this).closest('.sp-acc-tab').children('.sp-acc-tab-blocks');
-            addblock(
-                {
-                    name: $(this).data('name')
-                },
-                $tabblocks
-            );
+            });
         });
 
         $el.on('click', '.sp-acc-paste', function (event) {
@@ -155,6 +128,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
                 $target.remove();
             })
         });
+
         $el.on('click', '.sp-acc-up', function (e) {
             e.preventDefault();
             var $block = $(this).closest('.sp-acc-tab');
@@ -163,6 +137,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
                 $block.insertBefore($nblock);
             }
         });
+
         $el.on('click', '.sp-acc-dn', function (e) {
             e.preventDefault();
             var $block = $(this).closest('.sp-acc-tab');
@@ -183,6 +158,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
                 $box.remove();
             })
         });
+
         $el.on('click', '.sp-acc-box-up', function (e) {
             e.preventDefault();
 
@@ -194,6 +170,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
                 sprint_editor.afterSort($block.data('uid'));
             }
         });
+
         $el.on('click', '.sp-acc-box-dn', function (e) {
             e.preventDefault();
 
@@ -208,7 +185,7 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             }
         });
 
-        function addTab(tabData, show) {
+        function addTab(tabData) {
             var $tab = $(sprint_editor.renderTemplate('accordion-tab', {
                 title: tabData.title,
                 blocklist: blocklist
@@ -216,14 +193,21 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
 
             $container.append($tab);
 
-            if (show) {
-                /*showTab($tab)*/
-            }
-
             var $tabblocks = $tab.children('.sp-acc-tab-blocks');
+            var $buttons = $tab.children('.sp-acc-buttons2');
 
             $.each(tabData.blocks, function (index, blockData) {
                 addblock(blockData, $tabblocks)
+            });
+
+            $buttons.on('click', '.sp-acc-box-add', function () {
+                var $tabblocks = $(this).closest('.sp-acc-tab').children('.sp-acc-tab-blocks');
+                addblock(
+                    {
+                        name: $(this).data('name')
+                    },
+                    $tabblocks
+                );
             });
 
             $tabblocks.sortable({
@@ -231,11 +215,6 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
                 handle: ".sp-acc-box-handle",
                 connectWith: ".sp-acc-tab-blocks",
             });
-        }
-
-        function showTab($tab) {
-            /*var $tabblocks = $tab.children('.sp-acc-tab-blocks');
-            var $tabbtns2 = $tab.children('.sp-acc-buttons2');*/
         }
 
         function enabledblock(name) {

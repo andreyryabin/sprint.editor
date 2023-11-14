@@ -48,6 +48,7 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
 
     this.afterRender = function () {
         var $container = $el.children('.sp-items');
+        var $buttons = $el.children('.sp-buttons');
 
         $.each(data.blocks, function (index, blockData) {
             addblock(blockData, $container);
@@ -58,7 +59,7 @@ sprint_editor.registerBlock('container', function ($, $el, data, settings, curre
             handle: ".sp-cont-box-handle",
         });
 
-        $el.on('click', '.sp-cont-box-add', function () {
+        $buttons.on('click', '.sp-cont-box-add', function (e) {
             addblock(
                 {
                     name: $(this).data('name')
