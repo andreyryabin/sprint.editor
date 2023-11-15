@@ -28,13 +28,17 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
             url: sprint_editor.getBlockWebPath('image') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
+                let found = false;
                 $.each(result.result.file, function (index, file) {
                     data.file = file;
+                    found = true;
                 });
 
-                renderfiles();
+                if (found) {
+                    renderfiles();
+                    togglepanel(false);
+                }
 
-                togglepanel(false);
             },
             progressall: function (e, result) {
                 var progress = parseInt(result.loaded / result.total * 100, 10);
