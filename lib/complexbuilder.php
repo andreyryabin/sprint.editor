@@ -52,7 +52,14 @@ class ComplexBuilder
             ];
         }
 
-        return $blocksToolbar;
+        return array_values(
+            array_filter(
+                $blocksToolbar,
+                function ($toolbarItem) {
+                    return !empty($toolbarItem['blocks']);
+                }
+            )
+        );
     }
 
     protected static function registerAssets()

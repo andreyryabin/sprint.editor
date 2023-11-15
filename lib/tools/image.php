@@ -10,8 +10,8 @@ class Image
     {
         $resizeParams = array_merge(
             [
-                'width'       => 0,
-                'height'      => 0,
+                'width'       => 1024,
+                'height'      => 768,
                 'exact'       => 0,
                 'init_sizes'  => false,
                 'filters'     => false,
@@ -24,17 +24,21 @@ class Image
             $image = CFile::GetFileArray($image);
         }
 
-        if ($resizeParams['exact']) {
-            $resizeType = BX_RESIZE_IMAGE_EXACT;
-        } else {
-            $resizeType = BX_RESIZE_IMAGE_PROPORTIONAL;
+        if (empty($image["ID"])) {
+            return [];
         }
 
-        if ($image && empty($image['SRC'])) {
+        if (empty($image['SRC'])) {
             $image['SRC'] = CFile::GetFileSRC($image);
         }
 
         if ($resizeParams['width'] > 0 && $resizeParams['height'] > 0) {
+            if ($resizeParams['exact']) {
+                $resizeType = BX_RESIZE_IMAGE_EXACT;
+            } else {
+                $resizeType = BX_RESIZE_IMAGE_PROPORTIONAL;
+            }
+
             $size = [
                 "width"  => $resizeParams['width'],
                 "height" => $resizeParams['height'],
@@ -49,6 +53,13 @@ class Image
                 $resizeParams['immediate'],
                 $resizeParams['jpg_quality']
             );
+            if (empty($resized['width'])) {
+                $resized['width'] = $resizeParams['width'];
+            }
+
+            if (empty($resized['height'])) {
+                $resized['height'] = $resizeParams['height'];
+            }
 
             if (isset($image['COLLECTION_ID'])) {
                 $image = [

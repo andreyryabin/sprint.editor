@@ -11,15 +11,12 @@ class Image
         if (empty($block['file'])) {
             return [];
         }
-        $resizeParams = array_merge(
-            [
-                'width'  => 1024,
-                'height' => 768,
-                'exact'  => 0,
-            ], $resizeParams
-        );
 
         $aItem = ImageTools::resizeImage2($block['file']['ID'], $resizeParams);
+
+        if (empty($aItem)) {
+            return [];
+        }
 
         $aItem['DESCRIPTION'] = htmlspecialcharsbx($block['desc']);
 

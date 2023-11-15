@@ -150,9 +150,9 @@ $currentBuildJson = CUtil::PhpToJSObject(
                         <div id="complex_builder_editor"></div>
                         <textarea name="block_content" id="complex_builder_result" style="display: none;"></textarea>
                         <div style="background-color: #e3ecee;border: 1px solid #c4ced2;padding: 10px;margin-bottom: 10px">
-                            <input class="adm-btn" name="save_block" value="<?= GetMessage('SPRINT_EDITOR_pack_save') ?>" type="submit">
+                            <input class="adm-btn adm-btn-save" name="save_block" value="<?= GetMessage('SPRINT_EDITOR_block_save') ?>" type="submit">
                             <?php if ($currentBlockId) { ?>
-                                <input class="adm-btn" name="delete_block" value="<?= GetMessage('SPRINT_EDITOR_pack_delete') ?>" type="submit">
+                                <input class="adm-btn" name="delete_block" value="<?= GetMessage('SPRINT_EDITOR_block_delete') ?>" type="submit">
                             <?php } ?>
                         </div>
                     </form>

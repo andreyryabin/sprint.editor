@@ -167,7 +167,7 @@ $registeredPacks = Sprint\Editor\AdminEditor::registerPacks($currentUserSettings
                             ],
                         ]); ?>
                         <div style="background-color: #e3ecee;border: 1px solid #c4ced2;padding: 10px;margin-bottom: 10px">
-                            <input class="adm-btn" name="save_pack" value="<?= GetMessage('SPRINT_EDITOR_pack_save') ?>" type="submit">
+                            <input class="adm-btn adm-btn-save" name="save_pack" value="<?= GetMessage('SPRINT_EDITOR_pack_save') ?>" type="submit">
                             <?php if ($currentPackId) { ?>
                                 <input class="adm-btn" name="delete_pack" value="<?= GetMessage('SPRINT_EDITOR_pack_delete') ?>" type="submit">
                             <?php } ?>
