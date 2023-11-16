@@ -4,6 +4,7 @@
     "settings.html",
     "classes.html",
     "toolbar-popup.html",
-    "toolbar-footer.html"
+    "toolbar-footer.html",
+    "clipboard-footer.html"
   ]
 }

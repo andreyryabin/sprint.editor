@@ -44,15 +44,6 @@ class AdminEditor
             ], $params
         );
 
-        //default setings (simple editor)
-        $userSettings = [
-            'layout_enabled'   => [
-                'layout_none',
-            ],
-            'block_settings'   => [],
-            'complex_settings' => [],
-        ];
-
         $userSettingsName = '';
         if (!empty($params['userSettings']['SETTINGS_NAME'])) {
             $userSettingsName = (string)$params['userSettings']['SETTINGS_NAME'];
@@ -61,49 +52,43 @@ class AdminEditor
         if ($userSettingsName) {
             self::registerSettingsAssets($userSettingsName);
             $userSettings = self::loadSettings($userSettingsName);
+        } else {
+            //default setings (simple editor)
+            $userSettings = [
+                'layout_enabled'   => [
+                    'layout_none',
+                ],
+                'block_settings'   => [],
+                'complex_settings' => [],
+            ];
         }
 
-        $filteredBlocks = self::filterBlocks($userSettings);
-        $filteredBlocks = self::setCustomTitles($filteredBlocks, $userSettings);
-        $filteredBlocks = self::setCustomConfigs($filteredBlocks, $userSettings);
-
-        $blocksToolbar = self::getBlocksToolbar($userSettings, $filteredBlocks);
-
-        $filteredLayouts = array_merge(
-            self::filterLayouts($userSettings),
-            self::registerPacks($userSettingsName)
-        );
-
-        $layoutsToolbar = self::getLayoutsToolbar($userSettings, $filteredLayouts);
-
-        $value = self::prepareValue($params['value']);
-        if (empty($value['blocks']) && empty($value['layouts'])) {
-            $value = self::prepareValue($params['defaultValue']);
+        $editorValue = self::prepareValue($params['value']);
+        if (empty($editorValue['blocks']) && empty($editorValue['layouts'])) {
+            $editorValue = self::prepareValue($params['defaultValue']);
         }
 
-        $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
-        foreach ($events as $aEvent) {
-            ExecuteModuleEventEx($aEvent, [&$value['blocks']]);
-        }
-
-        if (empty($filteredLayouts) && empty($value['blocks']) && empty($value['layouts'])) {
-            $defblocks = [];
-            $deflayouts = [
-                [
-                    'settings' => [],
-                    'columns'  => [
-                        [
-                            'css' => '',
+        if (empty($editorValue['blocks']) && empty($editorValue['layouts'])) {
+            $editorValue = [
+                'packname' => '',
+                'version'  => 2,
+                'blocks'   => [],
+                'layouts'  => [
+                    [
+                        'settings' => [],
+                        'columns'  => [
+                            [
+                                'css' => '',
+                            ],
                         ],
                     ],
                 ],
             ];
-            $value = [
-                'packname' => '',
-                'version'  => 2,
-                'blocks'   => $defblocks,
-                'layouts'  => $deflayouts,
-            ];
+        }
+
+        $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
+        foreach ($events as $aEvent) {
+            ExecuteModuleEventEx($aEvent, [&$editorValue['blocks']]);
         }
 
         //обязательные настройки блоков
@@ -117,11 +102,8 @@ class AdminEditor
             $userSettings['complex_settings']
         );
 
-        //для редактора макетов показываем сетки всегда даже если отключены
         $saveEmpty = false;
         if ($params['inputName'] == 'pack_content') {
-            unset($userSettings['layout_enabled']);
-            unset($userSettings['layout_toolbar']);
             $saveEmpty = true;
         }
 
@@ -139,10 +121,19 @@ class AdminEditor
             $enableChange = !($params['userSettings']['DISABLE_CHANGE'] ?? true);
         }
 
+        $blocksToolbar = self::getBlocksToolbar($userSettings);
+
+        $layoutsToolbar = Locale::convertToWin1251IfNeed(
+            array_merge(
+                self::filterLayouts($userSettings),
+                self::registerPacks($userSettingsName)
+            )
+        );
+
         return Module::templater(
             '/templates/admin_editor.php',
             [
-                'jsonValue'          => json_encode(Locale::convertToUtf8IfNeed($value)),
+                'jsonEditorValue'    => json_encode(Locale::convertToUtf8IfNeed($editorValue)),
                 'jsonBlocksToolbar'  => json_encode(Locale::convertToUtf8IfNeed($blocksToolbar)),
                 'jsonLayoutsToolbar' => json_encode(Locale::convertToUtf8IfNeed($layoutsToolbar)),
                 'jsonBlocksConfigs'  => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
@@ -500,88 +491,14 @@ class AdminEditor
         );
     }
 
-    protected static function filterBlocks($userSettings)
+    protected static function getBlocksToolbar($userSettings)
     {
-        if (!empty($userSettings['block_disabled'])) {
-            $blocks = array_filter(
-                self::$allblocks,
-                function ($block) use ($userSettings) {
-                    return !in_array($block['name'], $userSettings['block_disabled']);
-                }
-            );
-        } elseif (!empty($userSettings['block_enabled'])) {
-            $blocks = array_filter(
-                self::$allblocks,
-                function ($block) use ($userSettings) {
-                    return in_array($block['name'], $userSettings['block_enabled']);
-                }
-            );
-        } else {
-            $blocks = self::$allblocks;
-        }
+        $filteredBlocks = self::filterBlocks($userSettings);
 
-        return array_filter(
-            $blocks,
-            function ($block) {
-                return !empty($block['title']);
-            }
-        );
-    }
+        $filteredBlocks = self::setCustomTitles($filteredBlocks, $userSettings);
 
-    protected static function filterLayouts($userSettings)
-    {
-        if (!empty($userSettings['layout_enabled'])) {
-            $layouts = array_filter(
-                self::$alllayouts,
-                function ($layout) use ($userSettings) {
-                    return in_array($layout['name'], $userSettings['layout_enabled']);
-                }
-            );
-        } elseif (!empty($userSettings['block_disabled'])) {
-            $layouts = array_filter(
-                self::$alllayouts,
-                function ($layout) use ($userSettings) {
-                    return !in_array($layout['name'], $userSettings['block_disabled']);
-                }
-            );
-        } else {
-            $layouts = self::$alllayouts;
-        }
+        $filteredBlocks = self::setCustomConfigs($filteredBlocks, $userSettings);
 
-        return array_filter(
-            array_values($layouts),
-            function ($layout) {
-                return !empty($layout['title']);
-            }
-        );
-    }
-
-    protected static function setCustomConfigs($blocks, $userSettings)
-    {
-        if (!empty($userSettings['block_configs'])) {
-            foreach ($userSettings['block_configs'] as $name => $config) {
-                if (isset($blocks[$name]) && is_array($config)) {
-                    $blocks[$name] = array_merge($blocks[$name], $config);
-                }
-            }
-        }
-        return $blocks;
-    }
-
-    protected static function setCustomTitles($blocks, $userSettings)
-    {
-        if (!empty($userSettings['block_titles'])) {
-            foreach ($userSettings['block_titles'] as $name => $title) {
-                if (isset($blocks[$name])) {
-                    $blocks[$name]['title'] = $title;
-                }
-            }
-        }
-        return $blocks;
-    }
-
-    protected static function getBlocksToolbar($userSettings, $filteredBlocks)
-    {
         if (!empty($userSettings['block_toolbar'])) {
             $blocksToolbar = $userSettings['block_toolbar'];
             foreach ($blocksToolbar as $toolbarIndex => $toolbarItem) {
@@ -614,30 +531,92 @@ class AdminEditor
             }
         }
 
-        return array_values(array_filter(
-            $blocksToolbar,
-            function ($toolbarItem) {
-                return !empty($toolbarItem['blocks']);
-            }
-        ));
+        return array_values(
+            array_filter(
+                $blocksToolbar,
+                function ($toolbarItem) {
+                    return !empty($toolbarItem['blocks']);
+                }
+            )
+        );
     }
 
-    protected static function getLayoutsToolbar($userSettings, $filteredLayouts)
+    protected static function filterBlocks($userSettings)
     {
-        if (!empty($userSettings['layout_toolbar'])) {
-            $layoutsToolbar = $userSettings['layout_toolbar'];
+        if (!empty($userSettings['block_disabled'])) {
+            $blocks = array_filter(
+                self::$allblocks,
+                function ($block) use ($userSettings) {
+                    return !in_array($block['name'], $userSettings['block_disabled']);
+                }
+            );
+        } elseif (!empty($userSettings['block_enabled'])) {
+            $blocks = array_filter(
+                self::$allblocks,
+                function ($block) use ($userSettings) {
+                    return in_array($block['name'], $userSettings['block_enabled']);
+                }
+            );
         } else {
-            $layoutsToolbar = [
-                [
-                    'title'  => GetMessage('SPRINT_EDITOR_group_layout'),
-                    'blocks' => Locale::convertToWin1251IfNeed($filteredLayouts),
-                ],
-            ];
+            $blocks = self::$allblocks;
         }
+
         return array_filter(
-            $layoutsToolbar,
-            function ($toolbarItem) {
-                return !empty($toolbarItem['blocks']);
+            $blocks,
+            function ($block) {
+                return !empty($block['title']);
+            }
+        );
+    }
+
+    protected static function setCustomConfigs($blocks, $userSettings)
+    {
+        if (!empty($userSettings['block_configs'])) {
+            foreach ($userSettings['block_configs'] as $name => $config) {
+                if (isset($blocks[$name]) && is_array($config)) {
+                    $blocks[$name] = array_merge($blocks[$name], $config);
+                }
+            }
+        }
+        return $blocks;
+    }
+
+    protected static function setCustomTitles($blocks, $userSettings)
+    {
+        if (!empty($userSettings['block_titles'])) {
+            foreach ($userSettings['block_titles'] as $name => $title) {
+                if (isset($blocks[$name])) {
+                    $blocks[$name]['title'] = $title;
+                }
+            }
+        }
+        return $blocks;
+    }
+
+    protected static function filterLayouts($userSettings)
+    {
+        if (!empty($userSettings['layout_enabled'])) {
+            $layouts = array_filter(
+                self::$alllayouts,
+                function ($layout) use ($userSettings) {
+                    return in_array($layout['name'], $userSettings['layout_enabled']);
+                }
+            );
+        } elseif (!empty($userSettings['block_disabled'])) {
+            $layouts = array_filter(
+                self::$alllayouts,
+                function ($layout) use ($userSettings) {
+                    return !in_array($layout['name'], $userSettings['block_disabled']);
+                }
+            );
+        } else {
+            $layouts = self::$alllayouts;
+        }
+
+        return array_filter(
+            array_values($layouts),
+            function ($layout) {
+                return !empty($layout['title']);
             }
         );
     }

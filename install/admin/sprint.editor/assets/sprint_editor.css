@@ -63,6 +63,12 @@
     margin: 10px;
 }
 
+.sp-x-box-copied {
+    /*background: #FFEBC1;*/
+    border: 2px solid #FDBF3B;
+    padding: 5px;
+}
+
 .sp-x-box-caption {
     font-weight: bold;
     margin-bottom: 10px;
@@ -73,17 +79,7 @@
     /*margin: 0 0 10px;*/
 }
 
-.sp-x-box-copied {
-    background: #FFEBC1;
-    border: 2px solid #FDBF3B;
-    padding: 5px;
-}
 
-.sp-x-box-cutted {
-    background: #fee;
-    border: 2px solid #d00;
-    padding: 5px;
-}
 
 .sp-x-dump-error {
     color: #f00;
@@ -128,6 +124,16 @@
 .sp-x-footer {
     background: #fff;
     border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+.sp-x-lt-copied {
+    /*background: #FFEBC1;*/
+    border: 2px solid #FDBF3B;
+}
+
+.sp-x-lt-clipboard {
+    display: none;
     margin-bottom: 15px;
 }
 
@@ -182,10 +188,8 @@
 }
 
 
-.bx-core-adm-dialog div.sp-x-separator,
-.sp-x-separator,
-.bx-core-adm-dialog div.sp-x-lt-separator,
-.sp-x-lt-separator {
+.bx-core-adm-dialog .sp-x-separator,
+.sp-x-separator{
     border-bottom: 2px dashed #ccc;
     position: relative;
 }
@@ -196,19 +200,14 @@
     margin-bottom: 13px;
 }
 
-.bx-core-adm-dialog .sp-x-box-collapsed div.sp-x-separator,
-.sp-x-box-collapsed .sp-x-separator {
-    margin-top: 0;
-}
-
-.sp-x-separator-lt {
+.bx-core-adm-dialog .sp-x-separator.sp-x-separator-lt,
+.sp-x-separator.sp-x-separator-lt {
     margin-top: 3px;
 }
 
-.bx-core-adm-dialog div.sp-x-lt-separator,
-.sp-x-lt-separator {
-    margin-top: 5px;
-    margin-bottom: 13px;
+.bx-core-adm-dialog .sp-x-box-collapsed div.sp-x-separator,
+.sp-x-box-collapsed .sp-x-separator {
+    margin-top: 0;
 }
 
 .bx-core-adm-dialog .sp-x-separator .sp-x-toolbar-open,
@@ -217,17 +216,6 @@
     top: -15px;
     left: -50px;
     background: #fff;
-    /*display: none;*/
-}
-
-.sp-x-lt.sp-x-hidden {
-    /*margin-bottom: 10px;*/
-}
-
-.sp-x-lt.sp-x-hidden .sp-x-box,
-.sp-x-lt.sp-x-hidden .sp-x-col-classes,
-.sp-x-lt.sp-x-hidden .sp-x-buttons-lt2 {
-    display: none;
 }
 
 .sp-x-box:last-child .sp-x-separator {
@@ -294,7 +282,7 @@
     padding: 6px;
     min-width: 18px;
     line-height: 16px;
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;*/
 }
 
 .sp-x-txt-input {
@@ -305,11 +293,17 @@
     font-size: 13px;
     text-decoration: none;
     outline: none;
-    /*padding: 6px 0 6px 0;*/
     padding: 6px;
-    min-width: 36px;
+    min-width: 80px;
     line-height: 16px;
-    border-bottom: 1px dashed #ccc;
+    /*border-bottom: 1px dashed #ccc;*/
+
+    background: #fff;
+    border: 1px solid;
+    border-color: #87919c #959ea9 #9ea7b1 #959ea9;
+    border-radius: 4px;
+    color: #000;
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.3), inset 0 2px 2px -1px rgba(180,188,191,0.7);
 }
 
 .sp-x-txt-input:focus {
@@ -392,7 +386,6 @@ a.sp-x-btn:hover,
     /*rgba(0,0,0,.2) 0 1px 1px;*/
 }
 
-.sp-x-txt-title,
 .sp-x-btn.sp-x-active,
 .sp-x-btn:active,
 .sp-x-box.sp-x-box-hidden .sp-x-box-hide,

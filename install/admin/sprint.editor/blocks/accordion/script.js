@@ -66,16 +66,6 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             addTab(item);
         });
 
-        sprint_editor.listenEvent('clipboard:check', function () {
-            let clipboardData = sprint_editor.getClipboard();
-
-            if (!$.isEmptyObject(clipboardData)) {
-                $el.find('.sp-acc-paste').show();
-            } else {
-                $el.find('.sp-acc-paste').hide();
-            }
-        });
-
         $container.sortable({
             items: "> .sp-acc-tab",
             handle: ".sp-acc-tab-handle",
@@ -85,38 +75,6 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             addTab({
                 title: '',
                 blocks: []
-            });
-        });
-
-        $el.on('click', '.sp-acc-paste', function (event) {
-            event.preventDefault();
-
-            let clipboardData = sprint_editor.getClipboard();
-            var $tabblocks = $(this).closest('.sp-acc-tab').children('.sp-acc-tab-blocks');
-
-            $.each(clipboardData, function (blockUid, blockData) {
-                addblock(blockData.block, $tabblocks);
-            });
-
-            sprint_editor.fireEvent('clipboard:paste');
-            sprint_editor.clearClipboard();
-        });
-
-        $el.on('click', '.sp-acc-copy', function (e) {
-            e.preventDefault();
-            var $tabblocks = $(this).closest('.sp-acc-tab').children('.sp-acc-tab-blocks');
-
-            $tabblocks.find('.sp-x-box').each(function () {
-                sprint_editor.copyToClipboard($(this).data('uid'), false);
-            });
-        });
-
-        $el.on('click', '.sp-acc-cut', function (e) {
-            e.preventDefault();
-            var $tabblocks = $(this).closest('.sp-acc-tab').children('.sp-acc-tab-blocks');
-
-            $tabblocks.find('.sp-x-box').each(function () {
-                sprint_editor.copyToClipboard($(this).data('uid'), true);
             });
         });
 

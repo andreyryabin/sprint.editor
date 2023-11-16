@@ -41,7 +41,6 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_PACKS_PAGE"                 => "Конструктор макетов",
     "SPRINT_EDITOR_COMPLEX_BUILDER"            => "Конструктор блоков",
     "SPRINT_EDITOR_TRASH_FILES"                => "Поиск удалённых изображений",
-    "SPRINT_EDITOR_group_layout"               => "Добавить сетку",
     "SPRINT_EDITOR_group_packs"                => "Добавить макет",
     "SPRINT_EDITOR_group_blocks"               => "Добавить блоки",
     "SPRINT_EDITOR_add"                        => "Добавить",
@@ -49,10 +48,10 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_group_my"                   => "Пользовательские",
     "SPRINT_EDITOR_group_complex"              => "Составные",
 
-    "SPRINT_EDITOR_layout_type1"  => "Простая сетка",
-    "SPRINT_EDITOR_layout_type2"  => "Сетка из 2 колонок",
-    "SPRINT_EDITOR_layout_type3"  => "Сетка из 3 колонок",
-    "SPRINT_EDITOR_layout_type4"  => "Сетка из 4 колонок",
+    "SPRINT_EDITOR_layout_type1"  => "Простой макет",
+    "SPRINT_EDITOR_layout_type2"  => "Макет из 2 колонок",
+    "SPRINT_EDITOR_layout_type3"  => "Макет из 3 колонок",
+    "SPRINT_EDITOR_layout_type4"  => "Макет из 4 колонок",
     "SPRINT_EDITOR_layout_toggle" => "Переключить отображение колонок",
 
     "SPRINT_EDITOR_pack_save_content" => "Сохранить как макет",
@@ -86,9 +85,9 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_complex_err_build"  => "Задайте содержимое блока",
     "SPRINT_EDITOR_complex_err_title"  => "Укажите заголовок блока",
 
-    "SPRINT_EDITOR_lt_change"   => "Укажите название сетки",
+    "SPRINT_EDITOR_lt_change"   => "Укажите название макета",
     "SPRINT_EDITOR_col_change"  => "Укажите название колонки",
-    "SPRINT_EDITOR_lt_default"  => "Сетка",
+    "SPRINT_EDITOR_lt_default"  => "Макет",
     "SPRINT_EDITOR_col_default" => "Колонка",
 
     "SPRINT_EDITOR_USED_IBLOCKS"  => "Инфоблоки с редактором",

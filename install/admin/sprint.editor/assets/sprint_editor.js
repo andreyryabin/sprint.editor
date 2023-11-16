@@ -6,7 +6,8 @@ var sprint_editor = {
     _entries: {},
     _uidcounter: 0,
     _submitcnt: 0,
-    _clipboard: 'sprint-editor-cb02',
+    _clipboard_block: 'sprint-editor-cb-block',
+    _clipboard_grid: 'sprint-editor-cb-grid',
 
     registerBlock: function (name, method) {
         this._registered[name] = method;
@@ -307,54 +308,32 @@ var sprint_editor = {
         this._events[type].push(callback);
     },
 
-    copyToClipboard: function (uid, deleteAfterPaste) {
-        if (window.localStorage && sprint_editor.hasEntry(uid)) {
-            let val = JSON.parse(
-                localStorage.getItem(
-                    sprint_editor._clipboard
-                )
-            );
-
-            val = (val) ? val : {};
-            deleteAfterPaste = !!deleteAfterPaste;
-
-            if (val[uid] && val[uid].deleteAfterPaste === deleteAfterPaste) {
-                delete val[uid];
-            } else {
-                val[uid] = {
-                    block: sprint_editor.collectData(uid),
-                    deleteAfterPaste: deleteAfterPaste
-                };
-            }
-
-            localStorage.setItem(
-                sprint_editor._clipboard,
-                JSON.stringify(val)
-            );
-            this.fireEvent('clipboard:change');
-        }
-    },
-
-    clearClipboard: function () {
+    copyToClipboard: function (path, data) {
         if (window.localStorage) {
-            localStorage.removeItem(
-                sprint_editor._clipboard
-            );
+            let collection = JSON.parse(localStorage.getItem(path));
+            collection = collection || [];
+
+            collection.push(data);
+
+            localStorage.setItem(path, JSON.stringify(collection));
             this.fireEvent('clipboard:change');
         }
     },
 
-    getClipboard: function () {
+    clearClipboard: function (path) {
+        if (window.localStorage) {
+            localStorage.removeItem(path);
+            this.fireEvent('clipboard:change');
+        }
+    },
+
+    getClipboard: function (path) {
         let val = {};
         if (window.localStorage) {
-            val = JSON.parse(
-                localStorage.getItem(
-                    sprint_editor._clipboard
-                )
-            );
+            val = JSON.parse(localStorage.getItem(path));
         }
 
-        return (val) ? val : {};
+        return (val) ? val : [];
     },
 
     makeUid: function (prefix) {
@@ -530,7 +509,7 @@ var sprint_editor = {
         return {};
     },
 
-    getLayoutSettings: function (name, currentEditorParams) {
+    getGridSettings: function (name, currentEditorParams) {
         if (currentEditorParams &&
             currentEditorParams.hasOwnProperty('userSettings') &&
             currentEditorParams.userSettings.hasOwnProperty('layout_settings') &&
@@ -619,6 +598,14 @@ var sprint_editor = {
             currentEditorParams.layoutsToolbar = [];
         }
 
+        currentEditorParams.enableLayoutsToolbar = false;
+        if (currentEditorParams.enableChange) {
+            if (currentEditorParams.layoutsToolbar.length > 0) {
+                currentEditorParams.enableLayoutsToolbar = true;
+            }
+        }
+
+
         if (currentEditorParams.hasOwnProperty('saveEmpty')) {
             currentEditorParams.saveEmpty = !!currentEditorParams.saveEmpty;
         } else {
@@ -649,14 +636,26 @@ var sprint_editor = {
             })();
         }
 
+        let $toolbarPopup = $(sprint_editor.renderTemplate('box-toolbar-popup', {
+            'toolbar': currentEditorParams.blocksToolbar,
+            'name': currentEditorParams.userSettingsName,
+        }));
+
+        let $clipboardFooter = $(sprint_editor.renderTemplate('box-clipboard-footer', {}));
+
+        let $toolbarFooter = $(sprint_editor.renderTemplate('box-toolbar-footer', {
+            'toolbar': currentEditorParams.layoutsToolbar,
+            'name': currentEditorParams.userSettingsName,
+        }));
+
         $editor.append('<div class="sp-x-editor-lt"></div>');
-        if (currentEditorParams.enableChange && currentEditorParams.layoutsToolbar.length > 0) {
-            $editor.append(sprint_editor.renderTemplate('box-toolbar-footer', {
-                'toolbar': currentEditorParams.layoutsToolbar,
-                'name': currentEditorParams.userSettingsName,
-            }));
+        if (currentEditorParams.enableChange) {
+            $editor.append($clipboardFooter);
         }
 
+        if (currentEditorParams.enableLayoutsToolbar) {
+            $editor.append($toolbarFooter);
+        }
 
         $(document).keyup(function (e) {
             if (e.keyCode === 27) {
@@ -665,7 +664,7 @@ var sprint_editor = {
         });
 
         $.each(currentEditorValue.layouts, function (index, layout) {
-            layoutAdd(layout);
+            gridAdd(layout);
         });
 
         $.each(currentEditorValue.blocks, function (index, block) {
@@ -687,18 +686,6 @@ var sprint_editor = {
 
         sprint_editor.listenEvent('clipboard:check', function () {
             clipboardCheck();
-        });
-
-        sprint_editor.listenEvent('clipboard:paste', function () {
-            let clipboardData = sprint_editor.getClipboard();
-
-            $.each(clipboardData, function (blockUid, blockData) {
-                if (blockData.deleteAfterPaste) {
-                    boxDelete($editor.find('.sp-x-box[data-uid=' + blockUid + ']'));
-                }
-            });
-
-            sprint_editor.fireEvent('popup:hide');
         });
 
         sprint_editor.fireEvent('clipboard:check');
@@ -724,69 +711,21 @@ var sprint_editor = {
             $inputresult.val(resultString);
         });
 
-        $editor.on('click', '.sp-x-col-copy', function (e) {
+        $toolbarPopup.on('click', '.sp-x-btn', function (e) {
             e.preventDefault();
-            let $grid = $(this).closest('.sp-x-lt');
-            let $col = getActiveColumn($grid);
-
-            $col.find('.sp-x-box').each(function () {
-                sprint_editor.copyToClipboard($(this).data('uid'), false);
-            });
+            addBlockByName($(this));
         });
 
-        $editor.on('click', '.sp-x-col-cut', function (e) {
-            e.preventDefault();
-            let $grid = $(this).closest('.sp-x-lt');
-            let $col = getActiveColumn($grid);
-
-            $col.find('.sp-x-box').each(function () {
-                sprint_editor.copyToClipboard($(this).data('uid'), true);
-            });
-        });
-
-        $editor.on('click', '.sp-x-col-paste', function (e) {
-            e.preventDefault();
-
-            let clipboardData = sprint_editor.getClipboard();
-            let $grid = $(this).closest('.sp-x-lt');
-            let $col = getActiveColumn($grid);
-
-            $.each(clipboardData, function (blockUid, blockData) {
-                blockAdd(blockData.block, $col);
-            });
-
-            sprint_editor.fireEvent('clipboard:paste');
-            sprint_editor.clearClipboard();
-        });
-
-        $editor.on('click', '.sp-x-box-paste', function (e) {
-            e.preventDefault();
-
-            let clipboardData = sprint_editor.getClipboard();
-            let $box = $(this).closest('.sp-x-box');
-
-            $.each(clipboardData, function (blockUid, blockData) {
-                blockAdd(blockData.block, $box);
-            });
-
-            sprint_editor.fireEvent('clipboard:paste');
-            sprint_editor.clearClipboard();
-        });
-
-        $editor.on('click', '.sp-x-toolbar .sp-x-btn', function (e) {
-            e.preventDefault();
-            addByNameBlock($(this));
+        $toolbarFooter.on('click', '.sp-x-btn', function (e) {
+            e.stopPropagation();
+            addPackByName($(this));
         });
 
         $editor.on('click', '.sp-x-lastblock', function (e) {
             e.preventDefault();
-            addByNameBlock($(this));
+            addBlockByName($(this));
         });
 
-        $editor.on('click', '.sp-x-footer .sp-x-btn', function (e) {
-            e.stopPropagation();
-            addByNameLayout($(this));
-        });
 
         $editor.on('click', '.sp-x-pp-lt-open', function (e) {
             e.preventDefault();
@@ -805,14 +744,85 @@ var sprint_editor = {
 
         $editor.on('click', '.sp-x-box-copy', function (e) {
             e.preventDefault();
+
             let $box = $(this).closest('.sp-x-box');
-            sprint_editor.copyToClipboard($box.data('uid'), false);
+            if ($box.hasClass('sp-x-box-copied')) {
+                return;
+            }
+
+            let uid = $box.data('uid');
+            let boxData = saveBox($box);
+            if (boxData) {
+                $box.addClass('sp-x-box-copied');
+
+                sprint_editor.copyToClipboard(sprint_editor._clipboard_block, boxData);
+            }
         });
 
         $editor.on('click', '.sp-x-box-cut', function (e) {
             e.preventDefault();
+
             let $box = $(this).closest('.sp-x-box');
-            sprint_editor.copyToClipboard($box.data('uid'), true);
+            let uid = $box.data('uid');
+
+            let boxData = saveBox($box);
+            if (boxData) {
+                sprint_editor.copyToClipboard(sprint_editor._clipboard_block, boxData);
+
+                boxDelete($box);
+            }
+        });
+
+        $editor.on('click', '.sp-x-box-paste', function (e) {
+            e.preventDefault();
+
+            let clipboardData = sprint_editor.getClipboard(sprint_editor._clipboard_block);
+            let $container = getBlockContainerByHandler($(this));
+
+            $.each(clipboardData, function (index, blockData) {
+                blockAdd(blockData, $container);
+            });
+
+            sprint_editor.clearClipboard(sprint_editor._clipboard_block);
+        });
+
+        $editor.on('click', '.sp-x-lt-copy', function (e) {
+            e.preventDefault();
+
+            let $grid = $(this).closest('.sp-x-lt');
+            if ($grid.hasClass('sp-x-lt-copied')) {
+                return;
+            }
+
+            $grid.addClass('sp-x-lt-copied');
+
+            let gridData = saveGrid($grid, 0);
+
+            sprint_editor.copyToClipboard(sprint_editor._clipboard_grid, gridData);
+        });
+
+        $editor.on('click', '.sp-x-lt-cut', function (e) {
+            e.preventDefault();
+            let $grid = $(this).closest('.sp-x-lt');
+
+            let gridData = saveGrid($grid, 0);
+
+            sprint_editor.copyToClipboard(sprint_editor._clipboard_grid, gridData);
+
+            gridDelete($grid);
+        });
+
+        $editor.on('click', '.sp-x-lt-paste', function (e) {
+            e.preventDefault();
+
+            let clipboardData = sprint_editor.getClipboard(sprint_editor._clipboard_grid);
+            // let $grid = $(this).closest('.sp-x-lt');
+
+            $.each(clipboardData, function (index, gridData) {
+                packLoad(gridData)
+            });
+
+            sprint_editor.clearClipboard(sprint_editor._clipboard_grid);
         });
 
         $editor.on('click', '.sp-x-box-up', function (e) {
@@ -906,23 +916,11 @@ var sprint_editor = {
             boxDelete($box);
         });
 
-        $editor.on('click', '.sp-x-lt-toggle', function (e) {
-            e.preventDefault();
-            let $grid = $(this).closest('.sp-x-lt');
-            if ($grid.hasClass('sp-x-hidden')) {
-                $grid.removeClass('sp-x-hidden');
-                $(this).removeClass('sp-x-active');
-            } else {
-                $grid.addClass('sp-x-hidden');
-                $(this).addClass('sp-x-active');
-            }
-        });
-
         $editor.on('click', '.sp-x-lt-del', function (e) {
             e.preventDefault();
 
             let $grid = $(this).closest('.sp-x-lt');
-            if (layoutCnt() > 1) {
+            if (getGridCount() > 1) {
                 gridDelete($grid);
             } else {
                 gridClear($grid);
@@ -934,7 +932,7 @@ var sprint_editor = {
         $editor.on('click', '.sp-x-col-edit', function () {
             let $grid = $(this).closest('.sp-x-lt');
             let $title = getActiveTab($grid).find('.sp-x-col-title');
-            layoutEditColumnTitle($title);
+            gridEditColumnTitle($title);
 
         });
 
@@ -1030,7 +1028,7 @@ var sprint_editor = {
         function popupHide() {
             $editor.find('.sp-x-pp-box').hide();
             $editor.find('.sp-x-pp-lt').hide();
-            $editor.find('.sp-x-toolbar').hide();
+            $toolbarPopup.hide();
             $editor.find('.sp-x-pp-box-open').removeClass('sp-x-active');
             $editor.find('.sp-x-pp-lt-open').removeClass('sp-x-active');
             $editor.find('.sp-x-toolbar-open').removeClass('sp-x-active');
@@ -1043,22 +1041,25 @@ var sprint_editor = {
                 return true;
             }
 
-            let $popup;
+            if ($handler.hasClass('sp-x-toolbar-open')) {
+                if ($handler.hasClass('sp-x-active')) {
+                    $handler.removeClass('sp-x-active');
+                    $toolbarPopup.hide();
+                } else {
+                    popupHide();
+                    $handler.addClass('sp-x-active');
+                    $handler.after($toolbarPopup);
+                    $toolbarPopup.show();
+                }
+                return true;
+            }
 
+
+            let $popup;
             if ($handler.hasClass('sp-x-pp-lt-open')) {
                 $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-lt');
             } else if ($handler.hasClass('sp-x-pp-box-open')) {
                 $popup = $handler.closest('.sp-x-buttons').find('.sp-x-pp-box');
-            } else if ($handler.hasClass('sp-x-toolbar-open')) {
-                $popup = $editor.find('.sp-x-toolbar');
-                if (!$popup || $popup.length <= 0) {
-                    $popup = $(sprint_editor.renderTemplate('box-toolbar-popup', {
-                        'toolbar': currentEditorParams.blocksToolbar,
-                        'name': currentEditorParams.userSettingsName,
-                    }));
-                }
-
-                $handler.after($popup);
             }
 
             if (!$popup) {
@@ -1077,36 +1078,24 @@ var sprint_editor = {
         }
 
         function clipboardCheck() {
-            let clipboardData = sprint_editor.getClipboard();
-
-            let cntBlocks = 0;
-            $editor.find('.sp-x-box')
-                .removeClass('sp-x-box-copied')
-                .removeClass('sp-x-box-cutted');
-
-
-            $.each(clipboardData, function (blockUid, blockData) {
-                let $box = $editor.find('.sp-x-box[data-uid=' + blockUid + ']');
-                if ($box.length > 0) {
-                    if (blockData.deleteAfterPaste) {
-                        $box.addClass('sp-x-box-cutted');
-                    } else {
-                        $box.addClass('sp-x-box-copied');
-                    }
-                }
-                cntBlocks++;
-            });
-
-            if (cntBlocks > 0) {
-                $editor.find('.sp-x-col-paste').show();
-                $editor.find('.sp-x-box-paste').show();
+            let blocks = sprint_editor.getClipboard(sprint_editor._clipboard_block);
+            if (blocks && blocks.length > 0) {
+                $toolbarPopup.find('.sp-x-box-clipboard').show();
             } else {
-                $editor.find('.sp-x-col-paste').hide();
-                $editor.find('.sp-x-box-paste').hide();
+                $editor.find('.sp-x-box-copied').removeClass('sp-x-box-copied');
+                $toolbarPopup.find('.sp-x-box-clipboard').hide();
+            }
+
+            let grids = sprint_editor.getClipboard(sprint_editor._clipboard_grid);
+            if (grids && grids.length > 0) {
+                $clipboardFooter.show();
+            } else {
+                $editor.find('.sp-x-lt-copied').removeClass('sp-x-lt-copied');
+                $clipboardFooter.hide();
             }
         }
 
-        function addByNameLayout($handler) {
+        function addPackByName($handler) {
             let name = $handler.data('name');
             if (!name) {
                 return false;
@@ -1114,25 +1103,22 @@ var sprint_editor = {
 
             if (name.indexOf('layout_') === 0) {
                 name = name.substring(7);
-                layoutEmptyAdd(name);
+                gridEmptyAdd(name);
                 sprint_editor.fireEvent('clipboard:check');
 
             } else {
-                packLoad(name);
+                packLoadByName(name);
             }
         }
 
-        function addByNameBlock($handler) {
+        function addBlockByName($handler) {
             let name = $handler.data('name');
             if (!name) {
                 return false;
             }
 
-            let $container = $handler.closest('.sp-x-box');
-            if ($container.length <= 0) {
-                $container = getActiveColumn($handler.closest('.sp-x-lt'));
-            }
-            if ($container.length > 0) {
+            let $container = getBlockContainerByHandler($handler);
+            if ($container) {
                 let $box = blockAdd({name: name}, $container);
 
                 if ($box && !$handler.hasClass('sp-x-lastblock')) {
@@ -1142,13 +1128,25 @@ var sprint_editor = {
                 }
             }
 
-
             sprint_editor.fireEvent('popup:hide');
             sprint_editor.fireEvent('clipboard:check');
         }
 
+        function getBlockContainerByHandler($handler) {
+            let $container = $handler.closest('.sp-x-box');
+            if ($container.length > 0) {
+                return $container;
+            }
+            $container = getActiveColumn($handler.closest('.sp-x-lt'));
+            if ($container.length > 0) {
+                return $container;
+            }
 
-        function layoutEmptyAdd(colCnt) {
+            return false;
+        }
+
+
+        function gridEmptyAdd(colCnt) {
             let ltname = 'type' + colCnt;
 
             let columns = [];
@@ -1166,23 +1164,23 @@ var sprint_editor = {
                 })
             }
 
-            layoutAdd({
+            gridAdd({
                 columns: columns
             });
         }
 
-        function layoutAdd(layout) {
-            let ltname = 'type' + layout.columns.length;
+        function gridAdd(gridData) {
+            let ltname = 'type' + gridData.columns.length;
 
             let columns = [];
 
             let firstUid = '';
 
-            let layoutTitle = (layout.title) ? layout.title : BX.message('SPRINT_EDITOR_lt_default');
+            let layoutTitle = (gridData.title) ? gridData.title : BX.message('SPRINT_EDITOR_lt_default');
 
             let classesTitles = sprint_editor.getClassesTitles(currentEditorParams);
 
-            $.each(layout.columns, function (index, column) {
+            $.each(gridData.columns, function (index, column) {
                 let columnUid = sprint_editor.makeUid();
 
                 if (!firstUid) {
@@ -1212,8 +1210,8 @@ var sprint_editor = {
                     layout_settings: sprint_editor.renderTemplate(
                         'box-settings',
                         sprint_editor.compileSettings(
-                            layout,
-                            sprint_editor.getLayoutSettings(ltname, currentEditorParams)
+                            gridData,
+                            sprint_editor.getGridSettings(ltname, currentEditorParams)
                         )
                     )
                 }));
@@ -1338,41 +1336,45 @@ var sprint_editor = {
             return $box;
         }
 
-        function packLoad(packname) {
+        function packLoadByName(packname) {
             $.get('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
                 load: packname, userSettingsName: currentEditorParams.userSettingsName
-            }, function (pack) {
-
-                if (!pack || !pack.layouts || !pack.blocks) {
-                    return;
-                }
-
-                let layoutIndex = layoutCnt();
-
-                $.each(pack.layouts, function (index, layout) {
-                    layoutAdd(layout)
-                });
-
-                $.each(pack.blocks, function (index, block) {
-                    let pos = block.layout;
-
-                    pos = pos.split(',');
-
-                    pos = [parseInt(pos[0], 10) + layoutIndex, parseInt(pos[1], 10)];
-
-                    let newblock = $.extend({}, block, {
-                        layout: pos.join(',')
-                    });
-
-                    blockAdd(newblock);
-                });
-
-                sprint_editor.fireEvent('popup:hide');
-                sprint_editor.fireEvent('clipboard:check');
+            }, function (packData) {
+                packLoad(packData);
             });
         }
 
-        function layoutCnt() {
+        function packLoad(packData) {
+
+            if (!packData || !packData.layouts || !packData.blocks) {
+                return;
+            }
+
+            let gindex = getGridCount();
+
+            $.each(packData.layouts, function (index, layout) {
+                gridAdd(layout)
+            });
+
+            $.each(packData.blocks, function (index, block) {
+                let pos = block.layout;
+
+                pos = pos.split(',');
+
+                pos = [parseInt(pos[0], 10) + gindex, parseInt(pos[1], 10)];
+
+                let newblock = $.extend({}, block, {
+                    layout: pos.join(',')
+                });
+
+                blockAdd(newblock);
+            });
+
+            sprint_editor.fireEvent('popup:hide');
+            sprint_editor.fireEvent('clipboard:check');
+        }
+
+        function getGridCount() {
             return $editor.find('.sp-x-lt').length;
         }
 
@@ -1406,7 +1408,7 @@ var sprint_editor = {
             }
         }
 
-        function layoutEditColumnTitle($title) {
+        function gridEditColumnTitle($title) {
             let newtitle = prompt(BX.message('SPRINT_EDITOR_col_change'), $title.text());
             newtitle = $.trim(newtitle);
 
@@ -1415,87 +1417,110 @@ var sprint_editor = {
             }
         }
 
+        function saveBox($box) {
+
+            let uid = $box.data('uid');
+
+            if (!sprint_editor.hasEntry(uid)) {
+                return false;
+            }
+
+            if (sprint_editor.isEmptyData(uid)) {
+                return false;
+            }
+
+            let blockData = sprint_editor.collectData(uid);
+
+            blockData.settings = sprint_editor.collectSettings(
+                $box.children('.sp-x-box-settings')
+            );
+
+            let meta = {};
+            if ($box.hasClass('sp-x-box-collapsed')) {
+                meta['collapsed'] = true;
+            }
+            if ($box.hasClass('sp-x-box-hidden')) {
+                meta['hidden'] = true;
+            }
+
+            blockData.layout = '0,0';
+            blockData.meta = meta;
+
+            return blockData;
+        }
+
+        function saveGrid($grid, gindex) {
+            let blocks = [];
+            let columns = [];
+
+            let $ltbuttons = $grid.children('.sp-x-buttons-lt1');
+
+            let ltsettings = sprint_editor.collectSettings(
+                $ltbuttons.children('.sp-x-lt-settings')
+            );
+
+            $ltbuttons.find('.sp-x-col-tab').each(function (cindex) {
+                let $tab = $(this);
+
+                let columnUid = $tab.data('uid');
+
+                let $col = getColumn(columnUid);
+
+                let $title = $tab.find('.sp-x-col-title');
+                let coltitle = $title.text();
+
+                let colclasses = [];
+                $col.children('.sp-x-col-classes').find('.sp-x-active').each(function () {
+                    colclasses.push($.trim($(this).data('value')));
+                });
+
+                if (coltitle !== BX.message('SPRINT_EDITOR_col_default')) {
+                    columns.push({
+                        title: coltitle, css: colclasses.join(' ')
+                    });
+                } else {
+                    columns.push({
+                        css: colclasses.join(' ')
+                    });
+                }
+
+                $col.children('.sp-x-box').each(function () {
+                    let blockData = saveBox($(this), gindex, cindex);
+                    if (blockData && blockData.name) {
+                        blockData.layout = gindex + ',' + cindex;
+                        blocks.push(blockData);
+                    }
+                });
+            });
+
+            return {
+                blocks: blocks,
+                layouts: [
+                    {
+                        settings: ltsettings,
+                        columns: columns
+                    }
+                ],
+            }
+        }
+
         function saveToString() {
             let blocks = [];
             let layouts = [];
 
             $editor.find('.sp-x-lt').each(function (gindex) {
-                let columns = [];
+                let gridData = saveGrid($(this), gindex);
 
-                let $ltbuttons = $(this).children('.sp-x-buttons-lt1');
-
-                let ltsettings = sprint_editor.collectSettings(
-                    $ltbuttons.children('.sp-x-lt-settings')
-                );
-
-                $ltbuttons.find('.sp-x-col-tab').each(function (cindex) {
-                    let $tab = $(this);
-
-                    let columnUid = $tab.data('uid');
-
-                    let $col = getColumn(columnUid);
-
-                    let $title = $tab.find('.sp-x-col-title');
-                    let coltitle = $title.text();
-
-                    let colclasses = [];
-                    $col.children('.sp-x-col-classes').find('.sp-x-active').each(function () {
-                        colclasses.push($.trim($(this).data('value')));
-                    });
-
-                    if (coltitle !== BX.message('SPRINT_EDITOR_col_default')) {
-                        columns.push({
-                            title: coltitle, css: colclasses.join(' ')
-                        });
-                    } else {
-                        columns.push({
-                            css: colclasses.join(' ')
-                        });
-                    }
-
-                    $col.children('.sp-x-box').each(function () {
-
-                        let uid = $(this).data('uid');
-
-                        if (!sprint_editor.hasEntry(uid)) {
-                            return true;
-                        }
-
-                        let blockData = sprint_editor.collectData(uid);
-
-                        if (sprint_editor.isEmptyData(uid)) {
-                            return true;
-                        }
-
-                        blockData.settings = sprint_editor.collectSettings(
-                            $(this).children('.sp-x-box-settings')
-                        );
-
-                        let meta = {};
-                        if ($(this).hasClass('sp-x-box-collapsed')) {
-                            meta['collapsed'] = true;
-                        }
-                        if ($(this).hasClass('sp-x-box-hidden')) {
-                            meta['hidden'] = true;
-                        }
-
-                        blockData.layout = gindex + ',' + cindex;
-                        blockData.meta = meta;
-
-                        blocks.push(blockData);
-                    });
-
+                $.each(gridData.blocks, function (index, block) {
+                    blocks.push(block);
                 });
 
-                if (columns.length > 0) {
-                    layouts.push({
-                        settings: ltsettings, columns: columns
-                    });
-                }
-
+                $.each(gridData.layouts, function (index, layout) {
+                    layouts.push(layout);
+                });
             });
-            let resultString = '';
 
+            let resultString = '';
             if (currentEditorParams.saveEmpty || (layouts.length > 0 && blocks.length > 0)) {
                 resultString = sprint_editor.safeStringify({
                     version: 2,

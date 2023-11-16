@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $jsonValue
+ * @var $jsonEditorValue
  *
  * @var $jsonBlocksConfigs
  * @var $jsonTemplates
@@ -59,6 +59,6 @@
             userSettings: <?=$jsonUserSettings?>,
             layoutsToolbar: <?=$jsonLayoutsToolbar?>,
             blocksToolbar: <?=$jsonBlocksToolbar?>,
-        }, <?=$jsonValue?>);
+        }, <?=$jsonEditorValue?>);
     });
 </script>
