@@ -179,7 +179,6 @@ var sprint_editor = {
 
     /** @deprecated */
     initblockAreas: function () {
-        console.log('initblockAreas deprecated');
     },
 
     beforeDelete: function (uid) {
@@ -309,16 +308,13 @@ var sprint_editor = {
 
     /** @deprecated */
     getClipboard: function () {
-        console.log('getClipboard deprecated')
         return []
     },
     /** @deprecated */
     copyToClipboard: function () {
-        console.log('copyToClipboard deprecated')
     },
     /** @deprecated */
     clearClipboard: function () {
-        console.log('clearClipboard deprecated')
     },
 
     /* clipboard api v2 */
