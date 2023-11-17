@@ -6,8 +6,6 @@ var sprint_editor = {
     _entries: {},
     _uidcounter: 0,
     _submitcnt: 0,
-    _clipboard_block: 'sprint-editor-cb-block',
-    _clipboard_grid: 'sprint-editor-cb-grid',
 
     registerBlock: function (name, method) {
         this._registered[name] = method;
@@ -590,6 +588,9 @@ var sprint_editor = {
             currentEditorParams.userSettingsName = '';
         }
 
+        currentEditorParams.clipboardBlock = 'sp-cb-b' + currentEditorParams.userSettingsName;
+        currentEditorParams.clipboardGrid = 'sp-cb-g' + currentEditorParams.userSettingsName;
+
         if (!currentEditorParams.hasOwnProperty('blocksToolbar')) {
             currentEditorParams.blocksToolbar = [];
         }
@@ -749,13 +750,14 @@ var sprint_editor = {
             if ($box.hasClass('sp-x-box-copied')) {
                 return;
             }
-
-            let uid = $box.data('uid');
             let boxData = saveBox($box);
             if (boxData) {
                 $box.addClass('sp-x-box-copied');
 
-                sprint_editor.copyToClipboard(sprint_editor._clipboard_block, boxData);
+                sprint_editor.copyToClipboard(
+                    currentEditorParams.clipboardBlock,
+                    boxData
+                );
             }
         });
 
@@ -763,11 +765,13 @@ var sprint_editor = {
             e.preventDefault();
 
             let $box = $(this).closest('.sp-x-box');
-            let uid = $box.data('uid');
 
             let boxData = saveBox($box);
             if (boxData) {
-                sprint_editor.copyToClipboard(sprint_editor._clipboard_block, boxData);
+                sprint_editor.copyToClipboard(
+                    currentEditorParams.clipboardBlock,
+                    boxData
+                );
 
                 boxDelete($box);
             }
@@ -776,14 +780,18 @@ var sprint_editor = {
         $editor.on('click', '.sp-x-box-paste', function (e) {
             e.preventDefault();
 
-            let clipboardData = sprint_editor.getClipboard(sprint_editor._clipboard_block);
+            let clipboardData = sprint_editor.getClipboard(
+                currentEditorParams.clipboardBlock
+            );
             let $container = getBlockContainerByHandler($(this));
 
             $.each(clipboardData, function (index, blockData) {
                 blockAdd(blockData, $container);
             });
 
-            sprint_editor.clearClipboard(sprint_editor._clipboard_block);
+            sprint_editor.clearClipboard(
+                currentEditorParams.clipboardBlock
+            );
         });
 
         $editor.on('click', '.sp-x-lt-copy', function (e) {
@@ -798,7 +806,7 @@ var sprint_editor = {
 
             let gridData = saveGrid($grid, 0);
 
-            sprint_editor.copyToClipboard(sprint_editor._clipboard_grid, gridData);
+            sprint_editor.copyToClipboard(currentEditorParams.clipboardGrid, gridData);
         });
 
         $editor.on('click', '.sp-x-lt-cut', function (e) {
@@ -807,7 +815,7 @@ var sprint_editor = {
 
             let gridData = saveGrid($grid, 0);
 
-            sprint_editor.copyToClipboard(sprint_editor._clipboard_grid, gridData);
+            sprint_editor.copyToClipboard(currentEditorParams.clipboardGrid, gridData);
 
             gridDelete($grid);
         });
@@ -815,14 +823,14 @@ var sprint_editor = {
         $editor.on('click', '.sp-x-lt-paste', function (e) {
             e.preventDefault();
 
-            let clipboardData = sprint_editor.getClipboard(sprint_editor._clipboard_grid);
+            let clipboardData = sprint_editor.getClipboard(currentEditorParams.clipboardGrid);
             // let $grid = $(this).closest('.sp-x-lt');
 
             $.each(clipboardData, function (index, gridData) {
                 packLoad(gridData)
             });
 
-            sprint_editor.clearClipboard(sprint_editor._clipboard_grid);
+            sprint_editor.clearClipboard(currentEditorParams.clipboardGrid);
         });
 
         $editor.on('click', '.sp-x-box-up', function (e) {
@@ -1078,7 +1086,9 @@ var sprint_editor = {
         }
 
         function clipboardCheck() {
-            let blocks = sprint_editor.getClipboard(sprint_editor._clipboard_block);
+            let blocks = sprint_editor.getClipboard(
+                currentEditorParams.clipboardBlock
+            );
             if (blocks && blocks.length > 0) {
                 $toolbarPopup.find('.sp-x-box-clipboard').show();
             } else {
@@ -1086,7 +1096,7 @@ var sprint_editor = {
                 $toolbarPopup.find('.sp-x-box-clipboard').hide();
             }
 
-            let grids = sprint_editor.getClipboard(sprint_editor._clipboard_grid);
+            let grids = sprint_editor.getClipboard(currentEditorParams.clipboardGrid);
             if (grids && grids.length > 0) {
                 $clipboardFooter.show();
             } else {

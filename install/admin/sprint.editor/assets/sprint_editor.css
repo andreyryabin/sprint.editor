@@ -293,8 +293,8 @@
     font-size: 13px;
     text-decoration: none;
     outline: none;
-    padding: 6px;
-    min-width: 80px;
+    padding: 5px 6px;
+    min-width: 60px;
     line-height: 16px;
     /*border-bottom: 1px dashed #ccc;*/
 

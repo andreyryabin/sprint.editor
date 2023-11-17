@@ -34,7 +34,6 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_HELP_TELEGRAM"              => "Группа в телеграме",
     "SPRINT_EDITOR_SETTINGS_DISABLE_CHANGE"    => "Отключить добавление блоков",
     "SPRINT_EDITOR_SETTINGS_WIDE_MODE"         => "Развернуть редактор на всю ширину",
-    "SPRINT_EDITOR_SETTINGS_DISABLE_PACKS"     => "Отключить работу с макетами",
     "SPRINT_EDITOR_SETTINGS_SETTINGS_NAME"     => "Пользовательские настройки блоков",
     "SPRINT_EDITOR_SETTINGS_DEFAULT_VALUE"     => "Значение по умолчанию",
     "SPRINT_EDITOR_SETTINGS_NAME_NO"           => "Простой редактор",
@@ -48,15 +47,11 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_group_my"                   => "Пользовательские",
     "SPRINT_EDITOR_group_complex"              => "Составные",
 
-    "SPRINT_EDITOR_layout_type1"  => "Простой макет",
-    "SPRINT_EDITOR_layout_type2"  => "Макет из 2 колонок",
-    "SPRINT_EDITOR_layout_type3"  => "Макет из 3 колонок",
-    "SPRINT_EDITOR_layout_type4"  => "Макет из 4 колонок",
+    "SPRINT_EDITOR_layout_type1"  => "Простая сетка",
+    "SPRINT_EDITOR_layout_type2"  => "Сетка из 2 колонок",
+    "SPRINT_EDITOR_layout_type3"  => "Сетка из 3 колонок",
+    "SPRINT_EDITOR_layout_type4"  => "Сетка из 4 колонок",
     "SPRINT_EDITOR_layout_toggle" => "Переключить отображение колонок",
-
-    "SPRINT_EDITOR_pack_save_content" => "Сохранить как макет",
-    "SPRINT_EDITOR_pack_save_title"   => "Сохранить контент редактора в макет",
-    "SPRINT_EDITOR_pack_del"          => "Удалить макет",
 
     "SPRINT_EDITOR_new_pack"           => "Новый макет",
     "SPRINT_EDITOR_field_packs"        => "Макеты",
