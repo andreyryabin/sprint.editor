@@ -367,9 +367,15 @@ var sprint_editor = {
                 }
             }
             if (type === 'text') {
-                let $input = jQuery(this).children('.sp-x-txt-input');
+                let $input = jQuery(this).find('input').first();
                 if ($input.length > 0) {
-                    settval[name] = $input.text();
+                    settval[name] = $input.val();
+                }
+            }
+            if (type === 'dropdown') {
+                let $input = jQuery(this).find('select').first();
+                if ($input.length > 0) {
+                    settval[name] = $input.val();
                 }
             }
         });
@@ -392,7 +398,7 @@ var sprint_editor = {
                 setValue = blockData.settings[setName];
             }
 
-            if (setParams.type === 'select') {
+            if ((setParams.type === 'select') || (setParams.type === 'dropdown')) {
                 compiled.push(sprint_editor.compileSettingsSelect(setName, setValue, setParams));
             }
 
@@ -405,12 +411,19 @@ var sprint_editor = {
     },
 
     compileSettingsText: function (setName, setValue, setParams) {
+        let defValue = '';
+        if (setParams.hasOwnProperty('default')) {
+            defValue = setParams.default
+        }
+
+        let strVal = String(setValue || defValue);
+
         return {
             name: setName,
-            title: setParams.title || setName,
-            size: setParams.size || 20,
+            title: setParams.title || '',
             type: setParams.type,
-            value: setValue,
+            value: strVal,
+            size: strVal.length + 1
         };
     },
 
@@ -440,6 +453,7 @@ var sprint_editor = {
 
         return {
             name: setName,
+            title: setParams.title || '',
             type: setParams.type,
             options: options
         };
@@ -1029,18 +1043,8 @@ var sprint_editor = {
             $span.toggleClass('sp-x-active');
         });
 
-        $editor.on("paste", '.sp-x-txt-input', function (e) {
-            e.preventDefault();
-
-            var text = e.originalEvent.clipboardData.getData("text/plain");
-            text = text.replace(/(\r\n|\n|\r)/gm, "");
-            document.execCommand("insertText", false, text);
-        });
-
-        $editor.on("keypress", '.sp-x-txt-input', function (e) {
-            if (e.keyCode === 13) {
-                return false;
-            }
+        $editor.on('input', '.sp-x-input-txt input', function () {
+            $(this).attr('size', $(this).val().length + 1);
         });
 
         function popupHide() {

@@ -31,8 +31,8 @@ sprint_editor.registerBlock('htag', function ($, $el, data, settings) {
     };
 
     this.collectData = function () {
-        data.value = $el.find('input[type=text]').val();
-        data.type = $el.find('select').val();
+        data.value = $el.children('input[type=text]').val();
+        data.type = $el.children('select').val();
         if (data.value) {
             data.anchor = translite(data.value);
         } else {
@@ -43,8 +43,8 @@ sprint_editor.registerBlock('htag', function ($, $el, data, settings) {
     };
 
     this.afterRender = function () {
-        const $input = $el.find('input[type=text]');
-        const $anchor = $el.find('.sp-anchor');
+        const $input = $el.children('input[type=text]');
+        const $anchor = $el.children('.sp-anchor');
 
         $input.bindWithDelay('input', function () {
             $anchor.text(translite(

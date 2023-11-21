@@ -1,5 +1,8 @@
 {{~it :item}}
 <div data-name="{{!item.name}}" data-type="{{!item.type}}" class="sp-x-settings-group">
+    {{?item.title}}
+    <span class="sp-x-input-title">{{=item.title}}:</span>
+    {{?}}
     {{?item.type=="select"}}
     {{~item.options :option}}
     {{?option.selected}}
@@ -9,9 +12,23 @@
     {{?}}
     {{~}}
     {{?}}
+    {{?item.type=="dropdown"}}
+    <label class="sp-x-input-select">
+        <select>
+            {{~item.options :option}}
+            {{?option.selected}}
+            <option selected="selected" value="{{!option.value}}">{{=option.title}}</option>
+            {{??}}
+            <option value="{{!option.value}}">{{=option.title}}</option>
+            {{?}}
+            {{~}}
+        </select>
+    </label>
+    {{?}}
     {{?item.type=="text"}}
-    <span class="sp-x-txt-title">{{=item.title}}:</span>
-    <span class="sp-x-txt-input" contenteditable="true">{{=item.value}}</span>
+    <label class="sp-x-input-txt">
+        <input value="{{!item.value}}" size="{{!item.size}}" type="text"/>
+    </label>
     {{?}}
 </div>
 {{~}}
