@@ -11,7 +11,6 @@ class AdminEditor
     protected static $css                 = [];
     protected static $js                  = [];
     protected static $allblocks           = [];
-    protected static $alllayouts          = [];
     protected static $templates           = [];
     protected static $baseBlockSettings   = [];
     protected static $baseComplexSettings = [];
@@ -30,7 +29,6 @@ class AdminEditor
             self::registerBlocks('complex', false, true);
             self::registerBlocks('complex', true, true);
 
-            self::registerLayouts();
             self::registerAssets();
         }
 
@@ -55,9 +53,7 @@ class AdminEditor
         } else {
             //default setings (simple editor)
             $userSettings = [
-                'layout_enabled'   => [
-                    'layout_none',
-                ],
+                'layout_enabled'   => [],
                 'block_settings'   => [],
                 'complex_settings' => [],
             ];
@@ -160,14 +156,33 @@ class AdminEditor
             include $settingsFile;
         }
 
-        return array_merge(
+        $settings = array_merge(
             [
                 'title'            => $settingsName,
                 'layout_classes'   => [],
+                'layout_titles'    => [],
+                'classes_titles'   => [],
                 'block_settings'   => [],
                 'complex_settings' => [],
             ], $settings
         );
+
+        //load titles
+        foreach (['type1', 'type2', 'type3', 'type4'] as $ltype) {
+            if (empty($settings['layout_titles'][$ltype])) {
+                $settings['layout_titles'][$ltype] = GetMessage('SPRINT_EDITOR_layout_' . $ltype);
+            }
+        }
+
+        //convert layout_titles to classes_titles
+        foreach ($settings['layout_titles'] as $name => $title) {
+            if (!preg_match('/type\d+/', $name)) {
+                $settings['classes_titles'][$name] = $title;
+                unset($settings['layout_titles'][$name]);
+            }
+        }
+
+        return $settings;
     }
 
     public static function registerSettingsAssets($settingsName)
@@ -438,18 +453,6 @@ class AdminEditor
         return true;
     }
 
-    protected static function registerLayouts()
-    {
-        for ($num = 1; $num <= 4; $num++) {
-            $layoutName = 'layout_' . $num;
-
-            self::$alllayouts[$layoutName] = [
-                'title' => GetMessage('SPRINT_EDITOR_layout_type' . $num),
-                'name'  => $layoutName,
-            ];
-        }
-    }
-
     public static function registerPacks($userSettingsName)
     {
         $dir = Module::getPacksDir();
@@ -595,30 +598,22 @@ class AdminEditor
 
     protected static function filterLayouts($userSettings)
     {
+        $layouts = [];
         if (!empty($userSettings['layout_enabled'])) {
-            $layouts = array_filter(
-                self::$alllayouts,
-                function ($layout) use ($userSettings) {
-                    return in_array($layout['name'], $userSettings['layout_enabled']);
+            $titles = (array)($userSettings['layout_titles'] ?? []);
+
+            foreach ($userSettings['layout_enabled'] as $layoutName) {
+                [$prefix, $num] = explode('_', $layoutName);
+                if ($prefix == 'layout' && is_numeric($num)) {
+                    $layouts[] = [
+                        'name'  => 'layout_' . $num,
+                        'title' => $titles['type' . $num] ?? $layoutName,
+                    ];
                 }
-            );
-        } elseif (!empty($userSettings['block_disabled'])) {
-            $layouts = array_filter(
-                self::$alllayouts,
-                function ($layout) use ($userSettings) {
-                    return !in_array($layout['name'], $userSettings['block_disabled']);
-                }
-            );
-        } else {
-            $layouts = self::$alllayouts;
+            }
         }
 
-        return array_filter(
-            array_values($layouts),
-            function ($layout) {
-                return !empty($layout['title']);
-            }
-        );
+        return $layouts;
     }
 
     protected static function sortByNum($input, $key)

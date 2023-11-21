@@ -559,9 +559,9 @@ var sprint_editor = {
     getClassesTitles: function (currentEditorParams) {
         if (currentEditorParams &&
             currentEditorParams.hasOwnProperty('userSettings') &&
-            currentEditorParams.userSettings.hasOwnProperty('layout_titles')
+            currentEditorParams.userSettings.hasOwnProperty('classes_titles')
         ) {
-            return currentEditorParams.userSettings.layout_titles || {};
+            return currentEditorParams.userSettings.classes_titles || {};
         }
         return {};
     },
