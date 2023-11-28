@@ -38,6 +38,15 @@ $aMenu = [
                     ]
                 ),
         ],
+        /*[
+            'text' => GetMessage('SPRINT_EDITOR_TRASH_FILES'),
+            'url'  => 'sprint_editor.php?' . http_build_query(
+                    [
+                        'lang'     => LANGUAGE_ID,
+                        'showpage' => 'trash_files',
+                    ]
+                ),
+        ],*/
     ],
 ];
 

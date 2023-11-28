@@ -14,16 +14,11 @@
       "name": "Andrey Ryabin",
       "email": "andreyryabin@yandex.ru",
       "role": "Author"
-    },
-    {
-      "name": "Gripinskiy Sergey",
-      "email": "web-architect@mail.ru",
-      "role": "Contributor"
     }
   ],
   "license": "MIT",
   "require": {
-    "php": ">=5.4.0",
+    "php": ">=7.4",
     "ext-json": "*",
     "composer/installers": "~1"
   }

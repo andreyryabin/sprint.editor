@@ -180,6 +180,9 @@ var sprint_editor = {
     /** @deprecated */
     initblockAreas: function () {
     },
+    /** @deprecated */
+    markImagesForDelete: function () {
+    },
 
     beforeDelete: function (uid) {
         if (!sprint_editor.hasEntry(uid)) {

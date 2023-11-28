@@ -5,7 +5,7 @@
  */
 
 $settings = [
-    'title'           => 'Редактор с колонками',
+    'title'            => 'Редактор с колонками',
 
     //Разрешить изменение структуры материала, перекрывает настройку "Отключить добавление блоков"
     //'enable_change' => true,
@@ -14,7 +14,7 @@ $settings = [
     //'wide_mode'     => true,
 
     //Разрешить добавление указанных сеток
-    'layout_enabled'  => [
+    'layout_enabled'   => [
         'layout_1',
         'layout_2',
         'layout_3',
@@ -22,13 +22,13 @@ $settings = [
     ],
 
     //Названия сеток переопределяющие значения по умолчанию
-    'layout_titles'   => [
+    'layout_titles'    => [
         'type2' => 'Сетка из 2х колонок',
         'type5' => 'Сетка из 5и колонок',
     ],
 
     //Пример пользовательских настроек для сеток
-    'layout_settings' => [
+    'layout_settings'  => [
         'type1' => [],
         'type2' => [
             //            'param1' => [
@@ -215,20 +215,30 @@ $settings = [
                 ],
             ],
         ],
-        'iblock_elements' => [
+        /*'iblock_elements' => [
             //ограничим список доступных ИБ в блоке "Инфоблоки.Элементы"
-            //            'enabled_iblocks' => [
-            //                'type'  => 'hidden',
-            //                'value' => [4, 10],
-            //            ],
+            'enabled_iblocks' => [
+                'type'  => 'hidden',
+                'value' => [4, 10],
+            ],
+            //множественный выбор true|false, по умолчанию true
+            'multiple' => [
+                'type'  => 'hidden',
+                'value' => false,
+            ]
         ],
         'iblock_sections' => [
             //ограничим список доступных ИБ в блоке "Инфоблоки.Категории"
-            //            'enabled_iblocks' => [
-            //                'type'  => 'hidden',
-            //                'value' => [4, 10],
-            //            ],
-        ],
+            'enabled_iblocks' => [
+                'type'  => 'hidden',
+                'value' => [4, 10],
+            ],
+            //множественный выбор true|false, по умолчанию true
+            'multiple' => [
+                'type'  => 'hidden',
+                'value' => false,
+            ]
+        ],*/
     ],
 
     //Настройки блоков внутри составных

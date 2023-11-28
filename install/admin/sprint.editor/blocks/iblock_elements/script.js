@@ -7,6 +7,11 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data, settings)
         enabled_iblocks = settings.enabled_iblocks.value;
     }
 
+    var multiple = true;
+    if (settings.hasOwnProperty('multiple') && settings.multiple.hasOwnProperty('value')) {
+        multiple = !!settings.multiple.value;
+    }
+
     data = $.extend({
         iblock_id: 0,
         element_ids: []
@@ -36,16 +41,17 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data, settings)
             },
 
             Complete: function () {
-                var oldids = findElementIds();
-                var newids = $.merge(oldids, popupIds);
-
-                popupIds = [];
-
+                var oldids = [];
+                if (multiple) {
+                    oldids = findElementIds();
+                }
                 sendrequest({
                     iblock_id: findIblockId(),
-                    element_ids: newids,
+                    element_ids: $.merge(oldids, popupIds),
                     enabled_iblocks: enabled_iblocks
                 });
+
+                popupIds = [];
             }
         };
 
@@ -61,7 +67,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data, settings)
                     IBLOCK_ID: iblockId,
                     iblockfix: 'y',
                     lookup: uid,
-                    m: 'y'
+                    m: multiple ? 'y' : 'n'
                 }));
 
 
