@@ -26,12 +26,15 @@
 Установка через composer
 -------------------------
 Пример вашего composer.json с установкой модуля в bitrix/modules/ 
-и копированием скриптов админки в bitrix/admin/sprint.editor/
+с копированием скриптов админки в bitrix/admin/sprint.editor/
+и компонента редактора для публичной части в bitrix/components/sprint.editor/blocks/
+
 ```
 {
   "extra": {
     "copy-file": {
       "bitrix/modules/sprint.editor/install/admin/": "bitrix/admin/"
+      "bitrix/modules/sprint.editor/install/components/": "bitrix/components/"
     },
     "installer-paths": {
       "bitrix/modules/{$name}/": ["type:bitrix-module"]
