@@ -33,7 +33,7 @@
 {
   "extra": {
     "copy-file": {
-      "bitrix/modules/sprint.editor/install/admin/": "bitrix/admin/"
+      "bitrix/modules/sprint.editor/install/admin/": "bitrix/admin/",
       "bitrix/modules/sprint.editor/install/components/": "bitrix/components/"
     },
     "installer-paths": {
