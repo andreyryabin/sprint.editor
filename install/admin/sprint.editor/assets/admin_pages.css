@@ -184,3 +184,49 @@ a.sp-link-new, a.sp-link-new:link {
 .sp-x-field:first-child {
     margin-top: 0;
 }
+
+
+.sp-support {
+    margin-bottom: 15px;
+}
+
+/* support page */
+.sp-support.sp-table {
+    width: 100%;
+}
+
+.sp-support .sp-col-tabs {
+    width: 40%;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    vertical-align: top;
+}
+
+.sp-support .sp-col-contents {
+    width: 60%;
+    vertical-align: top;
+}
+
+.sp-support .sp-support-link {
+    display: block;
+    background-color: inherit;
+    /*color: black;*/
+    padding: 22px 16px;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sp-support .sp-support-link:hover {
+    background-color: #ddd;
+}
+
+.sp-support .sp-support-link.active {
+    background-color: #ccc;
+}
+
+.sp-support .sp-support-content {
+    display: none;
+}

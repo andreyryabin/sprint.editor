@@ -1,22 +1,27 @@
 <?php return [
-    'load_jquery_ui' => [
-        'TITLE' => GetMessage('SPRINT_EDITOR_LOAD_JQUERY_UI'),
+    'load_jquery_ui'       => [
+        'TITLE'   => GetMessage('SPRINT_EDITOR_LOAD_JQUERY_UI'),
         'DEFAULT' => 'yes',
-        'TYPE' => 'checkbox',
+        'TYPE'    => 'checkbox',
     ],
-    'load_dotjs' => [
-        'TITLE' => GetMessage('SPRINT_EDITOR_LOAD_DOTJS'),
+    'load_dotjs'           => [
+        'TITLE'   => GetMessage('SPRINT_EDITOR_LOAD_DOTJS'),
         'DEFAULT' => 'yes',
-        'TYPE' => 'checkbox',
+        'TYPE'    => 'checkbox',
     ],
-    'instagram_app_id' => [
-        'TITLE' => GetMessage('SPRINT_EDITOR_INSTAGRAM_APP_ID'),
+    'show_support'         => [
+        'TITLE'   => GetMessage('SPRINT_EDITOR_SHOW_SUPPORT'),
+        'DEFAULT' => 'yes',
+        'TYPE'    => 'checkbox',
+    ],
+    'instagram_app_id'     => [
+        'TITLE'   => GetMessage('SPRINT_EDITOR_INSTAGRAM_APP_ID'),
         'DEFAULT' => '2741760692768967',
-        'TYPE' => 'text',
+        'TYPE'    => 'text',
     ],
     'instagram_app_secret' => [
-        'TITLE' => GetMessage('SPRINT_EDITOR_INSTAGRAM_APP_SECRET'),
+        'TITLE'   => GetMessage('SPRINT_EDITOR_INSTAGRAM_APP_SECRET'),
         'DEFAULT' => '828e97ef193404e336cbc1e7e9628412',
-        'TYPE' => 'text',
+        'TYPE'    => 'text',
     ],
 ];
