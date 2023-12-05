@@ -257,21 +257,17 @@ var sprint_editor = {
     collectDataFromEntry: function (entry) {
         let blockData = {};
 
-        if (typeof entry.collectData !== 'function') {
-            return blockData;
+        if (typeof entry.collectData === 'function') {
+            blockData = entry.collectData();
         }
 
-        blockData = entry.collectData();
-
-        if (typeof entry.getAreas !== 'function') {
-            return blockData;
-        }
-
-        let areas = entry.getAreas();
-        for (let prop in areas) {
-            if (areas.hasOwnProperty(prop)) {
-                let area = areas[prop];
-                blockData[area.dataKey] = sprint_editor.collectDataFromEntry(area.block);
+        if (typeof entry.getAreas === 'function') {
+            let areas = entry.getAreas();
+            for (let prop in areas) {
+                if (areas.hasOwnProperty(prop)) {
+                    let area = areas[prop];
+                    blockData[area.dataKey] = sprint_editor.collectDataFromEntry(area.block);
+                }
             }
         }
 

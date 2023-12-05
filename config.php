@@ -14,6 +14,11 @@
         'DEFAULT' => 'yes',
         'TYPE'    => 'checkbox',
     ],
+    'show_trash_files'     => [
+        'TITLE'   => GetMessage('SPRINT_EDITOR_SHOW_TRASH_FILES'),
+        'DEFAULT' => 'no',
+        'TYPE'    => 'checkbox',
+    ],
     'instagram_app_id'     => [
         'TITLE'   => GetMessage('SPRINT_EDITOR_INSTAGRAM_APP_ID'),
         'DEFAULT' => '2741760692768967',

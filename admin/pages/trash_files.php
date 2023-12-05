@@ -5,8 +5,6 @@ global $APPLICATION;
 $APPLICATION->SetTitle(GetMessage('SPRINT_EDITOR_TRASH_FILES'));
 
 \Bitrix\Main\UI\Extension::load("ajax");
-\Bitrix\Main\UI\Extension::load("ui.progressbar");
-\Bitrix\Main\UI\Extension::load("ui.notification");
 \Bitrix\Main\UI\Extension::load("ui.buttons");
 \Bitrix\Main\UI\Extension::load("ui.alerts");
 
@@ -17,6 +15,20 @@ $APPLICATION->SetTitle(GetMessage('SPRINT_EDITOR_TRASH_FILES'));
         /*background: #fff;*/
         width: 80%;
         /*padding: 16px;*/
+    }
+
+    .sp-alert-default {
+        padding: 16px 34px 16px 18px;
+        color: #333;
+        background: #dfe0e3;
+        margin-bottom: 10px;
+    }
+
+    .sp-alert-warning {
+        padding: 16px 34px 16px 18px;
+        color: #c48300;
+        background: #fff1d6;
+        margin-bottom: 10px;
     }
 
     .sp-alert-danger {
@@ -31,6 +43,13 @@ $APPLICATION->SetTitle(GetMessage('SPRINT_EDITOR_TRASH_FILES'));
         padding: 16px 34px 16px 18px;
         color: #008dba;
         background: #e5f9ff;
+        margin-bottom: 10px;
+    }
+
+    .sp-alert-success {
+        padding: 16px 34px 16px 18px;
+        color: #7fa800;
+        background: #f1fbd0;
         margin-bottom: 10px;
     }
 
@@ -125,10 +144,15 @@ $APPLICATION->SetTitle(GetMessage('SPRINT_EDITOR_TRASH_FILES'));
         }
 
         function showMessage(message) {
-            let css = (message.error) ? 'sp-alert-danger' : 'sp-alert-primary';
+            let css = 'sp-alert-default';
+            if (message.color) {
+                css = 'sp-alert-' + message.color;
+            }
+
             if (message.id) {
                 if (BX(message.id)) {
                     BX.adjust(BX(message.id), {
+                        props: {className: css},
                         html: message.text
                     });
                     return;
@@ -151,22 +175,9 @@ $APPLICATION->SetTitle(GetMessage('SPRINT_EDITOR_TRASH_FILES'));
             if (errors && errors.length > 0) {
                 errors.forEach(item => showMessage({
                     text: item.message,
-                    error: true
+                    color: 'danger'
                 }))
             }
-        }
-
-        function createProgressBar(id, value, maxValue) {
-            var bar = new BX.UI.ProgressBar({
-                size: BX.UI.ProgressBar.Size.LARGE,
-                color: BX.UI.ProgressBar.Color.PRIMARY,
-                statusType: BX.UI.ProgressBar.Status.COUNTER,
-                maxValue: maxValue,
-                value: value,
-                textBefore: "Выполняется поиск",
-            });
-            bar.update(123);
-            BX.append(bar.getContainer(), $sprint_messages);
         }
 
     });

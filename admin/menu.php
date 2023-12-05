@@ -31,17 +31,17 @@ $items[] = [
             ]
         ),
 ];
-
-$items[] = [
-    'text' => GetMessage('SPRINT_EDITOR_TRASH_FILES'),
-    'url'  => 'sprint_editor.php?' . http_build_query(
-            [
-                'lang'     => LANGUAGE_ID,
-                'showpage' => 'trash_files',
-            ]
-        ),
-];
-
+if (Module::getDbOption('show_trash_files') == 'yes') {
+    $items[] = [
+        'text' => GetMessage('SPRINT_EDITOR_TRASH_FILES'),
+        'url'  => 'sprint_editor.php?' . http_build_query(
+                [
+                    'lang'     => LANGUAGE_ID,
+                    'showpage' => 'trash_files',
+                ]
+            ),
+    ];
+}
 if (Module::getDbOption('show_support') == 'yes') {
     $items[] = [
         'text' => GetMessage('SPRINT_EDITOR_SUPPORT'),

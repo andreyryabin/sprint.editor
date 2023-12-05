@@ -4,7 +4,14 @@ namespace Sprint\Editor\Controller;
 
 use Bitrix\Main\DB\SqlQueryException;
 use Bitrix\Main\Engine\Controller;
-use Sprint\Editor\TrashFiles;
+use Sprint\Editor\Cleaner\AbstractStepper;
+use Sprint\Editor\Cleaner\CleanTrashStepper;
+use Sprint\Editor\Cleaner\EditorPackStepper;
+use Sprint\Editor\Cleaner\FileTableStepper;
+use Sprint\Editor\Cleaner\HlblockStepper;
+use Sprint\Editor\Cleaner\IblockCategoryStepper;
+use Sprint\Editor\Cleaner\IblockElementStepper;
+use Sprint\Editor\Cleaner\TrashFilesTable;
 
 /**
  * @noinspection PhpUnused
@@ -16,9 +23,12 @@ class Cleaner extends Controller
     const OUT_MESSAGES = 'messages';
     const QUEUE        = [
         'startAction',
-        'scanIblockElementsAction',
+        'scanIblockElementAction',
+        'scanIblockCategoryAction',
         'scanHlblockElementsAction',
+        'scanEditorPacksAction',
         'scanFileTableAction',
+        'cleanExistsAction',
         'finishAction',
     ];
 
@@ -26,197 +36,157 @@ class Cleaner extends Controller
      * @throws SqlQueryException
      *
      * @noinspection PhpUnused
-     * controller action: start
      */
     public function startAction(array $fields): array
     {
-        $trashFiles = new TrashFiles;
+        $trashFiles = new TrashFilesTable();
 
         $trashFiles->createTable();
 
-        $this->setNext($fields, __FUNCTION__);
+        $this->addMessage($fields, 'Создаём корзину', 'start', 'primary');
+
+        $this->setNextAction($fields, __FUNCTION__);
+        return $fields;
+    }
+
+    /** @noinspection PhpUnused */
+    public function cleanExistsAction(array $fields)
+    {
+        $stepper = new CleanTrashStepper();
+
+        return $this->stepper($stepper, $fields, __FUNCTION__);
+    }
+
+    /** @noinspection PhpUnused */
+    public function finishAction($fields)
+    {
+        $trashFiles = new TrashFilesTable();
+
+        $trashFiles->dropTable();
+
+        $this->addMessage($fields, 'Работа завершена', 'start', 'success');
 
         return $fields;
     }
 
-    /**
-     * @throws SqlQueryException
-     * @noinspection PhpUnused
-     * controller action: scanFileTable
-     */
+    /** @noinspection PhpUnused */
     public function scanFileTableAction($fields)
     {
-        $trashFiles = new TrashFiles;
-        $fields['page_num'] = (int)($fields['page_num'] ?? 1);
+        $stepper = new FileTableStepper();
 
-        $slice = $trashFiles->scanFileTableSlice($fields['page_num']);
-
-        $fields['files_count'] = (int)($fields['files_count'] ?? 0);
-        $fields['files_count'] += $slice['files_count'];
-
-        $this->addMessage(
-            $fields,
-            sprintf(
-                'Поиск в таблице файлов. Найдено файлов: %d',
-                $fields['files_count']
-            ),
-            'files_result'
-        );
-
-        if ($slice['has_next_page']) {
-            $fields['page_num']++;
-            $this->setRestart($fields, __FUNCTION__);
-            return $fields;
-        }
-
-        $this->setNext($fields, __FUNCTION__);
-        return $fields;
+        return $this->stepper($stepper, $fields, __FUNCTION__);
     }
 
-    /**
-     * @noinspection PhpUnused
-     * controller action: scanIblockElements
-     */
-    public function scanIblockElementsAction($fields)
+    /** @noinspection PhpUnused */
+    public function scanIblockElementAction($fields)
     {
-        $trashFiles = new TrashFiles;
+        $stepper = new IblockElementStepper();
 
-        if (!isset($fields['iblock_ids'])) {
-            $iblockIds = $trashFiles->getIblockIdsWithEditor();
-            if (empty($iblockIds)) {
-                $this->addMessage($fields, 'Инфоблоки с редактором не найдены');
-                $this->setNext($fields, __FUNCTION__);
-                return $fields;
-            }
-            $fields['iblock_id'] = $iblockIds[0];
-            $fields['iblock_ids'] = implode(',', $iblockIds);
-            $this->setRestart($fields, __FUNCTION__);
-            return $fields;
-        }
-
-        $fields['page_num'] = (int)($fields['page_num'] ?? 1);
-
-        $slice = $trashFiles->scanIblockElementsSlice(
-            $fields['iblock_id'],
-            $fields['page_num']
-        );
-
-        $fields['files_count'] = (int)($fields['files_count'] ?? 0);
-        $fields['files_count'] += $slice['files_count'];
-
-        $this->addMessage(
-            $fields,
-            sprintf(
-                'Поиск в инфоблоке с ID: %d. Найдено файлов: %d',
-                $fields['iblock_id'],
-                $fields['files_count']
-            ),
-            'iblock_result_' . $fields['iblock_id']
-        );
-
-        if ($slice['has_next_page']) {
-            $fields['page_num']++;
-            $this->setRestart($fields, __FUNCTION__);
-            return $fields;
-        }
-
-        $iblockIds = explode(',', $fields['iblock_ids']);
-        $searchIndex = array_search($fields['iblock_id'], $iblockIds);
-        if ($searchIndex >= 0 && isset($iblockIds[$searchIndex + 1])) {
-            $fields['iblock_id'] = $iblockIds[$searchIndex + 1];
-            $fields['page_num'] = 1;
-            $fields['files_count'] = 0;
-            $this->setRestart($fields, __FUNCTION__);
-            return $fields;
-        }
-
-        $this->setNext($fields, __FUNCTION__);
-        return $fields;
+        return $this->stepper($stepper, $fields, __FUNCTION__);
     }
 
-    /**
-     * @noinspection PhpUnused
-     * controller action: scanIblockElements
-     */
+    /** @noinspection PhpUnused */
+    public function scanIblockCategoryAction($fields)
+    {
+        $stepper = new IblockCategoryStepper();
+
+        return $this->stepper($stepper, $fields, __FUNCTION__);
+    }
+
+    /** @noinspection PhpUnused */
     public function scanHlblockElementsAction($fields)
     {
-        $trashFiles = new TrashFiles;
+        $stepper = new HlblockStepper();
 
-        if (!isset($fields['hlblock_ids'])) {
-            $hlblockIds = $trashFiles->getHlblockIdsWithEditor();
-            if (empty($hlblockIds)) {
-                $this->addMessage($fields, 'Highload-блоки с редактором не найдены');
-                $this->setNext($fields, __FUNCTION__);
-                return $fields;
-            }
-            $fields['hlblock_id'] = $hlblockIds[0];
-            $fields['hlblock_ids'] = implode(',', $hlblockIds);
-            $this->setRestart($fields, __FUNCTION__);
-            return $fields;
-        }
-
-        $fields['page_num'] = (int)($fields['page_num'] ?? 1);
-
-        $slice = $trashFiles->scanHlblockElementsSlice(
-            $fields['hlblock_id'],
-            $fields['page_num']
-        );
-
-        $fields['files_count'] = (int)($fields['files_count'] ?? 0);
-        $fields['files_count'] += $slice['files_count'];
-
-        $this->addMessage(
-            $fields,
-            sprintf(
-                'Поиск в highload-блоке с ID: %d. Найдено файлов: %d',
-                $fields['hlblock_id'],
-                $fields['files_count']
-            ),
-            'hlblock_result_' . $fields['hlblock_id']
-        );
-
-        if ($slice['has_next_page']) {
-            $fields['page_num']++;
-            $this->setRestart($fields, __FUNCTION__);
-            return $fields;
-        }
-
-        $hlblockIds = explode(',', $fields['hlblock_ids']);
-        $searchIndex = array_search($fields['hlblock_id'], $hlblockIds);
-        if ($searchIndex >= 0 && isset($hlblockIds[$searchIndex + 1])) {
-            $fields['hlblock_id'] = $hlblockIds[$searchIndex + 1];
-            $fields['page_num'] = 1;
-            $fields['files_count'] = 0;
-            $this->setRestart($fields, __FUNCTION__);
-            return $fields;
-        }
-
-        $this->setNext($fields, __FUNCTION__);
-        return $fields;
+        return $this->stepper($stepper, $fields, __FUNCTION__);
     }
 
-    protected function addMessage(&$fields, $message, $id = '')
+    /** @noinspection PhpUnused */
+    public function scanEditorPacksAction($fields)
+    {
+        $stepper = new EditorPackStepper();
+
+        return $this->stepper($stepper, $fields, __FUNCTION__);
+    }
+
+    protected function addMessage(&$fields, $message, $id = '', $color = '')
     {
         if (!isset($fields[self::OUT_MESSAGES])) {
             $fields[self::OUT_MESSAGES] = [];
         }
 
         $fields[self::OUT_MESSAGES][] = [
-            'id'   => $id ? 'sp-m-' . $id : '',
-            'text' => $message,
+            'id'    => $id ? 'sp-m-' . $id : '',
+            'text'  => $message,
+            'color' => $color,
         ];
     }
 
-    protected function setNext(&$fields, $method)
+    protected function setNextAction(&$fields, $parentfunc)
     {
-        $index = array_search($method, self::QUEUE);
+        $index = array_search($parentfunc, self::QUEUE);
         if ($index >= 0 && isset(self::QUEUE[$index + 1])) {
-            $fields[self::NEXT_ACTION] = str_replace('Action', '', self::QUEUE[$index + 1]);
+            $this->setAction($fields, self::QUEUE[$index + 1]);
         }
     }
 
-    protected function setRestart(&$fields, $method)
+    protected function setAction(&$fields, $parentfunc)
     {
-        $fields[self::NEXT_ACTION] = str_replace('Action', '', $method);
+        $action = str_replace('Action', '', $parentfunc);
+        $fields[self::NEXT_ACTION] = $action;
+    }
+
+    private function stepper(AbstractStepper $stepper, $fields, $parentfunc)
+    {
+        if (!isset($fields['entity_ids'])) {
+            $entityIds = $stepper->getEntityIds();
+            if (empty($entityIds)) {
+                $this->setNextAction($fields, $parentfunc);
+                return $fields;
+            }
+            $fields['entity_id'] = $entityIds[0];
+            $fields['entity_ids'] = implode(',', $entityIds);
+            $this->setAction($fields, $parentfunc);
+            return $fields;
+        }
+
+        $fields['page_num'] = (int)($fields['page_num'] ?? 1);
+
+        $slice = $stepper->scanEntityElements(
+            $fields['entity_id'],
+            $fields['page_num']
+        );
+
+        $fields['files_count'] = (int)($fields['files_count'] ?? 0);
+        $fields['files_count'] += $slice['files_count'];
+
+        $this->addMessage(
+            $fields,
+            $stepper->getSearchMessage(
+                $fields['entity_id'],
+                $fields['files_count']
+            ),
+            $parentfunc . $fields['entity_id'],
+            $stepper->getSearchColor()
+        );
+
+        if ($slice['has_next']) {
+            $fields['page_num']++;
+            $this->setAction($fields, $parentfunc);
+            return $fields;
+        }
+
+        $entityIds = explode(',', $fields['entity_ids']);
+        $searchIndex = array_search($fields['entity_id'], $entityIds);
+        if ($searchIndex >= 0 && isset($entityIds[$searchIndex + 1])) {
+            $fields['entity_id'] = $entityIds[$searchIndex + 1];
+            $fields['page_num'] = 1;
+            $fields['files_count'] = 0;
+            $this->setAction($fields, $parentfunc);
+            return $fields;
+        }
+
+        $this->setNextAction($fields, $parentfunc);
+        return $fields;
     }
 }
