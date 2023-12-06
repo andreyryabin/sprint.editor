@@ -4,6 +4,7 @@ namespace Sprint\Editor\Cleaner;
 
 use Bitrix\Main\Application;
 use Bitrix\Main\DB\SqlQueryException;
+use CFile;
 
 class TrashFilesTable
 {
@@ -13,13 +14,12 @@ class TrashFilesTable
     public function createTable()
     {
         $connection = Application::getConnection();
-
         $sql = <<<SQL
         CREATE TABLE IF NOT EXISTS `sprint_editor_trash_files`(
-            `id` INT NOT NULL AUTO_INCREMENT,
-            `file_id` INT NOT NULL,
-            `exists` TINYINT(1) NOT NULL DEFAULT 0,
-            PRIMARY KEY (id), UNIQUE KEY (file_id)
+            `ID` int(18) NOT NULL AUTO_INCREMENT,
+            `FILE_ID` int(18) NOT NULL,
+            `EXISTS` TINYINT(1) NOT NULL DEFAULT 0,
+            PRIMARY KEY (ID), UNIQUE KEY (FILE_ID)
         )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 SQL;
         $connection->query($sql);
@@ -33,9 +33,71 @@ SQL;
         $connection->query('DROP TABLE IF EXISTS `sprint_editor_trash_files`;');
     }
 
-    public function insertFilesToTable(array $ids, int $exists)
+    public function copyFilesFromBitrix(int $limit, int $offset)
     {
-        if (empty($ids)) {
+        $connection = Application::getConnection();
+
+        $sql = <<<SQL
+            SELECT `ID` FROM `b_file` WHERE `MODULE_ID`="sprint.editor" LIMIT $limit OFFSET $offset;
+SQL;
+        $files = $connection->query($sql)->fetchAll();
+        $fileIds = array_column($files, 'ID');
+
+        return $this->insertIds($fileIds, 0);
+    }
+
+    public function copyFilesFromEditor(array $fileIds)
+    {
+        return $this->insertIds($fileIds, 1);
+    }
+
+    public function getTrashFilesCount()
+    {
+        $connection = Application::getConnection();
+
+        $sql = <<<SQL
+        SELECT COUNT(`ID`) cnt FROM `sprint_editor_trash_files` WHERE `EXISTS`="0";
+SQL;
+
+        $item = $connection->query($sql)->fetch();
+
+        return $item['cnt'] ?? 0;
+    }
+
+    public function cleanTrashByStep(int $limit)
+    {
+        $connection = Application::getConnection();
+
+        $sql = <<<SQL
+        SELECT `ID`, `FILE_ID` FROM `sprint_editor_trash_files` WHERE `EXISTS`="0" LIMIT $limit;
+SQL;
+        $dbres = $connection->query($sql);
+
+        $ids = [];
+        while ($item = $dbres->fetch()) {
+            CFile::Delete($item['FILE_ID']);
+            $ids[] = $item['ID'];
+        }
+
+        return $this->deleteIds($ids);
+    }
+
+    public function cleanExists(): int
+    {
+        $connection = Application::getConnection();
+
+        $sql = <<<SQL
+        DELETE FROM `sprint_editor_trash_files` WHERE `EXISTS`="1";
+SQL;
+
+        $connection->query($sql);
+
+        return $connection->getAffectedRowsCount();
+    }
+
+    protected function insertIds(array $fileIds, $exists)
+    {
+        if (empty($fileIds)) {
             return 0;
         }
 
@@ -44,46 +106,39 @@ SQL;
         $exists = $exists ? 1 : 0;
 
         $values = [];
-        foreach ($ids as $id) {
-            $values[] = '("' . intval($id) . '","' . $exists . '")';
+        foreach ($fileIds as $fileId) {
+            $values[] = '("' . intval($fileId) . '","' . $exists . '")';
         }
         $values = implode(',', $values);
 
         if ($exists) {
-            $update = '`exists`="' . $exists . '"';
+            $update = '`EXISTS`="' . $exists . '"';
         } else {
-            $update = '`exists`=`exists`';
+            $update = '`EXISTS`=`EXISTS`';
         }
 
         $sql = <<<SQL
-        INSERT INTO `sprint_editor_trash_files` (`file_id`,`exists`) 
+        INSERT INTO `sprint_editor_trash_files` (`FILE_ID`,`EXISTS`) 
         VALUES $values ON DUPLICATE KEY UPDATE $update;
 SQL;
 
         $connection->query($sql);
 
-        //return $connection->getAffectedRowsCount();
-        return count($ids);
+        return count($fileIds);
     }
 
-    public function getTrashList(int $pageNum, int $limit)
+    protected function deleteIds(array $fileIds)
     {
+        if (empty($fileIds)) {
+            return 0;
+        }
+
         $connection = Application::getConnection();
 
-        $offset = ($pageNum - 1) * $limit;
+        $fileIds = '(' . implode(',', $fileIds) . ')';
 
         $sql = <<<SQL
-        SELECT * FROM `sprint_editor_trash_files` WHERE `exists`="0" LIMIT $limit OFFSET $offset;
-SQL;
-        return $connection->query($sql);
-    }
-
-    public function delete(int $id)
-    {
-        $connection = Application::getConnection();
-
-        $sql = <<<SQL
-        DELETE FROM `sprint_editor_trash_files` WHERE `id`="$id";
+        DELETE FROM `sprint_editor_trash_files` WHERE `ID` IN $fileIds;
 SQL;
 
         $connection->query($sql);
@@ -91,17 +146,9 @@ SQL;
         return $connection->getAffectedRowsCount();
     }
 
-    public function cleanExists()
+    protected function forSql($value): string
     {
-        $connection = Application::getConnection();
-
-        $sql = <<<SQL
-        DELETE FROM `sprint_editor_trash_files` WHERE `exists`="1";
-SQL;
-
-        $connection->query($sql);
-
-        return $connection->getAffectedRowsCount();
+        return Application::getConnection()->getSqlHelper()->forSql($value);
     }
 }
 

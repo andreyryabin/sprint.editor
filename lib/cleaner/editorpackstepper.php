@@ -17,7 +17,7 @@ class EditorPackStepper extends AbstractStepper
         $filesCount = 0;
         foreach ($this->getPackFiles() as $filePath) {
             $fileIds = (new EditorTools())->getFileIds(file_get_contents($filePath));
-            $filesCount += (new TrashFilesTable())->insertFilesToTable($fileIds, 1);
+            $filesCount += (new TrashFilesTable())->copyFilesFromEditor($fileIds);
         }
 
         return [

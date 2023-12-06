@@ -2,18 +2,16 @@
 
 namespace Sprint\Editor\Cleaner;
 
-use CFile;
-
 class CleanTrashStepper extends AbstractStepper
 {
     public function getEntityIds(): array
     {
-        return ['clean'];
+        return ['clean_trash'];
     }
 
     public function getSearchMessage($entityId, int $filesCount): string
     {
-        return sprintf('Удаление неиспользуемых файлов: %d', $filesCount);
+        return sprintf('Очищение корзины. Удалено файлов: %d', $filesCount);
     }
 
     public function getSearchColor(): string
@@ -23,17 +21,10 @@ class CleanTrashStepper extends AbstractStepper
 
     public function scanEntityElements($entityId, $pageNum = 1): array
     {
-        $limit = 20;
-
         $trashFiles = new TrashFilesTable();
 
-        $dbres = $trashFiles->getTrashList($pageNum, $limit);
-
-        $filesCount = 0;
-        while ($item = $dbres->fetch()) {
-            $filesCount++;
-            CFile::Delete($item['file_id']);
-        }
+        $limit = 20;
+        $filesCount = $trashFiles->cleanTrashByStep($limit);
 
         return [
             'has_next'    => $filesCount >= $limit,

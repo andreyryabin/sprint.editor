@@ -49,7 +49,7 @@ class IblockCategoryStepper extends AbstractStepper
             foreach ($editorProps as $propId) {
                 if (!empty($item[$propId])) {
                     $fileIds = (new EditorTools())->getFileIds($item[$propId]);
-                    $filesCount += (new TrashFilesTable())->insertFilesToTable($fileIds, 1);
+                    $filesCount += (new TrashFilesTable())->copyFilesFromEditor($fileIds);
                 }
             }
         }

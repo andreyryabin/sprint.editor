@@ -1,5 +1,7 @@
 <?php
 
+use Sprint\Editor\Cleaner\TrashFilesTable;
+
 class sprint_editor extends CModule
 {
     public $MODULE_ID = "sprint.editor";
@@ -50,6 +52,9 @@ class sprint_editor extends CModule
 
     public function DoUninstall()
     {
+        $trashFiles = new TrashFilesTable();
+        $trashFiles->dropTable();
+
         DeleteDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
         DeleteDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");
 

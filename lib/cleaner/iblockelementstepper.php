@@ -47,7 +47,7 @@ class IblockElementStepper extends AbstractStepper
             foreach ($editorProps as $propId) {
                 if (!empty($item[$propId . '_VALUE'])) {
                     $fileIds = (new EditorTools())->getFileIds($item[$propId . '_VALUE']);
-                    $filesCount += (new TrashFilesTable())->insertFilesToTable($fileIds, 1);
+                    $filesCount += (new TrashFilesTable())->copyFilesFromEditor($fileIds);
                 }
             }
         }

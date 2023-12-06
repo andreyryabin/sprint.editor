@@ -28,7 +28,7 @@ class Cleaner extends Controller
         'scanHlblockElementsAction',
         'scanEditorPacksAction',
         'scanFileTableAction',
-        'cleanExistsAction',
+        //'cleanTrashAction',
         'finishAction',
     ];
 
@@ -50,23 +50,30 @@ class Cleaner extends Controller
     }
 
     /** @noinspection PhpUnused */
-    public function cleanExistsAction(array $fields)
-    {
-        $stepper = new CleanTrashStepper();
-
-        return $this->stepper($stepper, $fields, __FUNCTION__);
-    }
-
-    /** @noinspection PhpUnused */
     public function finishAction($fields)
     {
         $trashFiles = new TrashFilesTable();
 
-        $trashFiles->dropTable();
+        $trashFiles->cleanExists();
 
-        $this->addMessage($fields, 'Работа завершена', 'start', 'success');
+        $trashCnt = $trashFiles->getTrashFilesCount();
+
+        $this->addMessage(
+            $fields,
+            'Корзина создана. Найдено файлов: ' . $trashCnt,
+            'start',
+            'success'
+        );
 
         return $fields;
+    }
+
+    /** @noinspection PhpUnused */
+    public function cleanTrashAction(array $fields)
+    {
+        $stepper = new CleanTrashStepper();
+
+        return $this->stepper($stepper, $fields, __FUNCTION__);
     }
 
     /** @noinspection PhpUnused */

@@ -230,3 +230,45 @@ a.sp-link-new, a.sp-link-new:link {
 .sp-support .sp-support-content {
     display: none;
 }
+
+
+/* trash_files */
+.sp-stepper-group {
+    margin-bottom: 10px;
+}
+
+.sp-alert-default {
+    padding: 16px 34px 16px 18px;
+    color: #333;
+    background: #dfe0e3;
+    margin-bottom: 10px;
+}
+
+.sp-alert-warning {
+    padding: 16px 34px 16px 18px;
+    color: #c48300;
+    background: #fff1d6;
+    margin-bottom: 10px;
+}
+
+.sp-alert-danger {
+    padding: 16px 34px 16px 18px;
+    color: #e92f2a;
+    background: #ffe8e8;
+    /*white-space: pre;*/
+    margin-bottom: 10px;
+}
+
+.sp-alert-primary {
+    padding: 16px 34px 16px 18px;
+    color: #008dba;
+    background: #e5f9ff;
+    margin-bottom: 10px;
+}
+
+.sp-alert-success {
+    padding: 16px 34px 16px 18px;
+    color: #7fa800;
+    background: #f1fbd0;
+    margin-bottom: 10px;
+}
