@@ -11,7 +11,10 @@ class CleanTrashStepper extends AbstractStepper
 
     public function getSearchMessage($entityId, int $filesCount): string
     {
-        return sprintf('Очищение корзины. Удалено файлов: %d', $filesCount);
+        if ($filesCount > 0) {
+            return sprintf('Очищение корзины. Удалено файлов: %d', $filesCount);
+        }
+        return sprintf('Корзина пуста. Не найдено файлов для удаления');
     }
 
     public function getSearchColor(): string

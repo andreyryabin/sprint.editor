@@ -21,6 +21,7 @@ class Cleaner extends Controller
 {
     const NEXT_ACTION  = 'next_action';
     const OUT_MESSAGES = 'messages';
+    const OUT_BUTTONS  = 'buttons';
     const QUEUE        = [
         'startAction',
         'scanIblockElementAction',
@@ -28,7 +29,6 @@ class Cleaner extends Controller
         'scanHlblockElementsAction',
         'scanEditorPacksAction',
         'scanFileTableAction',
-        //'cleanTrashAction',
         'finishAction',
     ];
 
@@ -60,10 +60,25 @@ class Cleaner extends Controller
 
         $this->addMessage(
             $fields,
-            'Корзина создана. Найдено файлов: ' . $trashCnt,
+            'Корзина пуста. Не найдено файлов для удаления',
             'start',
             'success'
         );
+
+        if ($trashCnt > 0) {
+            $this->addMessage(
+                $fields,
+                'Корзина создана. Найдено файлов: ' . $trashCnt,
+                'start',
+                'success'
+            );
+            $this->addButton(
+                $fields,
+                'Очистить корзину',
+                'cleanTrashAction',
+                'danger'
+            );
+        }
 
         return $fields;
     }
@@ -73,7 +88,7 @@ class Cleaner extends Controller
     {
         $stepper = new CleanTrashStepper();
 
-        return $this->stepper($stepper, $fields, __FUNCTION__);
+        return $this->stepper($stepper, $fields, __FUNCTION__, 'start');
     }
 
     /** @noinspection PhpUnused */
@@ -116,7 +131,7 @@ class Cleaner extends Controller
         return $this->stepper($stepper, $fields, __FUNCTION__);
     }
 
-    protected function addMessage(&$fields, $message, $id = '', $color = '')
+    protected function addMessage(&$fields, $text, $id = '', $color = '')
     {
         if (!isset($fields[self::OUT_MESSAGES])) {
             $fields[self::OUT_MESSAGES] = [];
@@ -124,26 +139,44 @@ class Cleaner extends Controller
 
         $fields[self::OUT_MESSAGES][] = [
             'id'    => $id ? 'sp-m-' . $id : '',
-            'text'  => $message,
+            'text'  => $text,
             'color' => $color,
+        ];
+    }
+
+    protected function addButton(&$fields, $text, $parentfunc, $color = '')
+    {
+        if (!isset($fields[self::OUT_BUTTONS])) {
+            $fields[self::OUT_BUTTONS] = [];
+        }
+        $fields[self::OUT_BUTTONS][] = [
+            'action' => $this->getActionNameByFunc($parentfunc),
+            'text'   => $text,
+            'color'  => $color,
         ];
     }
 
     protected function setNextAction(&$fields, $parentfunc)
     {
-        $index = array_search($parentfunc, self::QUEUE);
-        if ($index >= 0 && isset(self::QUEUE[$index + 1])) {
-            $this->setAction($fields, self::QUEUE[$index + 1]);
+        $searchIndex = array_search($parentfunc, self::QUEUE);
+        if (is_numeric($searchIndex) && isset(self::QUEUE[$searchIndex + 1])) {
+            $this->setAction($fields, self::QUEUE[$searchIndex + 1]);
+        } else {
+            unset($fields[self::NEXT_ACTION]);
         }
     }
 
     protected function setAction(&$fields, $parentfunc)
     {
-        $action = str_replace('Action', '', $parentfunc);
-        $fields[self::NEXT_ACTION] = $action;
+        $fields[self::NEXT_ACTION] = $this->getActionNameByFunc($parentfunc);
     }
 
-    private function stepper(AbstractStepper $stepper, $fields, $parentfunc)
+    protected function getActionNameByFunc($parentfunc)
+    {
+        return str_replace('Action', '', $parentfunc);
+    }
+
+    private function stepper(AbstractStepper $stepper, $fields, $parentfunc, $messageId = '')
     {
         if (!isset($fields['entity_ids'])) {
             $entityIds = $stepper->getEntityIds();
@@ -173,7 +206,7 @@ class Cleaner extends Controller
                 $fields['entity_id'],
                 $fields['files_count']
             ),
-            $parentfunc . $fields['entity_id'],
+            $messageId ?: $parentfunc . $fields['entity_id'],
             $stepper->getSearchColor()
         );
 
@@ -185,7 +218,7 @@ class Cleaner extends Controller
 
         $entityIds = explode(',', $fields['entity_ids']);
         $searchIndex = array_search($fields['entity_id'], $entityIds);
-        if ($searchIndex >= 0 && isset($entityIds[$searchIndex + 1])) {
+        if (is_numeric($searchIndex) && isset($entityIds[$searchIndex + 1])) {
             $fields['entity_id'] = $entityIds[$searchIndex + 1];
             $fields['page_num'] = 1;
             $fields['files_count'] = 0;
