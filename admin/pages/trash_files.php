@@ -15,7 +15,15 @@ Extension::load("ui.buttons");
 Extension::load("ui.alerts");
 
 ?>
-<div id="sprint_stepper" style="width: 50%"></div>
+<div class="adm-detail-content" style="padding: 0">
+    <div class="adm-detail-content-item-block" style="width: 50%">
+        <div class="adm-info-message" style="margin:0 0 15px">
+            <?= nl2br(GetMessage('SPRINT_EDITOR_TRASH_FILES_DESC')) ?>
+        </div>
+        <div id="sprint_stepper"></div>
+    </div>
+</div>
+
 <script type="text/javascript">
     BX.ready(function () {
         sprint_stepper('sprint:editor.controller.cleaner');

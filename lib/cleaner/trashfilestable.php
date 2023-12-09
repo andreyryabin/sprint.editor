@@ -5,7 +5,6 @@ namespace Sprint\Editor\Cleaner;
 use Bitrix\Main\Application;
 use Bitrix\Main\DB\SqlQueryException;
 use CFile;
-use COption;
 
 class TrashFilesTable
 {
@@ -13,14 +12,12 @@ class TrashFilesTable
      * @throws SqlQueryException
      */
     public function createTable()
-    {
+    {$this->dropTable();
         $connection = Application::getConnection();
         $sql = <<<SQL
         CREATE TABLE IF NOT EXISTS `sprint_editor_trash_files`(
             `ID` int(18) NOT NULL AUTO_INCREMENT,
             `FILE_ID` int(18) NOT NULL,
-            `FILE_SRC` varchar(520) NOT NULL,
-            `CONTENT_TYPE` varchar(255),
             `EXISTS` TINYINT(1) NOT NULL DEFAULT 0,
             PRIMARY KEY (ID), UNIQUE KEY (FILE_ID)
         )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
@@ -41,23 +38,17 @@ SQL;
         $connection = Application::getConnection();
 
         $sql = <<<SQL
-            SELECT `ID` as FILE_ID,  `SUBDIR`, `FILE_NAME`, `CONTENT_TYPE`
-            FROM `b_file` 
+            SELECT `ID` FROM `b_file` 
             WHERE `MODULE_ID`="sprint.editor"
             LIMIT $limit OFFSET $offset;
 SQL;
         $dbres = $connection->query($sql);
 
-        $uploadDir = COption::GetOptionString("main", "upload_dir", "upload");
-
         $values = [];
         $filesCnt = 0;
         while ($row = $dbres->fetch()) {
-            $path = '/' . $uploadDir . '/' . $row['SUBDIR'] . '/' . $row['FILE_NAME'];
             $values[] = '(' .
-                        '"' . $this->forSql($row['FILE_ID']) . '",' .
-                        '"' . $this->forSql($path) . '",' .
-                        '"' . $this->forSql($row['CONTENT_TYPE']) . '",' .
+                        '"' . $this->forSql($row['ID']) . '",' .
                         '"0")';
             $filesCnt++;
         }
@@ -66,7 +57,7 @@ SQL;
         if ($filesCnt > 0) {
             $sql = <<<SQL
         INSERT INTO `sprint_editor_trash_files` 
-            (`FILE_ID`, `FILE_SRC`, `CONTENT_TYPE`, `EXISTS`) 
+            (`FILE_ID`, `EXISTS`) 
         VALUES $values ON DUPLICATE KEY UPDATE `EXISTS`=`EXISTS`;
 SQL;
 
