@@ -54,8 +54,6 @@ class Cleaner extends Controller
     {
         $trashFiles = new TrashFilesTable();
 
-        $trashFiles->cleanExists();
-
         $trashCnt = $trashFiles->getTrashFilesCount();
 
         $this->addMessage(

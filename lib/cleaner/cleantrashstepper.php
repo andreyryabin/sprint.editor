@@ -26,6 +26,10 @@ class CleanTrashStepper extends AbstractStepper
     {
         $trashFiles = new TrashFilesTable();
 
+        if ($pageNum == 1) {
+            $trashFiles->cleanExists();
+        }
+
         $limit = 20;
         $filesCount = $trashFiles->cleanTrashByStep($limit);
 
