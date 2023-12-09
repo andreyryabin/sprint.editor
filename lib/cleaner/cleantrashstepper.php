@@ -14,7 +14,7 @@ class CleanTrashStepper extends AbstractStepper
         if ($filesCount > 0) {
             return sprintf('Очищение корзины. Удалено файлов: %d', $filesCount);
         }
-        return sprintf('Корзина пуста. Не найдено файлов для удаления');
+        return 'Корзина пуста. Не найдено файлов для удаления';
     }
 
     public function getSearchColor(): string

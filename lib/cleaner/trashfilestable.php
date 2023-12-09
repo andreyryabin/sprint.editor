@@ -5,6 +5,7 @@ namespace Sprint\Editor\Cleaner;
 use Bitrix\Main\Application;
 use Bitrix\Main\DB\SqlQueryException;
 use CFile;
+use COption;
 
 class TrashFilesTable
 {
@@ -18,6 +19,8 @@ class TrashFilesTable
         CREATE TABLE IF NOT EXISTS `sprint_editor_trash_files`(
             `ID` int(18) NOT NULL AUTO_INCREMENT,
             `FILE_ID` int(18) NOT NULL,
+            `FILE_SRC` varchar(520) NOT NULL,
+            `CONTENT_TYPE` varchar(255),
             `EXISTS` TINYINT(1) NOT NULL DEFAULT 0,
             PRIMARY KEY (ID), UNIQUE KEY (FILE_ID)
         )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
@@ -38,17 +41,65 @@ SQL;
         $connection = Application::getConnection();
 
         $sql = <<<SQL
-            SELECT `ID` FROM `b_file` WHERE `MODULE_ID`="sprint.editor" LIMIT $limit OFFSET $offset;
+            SELECT `ID` as FILE_ID,  `SUBDIR`, `FILE_NAME`, `CONTENT_TYPE`
+            FROM `b_file` 
+            WHERE `MODULE_ID`="sprint.editor"
+            LIMIT $limit OFFSET $offset;
 SQL;
-        $files = $connection->query($sql)->fetchAll();
-        $fileIds = array_column($files, 'ID');
+        $dbres = $connection->query($sql);
 
-        return $this->insertIds($fileIds, 0);
+        $uploadDir = COption::GetOptionString("main", "upload_dir", "upload");
+
+        $values = [];
+        $filesCnt = 0;
+        while ($row = $dbres->fetch()) {
+            $path = '/' . $uploadDir . '/' . $row['SUBDIR'] . '/' . $row['FILE_NAME'];
+            $values[] = '(' .
+                        '"' . $this->forSql($row['FILE_ID']) . '",' .
+                        '"' . $this->forSql($path) . '",' .
+                        '"' . $this->forSql($row['CONTENT_TYPE']) . '",' .
+                        '"0")';
+            $filesCnt++;
+        }
+        $values = implode(',', $values);
+
+        if ($filesCnt > 0) {
+            $sql = <<<SQL
+        INSERT INTO `sprint_editor_trash_files` 
+            (`FILE_ID`, `FILE_SRC`, `CONTENT_TYPE`, `EXISTS`) 
+        VALUES $values ON DUPLICATE KEY UPDATE `EXISTS`=`EXISTS`;
+SQL;
+
+            $connection->query($sql);
+        }
+
+        return $filesCnt;
     }
 
     public function copyFilesFromEditor(array $fileIds)
     {
-        return $this->insertIds($fileIds, 1);
+        if (empty($fileIds)) {
+            return 0;
+        }
+
+        $connection = Application::getConnection();
+
+        $values = [];
+        foreach ($fileIds as $fileId) {
+            $values[] = '(' .
+                        '"' . intval($fileId) . '",' .
+                        '"1")';
+        }
+        $values = implode(',', $values);
+
+        $sql = <<<SQL
+        INSERT INTO `sprint_editor_trash_files` (`FILE_ID`,`EXISTS`) 
+        VALUES $values ON DUPLICATE KEY UPDATE `EXISTS`="1";
+SQL;
+
+        $connection->query($sql);
+
+        return count($fileIds);
     }
 
     public function getTrashFilesCount()
@@ -93,38 +144,6 @@ SQL;
         $connection->query($sql);
 
         return $connection->getAffectedRowsCount();
-    }
-
-    protected function insertIds(array $fileIds, $exists)
-    {
-        if (empty($fileIds)) {
-            return 0;
-        }
-
-        $connection = Application::getConnection();
-
-        $exists = $exists ? 1 : 0;
-
-        $values = [];
-        foreach ($fileIds as $fileId) {
-            $values[] = '("' . intval($fileId) . '","' . $exists . '")';
-        }
-        $values = implode(',', $values);
-
-        if ($exists) {
-            $update = '`EXISTS`="' . $exists . '"';
-        } else {
-            $update = '`EXISTS`=`EXISTS`';
-        }
-
-        $sql = <<<SQL
-        INSERT INTO `sprint_editor_trash_files` (`FILE_ID`,`EXISTS`) 
-        VALUES $values ON DUPLICATE KEY UPDATE $update;
-SQL;
-
-        $connection->query($sql);
-
-        return count($fileIds);
     }
 
     protected function deleteIds(array $fileIds)

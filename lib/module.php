@@ -6,7 +6,7 @@ use COption;
 
 class Module
 {
-    protected static $modulename  = 'sprint.editor';
+    const ID = 'sprint.editor';
     protected static $configcache = [];
 
     public static function getDocRoot()
@@ -25,10 +25,10 @@ class Module
 
     public static function getModuleDir()
     {
-        if (is_file(self::getDocRoot() . '/local/modules/' . self::$modulename . '/include.php')) {
-            return self::getDocRoot() . '/local/modules/' . self::$modulename;
+        if (is_file(self::getDocRoot() . '/local/modules/' . Module::ID . '/include.php')) {
+            return self::getDocRoot() . '/local/modules/' . Module::ID;
         } else {
-            return self::getDocRoot() . '/bitrix/modules/' . self::$modulename;
+            return self::getDocRoot() . '/bitrix/modules/' . Module::ID;
         }
     }
 
@@ -71,7 +71,7 @@ class Module
 
     public static function getDbOption($name, $default = '')
     {
-        $val = COption::GetOptionString(self::$modulename, $name, null);
+        $val = COption::GetOptionString(Module::ID, $name, null);
         if (is_null($val)) {
             $opts = self::getOptionsConfig();
             return isset($opts[$name]) ? $opts[$name]['DEFAULT'] : $default;
@@ -82,8 +82,8 @@ class Module
 
     public static function setDbOption($name, $value)
     {
-        if ($value != COption::GetOptionString(self::$modulename, $name, '')) {
-            COption::SetOptionString(self::$modulename, $name, $value);
+        if ($value != COption::GetOptionString(Module::ID, $name, '')) {
+            COption::SetOptionString(Module::ID, $name, $value);
         }
     }
 
@@ -91,7 +91,7 @@ class Module
     {
         $options = self::getOptionsConfig();
         foreach ($options as $name => $opt) {
-            COption::RemoveOption(self::$modulename, $name);
+            COption::RemoveOption(Module::ID, $name);
         }
     }
 

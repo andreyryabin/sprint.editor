@@ -15,8 +15,8 @@ class EditorPackStepper extends AbstractStepper
     public function scanEntityElements($entityId, $pageNum = 1): array
     {
         $filesCount = 0;
-        foreach ($this->getPackFiles() as $filePath) {
-            $fileIds = (new EditorTools())->getFileIds(file_get_contents($filePath));
+        foreach ($this->getPackFiles() as $packFile) {
+            $fileIds = (new EditorTools())->getFileIds(file_get_contents($packFile['path']));
             $filesCount += (new TrashFilesTable())->copyFilesFromEditor($fileIds);
         }
 
@@ -38,7 +38,10 @@ class EditorPackStepper extends AbstractStepper
         $iterator = new DirectoryIterator($dir);
         foreach ($iterator as $item) {
             if ($item->getExtension() == 'json') {
-                $files[] = $item->getPathname();
+                $files[] = [
+                    'path' => $item->getPathname(),
+                    'name' => $item->getFilename(),
+                ];
             }
         }
         return $files;
