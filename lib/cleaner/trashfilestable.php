@@ -12,7 +12,7 @@ class TrashFilesTable
      * @throws SqlQueryException
      */
     public function createTable()
-    {$this->dropTable();
+    {
         $connection = Application::getConnection();
         $sql = <<<SQL
         CREATE TABLE IF NOT EXISTS `sprint_editor_trash_files`(
