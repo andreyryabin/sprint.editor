@@ -35,7 +35,7 @@ class UserTypeEditor
 
     public static function OnSearchIndex($arUserField)
     {
-        return AdminEditor::getSearchIndex($arUserField["VALUE"]);
+        return AdminEditor::getSearchIndex((string)($arUserField["VALUE"] ?? ''));
     }
 
     public static function PrepareSettings($arUserField)

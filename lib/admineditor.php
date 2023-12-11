@@ -2,18 +2,19 @@
 
 namespace Sprint\Editor;
 
-use CUtil;
+use Bitrix\Main\Page\Asset;
+use CJSCore;
 use DirectoryIterator;
 
 class AdminEditor
 {
-    protected static $initCounts          = 0;
-    protected static $css                 = [];
-    protected static $js                  = [];
-    protected static $allblocks           = [];
-    protected static $templates           = [];
-    protected static $baseBlockSettings   = [];
-    protected static $baseComplexSettings = [];
+    protected static int   $initCounts          = 0;
+    protected static array $css                 = [];
+    protected static array $js                  = [];
+    protected static array $allblocks           = [];
+    protected static array $templates           = [];
+    protected static array $baseBlockSettings   = [];
+    protected static array $baseComplexSettings = [];
 
     public static function init($params)
     {
@@ -147,7 +148,7 @@ class AdminEditor
         );
     }
 
-    protected static function loadSettings($settingsName)
+    protected static function loadSettings($settingsName): array
     {
         $settingsFile = Module::getSettingsDir() . $settingsName . '.php';
 
@@ -195,7 +196,7 @@ class AdminEditor
         }
     }
 
-    public static function getUserSettingsFiles()
+    public static function getUserSettingsFiles(): array
     {
         $result = ['' => GetMessage('SPRINT_EDITOR_SETTINGS_NAME_NO')];
 
@@ -278,11 +279,10 @@ class AdminEditor
     /**
      * Возвращает представление значения свойства для модуля поиска.
      *
-     * @param string $jsonValue JSON-строка со значением свойства "Редактор блоков (sprint.editor)".
+     * @param $jsonValue string JSON-строка со значением свойства "Редактор блоков (sprint.editor)".
      *
-     * @return string
      */
-    public static function getSearchIndex($jsonValue)
+    public static function getSearchIndex(string $jsonValue): string
     {
         $value = self::prepareValue($jsonValue);
 
@@ -323,15 +323,14 @@ class AdminEditor
     {
         global $APPLICATION;
 
-        CUtil::InitJSCore(["jquery"]);
-        CUtil::InitJSCore(['translit']);
+        CJSCore::Init(['jquery', 'translit']);
 
         if (Module::getDbOption('load_jquery_ui') == 'yes') {
-            $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-ui-1.13.2.custom/jquery-ui.js');
+            Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/jquery-ui-1.13.2.custom/jquery-ui.js');
         }
 
         if (Module::getDbOption('load_dotjs') == 'yes') {
-            $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/doT-master/doT.min.js');
+            Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/doT-master/doT.min.js');
         }
 
         $APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/sprint_editor.css?2');
@@ -339,13 +338,13 @@ class AdminEditor
             $APPLICATION->SetAdditionalCSS($val);
         }
 
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_editor.js?2');
+        Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/sprint_editor.js?2');
         foreach (self::$js as $val) {
-            $APPLICATION->AddHeadScript($val);
+            Asset::getInstance()->addJs($val);
         }
     }
 
-    protected static function registerBlocks($groupname, $islocal, $checkname)
+    protected static function registerBlocks($groupname, $islocal, $checkname): bool
     {
         if ($islocal) {
             $webpath = '/local/admin/sprint.editor/' . $groupname . '/';
@@ -494,7 +493,7 @@ class AdminEditor
         );
     }
 
-    protected static function getBlocksToolbar($userSettings)
+    protected static function getBlocksToolbar($userSettings): array
     {
         $filteredBlocks = self::filterBlocks($userSettings);
 
@@ -544,7 +543,7 @@ class AdminEditor
         );
     }
 
-    protected static function filterBlocks($userSettings)
+    protected static function filterBlocks($userSettings): array
     {
         if (!empty($userSettings['block_disabled'])) {
             $blocks = array_filter(
@@ -584,7 +583,7 @@ class AdminEditor
         return $blocks;
     }
 
-    protected static function setCustomTitles($blocks, $userSettings)
+    protected static function setCustomTitles($blocks, $userSettings): array
     {
         if (!empty($userSettings['block_titles'])) {
             foreach ($userSettings['block_titles'] as $name => $title) {
@@ -596,7 +595,7 @@ class AdminEditor
         return $blocks;
     }
 
-    protected static function filterLayouts($userSettings)
+    protected static function filterLayouts($userSettings): array
     {
         $layouts = [];
         if (!empty($userSettings['layout_enabled'])) {

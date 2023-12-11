@@ -1,8 +1,11 @@
 <?php
 /** @global $APPLICATION CMain */
+
+use Bitrix\Main\Page\Asset;
+
 global $APPLICATION;
 $APPLICATION->SetTitle(GetMessage('SPRINT_EDITOR_SUPPORT'));
-$APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/support_page.js');
+Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/support_page.js');
 
 $content = file_get_contents(
     'https://andreyryabin.github.io/sprint_editor/support.html',

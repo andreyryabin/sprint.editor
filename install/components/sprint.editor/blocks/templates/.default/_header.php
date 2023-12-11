@@ -7,7 +7,7 @@
  */
 
 if ($this->arParams['USE_JQUERY'] == 'Y') {
-    CUtil::InitJSCore(["jquery"]);
+    CJSCore::Init(["jquery"]);
 }
 
 if ($this->arParams['USE_FANCYBOX'] == 'Y') {

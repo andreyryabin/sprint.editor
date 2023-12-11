@@ -1,18 +1,16 @@
 <?php
 
-use Bitrix\Main\UI\Extension;
+use Bitrix\Main\Page\Asset;
 
 /** @global $APPLICATION CMain */
 global $APPLICATION;
 
 $APPLICATION->SetTitle(GetMessage('SPRINT_EDITOR_TRASH_FILES'));
-$APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/sprint_stepper.js');
+
+CJSCore::init(['ajax', 'ui.buttons', 'ui.alerts']);
+Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/sprint_stepper.js');
 
 $request = Bitrix\Main\Context::getCurrent()->getRequest();
-
-Extension::load("ajax");
-Extension::load("ui.buttons");
-Extension::load("ui.alerts");
 
 ?>
 <div class="adm-detail-content" style="padding: 0">

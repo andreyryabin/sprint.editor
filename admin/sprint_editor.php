@@ -16,8 +16,7 @@ if (!Loader::includeModule('sprint.editor')) {
 if ($APPLICATION->GetGroupRight('sprint.editor') == 'D') {
     return false;
 }
-
-$APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/admin_pages.css?2');
+$APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/admin_pages.css?3');
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 

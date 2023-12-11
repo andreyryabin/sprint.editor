@@ -2,7 +2,8 @@
 
 namespace Sprint\Editor;
 
-use CUtil;
+use Bitrix\Main\Page\Asset;
+use CJSCore;
 use DirectoryIterator;
 use Sprint\Editor\Exceptions\AdminPageException;
 
@@ -36,7 +37,7 @@ class ComplexBuilder
         return self::sortByNum($filteredBlocks, 'sort');
     }
 
-    public static function getBlocksToolbar()
+    public static function getBlocksToolbar(): array
     {
         $blocksToolbar = [];
         foreach (['blocks', 'my'] as $groupname) {
@@ -64,19 +65,16 @@ class ComplexBuilder
 
     protected static function registerAssets()
     {
-        global $APPLICATION;
-
-        CUtil::InitJSCore(["jquery"]);
-        CUtil::InitJSCore(['translit']);
+        CJSCore::Init(['jquery', 'translit']);
 
         if (Module::getDbOption('load_jquery_ui') == 'yes') {
-            $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/jquery-ui-1.13.2.custom/jquery-ui.js');
+            Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/jquery-ui-1.13.2.custom/jquery-ui.js');
         }
 
-        $APPLICATION->AddHeadScript('/bitrix/admin/sprint.editor/assets/complex_builder.js');
+        Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/complex_builder.js');
     }
 
-    protected static function getGroupPath($groupname, $islocal)
+    protected static function getGroupPath($groupname, $islocal): string
     {
         if ($islocal) {
             return Module::getDocRoot() . '/local/admin/sprint.editor/' . $groupname . '/';
@@ -84,7 +82,7 @@ class ComplexBuilder
         return Module::getDocRoot() . '/bitrix/admin/sprint.editor/' . $groupname . '/';
     }
 
-    protected static function registerBlocks($groupname, $islocal, $checkname)
+    protected static function registerBlocks($groupname, $islocal, $checkname): bool
     {
         $rootpath = self::getGroupPath($groupname, $islocal);
 
@@ -208,7 +206,7 @@ class ComplexBuilder
 
         $adminBlockPath = self::createPath(self::getAdminBlockPath($blockId));
 
-        $layouts = self::convertBuild($buildJson['layouts']);;
+        $layouts = self::convertBuild((array)($buildJson['layouts'] ?? []));
         $areas = self::extractAreas($layouts);
 
         file_put_contents(
@@ -276,7 +274,7 @@ class ComplexBuilder
         return $blockId;
     }
 
-    protected static function getComponentTemplatePath()
+    protected static function getComponentTemplatePath(): string
     {
         $local = $_SERVER['DOCUMENT_ROOT'] . '/local/components/sprint.editor/blocks/templates/.default/';
         $path = $_SERVER['DOCUMENT_ROOT'] . '/bitrix/components/sprint.editor/blocks/templates/.default/';
@@ -288,7 +286,7 @@ class ComplexBuilder
         return $path;
     }
 
-    protected static function getAdminBlockPath($blockId)
+    protected static function getAdminBlockPath($blockId): string
     {
         $local = $_SERVER['DOCUMENT_ROOT'] . '/local/admin/sprint.editor/complex/' . $blockId . '/';
         $path = $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/complex/' . $blockId . '/';
@@ -309,7 +307,7 @@ class ComplexBuilder
         return $path;
     }
 
-    protected static function deletePath($dir)
+    protected static function deletePath($dir): bool
     {
         if (!is_dir($dir)) {
             return false;
@@ -329,7 +327,7 @@ class ComplexBuilder
         }
     }
 
-    protected static function convertBuild($layouts)
+    protected static function convertBuild(array $layouts): array
     {
         $bcounter = [];
         $aindex = 1;
@@ -358,7 +356,7 @@ class ComplexBuilder
         return $layouts;
     }
 
-    protected static function extractAreas($layouts)
+    protected static function extractAreas(array $layouts): array
     {
         $areas = [];
         foreach ($layouts as $layout) {

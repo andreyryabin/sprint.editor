@@ -53,7 +53,7 @@ class IblockPropertyEditor
 
     public static function GetSearchContent($arProperty, $value, $strHTMLControlName)
     {
-        return AdminEditor::getSearchIndex($value["VALUE"]);
+        return AdminEditor::getSearchIndex((string)($value["VALUE"] ?? ''));
     }
 
     public static function GetSettingsHTML($arProperty, $strHTMLControlName, &$arPropertyFields)
