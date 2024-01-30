@@ -52,6 +52,8 @@ class sprint_editor extends CModule
 
     public function DoUninstall()
     {
+        require_once(__DIR__ . '/../lib/cleaner/trashfilestable.php');
+
         $trashFiles = new TrashFilesTable();
         $trashFiles->dropTable();
 
