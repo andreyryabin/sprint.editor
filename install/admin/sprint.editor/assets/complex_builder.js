@@ -122,7 +122,7 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
         let html = '';
         html += '<div class="sp-x-lt">';
         html += '<div class="sp-x-lt-header">';
-        html += '<span class="sp-x-del">x</span>';
+        html += '<span class="sp-x-del">&times;</span>';
         html += '<span class="sp-x-caption" contenteditable="true">' + title + '</span>';
         html += '</div>';
         html += '<div class="sp-table">';
