@@ -17,7 +17,6 @@
 namespace Sprint\Editor;
 
 use CFile;
-use CUtil;
 use Sprint\Editor\Tools\Image;
 use Sprint\Editor\Tools\Youtube;
 use stdClass;
@@ -41,6 +40,7 @@ class UploadHandler
         'abort'               => 'File upload aborted',
 
     ];
+    protected $bitrix_errors  = [];
 
     function __construct($options = null, $initialize = true, $error_messages = null)
     {
@@ -49,7 +49,6 @@ class UploadHandler
             mkdir($_SERVER['DOCUMENT_ROOT'] . $dir, BX_DIR_PERMISSIONS, true);
         }
 
-        $this->response = [];
         $this->options = [
             'script_url'    => $this->get_full_url() . '/' . basename($this->get_server_var('SCRIPT_NAME')),
             'upload_dir'    => $_SERVER['DOCUMENT_ROOT'] . $dir,
@@ -96,7 +95,6 @@ class UploadHandler
             // The php.ini settings upload_max_filesize and post_max_size
             // take precedence over the following max_file_size setting:
             'discard_aborted_uploads'          => true,
-            'print_response'                   => true,
         ];
         if ($options) {
             $this->options = $options + $this->options;
@@ -119,7 +117,7 @@ class UploadHandler
             case 'PATCH':
             case 'PUT':
             case 'POST':
-                $this->post($this->options['print_response']);
+                $this->post();
                 break;
             default:
                 $this->header('HTTP/1.1 405 Method Not Allowed');
@@ -244,7 +242,7 @@ class UploadHandler
             $this->error_messages[$error] : $error;
     }
 
-    function get_config_bytes($val)
+    protected function get_config_bytes($val)
     {
         $val = trim($val);
         $last = strtolower($val[strlen($val) - 1]);
@@ -416,11 +414,6 @@ class UploadHandler
         return readfile($file_path);
     }
 
-    protected function body($str)
-    {
-        echo $str;
-    }
-
     protected function header($str)
     {
         header($str);
@@ -431,52 +424,14 @@ class UploadHandler
         return @$_FILES[$id];
     }
 
-    protected function get_post_param($id)
-    {
-        return @$_POST[$id];
-    }
-
-    protected function get_query_param($id)
-    {
-        return @$_GET[$id];
-    }
-
     protected function get_server_var($id)
     {
-        return @$_SERVER[$id];
+        return $_SERVER[$id] ?? '';
     }
 
     protected function handle_form_data($file, $index)
     {
         // Handle form data, e.g. $_POST['description'][$index]
-    }
-
-    protected function get_version_param()
-    {
-        return basename(stripslashes($this->get_query_param('version')));
-    }
-
-    protected function get_singular_param_name()
-    {
-        return substr($this->options['param_name'], 0, -1);
-    }
-
-    protected function get_file_name_param()
-    {
-        $name = $this->get_singular_param_name();
-        return basename(stripslashes($this->get_query_param($name)));
-    }
-
-    protected function get_file_names_params()
-    {
-        $params = $this->get_query_param($this->options['param_name']);
-        if (!$params) {
-            return null;
-        }
-        foreach ($params as $key => $value) {
-            $params[$key] = basename(stripslashes($value));
-        }
-        return $params;
     }
 
     protected function send_content_type_header()
@@ -506,38 +461,26 @@ class UploadHandler
         );
     }
 
-    public function generate_response($content, $print_response = true)
+    protected function generate_response($content)
     {
-        $this->response = $content;
-        if ($print_response) {
-            $json = json_encode($content);
-            $redirect = stripslashes($this->get_post_param('redirect'));
-            if ($redirect && preg_match($this->options['redirect_allow_target'], $redirect)) {
-                $this->header('Location: ' . sprintf($redirect, rawurlencode($json)));
-                return '';
+        $this->head();
+        if ($this->get_server_var('HTTP_CONTENT_RANGE')) {
+            $files = $content[$this->options['param_name']] ?? null;
+            if ($files && is_array($files) && is_object($files[0]) && $files[0]->size) {
+                $this->header(
+                    'Range: 0-' . (
+                        $this->fix_integer_overflow((int)$files[0]->size) - 1
+                    )
+                );
             }
-            $this->head();
-            if ($this->get_server_var('HTTP_CONTENT_RANGE')) {
-                $files = $content[$this->options['param_name']] ?? null;
-                if ($files && is_array($files) && is_object($files[0]) && $files[0]->size) {
-                    $this->header(
-                        'Range: 0-' . (
-                            $this->fix_integer_overflow((int)$files[0]->size) - 1
-                        )
-                    );
-                }
-            }
-            $this->body($json);
         }
-        return $content;
+
+        $content['errors'] = implode(PHP_EOL, $this->bitrix_errors);
+
+        echo json_encode($content);
     }
 
-    public function get_response()
-    {
-        return $this->response;
-    }
-
-    public function head()
+    protected function head()
     {
         $this->header('Pragma: no-cache');
         $this->header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -550,7 +493,7 @@ class UploadHandler
         $this->send_content_type_header();
     }
 
-    public function post($print_response = true)
+    protected function post()
     {
         $upload = $this->get_upload_data($this->options['param_name']);
         // Parse the Content-Disposition header, if available:
@@ -577,8 +520,8 @@ class UploadHandler
                 foreach ($upload['tmp_name'] as $index => $value) {
                     $files[] = $this->handle_file_upload(
                         $upload['tmp_name'][$index],
-                        $file_name ? $file_name : $upload['name'][$index],
-                        $size ? $size : $upload['size'][$index],
+                        $file_name ?: $upload['name'][$index],
+                        $size ?: $upload['size'][$index],
                         $upload['type'][$index],
                         $upload['error'][$index],
                         $index,
@@ -590,12 +533,8 @@ class UploadHandler
                 // $upload is a one-dimensional array:
                 $files[] = $this->handle_file_upload(
                     $upload['tmp_name'] ?? null,
-                    $file_name
-                        ? $file_name
-                        : ($upload['name'] ?? null),
-                    $size
-                        ? $size
-                        : ($upload['size'] ?? $this->get_server_var('CONTENT_LENGTH')),
+                    $file_name ?: ($upload['name'] ?? null),
+                    $size ?: ($upload['size'] ?? $this->get_server_var('CONTENT_LENGTH')),
                     $upload['type'] ?? $this->get_server_var('CONTENT_TYPE'),
                     $upload['error'] ?? null,
                     null,
@@ -606,27 +545,12 @@ class UploadHandler
 
         $files = $this->bitrixSaveCollection($files);
 
-        return $this->generate_response(
+        $this->generate_response(
             [$this->options['param_name'] => $files],
-            $print_response
         );
     }
 
     //bitrix section
-
-    protected function bitrixTranslite($str)
-    {
-        return CUtil::translit(
-            $str, 'ru', [
-                "max_len"               => 100,
-                "change_case"           => 'L', // 'L' - toLower, 'U' - toUpper, false - do not change
-                "replace_space"         => '-',
-                "replace_other"         => '-',
-                "delete_repeat_replace" => true,
-                "safe_chars"            => '.()',
-            ]
-        );
-    }
 
     protected function bitrixSaveOne($url)
     {
@@ -641,8 +565,9 @@ class UploadHandler
     protected function bitrixSaveCollection($files)
     {
         $res = [];
+        $this->bitrix_errors = [];
 
-        foreach ($files as $k => $file) {
+        foreach ($files as $file) {
             $aFile = CFile::MakeFileArray($file->path);
             $aFile['MODULE_ID'] = 'sprint.editor';
             if (!empty($this->options['bitrix_resize'])) {
@@ -650,6 +575,8 @@ class UploadHandler
                     $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
                     if ($bitrixId) {
                         $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+                    } else {
+                        $this->bitrix_errors[] = 'Ошибка загрузки файла 1';
                     }
                 } else {
                     $checkErr = CFile::CheckImageFile($aFile);
@@ -657,7 +584,11 @@ class UploadHandler
                         $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
                         if ($bitrixId) {
                             $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+                        } else {
+                            $this->bitrix_errors[] = 'Ошибка загрузки файла 2';
                         }
+                    } else {
+                        $this->bitrix_errors[] = $checkErr;
                     }
                 }
             } else {
@@ -666,7 +597,11 @@ class UploadHandler
                     $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
                     if ($bitrixId) {
                         $res[] = CFile::GetFileArray($bitrixId);
+                    } else {
+                        $this->bitrix_errors[] = 'Ошибка загрузки файла 3';
                     }
+                } else {
+                    $this->bitrix_errors[] = $checkErr;
                 }
             }
 
@@ -680,24 +615,24 @@ class UploadHandler
         if (!empty($this->options['bitrix_resize'])) {
             $imgurl = Youtube::getPreviewImg($url);
             if ($imgurl) {
-                return $this->generate_response(
+                $this->generate_response(
                     [
                         'image' => $this->bitrixSaveOne($imgurl),
                         'video' => $url,
-                    ], true
+                    ]
                 );
             } else {
-                return $this->generate_response(
+                $this->generate_response(
                     [
                         'image' => $this->bitrixSaveOne($url),
-                    ], true
+                    ]
                 );
             }
         } else {
-            return $this->generate_response(
+            $this->generate_response(
                 [
                     'file' => $this->bitrixSaveOne($url),
-                ], true
+                ]
             );
         }
     }

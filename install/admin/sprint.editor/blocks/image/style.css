@@ -4,7 +4,8 @@
 }
 
 .sp-block-image .sp-result {
-    min-height: 210px;
+    min-height: 30px;
+    max-height: 210px;
     overflow: hidden;
     background: #eee;
     padding: 10px;
@@ -15,7 +16,7 @@
     margin: 0 auto;
     /*padding: 5px;*/
     max-width: 98%;
-    height: 210px;
+    max-height: 210px;
 }
 
 .sp-block-image .sp-item-del {

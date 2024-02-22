@@ -114,7 +114,7 @@
 }
 
 .sp-x-box-collapsed .sp-x-box-block,
-.sp-x-box-collapsed .sp-x-box-settings,
+/*.sp-x-box-collapsed .sp-x-box-settings,*/
 .sp-x-box-collapsed .sp-x-box-description {
     display: none;
 }

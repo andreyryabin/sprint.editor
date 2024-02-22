@@ -1,10 +1,11 @@
 .sp-block-container {
-    border: 1px solid #ccc;
+
 }
 
 .sp-block-container .sp-buttons{
     padding: 10px 10px 0;
     background: #eee;
+    border: 1px solid #ccc;
 }
 .sp-block-container .sp-buttons {
     font-size: 0;
@@ -15,7 +16,10 @@
 }
 
 .sp-block-container .sp-x-box {
-    margin: 10px;
+    margin: 10px 0;
+}
+.sp-block-container .sp-x-box:first-child {
+    margin-top: 0;
 }
 
 .sp-block-container .sp-cont-box-handle {

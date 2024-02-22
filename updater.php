@@ -66,12 +66,12 @@ if ($updater && $updater instanceof CUpdater) {
     ];
 
     foreach ($pathsToRemove as $path) {
-        sprint_editor_rmdir($_SERVER['DOCUMENT_ROOT'] . $path);
+        //sprint_editor_rmdir($_SERVER['DOCUMENT_ROOT'] . $path);
     }
 
     foreach ($filesToRemove as $file) {
         if (is_file($_SERVER['DOCUMENT_ROOT'] . $file)) {
-            unlink($_SERVER['DOCUMENT_ROOT'] . $file);
+            //unlink($_SERVER['DOCUMENT_ROOT'] . $file);
         }
     }
 

@@ -83,6 +83,14 @@
     text-align: center;
 }
 
+.sp-x-lt .sp-x-placeholder {
+    display: block;
+    cursor: move;
+    height: 40px;
+    margin: 2px;
+    background: #ccc;
+}
+
 .sp-x-header {
     background-color: #e3ecee;
     border: 1px solid #c4ced2;

@@ -144,6 +144,7 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
         $container.find('.sp-x-sortable').sortable({
             items: ".sp-x-block",
             connectWith: '.sp-x-sortable',
+            placeholder: "sp-x-placeholder",
         });
     }
 

@@ -52,6 +52,8 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
             url: sprint_editor.getBlockWebPath('gallery') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
+                rendererrors(result.result.errors);
+
                 $.each(result.result.file, function (index, file) {
                     var uid = sprint_editor.makeUid();
                     itemsCollection[uid] = {
@@ -111,6 +113,8 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
                 },
                 dataType: 'json',
                 success: function (result) {
+                    rendererrors(result.errors);
+
                     if (result.image) {
                         var uid = sprint_editor.makeUid();
 
@@ -180,6 +184,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         globalUid = false;
         $el.find('.sp-item-desc').val('');
         $el.removeClass('sp-editable');
+        rendererrors('');
     };
 
     var openedit = function (uid) {
@@ -190,4 +195,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         }
     };
 
+    var rendererrors = function(err) {
+        $el.find('.sp-errors').html(err);
+    }
 });

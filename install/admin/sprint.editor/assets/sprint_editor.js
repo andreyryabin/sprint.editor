@@ -157,17 +157,23 @@ var sprint_editor = {
             for (let prop in areas) {
                 if (areas.hasOwnProperty(prop)) {
                     let area = areas[prop];
-                    let areaSettings = sprint_editor.getComplexSettings(
+                    let complexSettings = sprint_editor.getComplexSettings(
                         name,
                         area.blockName,
                         currentEditorParams
                     );
+                    if (area.hasOwnProperty('blockSettings')) {
+                        complexSettings = Object.assign(
+                            area.blockSettings,
+                            complexSettings
+                        )
+                    }
                     area.block = sprint_editor.initblock(
                         $,
                         $el.find(area.container),
                         area.blockName,
                         blockData[area.dataKey],
-                        areaSettings,
+                        complexSettings,
                         currentEditorParams
                     );
                 }

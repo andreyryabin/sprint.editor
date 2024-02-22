@@ -28,6 +28,8 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
             url: sprint_editor.getBlockWebPath('image') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
+                rendererrors(result.result.errors);
+
                 let found = false;
                 $.each(result.result.file, function (index, file) {
                     data.file = file;
@@ -73,6 +75,8 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
                 },
                 dataType: 'json',
                 success: function (result) {
+                    rendererrors(result.errors);
+
                     if (result.image) {
                         data.file = result.image;
 
@@ -82,8 +86,6 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
                     }
 
                     $urltext.val('');
-
-
                 }
             });
         }, 500);
@@ -117,5 +119,9 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
             sprint_editor.renderTemplate('image-image', data)
         );
     };
+
+    var rendererrors = function(err) {
+        $el.find('.sp-errors').html(err);
+    }
 
 });

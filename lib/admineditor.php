@@ -287,27 +287,6 @@ class AdminEditor
         $value = self::prepareValue($jsonValue);
 
         $search = '';
-        foreach ($value['blocks'] as $block) {
-            if ($block['name'] == 'text' && !empty($block['value'])) {
-                $search .= ' ' . $block['value'];
-            }
-            if ($block['name'] == 'htag' && !empty($block['value'])) {
-                $search .= ' ' . $block['value'];
-            }
-            if ($block['name'] == 'accordion' && !empty($block['items'])) {
-                foreach ($block['items'] as $accordionTab) {
-                    $search .= ' ' . $accordionTab['title'];
-                    foreach ($accordionTab['blocks'] as $accordionTabBlock) {
-                        if ($accordionTabBlock['name'] == 'text' && !empty($accordionTabBlock['value'])) {
-                            $search .= ' ' . $accordionTabBlock['value'];
-                        }
-                        if ($accordionTabBlock['name'] == 'htag' && !empty($accordionTabBlock['value'])) {
-                            $search .= ' ' . $block['value'];
-                        }
-                    }
-                }
-            }
-        }
 
         foreach (GetModuleEvents('sprint.editor', 'OnGetSearchIndex', true) as $event) {
             $modifiedSearch = ExecuteModuleEventEx($event, [$value, $search]);
