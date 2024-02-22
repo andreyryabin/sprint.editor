@@ -576,7 +576,7 @@ class UploadHandler
                     if ($bitrixId) {
                         $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
                     } else {
-                        $this->bitrix_errors[] = 'Ошибка загрузки файла 1';
+                        $this->bitrix_errors[] = 'Ошибка загрузки svg-изображения';
                     }
                 } else {
                     $checkErr = CFile::CheckImageFile($aFile);
@@ -585,7 +585,7 @@ class UploadHandler
                         if ($bitrixId) {
                             $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
                         } else {
-                            $this->bitrix_errors[] = 'Ошибка загрузки файла 2';
+                            $this->bitrix_errors[] = 'Ошибка загрузки изображения';
                         }
                     } else {
                         $this->bitrix_errors[] = $checkErr;
@@ -598,7 +598,7 @@ class UploadHandler
                     if ($bitrixId) {
                         $res[] = CFile::GetFileArray($bitrixId);
                     } else {
-                        $this->bitrix_errors[] = 'Ошибка загрузки файла 3';
+                        $this->bitrix_errors[] = 'Ошибка загрузки файла';
                     }
                 } else {
                     $this->bitrix_errors[] = $checkErr;
