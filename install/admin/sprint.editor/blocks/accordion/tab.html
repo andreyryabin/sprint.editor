@@ -1,5 +1,5 @@
 <div class="sp-acc-tab">
-    <div class="sp-acc-buttons1 sp-x-buttons">
+    <div class="sp-acc-header sp-x-buttons">
         <div class="sp-x-buttons-group">
             <span class="sp-x-btn sp-x-pp-box-open">&equiv;</span>
             <span class="sp-x-btn sp-acc-tab-handle">Вкладка</span>
@@ -9,14 +9,17 @@
                     <span title="Опустить вниз" class="sp-x-btn sp-acc-dn">&darr; Опустить</span>
                 </div>
                 <div class="sp-x-pp-group">
+                    <span class="sp-x-btn sp-acc-collapse">&minus; Свернуть</span>
+                </div>
+                <div class="sp-x-pp-group">
                     <span title="Удалить вкладку" class="sp-x-btn sp-acc-del">x Удалить</span>
                 </div>
             </div>
         </div>
         <input class="sp-acc-tab-value" placeholder="Заголовок вкладки" type="text" value="{{!it.title}}"/>
     </div>
-    <div class="sp-acc-tab-blocks"></div>
-    <div class="sp-acc-buttons2">
+    <div class="sp-acc-blocks"></div>
+    <div class="sp-acc-footer">
         <div class="sp-x-buttons-group">
             <span>Добавить: </span>
             {{~it.blocklist :item}}

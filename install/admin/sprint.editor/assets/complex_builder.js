@@ -1,7 +1,7 @@
 function complex_builder($, currentEditorParams, currentEditorValue) {
 
-    let $editor = $('#' + currentEditorParams.uniqid + '_editor');
-    let $inputresult = $('#' + currentEditorParams.uniqid + '_result');
+    let $editor = $('#' + currentEditorParams.uniqId + '_editor');
+    let $inputresult = $('#' + currentEditorParams.uniqId + '_result');
 
     let $form = $editor.closest('form').first();
 

@@ -27,12 +27,13 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_UPGRADES"                   => "Обновления",
     "SPRINT_EDITOR_TASKS"                      => "Инструменты",
     "SPRINT_EDITOR_SELECT_EMPTY"               => "Блоки не найдены",
-    "SPRINT_EDITOR_OPTIONS_LINK"               => "Настройки модуля",
-    "SPRINT_EDITOR_HELP"                       => "Помощь",
+    "SPRINT_EDITOR_OPTIONS"                    => "Настройки модуля",
     "SPRINT_EDITOR_HELP_WIKI"                  => "Документация",
     "SPRINT_EDITOR_HELP_TRACKER"               => "Форма для вопросов и предложений ",
-    "SPRINT_EDITOR_HELP_MARKETPLACE"           => "Страничка модуля в маркетплейсе",
+    "SPRINT_EDITOR_HELP_MARKETPLACE"           => "Страница модуля в маркетплейсе",
     "SPRINT_EDITOR_HELP_TELEGRAM"              => "Группа в телеграме",
+    "SPRINT_EDITOR_MODULE_VERSION"             => "Версия модуля",
+    "SPRINT_EDITOR_HELP_COMPOSER"              => "Composer",
     "SPRINT_EDITOR_SETTINGS_DISABLE_CHANGE"    => "Отключить добавление блоков",
     "SPRINT_EDITOR_SETTINGS_WIDE_MODE"         => "Развернуть редактор на всю ширину",
     "SPRINT_EDITOR_SETTINGS_SETTINGS_NAME"     => "Пользовательские настройки блоков",
@@ -42,10 +43,10 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_COMPLEX_BUILDER"            => "Конструктор блоков",
     "SPRINT_EDITOR_SUPPORT"                    => "Поддержка проекта",
     "SPRINT_EDITOR_TRASH_FILES"                => "Корзина файлов",
-    "SPRINT_EDITOR_TRASH_FILES_DESC"           =>implode(PHP_EOL,[
+    "SPRINT_EDITOR_TRASH_FILES_DESC"           => implode(PHP_EOL, [
         "Корзина файлов занимается поиском ненужных картинок и файлов в статьях редактора.",
         "Такие файлы могут остаться после удаления статьи с картинками или при редактировании, когда добавленные фото не стали сохранять.",
-        "Начните поиск чтобы просканировать все статьи редактора на наличие ненужных изображений и удалите их после завершения поиска."
+        "Начните поиск чтобы просканировать все статьи редактора на наличие ненужных изображений и удалите их после завершения поиска.",
     ]),
     "SPRINT_EDITOR_group_packs"                => "Добавить макет",
     "SPRINT_EDITOR_group_blocks"               => "Добавить блоки",
@@ -96,4 +97,5 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_USED_ENTITIES" => "Пользовательские поля",
 
     "SPRINT_EDITOR_block_contents_title" => "Содержание:",
+    "SPRINT_EDITOR_init_error"           => "Не удалось инициализировать редактор sprint.editor",
 ]);

@@ -8,6 +8,15 @@
 
 .sp-table .sp-col {
     display: table-cell;
+    vertical-align: top;
+}
+
+.sp-table .sp-col-left {
+    width: 40%;
+}
+
+.sp-table .sp-col-right {
+    width: 60%;
 }
 
 .sp-table.sp-table-spacing {
@@ -212,7 +221,6 @@ a.sp-link-new, a.sp-link-new:link {
 
 .sp-support .sp-col-contents {
     width: 60%;
-    vertical-align: top;
 }
 
 .sp-support .sp-support-link {
@@ -278,5 +286,23 @@ a.sp-link-new, a.sp-link-new:link {
     padding: 16px 34px 16px 18px;
     color: #7fa800;
     background: #f1fbd0;
+    margin-bottom: 10px;
+}
+
+/* help */
+
+.sp-help.sp-table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.sp-help .sp-col {
+    background-color: #f5f9f9;
+    border: 1px solid;
+    border-color: #c4ced2 #dce7ed #dce7ed;
+    padding: 10px;
+}
+
+.sp-help .sp-help-text {
     margin-bottom: 10px;
 }

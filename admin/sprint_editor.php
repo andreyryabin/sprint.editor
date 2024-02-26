@@ -28,5 +28,7 @@ if ($showpage && file_exists(__DIR__ . '/pages/' . $showpage . '.php')) {
     include __DIR__ . '/pages/' . $showpage . '.php';
 }
 
+include __DIR__ . '/includes/help.php';
+
 /** @noinspection PhpIncludeInspection */
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");

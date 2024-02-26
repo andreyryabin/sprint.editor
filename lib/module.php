@@ -62,9 +62,8 @@ class Module
     public static function getVersion()
     {
         $arModuleVersion = [];
-        /** @noinspection PhpIncludeInspection */
         include self::getModuleDir() . '/install/version.php';
-        return isset($arModuleVersion['VERSION']) ? $arModuleVersion['VERSION'] : '';
+        return $arModuleVersion['VERSION'] ?? '';
     }
 
     //options

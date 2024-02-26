@@ -127,23 +127,28 @@ class AdminEditor
             )
         );
 
+        $editorParams = [
+            'uniqId'           => $params['uniqId'],
+            'editorName'       => $params['editorName'],
+            'userSettingsName' => $userSettingsName,
+            'enableChange'     => $enableChange,
+            'wideMode'         => $wideMode,
+            'saveEmpty'        => $saveEmpty,
+            'userSettings'     => $userSettings,
+            'layoutsToolbar'   => $layoutsToolbar,
+            'blocksToolbar'    => $blocksToolbar,
+        ];
+
         return Module::templater(
             '/templates/admin_editor.php',
             [
-                'jsonEditorValue'    => json_encode(Locale::convertToUtf8IfNeed($editorValue)),
-                'jsonBlocksToolbar'  => json_encode(Locale::convertToUtf8IfNeed($blocksToolbar)),
-                'jsonLayoutsToolbar' => json_encode(Locale::convertToUtf8IfNeed($layoutsToolbar)),
-                'jsonBlocksConfigs'  => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
-                'jsonUserSettings'   => json_encode(Locale::convertToUtf8IfNeed($userSettings)),
-                'jsonTemplates'      => json_encode(Locale::convertToWin1251IfNeed(self::$templates)),
-                'userSettingsName'   => $userSettingsName,
-                'inputName'          => $params['inputName'],
-                'uniqId'             => $params['uniqId'],
-                'editorName'         => $params['editorName'],
-                'saveEmpty'          => $saveEmpty,
-                'wideMode'           => $wideMode,
-                'enableChange'       => $enableChange,
-                'firstRun'           => (self::$initCounts == 1) ? 1 : 0,
+                'jsonEditorParams'  => json_encode(Locale::convertToUtf8IfNeed($editorParams)),
+                'jsonEditorValue'   => json_encode(Locale::convertToUtf8IfNeed($editorValue)),
+                'jsonBlocksConfigs' => json_encode(Locale::convertToUtf8IfNeed(self::$allblocks)),
+                'jsonTemplates'     => json_encode(Locale::convertToWin1251IfNeed(self::$templates)),
+                'uniqId'            => $params['uniqId'],
+                'inputName'         => $params['inputName'],
+                'firstRun'          => (self::$initCounts == 1) ? 1 : 0,
             ]
         );
     }

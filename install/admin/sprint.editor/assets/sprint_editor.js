@@ -598,10 +598,13 @@ var sprint_editor = {
     },
 
     createInstance: function ($, currentEditorParams, currentEditorValue) {
+        if (typeof $ === 'undefined') {
+            return;
+        }
 
-        let $editor = $('.sp-x-editor' + currentEditorParams.uniqid);
+        let $editor = $('.sp-x-editor' + currentEditorParams.uniqId);
 
-        let $inputresult = $('.sp-x-result' + currentEditorParams.uniqid);
+        let $inputresult = $('.sp-x-result' + currentEditorParams.uniqId);
 
         let $form = $editor.closest('form').first();
 
@@ -678,7 +681,7 @@ var sprint_editor = {
             'name': currentEditorParams.userSettingsName,
         }));
 
-        $editor.append('<div class="sp-x-editor-lt"></div>');
+        $editor.html('<div class="sp-x-editor-lt"></div>');
         if (currentEditorParams.enableChange) {
             $editor.append($clipboardFooter);
         }
@@ -985,6 +988,7 @@ var sprint_editor = {
             }
             sprint_editor.fireEvent('popup:hide');
         });
+
 
         $editor.on('click', '.sp-x-box-collapse', function (e) {
             e.preventDefault();

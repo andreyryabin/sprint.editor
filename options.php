@@ -10,6 +10,8 @@ if ($APPLICATION->GetGroupRight($module_id) == 'D') {
     $APPLICATION->AuthForm("ACCESS_DENIED");
 }
 
+$APPLICATION->SetAdditionalCSS('/bitrix/admin/sprint.editor/assets/admin_pages.css?3');
+
 if ($_SERVER['REQUEST_METHOD'] == "POST" && check_bitrix_sessid()) {
     if (isset($_REQUEST['opts_save'])) {
         $optionsConfig = Module::getOptionsConfig();
@@ -99,107 +101,100 @@ if (CModule::IncludeModule('iblock')) {
 }
 
 ?>
-<style type="text/css">
-    .c-result {
-        border-collapse: collapse;
-    }
+    <style>
+        .c-result {
+            border-collapse: collapse;
+        }
 
-    .c-result th, .c-result td {
-        vertical-align: top;
-        padding: 5px;
-        border: 1px solid #cecece;
-    }
-</style>
+        .c-result th, .c-result td {
+            vertical-align: top;
+            padding: 5px;
+            border: 1px solid #cecece;
+        }
+    </style>
 
-<form method="post">
-    <?
-    $optionsConfig = Module::getOptionsConfig();
-    foreach ($optionsConfig as $name => $aOption) {
-        $value = Module::getDbOption($name) ?>
-        <div style="margin-bottom: 10px">
-            <? if ($aOption['TYPE'] == 'checkbox') { ?>
-                <label>
-                    <input <? if ($value == 'yes'){ ?>checked="checked"<? } ?>
-                           type="checkbox"
-                           name="<?= $name ?>"
-                           value="<?= $aOption['DEFAULT'] ?>">
-                    <?= $aOption['TITLE'] ?>
-                </label>
-            <? } elseif ($aOption['TYPE'] == 'text') { ?>
-                <label>
-                    <input type="text" name="<?= $name ?>" value="<?= $value ?>"/>
-                    <?= $aOption['TITLE'] ?>
-                </label>
-            <? } ?>
-        </div>
-    <? } ?>
+    <form method="post">
+        <?php
+        $optionsConfig = Module::getOptionsConfig();
+        foreach ($optionsConfig as $name => $aOption) {
+            $value = Module::getDbOption($name) ?>
+            <div style="margin-bottom: 10px">
+                <?php if ($aOption['TYPE'] == 'checkbox') { ?>
+                    <label>
+                        <input <?php if ($value == 'yes'){ ?>checked="checked"<?php } ?>
+                               type="checkbox"
+                               name="<?= $name ?>"
+                               value="<?= $aOption['DEFAULT'] ?>">
+                        <?= $aOption['TITLE'] ?>
+                    </label>
+                <?php } elseif ($aOption['TYPE'] == 'text') { ?>
+                    <label>
+                        <input type="text" name="<?= $name ?>" value="<?= $value ?>"/>
+                        <?= $aOption['TITLE'] ?>
+                    </label>
+                <?php } ?>
+            </div>
+        <?php } ?>
+        <br/>
+        <input class="adm-btn-green" type="submit" name="opts_save" value="<?= GetMessage('SPRINT_EDITOR_BTN_SAVE') ?>">
+        <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
+        <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
+        <?= bitrix_sessid_post(); ?>
+    </form>
     <br/>
-    <input class="adm-btn-green" type="submit" name="opts_save" value="<?= GetMessage('SPRINT_EDITOR_BTN_SAVE') ?>">
-    <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
-    <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
-    <?= bitrix_sessid_post(); ?>
-</form>
-<br/>
-<br/>
+    <br/>
 
-<?
+<?php
 $taskList = UpgradeManager::getTasks();
 ?>
 
-<h2><?= GetMessage('SPRINT_EDITOR_TASKS') ?></h2>
+    <h2><?= GetMessage('SPRINT_EDITOR_TASKS') ?></h2>
 
-<? foreach ($taskList as $aItem) { ?>
-    <? if ($aItem['installed'] != 'yes') { ?>
+<?php foreach ($taskList as $aItem) { ?>
+    <?php if ($aItem['installed'] != 'yes') { ?>
         <div style="margin-bottom: 20px;">
             <form method="post">
-                <? UpgradeManager::outMessages($aItem['name']) ?>
-                <div>
-                    <? if ($aItem['installed'] == 'yes') { ?>
-                        <strike><?= $aItem['description'] ?></strike>
-                    <? } else { ?>
-                        <?= nl2br($aItem['description']) ?>
-                    <? } ?>
-                </div>
-                <? foreach ($aItem['buttons'] as $button) { ?>
+                <?php UpgradeManager::outMessages($aItem['name']) ?>
+                <div><?= nl2br($aItem['description']) ?></div>
+                <?php foreach ($aItem['buttons'] as $button) { ?>
                     <input type="submit" name="task_action[<?= $button['name'] ?>]" value="<?= $button['title'] ?>">
-                <? } ?>
+                <?php } ?>
                 <input type="hidden" name="task_name" value="<?= $aItem['name'] ?>">
                 <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
                 <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
                 <?= bitrix_sessid_post(); ?>
             </form>
         </div>
-    <? } ?>
-<? } ?>
+    <?php } ?>
+<?php } ?>
 
-<? if (!empty($editorIblocks)) { ?>
+<?php if (!empty($editorIblocks)) { ?>
     <h2><?= GetMessage('SPRINT_EDITOR_USED_IBLOCKS') ?></h2>
 
     <table class='c-result'>
-        <? foreach ($editorIblocks as $item) { ?>
+        <?php foreach ($editorIblocks as $item) { ?>
             <tr>
                 <td>
                     [<?= $item['iblock']['ID'] ?>] [<?= $item['iblock']['CODE'] ?>] <?= $item['iblock']['NAME'] ?>
                 </td>
                 <td>
-                    <? foreach ($item['props'] as $prop) { ?>
+                    <?php foreach ($item['props'] as $prop) { ?>
                         [<?= $prop['ID'] ?>] [<?= $prop['CODE'] ?>] <?= $prop['NAME'] ?><br/>
-                    <? } ?>
+                    <?php } ?>
                 </td>
                 <td>
-                    <a target="_blank" href="<?= $item['iblock']['URL2'] ?>"><?=GetMessage('SPRINT_EDITOR_LONG_TEXT_IBLOCK_LINK_ELEM')?></a>
+                    <a target="_blank" href="<?= $item['iblock']['URL2'] ?>"><?= GetMessage('SPRINT_EDITOR_LONG_TEXT_IBLOCK_LINK_ELEM') ?></a>
                     <br/>
-                    <a target="_blank" href="<?= $item['iblock']['URL'] ?>"><?=GetMessage('SPRINT_EDITOR_LONG_TEXT_IBLOCK_LINK_SETT')?></a>
+                    <a target="_blank" href="<?= $item['iblock']['URL'] ?>"><?= GetMessage('SPRINT_EDITOR_LONG_TEXT_IBLOCK_LINK_SETT') ?></a>
                 </td>
             </tr>
-        <? } ?>
+        <?php } ?>
     </table>
     <br/>
-<? } ?>
+<?php } ?>
 
 
-
-<? if (!empty($editorEntities)) { ?>
+<?php if (!empty($editorEntities)) { ?>
     <h2><?= GetMessage('SPRINT_EDITOR_USED_ENTITIES') ?></h2>
 
     <table class='c-result'>
@@ -207,37 +202,22 @@ $taskList = UpgradeManager::getTasks();
             <th>entity</th>
             <th>fields</th>
         </tr>
-        <? foreach ($editorEntities as $item) { ?>
+        <?php foreach ($editorEntities as $item) { ?>
             <tr>
                 <td>
                     <?= $item['entity']['ENTITY_ID'] ?>
                 </td>
                 <td>
-                    <? foreach ($item['props'] as $prop) { ?>
+                    <?php foreach ($item['props'] as $prop) { ?>
                         <?= $prop['FIELD_NAME'] ?><br/>
-                    <? } ?>
+                    <?php } ?>
                 </td>
             </tr>
-        <? } ?>
+        <?php } ?>
     </table>
     <br/>
-<? } ?>
+<?php } ?>
 
-
-<h2><?= GetMessage('SPRINT_EDITOR_HELP') ?></h2>
-<p><?= GetMessage('SPRINT_EDITOR_HELP_WIKI') ?> <br/>
-    <a target="_blank" href="https://github.com/andreyryabin/sprint.editor/wiki">
-        https://github.com/andreyryabin/sprint.editor/wiki
-    </a></p>
-
-<p><?= GetMessage('SPRINT_EDITOR_HELP_MARKETPLACE') ?> <br/>
-    <a target="_blank" href="http://marketplace.1c-bitrix.ru/solutions/sprint.editor/">
-        http://marketplace.1c-bitrix.ru/solutions/sprint.editor/
-    </a></p>
-
-
-<p><?= GetMessage('SPRINT_EDITOR_HELP_TELEGRAM') ?> <br/>
-    <a target="_blank" href="https://t.me/sprint_editor">
-        https://t.me/sprint_editor
-    </a></p>
-
+<?php
+include __DIR__ . '/admin/includes/help.php';
+?>

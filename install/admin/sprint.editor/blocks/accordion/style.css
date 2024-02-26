@@ -3,23 +3,33 @@
     margin-bottom: 10px;
 }
 
-.sp-block-accordion .sp-acc-buttons1 {
+.sp-block-accordion .sp-acc-tab.sp-collapsed .sp-acc-blocks,
+.sp-block-accordion .sp-acc-tab.sp-collapsed .sp-acc-footer {
+    display: none;
+}
+
+.sp-block-accordion .sp-acc-tab.sp-collapsed .sp-acc-collapse {
+    background: #e0e0e0;
+}
+
+
+.sp-block-accordion .sp-acc-header {
     position: relative;
 }
 
-.sp-block-accordion .sp-acc-buttons2,
-.sp-block-accordion .sp-acc-buttons1 {
+.sp-block-accordion .sp-acc-footer,
+.sp-block-accordion .sp-acc-header {
     padding: 10px 10px 0;
     background: #eee;
 }
 
 
-.sp-block-accordion .sp-acc-buttons1,
-.sp-block-accordion .sp-acc-buttons2 {
+.sp-block-accordion .sp-acc-header,
+.sp-block-accordion .sp-acc-footer {
     font-size: 0;
 }
 
-.sp-block-accordion .sp-acc-buttons2 span {
+.sp-block-accordion .sp-acc-footer span {
     font-size: 13px;
 }
 
@@ -46,9 +56,4 @@
 .sp-block-accordion .sp-acc-tab.ui-sortable-helper {
     background: #e0e8ea;
     /*padding: 10px 10px 20px;*/
-}
-
-.sp-block-accordion .sp-acc-tab .sp-acc-tab-blocks,
-.sp-block-accordion .sp-acc-tab .sp-acc-buttons2 {
-    /*display: none;*/
 }

@@ -32,11 +32,12 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
         var $container = $el.children('.sp-acc-container');
 
         $container.children('.sp-acc-tab').each(function () {
-            var $tabblocks = $(this).children('.sp-acc-tab-blocks');
-            var $tabBtn1 = $(this).children('.sp-acc-buttons1')
+            var $tabblocks = $(this).children('.sp-acc-blocks');
+            var $tabBtn1 = $(this).children('.sp-acc-header')
 
             var tab = {
                 title: $tabBtn1.children('.sp-acc-tab-value').val(),
+                collapsed: $(this).hasClass('sp-collapsed'),
                 blocks: []
             };
 
@@ -76,6 +77,13 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
                 title: '',
                 blocks: []
             });
+        });
+
+        $el.on('click', '.sp-acc-collapse', function (e) {
+            e.preventDefault();
+            var $target = $(this).closest('.sp-acc-tab');
+
+            toggleTab($target);
         });
 
         $el.on('click', '.sp-acc-del', function (e) {
@@ -149,21 +157,30 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
                 blocklist: blocklist
             }));
 
+            if (tabData.collapsed) {
+                hideTab($tab);
+            }
+
             $container.append($tab);
 
-            var $tabblocks = $tab.children('.sp-acc-tab-blocks');
-            var $buttons = $tab.children('.sp-acc-buttons2');
+            var $tabblocks = $tab.children('.sp-acc-blocks');
+            var $buttons = $tab.children('.sp-acc-footer');
+            var $header = $tab.children('.sp-acc-header');
 
             $.each(tabData.blocks, function (index, blockData) {
-                addblock(blockData, $tabblocks)
+                addBlock(
+                    blockData,
+                    $tabblocks
+                )
+            });
+
+            $header.on('dblclick', function () {
+                toggleTab($tab)
             });
 
             $buttons.on('click', '.sp-acc-box-add', function () {
-                var $tabblocks = $(this).closest('.sp-acc-tab').children('.sp-acc-tab-blocks');
-                addblock(
-                    {
-                        name: $(this).data('name')
-                    },
+                addBlock(
+                    {name: $(this).data('name')},
                     $tabblocks
                 );
             });
@@ -171,11 +188,11 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             $tabblocks.sortable({
                 items: "> .sp-x-box",
                 handle: ".sp-acc-box-handle",
-                connectWith: ".sp-acc-tab-blocks",
+                connectWith: ".sp-acc-blocks",
             });
         }
 
-        function enabledblock(name) {
+        function isBlockEnabled(name) {
             var index = blocklist.findIndex(function (val) {
                 return val.id === name;
             })
@@ -183,8 +200,8 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
             return (index >= 0);
         }
 
-        function addblock(blockData, $tabblocks) {
-            if (!enabledblock(blockData.name)) {
+        function addBlock(blockData, $tabblocks) {
+            if (!isBlockEnabled(blockData.name)) {
                 return;
             }
 
@@ -214,5 +231,39 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
 
             sprint_editor.registerEntry(uid, elEntry);
         }
+
+        function toggleTab($tab) {
+            if ($tab.hasClass('sp-collapsed')) {
+                showTab($tab);
+            } else {
+                hideTab($tab);
+            }
+            sprint_editor.fireEvent('popup:hide');
+        }
+
+        function showTab($tab) {
+            var $tabblocks = $tab.children('.sp-acc-blocks');
+            var $tabfooter = $tab.children('.sp-acc-footer');
+
+            $tabblocks.show(250, function () {
+                $tabfooter.show(250, function () {
+                    $tab.removeClass('sp-collapsed')
+                })
+            })
+        }
+
+        function hideTab($tab) {
+            var $tabblocks = $tab.children('.sp-acc-blocks');
+            var $tabfooter = $tab.children('.sp-acc-footer');
+
+            $tabblocks.hide(250, function () {
+                $tabfooter.hide(250, function () {
+                    $tab.addClass('sp-collapsed')
+                })
+            })
+
+
+        }
+
     };
 });

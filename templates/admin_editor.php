@@ -1,30 +1,16 @@
 <?php
 /**
+ * @var $jsonEditorParams
  * @var $jsonEditorValue
- *
  * @var $jsonBlocksConfigs
  * @var $jsonTemplates
- *
  * @var $uniqId
  * @var $inputName
- * @var $editorName
- *
- * @var $saveEmpty
- * @var $wideMode
- * @var $enableChange
- *
  * @var $firstRun
- * @var $jsonLayoutsToolbar
- * @var $jsonBlocksToolbar
- *
- * @var $jsonUserSettings
- * @var $userSettingsName
- *
- * @var $jsonTemplates
  */
 ?>
-<div class="sp-x-editor<?= $uniqId ?>"></div>
-<textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"></textarea>
+<div class="sp-x-editor<?= $uniqId ?>"><?= GetMessage('SPRINT_EDITOR_init_error') ?></div>
+<textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"><?=$jsonEditorValue?></textarea>
 
 <?php if ($firstRun) {
     CModule::IncludeModule('fileman');
@@ -48,17 +34,13 @@
 <?php } ?>
 
 <script type="text/javascript">
-    jQuery(document).ready(function ($) {
-        sprint_editor.createInstance($, {
-            uniqid: "<?= $uniqId ?>",
-            editorName: "<?= $editorName ?>",
-            userSettingsName: "<?=$userSettingsName?>",
-            enableChange: <?=($enableChange ? 'true' : 'false')?>,
-            wideMode: <?=($wideMode ? 'true' : 'false')?>,
-            saveEmpty: <?=($saveEmpty ? 'true' : 'false')?>,
-            userSettings: <?=$jsonUserSettings?>,
-            layoutsToolbar: <?=$jsonLayoutsToolbar?>,
-            blocksToolbar: <?=$jsonBlocksToolbar?>,
-        }, <?=$jsonEditorValue?>);
-    });
+    if (document.readyState === 'loading') {
+        // DOM ещё загружается, ждём события
+        document.addEventListener('DOMContentLoaded', () => {
+            sprint_editor.createInstance(jQuery, <?=$jsonEditorParams?>, <?=$jsonEditorValue?>);
+        });
+    } else {
+        // DOM готов!
+        sprint_editor.createInstance(jQuery, <?=$jsonEditorParams?>, <?=$jsonEditorValue?>);
+    }
 </script>
