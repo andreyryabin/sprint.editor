@@ -6,21 +6,21 @@
  * @var $jsonTemplates
  * @var $uniqId
  * @var $inputName
- * @var $firstRun
  */
+
+CModule::IncludeModule('fileman');
+$compParamsLangMess = CComponentParamsManager::GetLangMessages();
+$compParamsLangMess = CUtil::PhpToJSObject($compParamsLangMess, false);
+
+$sprintEditorLangMess = \Sprint\Editor\Locale::GetLangMessages();
+$sprintEditorLangMess = CUtil::PhpToJSObject($sprintEditorLangMess, false);
 ?>
 <div class="sp-x-editor<?= $uniqId ?>"><?= GetMessage('SPRINT_EDITOR_init_error') ?></div>
-<textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"><?=$jsonEditorValue?></textarea>
+<textarea class="sp-x-result<?= $uniqId ?>" name="<?= $inputName ?>" style="display: none;"><?= $jsonEditorValue ?></textarea>
 
-<?php if ($firstRun) {
-    CModule::IncludeModule('fileman');
-    $compParamsLangMess = CComponentParamsManager::GetLangMessages();
-    $compParamsLangMess = CUtil::PhpToJSObject($compParamsLangMess, false);
-
-    $sprintEditorLangMess = \Sprint\Editor\Locale::GetLangMessages();
-    $sprintEditorLangMess = CUtil::PhpToJSObject($sprintEditorLangMess, false);
-    ?>
-    <script type="text/javascript">
+<script type="text/javascript">
+    if (!window.sprint_editor_inited) {
+        window.sprint_editor_inited = true;
         BX.message(<?=$compParamsLangMess?>);
         BX.message(<?=$sprintEditorLangMess?>);
 
@@ -29,9 +29,8 @@
         jQuery(window).focus(function () {
             sprint_editor.fireEvent('window:focus');
         });
-
-    </script>
-<?php } ?>
+    }
+</script>
 
 <script type="text/javascript">
     if (document.readyState === 'loading') {

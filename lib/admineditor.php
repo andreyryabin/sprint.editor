@@ -148,7 +148,6 @@ class AdminEditor
                 'jsonTemplates'     => json_encode(Locale::convertToWin1251IfNeed(self::$templates)),
                 'uniqId'            => $params['uniqId'],
                 'inputName'         => $params['inputName'],
-                'firstRun'          => (self::$initCounts == 1) ? 1 : 0,
             ]
         );
     }
