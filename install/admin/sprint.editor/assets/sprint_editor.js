@@ -159,7 +159,7 @@ var sprint_editor = {
                     let area = areas[prop];
                     let complexSettings = sprint_editor.getComplexSettings(
                         name,
-                        area.blockName,
+                        area.dataKey,
                         currentEditorParams
                     );
                     if (area.hasOwnProperty('blockSettings')) {
