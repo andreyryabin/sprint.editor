@@ -124,7 +124,7 @@ $settings = [
 
     //Настройки блоков
     'block_settings'   => [
-        'htag'            => [
+        'htag'      => [
             //текстовое поле ввода
             /*
            'param1'     => [
@@ -157,7 +157,7 @@ $settings = [
             ],
 
         ],
-        'accordion'       => [
+        'accordion' => [
             //подключаемые блоки к аккордеону
             'blocks' => [
                 'type'  => 'hidden',
@@ -168,7 +168,20 @@ $settings = [
                 ],
             ],
         ],
-        'text'            => [
+        'container' => [
+            //подключаемые блоки к контейнеру
+            'blocks' => [
+                'type'  => 'hidden',
+                'value' => [
+                    'htag'  => 'заголовок',
+                    'text'  => 'текст',
+                    'image' => 'картинку',
+                    'video' => 'видео',
+                    'lists' => 'список',
+                ],
+            ],
+        ],
+        'text'      => [
             'param1' => [
                 'type'  => 'select',
                 'value' => [
@@ -205,7 +218,7 @@ $settings = [
                 ],
             ],
         ],
-        'lists'           => [
+        'lists'     => [
             'type' => [
                 'type'    => 'select',
                 'default' => 'ul',
