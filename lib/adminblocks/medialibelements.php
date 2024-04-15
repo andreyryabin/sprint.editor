@@ -34,68 +34,54 @@ class MedialibElements
 
     public function execute()
     {
-        $collections = [];
-
-        $dbresult = Medialib::GetCollections(
-            [
-                'type' => 'image',
-            ]
-        );
-
-        foreach ($dbresult as $aItem) {
-            $collections[] = [
-                'title' => Locale::truncateText($aItem['NAME']),
-                'id'    => $aItem['ID'],
-            ];
-        }
-
         $pageNum = 1;
         $pageCnt = 1;
-
+        $elements = [];
         $source = [];
+
+        $collections = Medialib::GetCollections([
+            'type' => 'image',
+        ]);
+
+        $collections = array_map(function ($item) {
+            return [
+                'title' => Locale::truncateText($item['NAME']),
+                'id'    => $item['ID'],
+            ];
+        }, $collections);
+
         if ($this->params['collection_id'] > 0) {
-            $dbresult = Medialib::GetElements(
+            $source = Medialib::GetElements(
                 [
                     'collection_id' => $this->params['collection_id'],
                 ], [
-                'page_size' => $this->params['limit'],
-                'page_num'  => $this->params['page'],
-            ]
-            );
-
-            $pageCnt = $dbresult['page_count'];
-            $pageNum = $dbresult['page_num'];
-
-            foreach ($dbresult['items'] as $aItem) {
-                $source[] = [
-                    'src' => $aItem['SRC'],
-                    'id'  => $aItem['ID'],
-                ];
-            }
-        }
-
-        $elements = [];
-        if ($this->params['collection_id'] > 0 && !empty($this->params['element_ids'])) {
-            $dbresult = Medialib::GetElements(
-                [
-                    'collection_id' => $this->params['collection_id'],
-                    'id'            => $this->params['element_ids'],
+                    'page_size' => $this->params['limit'],
+                    'page_num'  => $this->params['page'],
                 ]
             );
 
-            $unsorted = [];
-            foreach ($dbresult['items'] as $aItem) {
-                $unsorted[$aItem['ID']] = [
-                    'src' => $aItem['SRC'],
-                    'id'  => $aItem['ID'],
-                ];
-            }
+            $pageCnt = $source['page_count'];
+            $pageNum = $source['page_num'];
 
-            foreach ($this->params['element_ids'] as $id) {
-                if (isset($unsorted[$id])) {
-                    $elements[] = $unsorted[$id];
-                }
-            }
+            $source = array_map(function ($item) {
+                return [
+                    'src' => $item['SRC'],
+                    'id'  => $item['ID'],
+                ];
+            }, $source['items']);
+        }
+
+        if (!empty($this->params['element_ids'])) {
+            $elements = Medialib::GetElements([
+                'id' => $this->params['element_ids'],
+            ]);
+
+            $elements = array_map(function ($item) {
+                return [
+                    'src' => $item['SRC'],
+                    'id'  => $item['ID'],
+                ];
+            }, $elements['items']);
         }
 
         header('Content-type: application/json; charset=utf-8');

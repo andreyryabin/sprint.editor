@@ -25,7 +25,7 @@ class Medialib
         self::initialize();
         $mltypes = CMedialib::GetTypes();
 
-        $filter['type'] = isset($filter['type']) ? $filter['type'] : 'image';
+        $filter['type'] = $filter['type'] ?? 'image';
 
         $typeid = 0;
         foreach ($mltypes as $mltype) {
@@ -62,31 +62,17 @@ class Medialib
 
         $whereQuery = [];
         if (!empty($filter['collection_id'])) {
-            if (is_array($filter['collection_id'])) {
-                $filter['collection_id'] = array_map(
-                    function ($val) {
-                        return intval($val);
-                    }, $filter['collection_id']
-                );
+            $filter['collection_id'] = is_array($filter['collection_id']) ? $filter['collection_id'] : [$filter['collection_id']];
+            $filter['collection_id'] = array_map('intval', $filter['collection_id']);
 
-                $whereQuery[] = 'MCI.COLLECTION_ID in (' . implode(',', $filter['collection_id']) . ')';
-            } elseif (intval($filter['collection_id']) > 0) {
-                $whereQuery[] = 'MCI.COLLECTION_ID=' . intval($filter['collection_id']);
-            }
+            $whereQuery[] = 'MCI.COLLECTION_ID in (' . implode(',', $filter['collection_id']) . ')';
         }
 
         if (!empty($filter['id'])) {
-            if (is_array($filter['id'])) {
-                $filter['id'] = array_map(
-                    function ($val) {
-                        return intval($val);
-                    }, $filter['id']
-                );
+            $filter['id'] = is_array($filter['id']) ? $filter['id'] : [$filter['id']];
+            $filter['id'] = array_map('intval', $filter['id']);
 
-                $whereQuery[] = 'MI.ID in (' . implode(',', $filter['id']) . ')';
-            } elseif (intval($filter['id']) > 0) {
-                $whereQuery[] = 'MI.ID=' . intval($filter['id']);
-            }
+            $whereQuery[] = 'MI.ID in (' . implode(',', $filter['id']) . ')';
         }
 
         if (empty($whereQuery)) {
@@ -151,6 +137,16 @@ class Medialib
             }
 
             $arResult['items'][] = $aItem;
+        }
+
+        if (!empty($filter['id'])) {
+            $unsorted = array_column($arResult['items'], null, 'ID');
+            $arResult['items'] = [];
+            foreach ($filter['id'] as $id) {
+                if (isset($unsorted[$id])) {
+                    $arResult['items'][] = $unsorted[$id];
+                }
+            }
         }
 
         return $arResult;
