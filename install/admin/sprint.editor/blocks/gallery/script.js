@@ -43,9 +43,18 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
 
         $el.find('.sp-item-desc').bindWithDelay('input', function () {
             if (globalUid && itemsCollection[globalUid]) {
-                itemsCollection[globalUid].desc = $(this).val();
+                let fileDescription = $(this).val();
+                itemsCollection[globalUid].desc = fileDescription;
+                if (itemsCollection[globalUid].file && itemsCollection[globalUid].file.ID) {
+                    itemsCollection[globalUid].file.DESCRIPTION = fileDescription;
+                    $.ajax({
+                        url: sprint_editor.getBlockWebPath('gallery') + '/desc.php',
+                        type: 'post',
+                        data: itemsCollection[globalUid].file,
+                    });
+                }
             }
-        });
+        }, 500);
 
         $btninput.fileupload({
             dropZone: $el,
@@ -195,7 +204,7 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
         }
     };
 
-    var rendererrors = function(err) {
+    var rendererrors = function (err) {
         $el.find('.sp-errors').html(err);
     }
 });

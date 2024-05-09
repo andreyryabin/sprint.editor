@@ -55,6 +55,18 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
 
+        $el.find('.sp-item-text').bindWithDelay('input', function () {
+            let fileDescription = $(this).val();
+            if (data.file && data.file.ID) {
+                data.file.DESCRIPTION = fileDescription;
+                $.ajax({
+                    url: sprint_editor.getBlockWebPath('image') + '/desc.php',
+                    type: 'post',
+                    data: data.file,
+                });
+            }
+        }, 500);
+
         $el.find('.sp-download-url').bindWithDelay('input', function () {
             var $urltext = $(this);
 
@@ -120,7 +132,7 @@ sprint_editor.registerBlock('image', function ($, $el, data) {
         );
     };
 
-    var rendererrors = function(err) {
+    var rendererrors = function (err) {
         $el.find('.sp-errors').html(err);
     }
 

@@ -636,4 +636,14 @@ class UploadHandler
             );
         }
     }
+
+    public function updateDesc(int $id, string $desc)
+    {
+        if ($id > 0) {
+            $item = CFile::GetByID($id)->Fetch();
+            if ($item && $item['MODULE_ID'] == Module::ID) {
+                CFile::UpdateDesc($id, $desc);
+            }
+        }
+    }
 }
