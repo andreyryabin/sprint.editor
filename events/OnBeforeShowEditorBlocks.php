@@ -9,7 +9,7 @@ AddEventHandler(
     function (&$blocks) {
         /**
          * Обработчик восстанавливает превьюшки в админке для блоков "Галерея" и "Картинка",
-         * если они удалились из /upload/iblock/resize_cache/
+         * если они удалились из /upload/sprint.editor/resize_cache/
          */
         foreach ($blocks as &$block) {
             if ($block['name'] == 'gallery') {
@@ -66,6 +66,16 @@ AddEventHandler(
                     if (!isset($block['video']['preview'])) {
                         $block['video']['preview'] = $oldPrev;
                     }
+                }
+            } elseif ($block['name'] == 'complex_image_text') {
+                if (isset($block['image'])) {
+                    $block['image']['file'] = Sprint\Editor\Tools\Image::resizeImage2(
+                        $block['image']['file']['ID'], [
+                            'width'  => ImageAdminBlock::PREVIEW_WIDTH,
+                            'height' => ImageAdminBlock::PREVIEW_HEIGHT,
+                            'exact'  => ImageAdminBlock::PREVIEW_EXACT,
+                        ]
+                    );
                 }
             }
         }
