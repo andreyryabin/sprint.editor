@@ -8,7 +8,7 @@ class Youtube
     {
         $matches = [];
         if (preg_match(
-            '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
+            '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e|shorts(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
             $url,
             $matches
         )) {
