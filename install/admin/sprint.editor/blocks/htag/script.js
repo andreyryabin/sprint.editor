@@ -5,28 +5,27 @@ sprint_editor.registerBlock('htag', function ($, $el, data, settings) {
     data = $.extend({
         type: 'h1',
         value: '',
-        anchor: ''
+        anchor: '',
+        taglist: []
     }, data);
+
+    data.taglist = [
+        {id: 'h1', title: 'h1'},
+        {id: 'h2', title: 'h2'},
+        {id: 'h3', title: 'h3'},
+        {id: 'h4', title: 'h4'},
+        {id: 'h5', title: 'h5'},
+    ];
+
+    if (settings.taglist && settings.taglist.value) {
+        data.taglist = [];
+        $.each(settings.taglist.value, function (index, val) {
+            data.taglist.push({id: index, title: val})
+        });
+    }
 
 
     this.getData = function () {
-        let taglist = [
-            {id: 'h1', title: 'h1'},
-            {id: 'h2', title: 'h2'},
-            {id: 'h3', title: 'h3'},
-            {id: 'h4', title: 'h4'},
-            {id: 'h5', title: 'h5'},
-        ];
-
-        if (settings.taglist && settings.taglist.value) {
-            taglist = [];
-            $.each(settings.taglist.value, function (index, val) {
-                taglist.push({id: index, title: val})
-            });
-        }
-
-        data['taglist'] = taglist;
-
         return data;
     };
 

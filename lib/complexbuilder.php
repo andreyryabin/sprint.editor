@@ -22,6 +22,8 @@ class ComplexBuilder
         self::registerBlocks('complex', false, true);
         self::registerBlocks('complex', true, true);
 
+        self::registerBlocks('fields', false, false);
+
         self::registerAssets();
     }
 
@@ -40,7 +42,7 @@ class ComplexBuilder
     public static function getBlocksToolbar(): array
     {
         $blocksToolbar = [];
-        foreach (['blocks', 'my'] as $groupname) {
+        foreach (['blocks', 'my', 'fields'] as $groupname) {
             $filteredBlocks = array_filter(
                 self::$allblocks,
                 function ($block) use ($groupname) {
@@ -288,14 +290,7 @@ class ComplexBuilder
 
     protected static function getAdminBlockPath($blockId): string
     {
-        $local = $_SERVER['DOCUMENT_ROOT'] . '/local/admin/sprint.editor/complex/' . $blockId . '/';
-        $path = $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin/sprint.editor/complex/' . $blockId . '/';
-
-        if (is_dir($local)) {
-            return $local;
-        }
-
-        return $path;
+        return Module::getAdminDir() . 'complex/' . $blockId . '/';
     }
 
     protected static function createPath($path)

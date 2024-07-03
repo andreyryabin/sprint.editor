@@ -20,15 +20,23 @@ if ($updater && $updater instanceof CUpdater) {
 
     $pathsToRemove = [
         '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/complex_image_text/',
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/complex_video_text/',
         '/bitrix/admin/sprint.editor/blocks/complex_image_text/',
+
+        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/complex_video_text/',
         '/bitrix/admin/sprint.editor/blocks/complex_video_text/',
+
+        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/textfield/',
+        '/bitrix/admin/sprint.editor/blocks/textfield/',
+
         '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/coub/',
         '/bitrix/admin/sprint.editor/blocks/coub/',
+
         '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/slideshare/',
         '/bitrix/admin/sprint.editor/blocks/slideshare/',
+
         '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/dump/',
         '/bitrix/admin/sprint.editor/blocks/dump/',
+
         '/bitrix/modules/sprint.editor/admin/includes/',
         '/bitrix/modules/sprint.editor/classes/',
         '/bitrix/modules/sprint.editor/install/admin/sprint.editor/assets/jquery-ui-1.12.1.custom/',
@@ -66,12 +74,12 @@ if ($updater && $updater instanceof CUpdater) {
     ];
 
     foreach ($pathsToRemove as $path) {
-        //sprint_editor_rmdir($_SERVER['DOCUMENT_ROOT'] . $path);
+        sprint_editor_rmdir($_SERVER['DOCUMENT_ROOT'] . $path);
     }
 
     foreach ($filesToRemove as $file) {
         if (is_file($_SERVER['DOCUMENT_ROOT'] . $file)) {
-            //unlink($_SERVER['DOCUMENT_ROOT'] . $file);
+            unlink($_SERVER['DOCUMENT_ROOT'] . $file);
         }
     }
 
@@ -82,7 +90,6 @@ if ($updater && $updater instanceof CUpdater) {
     if (is_dir(__DIR__ . '/install/admin/')) {
         $updater->CopyFiles("install/admin/", "admin/");
     }
-
     //4.15.1
 
 }

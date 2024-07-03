@@ -1,0 +1,5 @@
+<select>
+    {{~it.options :option}}
+    <option {{?it.value==option.id}}selected="selected"{{?}} value="{{=option.id}}">{{=option.title}}</option>
+    {{~}}
+</select>

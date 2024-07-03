@@ -78,7 +78,7 @@ var sprint_editor = {
 
         this.registerTemplate(
             blockData.name,
-            '<div class="sp-x-dump-error">Block not found</div>'
+            '<div class="sp-x-dump-error">Block "{{=it.name}}" not found</div>'
         );
 
         this.registerBlock(blockData.name, function ($, $el, data) {

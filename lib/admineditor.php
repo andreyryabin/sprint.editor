@@ -30,6 +30,8 @@ class AdminEditor
             self::registerBlocks('complex', false, true);
             self::registerBlocks('complex', true, true);
 
+            self::registerBlocks('fields', false, false);
+
             self::registerAssets();
         }
 

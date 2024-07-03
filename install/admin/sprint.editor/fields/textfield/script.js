@@ -1,7 +1,13 @@
-sprint_editor.registerBlock('textfield', function ($, $el, data) {
+sprint_editor.registerBlock('textfield', function ($, $el, data, settings) {
         data = $.extend({
-            value: ''
+            value: '',
+            placeholder: 'Текст'
         }, data);
+
+
+        if (settings.placeholder) {
+            data.placeholder = settings.placeholder;
+        }
 
         this.getData = function () {
             return data;
@@ -9,6 +15,9 @@ sprint_editor.registerBlock('textfield', function ($, $el, data) {
 
         this.collectData = function () {
             data.value = $el.find('.sp-text').val();
+
+            delete data['placeholder'];
+
             return data;
         };
 

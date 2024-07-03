@@ -9,21 +9,12 @@ class Module
     const ID = 'sprint.editor';
     protected static $configcache = [];
 
-    public static function getDocRoot()
+    public static function getDocRoot(): string
     {
         return rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR);
     }
 
-    public static function getPhpInterfaceDir()
-    {
-        if (is_dir(self::getDocRoot() . '/local/php_interface')) {
-            return self::getDocRoot() . '/local/php_interface';
-        } else {
-            return self::getDocRoot() . '/bitrix/php_interface';
-        }
-    }
-
-    public static function getModuleDir()
+    public static function getModuleDir(): string
     {
         if (is_file(self::getDocRoot() . '/local/modules/' . Module::ID . '/include.php')) {
             return self::getDocRoot() . '/local/modules/' . Module::ID;
@@ -32,31 +23,28 @@ class Module
         }
     }
 
-    public static function getSettingsDir()
+    public static function getAdminDir(): string
     {
-        if (is_dir(self::getDocRoot() . '/local/admin/sprint.editor/settings/')) {
-            return self::makeDir('/local/admin/sprint.editor/settings/');
+        if (is_dir(self::getDocRoot() . '/local/admin/sprint.editor/')) {
+            return self::makeDir('/local/admin/sprint.editor/');
         } else {
-            return self::makeDir('/bitrix/admin/sprint.editor/settings/');
+            return self::makeDir('/bitrix/admin/sprint.editor/');
         }
     }
 
-    public static function getPacksDir()
+    public static function getSettingsDir(): string
     {
-        if (is_dir(self::getDocRoot() . '/local/admin/sprint.editor/packs/')) {
-            return self::makeDir('/local/admin/sprint.editor/packs/');
-        } else {
-            return self::makeDir('/bitrix/admin/sprint.editor/packs/');
-        }
+        return self::getAdminDir() . 'settings/';
     }
 
-    public static function getSnippetsDir()
+    public static function getPacksDir(): string
     {
-        if (is_dir(self::getDocRoot() . '/local/admin/sprint.editor/snippets/')) {
-            return self::makeDir('/local/admin/sprint.editor/snippets/');
-        } else {
-            return self::makeDir('/bitrix/admin/sprint.editor/snippets/');
-        }
+        return self::getAdminDir() . 'packs/';
+    }
+
+    public static function getSnippetsDir(): string
+    {
+        return self::getAdminDir() . 'snippets/';
     }
 
     public static function getVersion()
@@ -102,7 +90,7 @@ class Module
         return self::$configcache;
     }
 
-    protected static function makeDir($dir)
+    protected static function makeDir($dir): string
     {
         $dir = self::getDocRoot() . $dir;
         if (!is_dir($dir)) {

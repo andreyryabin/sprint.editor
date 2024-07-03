@@ -54,6 +54,7 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_add_block"                  => "Добавить блок",
     "SPRINT_EDITOR_group_my"                   => "Пользовательские",
     "SPRINT_EDITOR_group_complex"              => "Составные",
+    "SPRINT_EDITOR_group_fields"               => "Поля ввода",
 
     "SPRINT_EDITOR_layout_type1"  => "Простая сетка",
     "SPRINT_EDITOR_layout_type2"  => "Сетка из 2 колонок",
