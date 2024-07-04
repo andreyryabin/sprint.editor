@@ -32,19 +32,28 @@ class Module
         }
     }
 
+    public static function getAdminSubDir($subdir): string
+    {
+        if (is_dir(self::getDocRoot() . '/local/admin/sprint.editor/' . $subdir . '/')) {
+            return self::makeDir('/local/admin/sprint.editor/' . $subdir . '/');
+        } else {
+            return self::makeDir('/bitrix/admin/sprint.editor/' . $subdir . '/');
+        }
+    }
+
     public static function getSettingsDir(): string
     {
-        return self::getAdminDir() . 'settings/';
+        return self::getAdminSubDir('settings');
     }
 
     public static function getPacksDir(): string
     {
-        return self::getAdminDir() . 'packs/';
+        return self::getAdminSubDir('packs');
     }
 
     public static function getSnippetsDir(): string
     {
-        return self::getAdminDir() . 'snippets/';
+        return self::getAdminSubDir('snippets');
     }
 
     public static function getVersion()
