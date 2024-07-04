@@ -26,18 +26,18 @@ class Module
     public static function getAdminDir(): string
     {
         if (is_dir(self::getDocRoot() . '/local/admin/sprint.editor/')) {
-            return self::makeDir('/local/admin/sprint.editor/');
+            return self::getDocRoot() . '/local/admin/sprint.editor/';
         } else {
-            return self::makeDir('/bitrix/admin/sprint.editor/');
+            return self::getDocRoot() . '/bitrix/admin/sprint.editor/';
         }
     }
 
     public static function getAdminSubDir($subdir): string
     {
         if (is_dir(self::getDocRoot() . '/local/admin/sprint.editor/' . $subdir . '/')) {
-            return self::makeDir('/local/admin/sprint.editor/' . $subdir . '/');
+            return self::getDocRoot() . '/local/admin/sprint.editor/' . $subdir . '/';
         } else {
-            return self::makeDir('/bitrix/admin/sprint.editor/' . $subdir . '/');
+            return self::getDocRoot() . '/bitrix/admin/sprint.editor/' . $subdir . '/';
         }
     }
 
