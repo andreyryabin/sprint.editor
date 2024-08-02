@@ -24,7 +24,7 @@ class UserTypeEditor
         return AdminEditor::init(
             [
                 'uniqId'       => $arUserField['ID'],
-                'editorName'   => $arUserField['FIELD_NAME'],
+                'editorName'   => $arUserField['EDIT_FORM_LABEL'] ?? $arUserField['FIELD_NAME'],
                 'value'        => $arUserField['VALUE'],
                 'inputName'    => $arHtmlControl['NAME'],
                 'userSettings' => $arUserField['SETTINGS'],
