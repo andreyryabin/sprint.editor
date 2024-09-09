@@ -29,4 +29,14 @@
         'DEFAULT' => '828e97ef193404e336cbc1e7e9628412',
         'TYPE'    => 'text',
     ],
+    'flickr_api_key'     => [
+        'TITLE'   => GetMessage('SPRINT_EDITOR_FLICKR_API_KEY'),
+        'DEFAULT' => '',
+        'TYPE'    => 'text',
+    ],
+    'flickr_user_id' => [
+        'TITLE'   => GetMessage('SPRINT_EDITOR_FLICKR_USER_ID'),
+        'DEFAULT' => '',
+        'TYPE'    => 'text',
+    ],
 ];

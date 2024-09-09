@@ -13,6 +13,8 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_SHOW_TRASH_FILES"           => "Показывать раздел с корзиной файлов",
     "SPRINT_EDITOR_INSTAGRAM_APP_ID"           => "ID приложения facebook для подгрузки instagram постов",
     "SPRINT_EDITOR_INSTAGRAM_APP_SECRET"       => "Секрет приложения facebook для подгрузки instagram постов",
+    "SPRINT_EDITOR_FLICKR_API_KEY"             => "Flickr API Key",
+    "SPRINT_EDITOR_FLICKR_USER_ID"             => "Flickr user id",
     "SPRINT_EDITOR_BTN_ACTIONS"                => "Действия",
     "SPRINT_EDITOR_BTN_SAVE"                   => "Сохранить",
     "SPRINT_EDITOR_BTN_PASTE"                  => "Вставить",

@@ -1,0 +1,15 @@
+.sp-block-flickr_photoset input[type=text] {
+    width: 50%;
+}
+
+.sp-block-flickr_photoset .sp-source {
+    background: #FFEBC1;
+    padding: 10px;
+}
+
+.sp-block-flickr_photoset .sp-result {
+    overflow: hidden;
+    background: #eee;
+    padding: 10px;
+}
+
