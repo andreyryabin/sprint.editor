@@ -25,7 +25,7 @@ sprint_editor.registerBlock('flickr_photoset', function ($, $el, data, settings)
         let $response = $el.find('.sp-result');
 
         if (!photoset_id) {
-            $response.text('Укажите ID альбома');
+            $response.text('Альбом не выбран');
             return;
         }
 

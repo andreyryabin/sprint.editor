@@ -1,27 +1,21 @@
-<div class="sp-field">
-    <span class="sp-x-btn sp-medialib-toggle">Выбрать</span>
-</div>
 <div class="sp-source">
     <div class="sp-filter">
-        <div class="sp-filter-row">
-            <select class="sp-select-collection">
-                <option value="">нет</option>
-                {{~it.collections :item:index}}
-                <option {{?item.id== it.collection_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
-                </option>
-                {{~}}
-            </select>
+        <select class="sp-select-collection">
+            <option value="">нет</option>
+            {{~it.collections :item:index}}
+            <option {{?item.id== it.collection_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}
+            </option>
+            {{~}}
+        </select>
 
-            {{?it.collection_id && it.page_cnt}}
-            <span class="sp-x-btn sp-nav-left">&larr;</span>
-            <span class="sp-x-btn sp-nav-right">&rarr;</span>
-            {{=it.page_num}}/{{=it.page_cnt}}
-            {{?}}
-
-        </div>
+        {{?it.collection_id && it.page_cnt}}
+        <span class="sp-x-btn sp-nav-left">&larr;</span>
+        <span class="sp-x-btn sp-nav-right">&rarr;</span>
+        {{=it.page_num}}/{{=it.page_cnt}}
+        {{?}}
     </div>
     {{?it.collection_id && it.page_cnt}}
-    <div class="sp-clear">
+    <div class="sp-collection sp-clear">
         {{~it.source :item:index}}
         <div data-id="{{!item.id}}" class="sp-item">
             <img alt="{{!item.id}}" src="{{!item.src}}">

@@ -1,7 +1,6 @@
 sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
 
     data = $.extend({
-        collection_id: 0,
         element_ids: []
     }, data);
 
@@ -20,9 +19,7 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
     };
 
     this.collectData = function () {
-        data.collection_id = findCollectionId();
         data.element_ids = findElementIds();
-        data.page_num = navparams.page_num;
         return data;
     };
 
@@ -51,20 +48,8 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
             });
         });
 
-        $el.on('click', '.sp-medialib-toggle', function () {
-            if ($el.hasClass('sp-show')) {
-                $el.find('.sp-source').hide(250);
-                $el.removeClass('sp-show');
-            } else {
-                $el.find('.sp-source').show(250);
-                $el.addClass('sp-show');
-            }
-        });
-
         sendrequest({
-            collection_id: data.collection_id,
             element_ids: data.element_ids,
-            page: navparams.page_num
         });
 
     };

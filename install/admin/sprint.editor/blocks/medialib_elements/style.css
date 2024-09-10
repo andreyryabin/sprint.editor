@@ -8,7 +8,7 @@
     height: 55px;
     background: #ccc;
     text-align: center;
-    border: 2px solid #eee;
+    /*border: 2px solid #eee;*/
     cursor: pointer;
     margin: 3px;
     float: left;
@@ -32,21 +32,13 @@
 .sp-block-medialib_elements .sp-filter {
     /*display: none;*/
 }
-
-.sp-block-medialib_elements .sp-filter-row {
-    margin-bottom: 10px;
+.sp-block-medialib_elements .sp-collection {
+    margin-top: 10px;
 }
-
 
 .sp-block-medialib_elements .sp-source {
     background: #FFEBC1;
-    padding: 5px 5px 10px;
-    display: none;
-}
-
-.sp-block-medialib_elements.sp-show .sp-filter,
-.sp-block-medialib_elements.sp-show .sp-source {
-    display: block;
+    padding: 10px;
 }
 
 .sp-block-medialib_elements .sp-arrows {

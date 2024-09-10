@@ -1,5 +1,5 @@
 {
-  "title": "Галерея Flickr",
+  "title": "Flickr. Альбом",
   "sort": "1300",
   "js": [
     "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
