@@ -1,0 +1,14 @@
+{{?it.photosets && it.photosets.pages}}
+<div class="sp-photosets-nav sp-clear">
+    <span class="sp-x-btn sp-nav-left">&larr;</span>
+    <span class="sp-x-btn sp-nav-right">&rarr;</span>
+    {{=it.photosets.page}}/{{=it.photosets.pages}}
+</div>
+{{?}}
+<div class="sp-photoset-items sp-clear">
+    {{~it.photosets.photoset :item}}
+    <div class="sp-photoset-item" data-id="{{!item.id}}">
+        [{{!item.id}}] {{!item.title._content}}
+    </div>
+    {{~}}
+</div>

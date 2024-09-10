@@ -1,0 +1,13 @@
+<div>Альбом: {{=it.photoset.title._content}}</div>
+<div>Фотографий: {{=it.photoset.photos}}</div>
+
+<div class="sp-previews sp-clear">
+    {{~it.previews :item}}
+    <div class="sp-preview-item">
+        <img alt="{{!item.DESCRIPTION}}" src="{{!item.SRC}}">
+    </div>
+    {{~}}
+    {{?it.count_other_previews}}
+    <div class="sp-preview-other">+ {{=it.count_other_previews}}</div>
+    {{?}}
+</div>

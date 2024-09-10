@@ -3,5 +3,9 @@
   "sort": "1300",
   "js": [
     "/bitrix/admin/sprint.editor/assets/bindWithDelay.js"
+  ],
+  "templates": [
+    "photosets.html",
+    "info.html"
   ]
 }

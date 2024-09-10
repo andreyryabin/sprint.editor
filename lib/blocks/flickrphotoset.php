@@ -18,24 +18,67 @@ class FlickrPhotoset
         ]);
     }
 
-    public static function getPhotos($photosetId)
+    public static function getInfoWithPreviews($photosetId, $previewsLimit = 5)
+    {
+        $info = self::getInfo($photosetId);
+
+        $cntPhotos = (int)($info['photoset']['count_photos'] ?? 0);
+
+        $info['previews'] = [];
+        $info['count_other_previews'] = 0;
+
+        if ($cntPhotos > 0) {
+            $info['previews'] = self::getPhotos($photosetId, [
+                'page'         => 1,
+                'per_page'     => $previewsLimit,
+                'preview_size' => 's',
+            ]);
+            $info['count_other_previews'] = $cntPhotos - count($info['previews']);
+        }
+
+        return $info;
+    }
+
+    public static function getPhotosets($page, $limit = 10)
+    {
+        return self::sendRequest([
+            'method'   => 'flickr.photosets.getList',
+            'page'     => $page,
+            'per_page' => $limit,
+        ]);
+    }
+
+    public static function getPhotos($photosetId, $query = [])
     {
         if (empty($photosetId)) {
             return [];
         }
 
-        $response = self::sendRequest([
+        //sizes = https://www.flickr.com/services/api/misc.urls.html;
+        $previewSize = 'm';
+        if (isset($query['preview_size'])) {
+            $previewSize = $query['preview_size'];
+            unset($query['preview_size']);
+        }
+
+        $detailSize = 'b';
+        if (isset($query['detail_size'])) {
+            $detailSize = $query['detail_size'];
+            unset($query['detail_size']);
+        }
+
+        $response = self::sendRequest(array_merge($query, [
             'method'      => 'flickr.photosets.getPhotos',
             'photoset_id' => $photosetId,
-        ]);
+        ]));
 
         $items = (array)$response['photoset']['photo'] ?? [];
 
         $images = [];
         foreach ($items as $item) {
             $images[] = [
-                'DETAIL_SRC'  => self::getImageSrc($item, 'b'),
-                'SRC'         => self::getImageSrc($item, 'm'),
+                'DETAIL_SRC'  => self::getImageSrc($item, $detailSize),
+                'SRC'         => self::getImageSrc($item, $previewSize),
                 'DESCRIPTION' => $item['title'],
             ];
         }

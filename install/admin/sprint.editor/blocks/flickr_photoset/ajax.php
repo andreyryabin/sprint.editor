@@ -21,7 +21,11 @@ global $DB;
 $res = [];
 
 if (CModule::IncludeModule('sprint.editor')) {
-    $res = FlickrPhotoset::getInfo(htmlspecialchars($_REQUEST['photoset_id']));
+    if (isset($_REQUEST['photoset_id'])) {
+        $res = FlickrPhotoset::getInfoWithPreviews(htmlspecialchars($_REQUEST['photoset_id']));
+    } elseif (isset($_REQUEST['page'])) {
+        $res = FlickrPhotoset::getPhotosets(intval($_REQUEST['page']));
+    }
 }
 
 header('Content-type: application/json; charset=utf-8');
