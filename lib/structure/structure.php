@@ -122,7 +122,7 @@ class Structure
      */
     public function fromJson($json = '')
     {
-        $arr = json_decode($json);
+        $arr = json_decode($json, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new StructureException(json_last_error_msg());
         }

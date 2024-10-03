@@ -2,6 +2,7 @@
 
 use Bitrix\Main\Page\Asset;
 use Sprint\Editor\Module;
+use Sprint\Editor\PackBuilder;
 
 class SprintEditorBlocksComponent extends CBitrixComponent
 {
@@ -25,55 +26,33 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             return 0;
         }
 
-        if (
-            isset($this->arParams['IBLOCK_ID'])
-            || isset($this->arParams['IBLOCK_CODE'])
-        ) {
-            CModule::IncludeModule("iblock");
-        }
+        $this->initIblockParams();
 
-        if (
-            !empty($this->arParams['IBLOCK_TYPE'])
-            && !empty($this->arParams['IBLOCK_CODE'])
-        ) {
-            $iblock = CIBlock::GetList(
-                [], [
-                    '=TYPE' => $this->arParams['IBLOCK_TYPE'],
-                    '=CODE' => $this->arParams['IBLOCK_CODE'],
-                ]
-            )->Fetch();
-
-            $this->arParams['IBLOCK_ID'] = $iblock['ID'];
-        }
-
-        $this->arParams['TEMPLATE_NAME'] = $this->getTemplateName();
-
-        if (empty($this->arParams['TEMPLATE_NAME'])) {
-            $this->arParams['TEMPLATE_NAME'] = '.default';
-        }
+        $this->initTemplateNameParams();
 
         if (!empty($this->arParams['JSON'])) {
-            $this->outJson($this->arParams['~JSON']);
-        } elseif (
-            !empty($this->arParams['IBLOCK_ID'])
-            && !empty($this->arParams['ELEMENT_ID'])
-        ) {
-            $this->outIblockElement(
+            return $this->outJson($this->arParams['~JSON']);
+        }
+
+        if (!empty($this->arParams['PACK_ID'])) {
+            return $this->outPack($this->arParams['PACK_ID']);
+        }
+
+        if (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['ELEMENT_ID'])) {
+            return $this->outIblockElement(
                 [
                     'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
                     'ID'        => $this->arParams['ELEMENT_ID'],
                 ]
             );
-        } elseif (
-            !empty($this->arParams['IBLOCK_ID'])
-            && !empty($this->arParams['SECTION_ID'])
-        ) {
-            $this->outIblockSection();
-        } elseif (
-            !empty($this->arParams['IBLOCK_ID'])
-            && !empty($this->arParams['ELEMENT_CODE'])
-        ) {
-            $this->outIblockElement(
+        }
+
+        if (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['SECTION_ID'])) {
+            return $this->outIblockSection();
+        }
+
+        if (!empty($this->arParams['IBLOCK_ID']) && !empty($this->arParams['ELEMENT_CODE'])) {
+            return $this->outIblockElement(
                 [
                     'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
                     '=CODE'     => $this->arParams['ELEMENT_CODE'],
@@ -81,7 +60,14 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             );
         }
 
-        return $this->includedBlocks;
+        return 0;
+    }
+
+    protected function outPack($packId)
+    {
+        $packJson = PackBuilder::getPackJson($packId);
+
+        return $this->outJson($packJson);
     }
 
     protected function outIblockElement($filter = [])
@@ -89,7 +75,10 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         $aPropertyCodes = [];
         if (empty($this->arParams['PROPERTY_CODE'])) {
             $dbRes = CIBlockProperty::GetList(
-                ['SORT' => 'ASC'], [
+                [
+                    'SORT' => 'ASC',
+                ],
+                [
                     'CHECK_PERMISSIONS' => 'N',
                     'USER_TYPE'         => 'sprint_editor',
                     'IBLOCK_ID'         => $filter['IBLOCK_ID'],
@@ -103,7 +92,7 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
 
         if (empty($aPropertyCodes)) {
-            return false;
+            return 0;
         }
 
         $aSelect = array_merge(
@@ -117,15 +106,22 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         );
 
         $item = CIBlockElement::GetList(
-            ['SORT' => 'ASC'],
+            [
+                'SORT' => 'ASC',
+            ],
             $filter,
-            false, ['nTopCount' => 1],
+            false,
+            [
+                'nTopCount' => 1,
+            ],
             $aSelect
         )->Fetch();
 
+        $includedBlocks = 0;
+
         foreach ($aPropertyCodes as $propertyCode) {
             if (!empty($item[$propertyCode . '_VALUE'])) {
-                $this->outJson($item[$propertyCode . '_VALUE']);
+                $includedBlocks += $this->outJson($item[$propertyCode . '_VALUE']);
             }
         }
 
@@ -133,7 +129,8 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         if (
             isset($item['ID'])
             && ($this->arParams['SHOW_AREAS'] == 'Y')
-            && $APPLICATION->GetShowIncludeAreas()) {
+            && $APPLICATION->GetShowIncludeAreas()
+        ) {
             $arButtons = CIBlock::GetPanelButtons(
                 $item["IBLOCK_ID"],
                 $item["ID"],
@@ -144,24 +141,28 @@ class SprintEditorBlocksComponent extends CBitrixComponent
                 'edit_element' => $arButtons['configure']['edit_element'],
             ];
 
-            $this->addIncludeAreaIcons(CIBlock::GetComponentMenu($APPLICATION->GetPublicShowMode(), $arButtons));
+            $this->addIncludeAreaIcons(
+                CIBlock::GetComponentMenu(
+                    $APPLICATION->GetPublicShowMode(),
+                    $arButtons
+                )
+            );
         }
 
-        return true;
+        return $includedBlocks;
     }
 
     protected function outIblockSection()
     {
         $aPropertyCodes = [];
         if (empty($this->arParams['PROPERTY_CODE'])) {
-            //todo: получить все пользовательские поля с редактором если явно не указано
-            return false;
+            return 0;
         } else {
             $aPropertyCodes[] = $this->arParams['PROPERTY_CODE'];
         }
 
         if (empty($aPropertyCodes)) {
-            return false;
+            return 0;
         }
 
         $aSelect = array_merge(
@@ -175,19 +176,29 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         );
 
         $item = CIBlockSection::GetList(
-            ['SORT' => 'ASC'], [
-            'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
-            'ID'        => $this->arParams['SECTION_ID'],
-        ], false, $aSelect, ['nTopCount' => 1]
+            [
+                'SORT' => 'ASC',
+            ],
+            [
+                'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
+                'ID'        => $this->arParams['SECTION_ID'],
+            ],
+            false,
+            $aSelect,
+            [
+                'nTopCount' => 1,
+            ]
         )->Fetch();
+
+        $includedBlocks = 0;
 
         foreach ($aPropertyCodes as $propertyCode) {
             if (!empty($item[$propertyCode])) {
-                $this->outJson($item[$propertyCode]);
+                $includedBlocks += $this->outJson($item[$propertyCode]);
             }
         }
 
-        return true;
+        return $includedBlocks;
     }
 
     protected function prepareValue($value)
@@ -238,6 +249,8 @@ class SprintEditorBlocksComponent extends CBitrixComponent
         }
 
         $this->includeFooter($this->arParams);
+
+        return $this->includedBlocks;
     }
 
     public function registerJs($path)
@@ -280,7 +293,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             return false;
         }
 
-        /** @noinspection PhpIncludeInspection */
         include($root . $path);
 
         $this->includedBlocks++;
@@ -298,7 +310,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             return false;
         }
 
-        /** @noinspection PhpIncludeInspection */
         include($root . $path);
 
         $this->layoutIndex++;
@@ -324,7 +335,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             return false;
         }
 
-        /** @noinspection PhpIncludeInspection */
         include($root . $path);
         return true;
     }
@@ -337,7 +347,6 @@ class SprintEditorBlocksComponent extends CBitrixComponent
             return false;
         }
 
-        /** @noinspection PhpIncludeInspection */
         include($root . $path);
         return true;
     }
@@ -384,5 +393,39 @@ class SprintEditorBlocksComponent extends CBitrixComponent
     public function getLayoutsBlocks()
     {
         return $this->preparedBlocks;
+    }
+
+    protected function initIblockParams()
+    {
+        if (
+            isset($this->arParams['IBLOCK_ID'])
+            || isset($this->arParams['IBLOCK_CODE'])
+        ) {
+            CModule::IncludeModule("iblock");
+        }
+
+        if (
+            !empty($this->arParams['IBLOCK_TYPE'])
+            && !empty($this->arParams['IBLOCK_CODE'])
+        ) {
+            $iblock = CIBlock::GetList(
+                [],
+                [
+                    '=TYPE' => $this->arParams['IBLOCK_TYPE'],
+                    '=CODE' => $this->arParams['IBLOCK_CODE'],
+                ]
+            )->Fetch();
+
+            $this->arParams['IBLOCK_ID'] = $iblock['ID'];
+        }
+    }
+
+    protected function initTemplateNameParams()
+    {
+        $this->arParams['TEMPLATE_NAME'] = $this->getTemplateName();
+
+        if (empty($this->arParams['TEMPLATE_NAME'])) {
+            $this->arParams['TEMPLATE_NAME'] = '.default';
+        }
     }
 }
