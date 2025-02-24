@@ -62,34 +62,6 @@ class AdminEditor
             ];
         }
 
-        $editorValue = self::prepareValue($params['value']);
-        if (empty($editorValue['blocks']) && empty($editorValue['layouts'])) {
-            $editorValue = self::prepareValue($params['defaultValue']);
-        }
-
-        if (empty($editorValue['blocks']) && empty($editorValue['layouts'])) {
-            $editorValue = [
-                'packname' => '',
-                'version'  => 2,
-                'blocks'   => [],
-                'layouts'  => [
-                    [
-                        'settings' => [],
-                        'columns'  => [
-                            [
-                                'css' => '',
-                            ],
-                        ],
-                    ],
-                ],
-            ];
-        }
-
-        $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
-        foreach ($events as $aEvent) {
-            ExecuteModuleEventEx($aEvent, [&$editorValue['blocks']]);
-        }
-
         //обязательные настройки блоков
         $userSettings['block_settings'] = array_merge(
             self::$baseBlockSettings,
@@ -128,6 +100,36 @@ class AdminEditor
                 self::registerPacks($userSettingsName)
             )
         );
+
+
+
+        $editorValue = self::prepareValue($params['value']);
+        if (empty($editorValue['blocks']) && empty($editorValue['layouts'])) {
+            $editorValue = self::prepareValue($params['defaultValue']);
+        }
+
+        if (empty($editorValue['blocks']) && empty($editorValue['layouts'])) {
+            $editorValue = [
+                'packname' => '',
+                'version'  => 2,
+                'blocks'   => [],
+                'layouts'  => (empty($layoutsToolbar)?[
+                    [
+                        'settings' => [],
+                        'columns'  => [
+                            [
+                                'css' => '',
+                            ],
+                        ],
+                    ],
+                ]:[]),
+            ];
+        }
+
+        $events = GetModuleEvents("sprint.editor", "OnBeforeShowEditorBlocks", true);
+        foreach ($events as $aEvent) {
+            ExecuteModuleEventEx($aEvent, [&$editorValue['blocks']]);
+        }
 
         $editorParams = [
             'uniqId'           => $params['uniqId'],
