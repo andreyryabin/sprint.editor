@@ -8,7 +8,7 @@ class Vkontakte
     {
         $matches = [];
         if (preg_match(
-            '%vk.com/video(-[0-9_]+)%i',
+            '%vk.com/(?:video|clip)((-)?[0-9_]+)%i',
             $url,
             $matches
         )) {
