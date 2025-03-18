@@ -7,18 +7,18 @@ class Layout
     /**
      * @var array|Column[]
      */
-    private $columns = [];
-    private $settings = [];
+    private array $columns = [];
+    private array $settings;
 
-    public function __construct($settings = [])
+    public function __construct(array $settings = [])
     {
         $this->settings = $settings;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         $layout = [
-            'settings'=> $this->settings,
+            'settings' => $this->settings,
             'columns' => [],
         ];
 
@@ -31,19 +31,49 @@ class Layout
     /**
      * @return array|Column[]
      */
-    public function getColumns()
+    public function getColumns(): array
     {
         return $this->columns;
     }
 
     /**
-     * @param Column $column
-     *
-     * @return Layout
+     * @return array|Block[]
      */
-    public function addColumn(Column $column)
+    public function getBlocks(): array
+    {
+        $blocks = [];
+        foreach ($this->getColumns() as $column) {
+            array_push($blocks, ...$column->getBlocks());
+        }
+        return $blocks;
+    }
+
+    public function addColumn(Column $column): Layout
     {
         $this->columns[] = $column;
         return $this;
+    }
+
+    /**
+     * @throws StructureException
+     */
+    public function getLastColumn(): Column
+    {
+        if (empty($this->columns)) {
+            throw new StructureException("Last column not found");
+        }
+
+        return end($this->columns);
+    }
+
+    /**
+     * @throws StructureException
+     */
+    public function getColumnByIndex(int $index): Column
+    {
+        if (isset($this->columns[$index])) {
+            return $this->columns[$index];
+        }
+        throw new StructureException("Column with index=\"$index\" not found");
     }
 }

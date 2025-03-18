@@ -7,21 +7,18 @@ class Structure
     /**
      * @var array|Layout[]
      */
-    private $layouts = [];
+    private array $layouts = [];
 
-    public function addLayout($settings = [])
+    public function addLayout($settings = []): Structure
     {
         $this->layouts[] = new Layout($settings);
         return $this;
     }
 
     /**
-     * @param array $params
-     *
      * @throws StructureException
-     * @return $this
      */
-    public function addColumn($params = [])
+    public function addColumn($params = []): Structure
     {
         $this->getLastLayout()->addColumn(
             (new Column($params))
@@ -30,35 +27,26 @@ class Structure
     }
 
     /**
-     * @param array $params
-     *
      * @throws StructureException
-     * @return $this
      */
-    public function addBlock($params = [])
+    public function addBlock(array $params = []): Structure
     {
-        if (empty($params['name'])) {
-            throw new StructureException('block name empty');
-        }
+        $this->getLastLayout()
+            ->getLastColumn()
+            ->addBlock(
+                (new Block($params))
+            );
 
-        $this->getLastColumn()->addBlock(
-            (new Block($params))
-        );
         return $this;
     }
 
-    /**
-     * make array
-     *
-     * @return array
-     */
-    public function toArray()
+    public function toArray(): array
     {
         $data = [
             'packname' => '',
-            'version'  => 2,
-            'blocks'   => [],
-            'layouts'  => [],
+            'version' => 2,
+            'blocks' => [],
+            'layouts' => [],
         ];
 
         foreach ($this->layouts as $lindex => $layout) {
@@ -67,9 +55,10 @@ class Structure
             foreach ($columns as $cindex => $column) {
                 $blocks = $column->getBlocks();
                 foreach ($blocks as $block) {
-                    $data['blocks'][] = $block
-                        ->setPosition($lindex, $cindex)
-                        ->toArray();
+                    $data['blocks'][] = array_merge(
+                        $block->toArray(),
+                        ['layout' => $lindex . ',' . $cindex]
+                    );
                 }
             }
         }
@@ -79,20 +68,16 @@ class Structure
 
     /**
      * Load structure from array
-     *
-     * @param array $data
-     *
      * @throws StructureException
-     * @return Structure
      */
-    public function fromArray($data = [])
+    public function fromArray(array $data = []): Structure
     {
         $data = array_merge(
             [
                 'packname' => '',
-                'version'  => 2,
-                'blocks'   => [],
-                'layouts'  => [],
+                'version' => 2,
+                'blocks' => [],
+                'layouts' => [],
             ], $data
         );
 
@@ -115,12 +100,9 @@ class Structure
     }
 
     /**
-     * @param string $json
-     *
      * @throws StructureException
-     * @return Structure
      */
-    public function fromJson($json = '')
+    public function fromJson(string $json = ''): Structure
     {
         $arr = json_decode($json, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -130,7 +112,7 @@ class Structure
         return $this->fromArray($arr);
     }
 
-    public function toJson()
+    public function toJson(): string
     {
         return json_encode(
             $this->toArray()
@@ -138,13 +120,32 @@ class Structure
     }
 
     /**
-     * @throws StructureException
-     * @return Layout
+     * @return array|Layout[]
      */
-    private function getLastLayout()
+    public function getLayouts(): array
+    {
+        return $this->layouts;
+    }
+
+    /**
+     * @return array|Block[]
+     */
+    public function getBlocks(): array
+    {
+        $blocks = [];
+        foreach ($this->getLayouts() as $layout) {
+            array_push($blocks, ...$layout->getBlocks());
+        }
+        return $blocks;
+    }
+
+    /**
+     * @throws StructureException
+     */
+    public function getLastLayout(): Layout
     {
         if (empty($this->layouts)) {
-            throw new StructureException('layouts not found');
+            throw new StructureException("Last layout not found");
         }
 
         return end($this->layouts);
@@ -152,17 +153,12 @@ class Structure
 
     /**
      * @throws StructureException
-     * @return Column
      */
-    private function getLastColumn()
+    public function getLayoutByIndex(int $index): Layout
     {
-        $layout = $this->getLastLayout();
-        $columns = $layout->getColumns();
-
-        if (empty($columns)) {
-            throw new StructureException('columns not found');
+        if (isset($this->layouts[$index])) {
+            return $this->layouts[$index];
         }
-
-        return end($columns);
+        throw new StructureException("Layout with index=\"$index\" not found");
     }
 }

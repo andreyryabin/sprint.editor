@@ -13,12 +13,12 @@ CModule::IncludeModule('sprint.editor');
 
 use Sprint\Editor\Structure\Structure;
 
-$json = (new Structure())
+$structure = (new Structure())
     //->fromJson()
     //->fromArray()
 
     ->addLayout([
-        'param1'=>'value1'
+        'param1' => 'value1'
     ])
     ->addColumn(
         [
@@ -27,14 +27,14 @@ $json = (new Structure())
     )
     ->addBlock(
         [
-            'name'  => 'htag',
+            'name' => 'htag',
             'value' => 'Заголовок 1',
         ]
     )
     ->addColumn()
     ->addBlock(
         [
-            'name'  => 'text',
+            'name' => 'text',
             'value' => 'Текст на второй колонке',
         ]
     )
@@ -42,22 +42,26 @@ $json = (new Structure())
     ->addColumn()
     ->addBlock(
         [
-            'name'  => 'text',
+            'name' => 'text',
             'value' => 'Текст 2',
         ]
-    )
-    //->toArray()
-    ->toJson();
+    );
 
-/*
- * Сохраняем в элемент с id=200 в инфоблоке с id=16
- * cодержимое редактора в свойство с кодом EDITOR1
- *
- */
+// Меняем содержимое блоков заголовок
+
+foreach ($structure->getBlocks() as $block) {
+    if ($block->getName() == 'htag') {
+        $block->setData(['value' => 'xxx']);
+    }
+}
+
+
+// Сохраняем в элемент с id=200 в инфоблоке с id=16 содержимое редактора в свойство с кодом EDITOR1
+
 CIBlockElement::SetPropertyValuesEx(
     200, 16, [
-    'EDITOR1' => $json,
-]
+        'EDITOR1' => $structure->toJson(),
+    ]
 );
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");

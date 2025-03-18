@@ -7,10 +7,10 @@ class Column
     /**
      * @var array|Block[]
      */
-    private $blocks = [];
-    private $params = [];
+    private array $blocks = [];
+    private array $params;
 
-    public function __construct($params = [])
+    public function __construct(array $params = [])
     {
         $this->params = array_merge(
             [
@@ -19,17 +19,12 @@ class Column
         );
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->params;
     }
 
-    /**
-     * @param Block $block
-     *
-     * @return $this
-     */
-    public function addBlock(Block $block)
+    public function addBlock(Block $block): Column
     {
         $this->blocks[] = $block;
         return $this;
@@ -38,25 +33,26 @@ class Column
     /**
      * @return array|Block[]
      */
-    public function getBlocks()
+    public function getBlocks(): array
     {
         return $this->blocks;
     }
-
     /**
-     * @return string
+     * @throws StructureException
      */
-    public function getCss()
+    public function getBlockByIndex(int $index): Block
     {
-        return $this->params['css'];
+        if (isset($this->blocks[$index])) {
+            return $this->blocks[$index];
+        }
+        throw new StructureException("Block with index=\"$index\" not found");
+    }
+    public function getCss(): string
+    {
+        return (string)$this->params['css'];
     }
 
-    /**
-     * @param string $css
-     *
-     * @return Column
-     */
-    public function setCss($css)
+    public function setCss(string $css): Column
     {
         $this->params['css'] = $css;
         return $this;
