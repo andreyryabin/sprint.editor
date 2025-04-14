@@ -1,4 +1,4 @@
-sprint_editor.registerBlock('table', function ($, $el, data) {
+sprint_editor.registerBlock('table', function ($, $el, data, settings) {
 
     data = $.extend({
         rows: [
@@ -15,17 +15,18 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
     this.collectData = function () {
         data.rows = [];
 
-        $el.find('tr').each(function () {
-            var cols = [];
-            $(this).find('td').each(function () {
-                var col = {};
-                /*var attrs = [];*/
+        let collectClass = (settings.tdlist && settings.tdlist.value);
 
-                var teditor = $(this).find('.trumbowyg-editor').first();
+        $el.find('tr').each(function () {
+            let cols = [];
+            $(this).find('td').each(function () {
+                let col = {};
+
+                let teditor = $(this).find('.trumbowyg-editor').first();
                 if (teditor.length > 0) {
                     col.text = teditor.trumbowyg('html');
                 } else {
-                    var tbox = $(this).find('.trumbowyg-editor-box').first();
+                    let tbox = $(this).find('.trumbowyg-editor-box').first();
                     if (tbox.length > 0) {
                         col.text = tbox.html();
                     } else {
@@ -33,15 +34,11 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                     }
                 }
 
-                /*if ($(this).hasClass('center')) {
-                    attrs.push('center');
-                } else if ($(this).hasClass('right')) {
-                    attrs.push('right');
+                if (collectClass) {
+                    let $fake = $('<div>').attr('class', $(this).attr('class'));
+                    $fake.removeClass('inited').removeClass('active');
+                    col.class = $fake.attr('class');
                 }
-
-                if ($(this).hasClass('bold')) {
-                    attrs.push('bold');
-                }*/
 
                 if ($(this).attr('colspan')) {
                     col.colspan = $(this).attr('colspan');
@@ -50,10 +47,6 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 if ($(this).attr('rowspan')) {
                     col.rowspan = $(this).attr('rowspan');
                 }
-
-                /*if (attrs.length > 0) {
-                    col.attrs = attrs;
-                }*/
 
                 cols.push(col)
             });
@@ -68,22 +61,22 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
     };
 
     this.afterRender = function () {
-        var $table = $el.find('table');
-        var $editor = null;
+        let $table = $el.find('table');
+        let $editor = null;
 
-        var $fake = $el.find('.fake-button-pane');
+        let $fake = $el.find('.fake-button-pane');
 
         showcolbtns();
 
         $el.on('keydown', function (e) {
-            var keyCode = e.keyCode || e.which;
+            let keyCode = e.keyCode || e.which;
             if (keyCode === 9) {
                 e.preventDefault();
-                var $td = $el.find('td.active');
+                let $td = $el.find('td.active');
                 if ($td.next('td').length > 0) {
                     $td.next('td').trigger('click');
                 } else {
-                    var $nexttd = $td.closest('tr').next('tr').find('td').first();
+                    let $nexttd = $td.closest('tr').next('tr').find('td').first();
                     if ($nexttd.length > 0) {
                         $nexttd.trigger('click');
                     }
@@ -96,24 +89,21 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             $el.find('td').not(this).removeClass('active');
             $(this).addClass('active');
             showcolbtns();
-
-            initeditor($(this));
         });
 
         $el.on('click', '.sp-add-col', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('td.active');
+            let $td = $el.find('td.active');
             addcol($td, true)
             showcolbtns();
         });
 
-
         $el.on('click', '.sp-del-col', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('td.active');
-            var $tr = $td.parent();
+            let $td = $el.find('td.active');
+            let $tr = $td.parent();
 
             if ($td.length > 0) {
                 if ($tr.find('td').length - 1 > 0) {
@@ -131,10 +121,11 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             addrow();
             showcolbtns();
         });
+
         $el.on('click', '.sp-del-row', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('td.active');
+            let $td = $el.find('td.active');
 
             if ($td.length > 0) {
                 $td.parent().remove();
@@ -142,10 +133,11 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             showcolbtns();
         });
+
         $el.on('click', '.sp-sel-row', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('td.active');
+            let $td = $el.find('td.active');
 
             if ($td.length > 0) {
                 $td.parent().toggleClass('active');
@@ -157,19 +149,19 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
         $el.on('click', '.sp-add-cs', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('td.active');
+            let $td = $el.find('td.active');
 
             if ($td.length > 0) {
 
-                var $ntd = $td.next('td');
+                let $ntd = $td.next('td');
 
                 if ($ntd.length) {
 
-                    var ncs = $ntd.attr('colspan');
+                    let ncs = $ntd.attr('colspan');
                     ncs = (ncs) ? parseInt(ncs, 10) : 1;
 
                     $ntd.remove();
-                    var cs = $td.attr('colspan');
+                    let cs = $td.attr('colspan');
 
                     cs = (cs) ? parseInt(cs, 10) : 1;
 
@@ -178,14 +170,15 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             }
             showcolbtns();
         });
+
         $el.on('click', '.sp-del-cs', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('td.active');
+            let $td = $el.find('td.active');
 
             if ($td.length > 0) {
 
-                var cs = $td.attr('colspan');
+                let cs = $td.attr('colspan');
                 cs = (cs) ? parseInt(cs, 10) : 1;
 
                 if (cs - 1 > 1) {
@@ -200,14 +193,15 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             }
             showcolbtns();
         });
+
         $el.on('click', '.sp-add-rs', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('td.active');
+            let $td = $el.find('td.active');
 
             if ($td.length > 0) {
 
-                var rs = $td.attr('rowspan');
+                let rs = $td.attr('rowspan');
 
                 rs = (rs) ? parseInt(rs, 10) : 1;
 
@@ -215,14 +209,15 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             }
             showcolbtns();
         });
+
         $el.on('click', '.sp-del-rs', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('td.active');
+            let $td = $el.find('td.active');
 
             if ($td.length > 0) {
 
-                var rs = $td.attr('rowspan');
+                let rs = $td.attr('rowspan');
 
                 rs = (rs) ? parseInt(rs, 10) : 1;
 
@@ -236,11 +231,11 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
         });
 
         $el.on('click', '.sp-sel-dn', function () {
-            var $trs = $el.find('tr.active');
+            let $trs = $el.find('tr.active');
             if ($trs.length > 0) {
-                var $last = $trs.last();
+                let $last = $trs.last();
 
-                var $ntr = $last.next('tr');
+                let $ntr = $last.next('tr');
                 if (!$ntr.length) {
                     $ntr = addrowAppend($last);
                 }
@@ -248,11 +243,12 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 $trs.insertAfter($ntr);
             }
         });
+
         $el.on('click', '.sp-sel-up', function () {
-            var $trs = $el.find('tr.active');
+            let $trs = $el.find('tr.active');
             if ($trs.length > 0) {
-                var $first = $trs.first();
-                var $ntr = $first.prev('tr');
+                let $first = $trs.first();
+                let $ntr = $first.prev('tr');
                 $trs.insertBefore($ntr);
             }
         });
@@ -260,7 +256,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
         $el.on('click', '.sp-toggle-align', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('td.active');
+            let $td = $el.find('td.active');
 
             if ($td.length > 0) {
                 if ($td.hasClass('center')) {
@@ -274,10 +270,11 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             }
             showcolbtns();
         });
+
         $el.on('click', '.sp-toggle-bold', function (e) {
             e.preventDefault();
 
-            var $td = $el.find('td.active');
+            let $td = $el.find('td.active');
 
             if ($td.length > 0) {
                 if ($td.hasClass('bold')) {
@@ -301,7 +298,7 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
         }
 
         function colcount($tr) {
-            var cnt = 0;
+            let cnt = 0;
             $tr.find('td').each(function () {
                 if ($(this).attr('colspan')) {
                     cnt += +$(this).attr('colspan');
@@ -314,15 +311,15 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
         }
 
         function addrow() {
-            var $tr = $el.find('td.active').parent();
+            let $tr = $el.find('td.active').parent();
             if ($tr.length <= 0) {
                 $tr = $table.find('tr').last();
             }
 
-            var colCount = colcount($tr) || 4;
+            let colCount = colcount($tr) || 4;
 
-            var newtr = '';
-            for (var index = 1; index <= colCount; index++) {
+            let newtr = '';
+            for (let index = 1; index <= colCount; index++) {
                 newtr += '<td><div class="trumbowyg-editor-box"></div></td>';
             }
 
@@ -335,10 +332,10 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
 
         function addrowAppend($tr) {
-            var colCount = colcount($tr)
+            let colCount = colcount($tr)
 
-            var newtr = '';
-            for (var index = 1; index <= colCount; index++) {
+            let newtr = '';
+            for (let index = 1; index <= colCount; index++) {
                 newtr += '<td><div class="trumbowyg-editor-box"></div></td>';
             }
             $table.append('<tr>' + newtr + '</tr>');
@@ -348,11 +345,11 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
         }
 
         function showcolbtns() {
-            var $td = $table.find('td.active');
+            let $td = $table.find('td.active');
 
             $el.find('.sp-add-row').show();
 
-            var $trSel = $table.find('tr.active');
+            let $trSel = $table.find('tr.active');
             if ($trSel.length > 0) {
                 $el.find('.sp-sel-up').show();
                 $el.find('.sp-sel-dn').show();
@@ -362,18 +359,19 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
             }
 
             if ($td.length > 0) {
+                initeditor($td);
+
                 $el.find('.sp-col-buttons').show();
                 $el.find('.sp-del-row').show();
                 $el.find('.sp-sel-row').show();
 
-                var $tr = $td.parent();
-                var $ntd = $td.next('td');
-                var rs = $td.attr('rowspan');
+                let $tr = $td.parent();
+                let $ntd = $td.next('td');
+                let rs = $td.attr('rowspan');
                 rs = (rs) ? parseInt(rs, 10) : 1;
 
-                var trindex = $table.find('tr').index($tr);
-                var $ntr = $table.find('tr').eq(trindex + rs);
-
+                let trindex = $table.find('tr').index($tr);
+                let $ntr = $table.find('tr').eq(trindex + rs);
 
                 if ($tr.find('td').length > 1) {
                     $el.find('.sp-del-col').show();
@@ -398,7 +396,6 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
                 } else {
                     $el.find('.sp-del-rs').hide();
                 }
-
 
                 if ($ntr.length > 0) {
                     $el.find('.sp-add-rs').show();
@@ -432,20 +429,31 @@ sprint_editor.registerBlock('table', function ($, $el, data) {
 
             $editor = $cell.children('.trumbowyg-editor-box').first();
 
+            let btns = [
+                ['viewHTML', 'strong', 'em', 'underline', 'del', 'link'],
+                ['justifyLeft', 'justifyCenter', 'justifyRight']
+            ];
+
+            let plugins = {};
+
+            if (settings.csslist && settings.csslist.value) {
+                btns.push(['mycss']);
+                plugins['mycss'] = {csslist: settings.csslist.value}
+            }
+
+            if (settings.tdlist && settings.tdlist.value) {
+                btns.push(['mytdcss']);
+                plugins['mytdcss'] = {tdlist: settings.tdlist.value};
+            }
+
             $editor.trumbowyg({
                 svgPath: '/bitrix/admin/sprint.editor/assets/trumbowyg/ui/icons.svg',
                 lang: 'ru',
                 resetCss: false,
                 removeformatPasted: true,
                 autogrow: true,
-                btns: [
-                    [
-                        'viewHTML', 'strong', 'em', 'underline', 'del', 'link',
-                    ],
-                    [
-                        'justifyLeft', 'justifyCenter', 'justifyRight'
-                    ]
-                ],
+                btns: btns,
+                plugins: plugins
             }).focus();
 
             $fake.height(

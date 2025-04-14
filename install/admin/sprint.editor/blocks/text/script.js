@@ -25,33 +25,23 @@ sprint_editor.registerBlock('text', function ($, $el, data, settings) {
             if (!$.fn.trumbowyg) {
                 return false;
             }
-
-            let btns = [];
-            let csslist = {};
             let plugins = {};
+            let btns = [
+                ['viewHTML'],
+                ['formatting', 'link', 'specialChars'],
+                ['strong', 'em', 'underline', 'del'],
+                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                ['unorderedList', 'orderedList'],
+                ['removeformat']
+            ];
 
             if (settings.toolbar && settings.toolbar.value) {
                 btns = settings.toolbar.value.slice();
-            } else {
-                btns = [
-                    ['viewHTML'],
-                    ['formatting', 'link', 'specialChars'],
-                    ['strong', 'em', 'underline', 'del'],
-                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-                    ['unorderedList', 'orderedList'],
-                    ['removeformat']
-                ]
             }
 
             if (settings.csslist && settings.csslist.value) {
-                csslist = settings.csslist.value;
-                btns.push(['myCss']);
-
-                plugins = {
-                    mycss: {
-                        cssList: csslist
-                    }
-                }
+                btns.push(['mycss']);
+                plugins['mycss'] = {csslist: settings.csslist.value}
             }
 
             $el.find('.sp-text').trumbowyg({

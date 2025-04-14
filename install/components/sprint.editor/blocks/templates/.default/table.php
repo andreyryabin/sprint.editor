@@ -5,7 +5,8 @@
             <tr>
                 <?php foreach ($cols as $col) {
                     $col = Sprint\Editor\Blocks\Table::prepareColumn($col); ?>
-                    <td <?php if ($col['style']){ ?>style="<?= $col['style'] ?>"<?php } ?>
+                    <td <?php if ($col['class']){ ?>class="<?= $col['class'] ?>"<?php } ?>
+                        <?php if ($col['style']){ ?>style="<?= $col['style'] ?>"<?php } ?>
                         <?php if ($col['colspan']){ ?>colspan="<?= $col['colspan'] ?>"<?php } ?>
                         <?php if ($col['rowspan']){ ?>rowspan="<?= $col['rowspan'] ?>"<?php } ?>
                     ><?= $col['text'] ?></td>

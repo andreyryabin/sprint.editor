@@ -1,14 +1,14 @@
 
-.trumbowyg-dropdown-mycss {
+.trumbowyg-dropdown-mytdcss {
     /*width: 276px;*/
     /*padding: 7px 5px;*/
 }
 
-.trumbowyg-dropdown-mycss svg {
+.trumbowyg-dropdown-mytdcss svg {
     /*display: none !important;*/
 }
 
-.trumbowyg-dropdown-mycss button {
+.trumbowyg-dropdown-mytdcss button {
     /*display: block;*/
     /*position: relative;*/
     /*float: left;*/
@@ -20,8 +20,8 @@
     /*margin: 2px;*/
 }
 
-.trumbowyg-dropdown-mycss button:hover::after,
-.trumbowyg-dropdown-mycss button:focus::after {
+.trumbowyg-dropdown-mytdcss button:hover::after,
+.trumbowyg-dropdown-mytdcss button:focus::after {
     /*content: " ";*/
     /*display: block;*/
     /*position: absolute;*/

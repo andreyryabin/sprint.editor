@@ -49,11 +49,10 @@ $structure = (new Structure())
 
 // Меняем содержимое блоков заголовок
 
-foreach ($structure->getBlocks() as $block) {
-    if ($block->getName() == 'htag') {
-        $block->setData(['value' => 'xxx']);
-    }
-}
+$structure->getLayoutByIndex(0)
+    ->getColumnByIndex(0)
+    ->getBlockByIndex(0)
+    ->setData(['value' => 'Другой текст']);
 
 
 // Сохраняем в элемент с id=200 в инфоблоке с id=16 содержимое редактора в свойство с кодом EDITOR1

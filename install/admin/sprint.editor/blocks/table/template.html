@@ -4,7 +4,7 @@
     {{~it.rows :cols}}
     <tr>
         {{~cols :col}}
-        <td class="{{~col.attrs :css}} {{=css}} {{~}}"
+        <td {{?col.class}}class="{{=col.class}}"{{?}}
             {{?col.colspan}}colspan="{{=col.colspan}}" {{?}}
             {{?col.rowspan}}rowspan="{{=col.rowspan}}" {{?}}>
             <div class="trumbowyg-editor-box">{{=col.text}}</div>

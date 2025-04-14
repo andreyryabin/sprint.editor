@@ -1,5 +1,5 @@
 /**
- * Trumbowyg v2.27.3 - A lightweight WYSIWYG editor
+ * Trumbowyg v2.31.0 - A lightweight WYSIWYG editor
  * Trumbowyg core file
  * ------------------------
  * @link https://alex-d.github.io/Trumbowyg/
@@ -209,7 +209,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
     };
 
     // @param: editorElem is the DOM element
-    var Trumbowyg = function (editorElem, options) {
+    var Trumbowyg = function (editorElem, options) { // jshint ignore:line
         var t = this,
             trumbowygIconsId = 'trumbowyg-icons',
             $trumbowyg = $.trumbowyg;
@@ -256,21 +256,22 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 console.warn('You must define svgPath: https://goo.gl/CfTY9U'); // jshint ignore:line
             } else if (!$trumbowyg.svgAbsoluteUseHref) {
                 var div = t.doc.createElement('div');
+                div.style.width = '0';
+                div.style.height = '0';
+                div.style.overflow = 'hidden';
+                div.style.visibility = 'hidden';
                 div.id = trumbowygIconsId;
                 t.doc.body.insertBefore(div, t.doc.body.childNodes[0]);
-                $.ajax({
-                    async: true,
-                    type: 'GET',
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    dataType: 'xml',
-                    crossDomain: true,
-                    url: svgPathOption,
-                    data: null,
-                    beforeSend: null,
-                    complete: null,
-                    success: function (data) {
-                        div.innerHTML = new XMLSerializer().serializeToString(data.documentElement);
+                fetch(svgPathOption, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                     }
+                }).then((response) => {
+                    response.text()
+                        .then((svg) => {
+                            div.innerHTML = svg;
+                        });
                 });
             }
         }
@@ -298,7 +299,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
         t.btnsDef = {
             viewHTML: {
                 fn: 'toggle',
-                class: 'trumbowyg-not-disable',
+                class: 'trumbowyg-not-disable'
             },
 
             undo: {
@@ -537,7 +538,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             });
 
             t.$edBox = $('<div/>', {
-                class: prefix + 'editor-box',
+                class: prefix + 'editor-box'
             });
 
             // $ta = Textarea
@@ -597,6 +598,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             }
 
             t.semanticCode();
+            t.applyTagClasses();
 
             if (t.o.autogrowOnEnter) {
                 t.$ed.addClass(prefix + 'autogrow-on-enter');
@@ -711,7 +713,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                     }
                 })
                 .on('keyup focus', function () {
-                  if (!t.$ta.val().match(/<.*>/) && !t.$ed.html().match(/<.*>/)) {
+                    if (!t.$ta.val().match(/<.*>/) && !t.$ed.html().match(/<.*>/)) {
                         setTimeout(function () {
                             var block = t.isIE ? '<p>' : 'p';
                             t.doc.execCommand('formatBlock', false, block);
@@ -835,7 +837,8 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
 
 
         // Build a button and his action
-        buildBtn: function (btnName) { // btnName is name of the button
+        // @param btnName The name of the button
+        buildBtn: function (btnName) { // jshint ignore:line
             var t = this,
                 prefix = t.o.prefix,
                 btn = t.btnsDef[btnName],
@@ -1272,7 +1275,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 return;
             }
 
-            if(revert) {
+            if (revert) {
                 oldTag = newTag;
                 newTag = tmpTag;
             }
@@ -1296,7 +1299,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 }
                 $newTag.html($oldTag.html());
                 $oldTag.remove();
-                if(resetRange === true) {
+                if (resetRange === true) {
                     t.range.selectNodeContents($newTag.get(0));
                     t.range.collapse(false);
                 }
@@ -1488,6 +1491,13 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             t.$c.trigger('tbw' + (isFullscreen ? 'open' : 'close') + 'fullscreen');
         },
 
+        applyTagClasses: function () {
+            var t = this;
+            for (const tag of Object.keys(t.o.tagClasses)) {
+                $(tag, t.$ed).addClass(t.o.tagClasses[tag]);
+            }
+            t.syncCode();
+        },
 
         /*
          * Call method of trumbowyg if exist
@@ -1502,7 +1512,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 t.$ed.focus();
             }
 
-            if(cmd === 'strikethrough' && t.o.semantic) {
+            if (cmd === 'strikethrough' && t.o.semantic) {
                 t.semanticTag('strike', t.o.semanticKeepAttributes, true); // browsers cannot undo e.g. <del> as they expect <strike>
             }
 
@@ -1527,25 +1537,17 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
 
                     t.syncCode();
                     t.semanticCode(false, true);
-                    try {
-                        var listId = window.getSelection().focusNode;
-                        if(!$(window.getSelection().focusNode.parentNode).hasClass('trumbowyg-editor')){
-                            listId = window.getSelection().focusNode.parentNode;
-                        }
-                        var classes = t.o.tagClasses[param];
-                        if (classes) {
-                            $(listId).addClass(classes);
-                        }
-                    } catch (e) {
-
-                    }
-
                 }
 
                 if (cmd !== 'dropdown') {
                     t.updateButtonPaneStatus();
                     t.$c.trigger('tbwchange');
                 }
+            }
+
+            try {
+                t.applyTagClasses();
+            } catch (e) {
             }
         },
 
@@ -1623,7 +1625,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 .css({
                     top: '-' + t.$btnPane.outerHeight(),
                     opacity: 0,
-                    paddingBottom: buildForm ? null : '5%',
+                    paddingBottom: buildForm ? null : '5%'
                 })
                 .appendTo($modal)
                 .animate({
@@ -1672,6 +1674,11 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             var t = this,
                 prefix = t.o.prefix;
 
+            // Prevent multiple calls when having multiple editors in the same page
+            if (!t.$btnPane.hasClass(prefix + 'disable')) {
+                return;
+            }
+
             t.$btnPane.removeClass(prefix + 'disable');
             t.$overlay.off();
 
@@ -1707,13 +1714,13 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 }).join(' ');
 
                 if (typeof field.type === 'function') {
-                  if (!field.name) {
-                    field.name = n;
-                  }
+                    if (!field.name) {
+                        field.name = n;
+                    }
 
-                  html += field.type(field, fieldId, prefix, lg);
+                    html += field.type(field, fieldId, prefix, lg);
 
-                  return;
+                    return;
                 }
 
                 html += '<div class="' + prefix + 'input-row">';
@@ -1721,7 +1728,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 html += '<div class="' + prefix + 'input-html">';
 
                 if ($.isPlainObject(field.options)) {
-                    html += '<select name="target">';
+                    html += '<select id="' + fieldId + '" name="' + n + '">';
                     html += Object.keys(field.options).map((optionValue) => {
                         return '<option value="' + optionValue + '" ' + (optionValue === field.value ? 'selected' : '') + '>' + field.options[optionValue] + '</option>';
                     }).join('');
@@ -1754,7 +1761,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                                 values[n] = $field.filter(':checked').val();
                                 break;
                             default:
-                                values[n] = $.trim($field.val());
+                                values[n] = $field.val().trim();
                                 break;
                         }
                         // Validate value
@@ -1789,13 +1796,11 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
                 $row = $field.closest('.' + prefix + 'input-row');
 
             $field
-                .on('change keyup', function () {
+                .one('change keyup', function () {
                     $row.removeClass(prefix + 'input-error');
-                    setTimeout(function () {
-                        $row.find('.' + spanErrorClass).remove();
-                    }, 150);
                 });
 
+            $row.find('.' + spanErrorClass).remove();
             $row
                 .addClass(prefix + 'input-error')
                 .find('.' + prefix + 'input-infos label')

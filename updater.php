@@ -19,58 +19,11 @@ if ($updater && $updater instanceof CUpdater) {
     }
 
     $pathsToRemove = [
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/complex_image_text/',
-        '/bitrix/admin/sprint.editor/blocks/complex_image_text/',
 
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/complex_video_text/',
-        '/bitrix/admin/sprint.editor/blocks/complex_video_text/',
-
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/textfield/',
-        '/bitrix/admin/sprint.editor/blocks/textfield/',
-
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/coub/',
-        '/bitrix/admin/sprint.editor/blocks/coub/',
-
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/slideshare/',
-        '/bitrix/admin/sprint.editor/blocks/slideshare/',
-
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/dump/',
-        '/bitrix/admin/sprint.editor/blocks/dump/',
-
-        '/bitrix/modules/sprint.editor/admin/includes/',
-        '/bitrix/modules/sprint.editor/classes/',
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/assets/jquery-ui-1.12.1.custom/',
-        '/bitrix/admin/sprint.editor/assets/jquery-ui-1.12.1.custom/',
     ];
 
     $filesToRemove = [
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/assets/jquery-1.11.1.min.js',
-        '/bitrix/admin/sprint.editor/assets/jquery-1.11.1.min.js',
 
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/assets/sprint_editor_full.js',
-        '/bitrix/admin/sprint.editor/assets/sprint_editor_full.js',
-
-        '/bitrix/modules/sprint.editor/install/components/sprint.editor/blocks/templates/.default/coub.php',
-        '/bitrix/components/sprint.editor/blocks/templates/.default/coub.php',
-        '/bitrix/modules/sprint.editor/install/components/sprint.editor/blocks/templates/.default/slideshare.php',
-        '/bitrix/components/sprint.editor/blocks/templates/.default/slideshare.php',
-
-        '/bitrix/modules/sprint.editor/templates/admin_editor_simple.php',
-
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/assets/sprint_editor_simple.js',
-        '/bitrix/admin/sprint.editor/assets/sprint_editor_simple.js',
-
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/box/layout-col.html',
-        '/bitrix/admin/sprint.editor/blocks/box/layout-col.html',
-
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/box/layout-col-settings.html',
-        '/bitrix/admin/sprint.editor/blocks/box/layout-col-settings.html',
-
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/box/layout-col-tab.html',
-        '/bitrix/admin/sprint.editor/blocks/box/layout-col-tab.html',
-
-        '/bitrix/modules/sprint.editor/install/admin/sprint.editor/blocks/box/select-pack.html',
-        '/bitrix/admin/sprint.editor/blocks/box/select-pack.html',
     ];
 
     foreach ($pathsToRemove as $path) {
@@ -88,8 +41,8 @@ if ($updater && $updater instanceof CUpdater) {
     }
 
     if (is_dir(__DIR__ . '/install/admin/')) {
-        //$updater->CopyFiles("install/admin/", "admin/");
+        $updater->CopyFiles("install/admin/", "admin/");
     }
-    //4.18.1
+    //4.21.0
 
 }

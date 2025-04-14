@@ -29,6 +29,8 @@ class Table
 
         $col['text'] = isset($col['text']) ? trim($col['text']) : '';
 
+        $col['class'] = (string)($col['class'] ?? '');
+
         return $col;
     }
 }

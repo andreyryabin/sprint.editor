@@ -58,5 +58,6 @@ jQuery.trumbowyg.langs.ru = {
     description: 'Описание',
     title: 'Подсказка',
     text: 'Текст',
-    myCss: 'Стиль'
+    mycss: 'Стиль',
+    mytdcss: 'Колонка'
 };

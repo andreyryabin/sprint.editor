@@ -1,2 +1,2 @@
-1) Улучшение Sprint\Editor\Structure\Structure, поиск и модификация данных в блоках (автор @OlegNikolaevich) <br/>
+1) Стили для ячеек колонок в блоке "Таблица" (идея @OlegNikolaevich) <br/>
 
