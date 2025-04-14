@@ -39,7 +39,7 @@
                         }
                     });
 
-                    console.log(tags);
+                    console.log(element, tags);
 
                     return tags;
                 }
@@ -57,7 +57,18 @@
                 text: cssTitle,
                 hasIcon: false,
                 fn: function () {
-                    trumbowyg.$box.closest('td').toggleClass(cssName);
+                    let $td = trumbowyg.$box.closest('td');
+                    let str = [];
+                    if ($td.hasClass('active')) {
+                        str.push('active');
+                    }
+                    if ($td.hasClass('inited')) {
+                        str.push('inited');
+                    }
+                    if (!$td.hasClass(cssName)) {
+                        str.push(cssName);
+                    }
+                    $td.attr('class', str.join(' '));
                 }
             });
 
