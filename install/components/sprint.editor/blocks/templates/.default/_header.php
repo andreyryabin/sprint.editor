@@ -6,8 +6,12 @@
  * @var $arParams array - массив с параметрами компонента
  */
 
+use Sprint\Editor\Module;
+
 if ($this->arParams['USE_JQUERY'] == 'Y') {
-    CJSCore::Init(["jquery"]);
+    CJSCore::Init([
+        Module::getDbOption('jquery_version'),
+    ]);
 }
 
 if ($this->arParams['USE_FANCYBOX'] == 'Y') {

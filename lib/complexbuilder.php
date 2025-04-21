@@ -67,7 +67,10 @@ class ComplexBuilder
 
     protected static function registerAssets()
     {
-        CJSCore::Init(['jquery', 'translit']);
+        CJSCore::Init([
+            Module::getDbOption('jquery_version'),
+            'translit',
+        ]);
 
         if (Module::getDbOption('load_jquery_ui') == 'yes') {
             Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/jquery-ui-1.13.2.custom/jquery-ui.js');

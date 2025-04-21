@@ -22,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && check_bitrix_sessid()) {
                 } else {
                     Module::setDbOption($name, 'no');
                 }
-            } elseif ($aOption['TYPE'] == 'text') {
-                Module::setDbOption($name, isset($_REQUEST[$name]) ? strval($_REQUEST[$name]) : '');
+            } elseif (in_array($aOption['TYPE'], ['text', 'select'])) {
+                Module::setDbOption($name, (string)($_REQUEST[$name] ?? ''));
             }
         }
     }
@@ -101,54 +101,65 @@ if (CModule::IncludeModule('iblock')) {
 }
 
 ?>
-    <style>
-        .c-result {
-            border-collapse: collapse;
-        }
+<style>
+    .c-result {
+        border-collapse: collapse;
+    }
 
-        .c-result th, .c-result td {
-            vertical-align: top;
-            padding: 5px;
-            border: 1px solid #cecece;
-        }
-    </style>
+    .c-result th, .c-result td {
+        vertical-align: top;
+        padding: 5px;
+        border: 1px solid #cecece;
+    }
+</style>
 
-    <form method="post">
-        <?php
-        $optionsConfig = Module::getOptionsConfig();
-        foreach ($optionsConfig as $name => $aOption) {
-            $value = Module::getDbOption($name) ?>
-            <div style="margin-bottom: 10px">
-                <?php if ($aOption['TYPE'] == 'checkbox') { ?>
-                    <label>
-                        <input <?php if ($value == 'yes'){ ?>checked="checked"<?php } ?>
-                               type="checkbox"
-                               name="<?= $name ?>"
-                               value="<?= $aOption['DEFAULT'] ?>">
-                        <?= $aOption['TITLE'] ?>
-                    </label>
-                <?php } elseif ($aOption['TYPE'] == 'text') { ?>
-                    <label>
-                        <input type="text" name="<?= $name ?>" value="<?= $value ?>"/>
-                        <?= $aOption['TITLE'] ?>
-                    </label>
-                <?php } ?>
-            </div>
-        <?php } ?>
-        <br/>
-        <input class="adm-btn-green" type="submit" name="opts_save" value="<?= GetMessage('SPRINT_EDITOR_BTN_SAVE') ?>">
-        <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
-        <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
-        <?= bitrix_sessid_post(); ?>
-    </form>
+<form method="post">
+    <?php
+    $optionsConfig = Module::getOptionsConfig();
+    foreach ($optionsConfig as $name => $aOption) {
+        $value = Module::getDbOption($name) ?>
+        <div style="margin-bottom: 10px">
+            <?php if ($aOption['TYPE'] == 'checkbox') { ?>
+                <label>
+                    <input <?php if ($value == 'yes'){ ?>checked="checked"<?php } ?>
+                           type="checkbox"
+                           name="<?= $name ?>"
+                           value="<?= $aOption['DEFAULT'] ?>">
+                    <?= $aOption['TITLE'] ?>
+                </label>
+            <?php } elseif ($aOption['TYPE'] == 'select') { ?>
+                <label title="<?= $value ?>">
+                    <?= $aOption['TITLE'] ?>
+                    <select name="<?= $name ?>">
+                        <?php foreach ($aOption['ITEMS'] as $sVal => $sTitle) { ?>
+                            <option <?php if ($value == $sVal){ ?>selected="selected"<?php } ?> value="<?= $sVal ?>">
+                                <?= $sTitle ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </label>
+            <?php } elseif ($aOption['TYPE'] == 'text') { ?>
+                <label>
+                    <input type="text" name="<?= $name ?>" value="<?= $value ?>"/>
+                    <?= $aOption['TITLE'] ?>
+                </label>
+            <?php } ?>
+        </div>
+    <?php } ?>
     <br/>
-    <br/>
+    <input class="adm-btn-green" type="submit" name="opts_save" value="<?= GetMessage('SPRINT_EDITOR_BTN_SAVE') ?>">
+    <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
+    <input type="hidden" name="mid" value="<?= urlencode($module_id) ?>">
+    <?= bitrix_sessid_post(); ?>
+</form>
+<br/>
+<br/>
 
 <?php
 $taskList = UpgradeManager::getTasks();
 ?>
 
-    <h2><?= GetMessage('SPRINT_EDITOR_TASKS') ?></h2>
+<h2><?= GetMessage('SPRINT_EDITOR_TASKS') ?></h2>
 
 <?php foreach ($taskList as $aItem) { ?>
     <?php if ($aItem['installed'] != 'yes') { ?>

@@ -7,6 +7,7 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_PARTNER_NAME"               => "Андрей Рябин",
     "SPRINT_EDITOR_PARTNER_URI"                => "http://dev.1c-bitrix.ru/community/webdev/user/39653/blog/",
     "SPRINT_EDITOR_TITLE"                      => "Редактор блоков (sprint.editor)",
+    "SPRINT_EDITOR_JQUERY_VERSION"             => "Версия jquery",
     "SPRINT_EDITOR_LOAD_JQUERY_UI"             => "Подключить jquery ui *",
     "SPRINT_EDITOR_LOAD_DOTJS"                 => "Подключить шаблонизатор doT *",
     "SPRINT_EDITOR_SHOW_SUPPORT"               => "Показывать раздел с поддержкой проекта",

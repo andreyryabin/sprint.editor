@@ -101,8 +101,6 @@ class AdminEditor
             )
         );
 
-
-
         $editorValue = self::prepareValue($params['value']);
         if (empty($editorValue['blocks']) && empty($editorValue['layouts'])) {
             $editorValue = self::prepareValue($params['defaultValue']);
@@ -113,7 +111,7 @@ class AdminEditor
                 'packname' => '',
                 'version'  => 2,
                 'blocks'   => [],
-                'layouts'  => (empty($layoutsToolbar)?[
+                'layouts'  => (empty($layoutsToolbar) ? [
                     [
                         'settings' => [],
                         'columns'  => [
@@ -122,7 +120,7 @@ class AdminEditor
                             ],
                         ],
                     ],
-                ]:[]),
+                ] : []),
             ];
         }
 
@@ -310,7 +308,10 @@ class AdminEditor
     {
         global $APPLICATION;
 
-        CJSCore::Init(['jquery', 'translit']);
+        CJSCore::Init([
+            Module::getDbOption('jquery_version'),
+            'translit',
+        ]);
 
         if (Module::getDbOption('load_jquery_ui') == 'yes') {
             Asset::getInstance()->addJs('/bitrix/admin/sprint.editor/assets/jquery-ui-1.13.2.custom/jquery-ui.js');

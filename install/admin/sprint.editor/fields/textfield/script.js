@@ -4,9 +4,12 @@ sprint_editor.registerBlock('textfield', function ($, $el, data, settings) {
             placeholder: 'Текст'
         }, data);
 
+        if (settings.default && data.value === '') {
+            data.value = settings.default.value;
+        }
 
         if (settings.placeholder) {
-            data.placeholder = settings.placeholder;
+            data.placeholder = settings.placeholder.value;
         }
 
         this.getData = function () {
