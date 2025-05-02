@@ -80,10 +80,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data, settings)
 
                 var popup = window.open(url, '', sizes);
 
-                $(popup).unload(function () {
-                    window[uid].Complete();
-                });
-
+                popup.addEventListener('beforeunload', () => window[uid].Complete());
             }
         });
 
