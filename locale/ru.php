@@ -87,7 +87,7 @@ Sprint\Editor\Locale::loadLocale([
     "SPRINT_EDITOR_block_save"    => "Сохранить составной блок",
     "SPRINT_EDITOR_block_delete"  => "Удалить составной блок",
 
-    "SPRINT_EDITOR_complex_err_exists" => "Такой блок уже есть",
+    "SPRINT_EDITOR_complex_err_exists" => "Такой составной блок уже есть",
     "SPRINT_EDITOR_complex_err_name"   => "Укажите название составного блока",
     "SPRINT_EDITOR_complex_err_build"  => "Задайте содержимое составного блока",
     "SPRINT_EDITOR_complex_err_title"  => "Укажите заголовок составного блока",
