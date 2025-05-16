@@ -169,7 +169,7 @@ $registeredPacks = Sprint\Editor\AdminEditor::registerPacks($currentUserSettings
                         <div style="background-color: #dbe7c4;border: 1px solid #b5c990;padding: 10px;margin-bottom: 10px">
                             <input class="adm-btn" name="save_pack" value="<?= GetMessage('SPRINT_EDITOR_pack_save') ?>" type="submit">
                             <?php if ($currentPackId) { ?>
-                                <input class="adm-btn" name="delete_pack" value="<?= GetMessage('SPRINT_EDITOR_pack_delete') ?>" type="submit">
+                                <input class="adm-btn" name="delete_pack" value="<?= GetMessage('SPRINT_EDITOR_pack_delete') ?>" type="submit" onclick="return confirmDelete()">
                             <?php } ?>
                         </div>
                     </form>
@@ -179,3 +179,9 @@ $registeredPacks = Sprint\Editor\AdminEditor::registerPacks($currentUserSettings
         </table>
     </div>
 </div>
+
+<script type="text/javascript">
+    function confirmDelete() {
+        return confirm(<?= ("'" . GetMessage('SPRINT_EDITOR_pack_delete') . "?'") ?>);
+    }
+</script>

@@ -152,7 +152,7 @@ $currentBuildJson = CUtil::PhpToJSObject(
                         <div style="background-color: #dbe7c4;border: 1px solid #b5c990;padding: 10px;margin-bottom: 10px">
                             <input class="adm-btn" name="save_block" value="<?= GetMessage('SPRINT_EDITOR_block_save') ?>" type="submit">
                             <?php if ($currentBlockId) { ?>
-                                <input class="adm-btn" name="delete_block" value="<?= GetMessage('SPRINT_EDITOR_block_delete') ?>" type="submit">
+                                <input class="adm-btn" name="delete_block" value="<?= GetMessage('SPRINT_EDITOR_block_delete') ?>" type="submit" onclick="return confirmDelete()">
                             <?php } ?>
                         </div>
                     </form>
@@ -164,6 +164,10 @@ $currentBuildJson = CUtil::PhpToJSObject(
 </div>
 
 <script type="text/javascript">
+    function confirmDelete() {
+        return confirm(<?= ("'" . GetMessage('SPRINT_EDITOR_block_delete') . "?'") ?>);
+    }
+
     jQuery(document).ready(function ($) {
         complex_builder($, <?=$currentEditorParams?>, <?=$currentBuildJson?>);
     });
