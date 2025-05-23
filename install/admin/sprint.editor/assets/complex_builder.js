@@ -50,6 +50,10 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
         $(this).closest('.sp-x-lt').remove();
     });
 
+    $editor.on('click', '.sp-x-block-del', function () {
+        $(this).closest('.sp-x-block').remove();
+    });
+
     $editor.on('keypress', 'input', function (e) {
         let keyCode = e.keyCode || e.which;
         if (keyCode === 13) {
@@ -107,7 +111,7 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
             html += '<div class="sp-x-pp-group">';
             html += '<div class="sp-x-pp-group-title">' + group['title'] + '</div>';
             $.each(group['blocks'], function (bindex, block) {
-                html += '<span class="sp-x-block" data-name="' + block['name'] + '">' + block['title'] + '</span>';
+                html += '<span class="sp-x-block" data-name="' + block['name'] + '">' + block['title'] + '<span class="sp-x-block-del">&minus;</span></span>';
             });
             html += '</div>';
         });
@@ -116,7 +120,6 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
     }
 
     function addLayout(layout) {
-
         let title = layout['title'] || '';
 
         let html = '';
@@ -176,7 +179,6 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
             "css": "",
             "columns": columns
         });
-
     }
 
     function saveToString() {
