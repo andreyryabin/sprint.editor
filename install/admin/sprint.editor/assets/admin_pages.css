@@ -84,6 +84,7 @@
 }
 
 .sp-x-lt .sp-x-block {
+    position: relative;
     display: block;
     cursor: move;
     background: #eee;
@@ -98,6 +99,22 @@
     height: 40px;
     margin: 2px;
     background: #ccc;
+}
+
+.sp-x-block .sp-x-block-del {
+    display: none;
+    position: absolute;
+    cursor: pointer;
+    right: 5px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    background: #fff;
+}
+
+.sp-x-lt .sp-x-block:hover .sp-x-block-del {
+    display: block;
 }
 
 .sp-x-header {
