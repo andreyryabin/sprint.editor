@@ -73,6 +73,30 @@
     background: #ededed;
 }
 
+.sp-x-block .sp-x-block-del {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    background: #fff;
+
+    display: inline-block;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    text-align: center;
+    user-select: none;
+    outline: none;
+    border: 1px solid #ccc;
+    padding: 6px;
+    min-width: 18px;
+    line-height: 16px;
+
+}
+
+.sp-x-block .sp-x-block-del:hover{
+    background: #ededed;
+}
+
 
 .sp-side-left {
     padding-right: 40px;
@@ -99,22 +123,6 @@
     height: 40px;
     margin: 2px;
     background: #ccc;
-}
-
-.sp-x-block .sp-x-block-del {
-    display: none;
-    position: absolute;
-    cursor: pointer;
-    right: 5px;
-    top: 5px;
-    width: 12px;
-    height: 12px;
-    line-height: 12px;
-    background: #fff;
-}
-
-.sp-x-lt .sp-x-block:hover .sp-x-block-del {
-    display: block;
 }
 
 .sp-x-header {

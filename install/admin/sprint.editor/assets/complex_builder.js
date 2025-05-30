@@ -42,8 +42,9 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
 
     $blockToolbar.on('click', '.sp-x-block', function () {
         var $lastCol = $editor.find('.sp-x-lt').last().find('.sp-x-sortable').first();
+        var name = $(this).data('name');
 
-        $lastCol.append($(this).clone())
+        $lastCol.append(makeBlockHtml(name));
     });
 
     $editor.on('click', '.sp-x-del', function () {
@@ -111,12 +112,21 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
             html += '<div class="sp-x-pp-group">';
             html += '<div class="sp-x-pp-group-title">' + group['title'] + '</div>';
             $.each(group['blocks'], function (bindex, block) {
-                html += '<span class="sp-x-block" data-name="' + block['name'] + '">' + block['title'] + '<span class="sp-x-block-del">&minus;</span></span>';
+                html += '<span class="sp-x-block" data-name="' + block['name'] + '">' + block['title'] + '</span>';
             });
             html += '</div>';
         });
         html += '</div>';
         return html;
+    }
+
+    function makeBlockHtml(blockName) {
+        let blockTitle = register_blocks[blockName] || blockName;
+
+        return '<span class="sp-x-block" data-name="' + blockName + '">' +
+            blockTitle +
+            '<span class="sp-x-block-del">&minus;</span>' +
+            '</span>';
     }
 
     function addLayout(layout) {
@@ -133,8 +143,7 @@ function complex_builder($, currentEditorParams, currentEditorValue) {
         $.each(layout['columns'], function (index, column) {
             html += '<div class="sp-col sp-x-sortable">';
             $.each(column['blocks'], function (index, blockName) {
-                let blockTitle = register_blocks[blockName] || blockName;
-                html += '<span class="sp-x-block" data-name="' + blockName + '">' + blockTitle + '</span>';
+                html += makeBlockHtml(blockName);
             });
             html += '</div>';
         });
