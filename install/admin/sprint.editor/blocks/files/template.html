@@ -3,7 +3,7 @@
     <span class="sp-note">или</span>
     <div class="sp-x-btn sp-x-btn-file">
         <label>Загрузить</label>
-        <input type="file" name="file[]" multiple="multiple">
+        <input type="file" name="file[]" {{?it.multiple}}multiple="multiple"{{?}}>
     </div>
 </div>
 <div class="sp-edit sp-clear">

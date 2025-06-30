@@ -11,26 +11,34 @@
 }
 
 .sp-block-iblock_elements .sp-item {
-    padding: 6px;
-    margin: 0 0 5px 0;
+    padding: 2px 5px;
     cursor: move;
     white-space: nowrap;
-    width: 95%;
+    /*width: 95%;*/
     overflow: hidden;
     border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-
+.sp-block-iblock_elements .sp-item:last-child{
+    border-bottom: none;
+}
+.sp-block-iblock_elements .sp-item .sp-item-del {
+    visibility: hidden;
+}
+.sp-block-iblock_elements .sp-item:hover .sp-item-del {
+    visibility: visible;
+}
 .sp-block-iblock_elements .sp-placeholder {
     border: 1px dotted black;
-    padding: 6px;
-    margin: 0 0 5px 0;
-    height: 18px;
+    padding: 2px;
+    height: 26px;
 }
 
 .sp-block-iblock_elements .sp-elements {
     background: #eee;
-    min-height: 100px;
-    padding: 5px 5px 10px;
+    min-height: 35px;
 }
 
 .sp-block-iblock_elements .sp-item.ui-draggable-dragging {

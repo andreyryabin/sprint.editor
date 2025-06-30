@@ -81,7 +81,7 @@ sprint_editor.registerBlock('iblock_sections', function ($, $el, data, settings)
 
                 var popup = window.open(url, '', sizes);
 
-                popup.addEventListener('beforeunload', () => window[uid].Complete())
+                popup.addEventListener('unload', () => window[uid].Complete())
 
             }
         });
@@ -92,6 +92,10 @@ sprint_editor.registerBlock('iblock_sections', function ($, $el, data, settings)
                 section_ids: findElementIds(),
                 enabled_iblocks: enabled_iblocks
             });
+        });
+
+        $el.on('click', '.sp-item-del', function () {
+            $(this).closest('.sp-item').remove();
         });
 
         sendrequest({
@@ -147,31 +151,9 @@ sprint_editor.registerBlock('iblock_sections', function ($, $el, data, settings)
 
                 var $elem = $jresult.find('.sp-elements');
 
-                var removeIntent = false;
                 $elem.sortable({
                     items: ".sp-item",
                     placeholder: "sp-placeholder",
-                    over: function () {
-                        removeIntent = false;
-                    },
-                    out: function () {
-                        removeIntent = true;
-                    },
-                    beforeStop: function (event, ui) {
-                        if (removeIntent) {
-                            ui.item.remove();
-                        } else {
-                            ui.item.removeAttr('style');
-                        }
-
-                    },
-                    receive: function (event, ui) {
-                        var uiIndex = ui.item.attr('data-id');
-                        var item = $(this).find('[data-id=' + uiIndex + ']');
-                        if (item.length > 1) {
-                            item.last().remove();
-                        }
-                    }
                 });
 
                 if (callback) {

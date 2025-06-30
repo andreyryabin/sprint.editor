@@ -37,13 +37,13 @@ if ($updater && $updater instanceof CUpdater) {
     }
 
     if (is_dir(__DIR__ . '/install/components/')) {
-        $updater->CopyFiles("install/components/", "components/");
+        //$updater->CopyFiles("install/components/", "components/");
     }
 
     if (is_dir(__DIR__ . '/install/admin/')) {
         $updater->CopyFiles("install/admin/", "admin/");
     }
 
-    //4.24.0
+    //4.25.0
 
 }

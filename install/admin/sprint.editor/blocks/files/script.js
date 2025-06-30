@@ -1,4 +1,4 @@
-sprint_editor.registerBlock('files', function ($, $el, data) {
+sprint_editor.registerBlock('files', function ($, $el, data, settings) {
     data = $.extend({
         files: []
     }, data);
@@ -11,13 +11,19 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
         itemsCollection[uid] = item;
     });
 
+    var multiple = true;
+    if (settings.hasOwnProperty('multiple') && settings.multiple.hasOwnProperty('value')) {
+        multiple = !!settings.multiple.value;
+    }
+
 
     this.getData = function () {
+        data['multiple'] = multiple;
+
         return data;
     };
 
     this.collectData = function () {
-
         data.files = [];
 
         $el.find('.sp-item').each(function () {
@@ -28,13 +34,12 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
 
         });
 
+        delete data['multiple'];
         return data;
     };
 
     this.afterRender = function () {
-        $.each(itemsCollection, function (uid, item) {
-            renderitem(uid);
-        });
+        rendercollection();
 
         var $btn = $el.find('.sp-x-btn-file');
         var $btninput = $btn.find('input[type=file]');
@@ -61,16 +66,17 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
             url: sprint_editor.getBlockWebPath('files') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
+                if (!data.multiple) {
+                    globalUid = false;
+                    itemsCollection = {};
+                }
+
                 $.each(result.result.file, function (index, file) {
                     var uid = sprint_editor.makeUid();
-                    itemsCollection[uid] = {
-                        file: file,
-                        desc: ''
-                    };
-                    renderitem(uid);
-
+                    itemsCollection[uid] = {file: file, desc: ''};
                 });
 
+                rendercollection();
 
             },
             progressall: function (e, result) {
@@ -121,69 +127,52 @@ sprint_editor.registerBlock('files', function ($, $el, data) {
                 dataType: 'json',
                 success: function (result) {
                     if (result.file) {
-                        var uid = sprint_editor.makeUid();
+                        if (!data.multiple) {
+                            globalUid = false;
+                            itemsCollection = {};
+                        }
 
-                        itemsCollection[uid] = {
-                            file: result.file,
-                            desc: ''
-                        };
-                        renderitem(uid);
+                        let uid = sprint_editor.makeUid();
+                        itemsCollection[uid] = {file: result.file, desc: ''};
+
+                        rendercollection();
+                        $urltext.val('');
                     }
-
-                    $urltext.val('');
                 }
             });
         }, 500);
 
 
-        var removeIntent = false;
         $el.find('.sp-result').sortable({
             items: ".sp-item",
             placeholder: "sp-placeholder",
-            over: function () {
-                removeIntent = false;
-            },
-            out: function () {
-                removeIntent = true;
-            },
-            beforeStop: function (event, ui) {
-                if (removeIntent) {
-                    ui.item.remove();
-                    closeedit();
-                } else {
-                    ui.item.removeAttr('style');
-                }
-
-            }
         });
 
         if (!data.files || !data.files.length) {
             closeedit();
         }
     };
-    var renderitem = function (uid) {
-        if (!itemsCollection[uid]) {
-            return;
+
+    var rendercollection = function () {
+        let $res = $el.find('.sp-result');
+
+        if (!data.multiple) {
+            $res.empty();
+            closeedit();
         }
 
-        var item = itemsCollection[uid];
-        var $item = $el.find('[data-uid="' + uid + '"]');
+        $.each(itemsCollection, function (uid, item) {
+            let $item = $res.find('[data-uid="' + uid + '"]');
+            if (!$item.length) {
+                $res.append(sprint_editor.renderTemplate('files-item', {
+                    item: item,
+                    uid: uid,
+                    active: 0
+                }));
+            }
+        });
 
-        if ($item.length > 0) {
-            $item.replaceWith(sprint_editor.renderTemplate('files-item', {
-                item: item,
-                uid: uid,
-                active: 1
-            }));
-
-        } else {
-            $el.find('.sp-result').append(sprint_editor.renderTemplate('files-item', {
-                item: item,
-                uid: uid,
-                active: 0
-            }));
-        }
-    };
+    }
 
     var closeedit = function () {
         globalUid = false;
