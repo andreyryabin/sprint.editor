@@ -61,10 +61,10 @@ class Image
                 $resized['height'] = $resizeParams['height'];
             }
 
+            $image["ORIGIN_SRC"] = $image['SRC'];
             $image["WIDTH"] = $resized["width"];
             $image["HEIGHT"] = $resized["height"];
             $image["SRC"] = $resized["src"];
-            $image["ORIGIN_SRC"] = $image['SRC'];
         }
 
         if (isset($image["SRC"])) {
@@ -143,14 +143,13 @@ class Image
     static protected function unparse_url($parts): string
     {
         return (isset($parts['scheme']) ? "{$parts['scheme']}://" : '')
-            . ($parts['user'] ?? '')
-            . (isset($parts['pass']) ? ":{$parts['pass']}" : '')
-            . (($parts['user'] ?? $parts['pass'] ?? '') ? '@' : '')
-            . ($parts['host'] ?? '')
-            . (isset($parts['port']) ? ":{$parts['port']}" : '')
-            . ($parts['path'] ?? '')
-            . (isset($parts['query']) ? "?{$parts['query']}" : '')
-            . (isset($parts['fragment']) ? "#{$parts['fragment']}" : '');
+               . ($parts['user'] ?? '')
+               . (isset($parts['pass']) ? ":{$parts['pass']}" : '')
+               . (($parts['user'] ?? $parts['pass'] ?? '') ? '@' : '')
+               . ($parts['host'] ?? '')
+               . (isset($parts['port']) ? ":{$parts['port']}" : '')
+               . ($parts['path'] ?? '')
+               . (isset($parts['query']) ? "?{$parts['query']}" : '')
+               . (isset($parts['fragment']) ? "#{$parts['fragment']}" : '');
     }
-
 }
