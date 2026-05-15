@@ -159,12 +159,33 @@ $settings = [
         ],
         'accordion' => [
             //подключаемые блоки к аккордеону
-            'blocks' => [
+            'blocks'      => [
                 'type'  => 'hidden',
                 'value' => [
                     'text'  => 'текст',
                     'image' => 'картинку',
                     'video' => 'видео',
+                ],
+            ],
+
+            //настройки для вкладок
+            'tabsettings' => [
+
+                //текстовая
+                'param1' => [
+                    'type'    => 'text',
+                    'title'   => 'Css',
+                    'default' => 'my-css-123',
+                ],
+                //выпадающий список
+                'param2' => [
+                    'type'    => 'dropdown',
+                    'title'   => 'Param2',
+                    'default' => 'xx',
+                    'value'   => [
+                        'xx' => 'xx',
+                        'yy' => 'yy',
+                    ],
                 ],
             ],
         ],
@@ -181,7 +202,7 @@ $settings = [
                 ],
             ],
         ],
-        'table'=>[
+        'table'     => [
             //стили колонок
             'tdlist' => [
                 'type'  => 'hidden',

@@ -16,7 +16,12 @@
                 </div>
             </div>
         </div>
-        <input class="sp-acc-tab-value" placeholder="Заголовок вкладки" type="text" value="{{!it.title}}"/>
+        {{?it.tab_settings}}
+        <div class="sp-acc-tab-settings">{{=it.tab_settings}}</div>
+        {{?}}
+        <div class="sp-acc-tab-title">
+            <input class="sp-acc-tab-value" placeholder="Заголовок вкладки" type="text" value="{{!it.title}}"/>
+        </div>
     </div>
     <div class="sp-acc-blocks"></div>
     <div class="sp-acc-footer">

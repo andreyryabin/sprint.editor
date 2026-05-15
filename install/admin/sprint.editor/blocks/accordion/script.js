@@ -22,6 +22,11 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
         });
     }
 
+    var tabSettings = {};
+    if (settings.tabsettings){
+        tabSettings = settings.tabsettings;
+    }
+
     this.getData = function () {
         return data;
     };
@@ -33,12 +38,16 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
 
         $container.children('.sp-acc-tab').each(function () {
             var $tabblocks = $(this).children('.sp-acc-blocks');
-            var $tabBtn1 = $(this).children('.sp-acc-header')
+            var $tabBtn1 = $(this).children('.sp-acc-header');
+            var $tabTitle = $tabBtn1.children('.sp-acc-tab-title');
 
             var tab = {
-                title: $tabBtn1.children('.sp-acc-tab-value').val(),
+                title: $tabTitle.children('.sp-acc-tab-value').val(),
                 collapsed: $(this).hasClass('sp-collapsed'),
-                blocks: []
+                settings: sprint_editor.collectSettings(
+                    $tabBtn1.children('.sp-acc-tab-settings')
+                ),
+                blocks: [],
             };
 
             $tabblocks.children('.sp-x-box').each(function () {
@@ -154,7 +163,11 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
         function addTab(tabData) {
             var $tab = $(sprint_editor.renderTemplate('accordion-tab', {
                 title: tabData.title,
-                blocklist: blocklist
+                blocklist: blocklist,
+                tab_settings: sprint_editor.renderTemplate(
+                    'box-settings',
+                    sprint_editor.compileSettings(tabData, tabSettings)
+                ),
             }));
 
             if (tabData.collapsed) {
@@ -165,17 +178,12 @@ sprint_editor.registerBlock('accordion', function ($, $el, data, settings, curre
 
             var $tabblocks = $tab.children('.sp-acc-blocks');
             var $buttons = $tab.children('.sp-acc-footer');
-            var $header = $tab.children('.sp-acc-header');
 
             $.each(tabData.blocks, function (index, blockData) {
                 addBlock(
                     blockData,
                     $tabblocks
                 )
-            });
-
-            $header.on('dblclick', function () {
-                toggleTab($tab)
             });
 
             $buttons.on('click', '.sp-acc-box-add', function () {

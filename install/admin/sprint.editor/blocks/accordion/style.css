@@ -33,11 +33,6 @@
     font-size: 13px;
 }
 
-.sp-block-accordion input.sp-acc-tab-value {
-    width: 60%;
-    float: right;
-}
-
 .sp-block-accordion .sp-x-box {
     margin: 10px;
 }
@@ -56,4 +51,17 @@
 .sp-block-accordion .sp-acc-tab.ui-sortable-helper {
     background: #e0e8ea;
     /*padding: 10px 10px 20px;*/
+}
+
+.sp-block-accordion .sp-acc-tab-settings {
+    display: inline-block;
+}
+
+.sp-block-accordion .sp-acc-tab-title {
+    float: right;
+    margin-top: 2px;
+}
+
+.sp-block-accordion input.sp-acc-tab-value {
+    width: 200px;
 }
