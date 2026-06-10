@@ -3,7 +3,9 @@
 namespace Sprint\Editor\Controller;
 
 use Bitrix\Main\DB\SqlQueryException;
+use Bitrix\Main\Engine\Action;
 use Bitrix\Main\Engine\Controller;
+use Bitrix\Main\Error;
 use Sprint\Editor\Cleaner\AbstractStepper;
 use Sprint\Editor\Cleaner\CleanTrashStepper;
 use Sprint\Editor\Cleaner\EditorPackStepper;
@@ -31,6 +33,16 @@ class Cleaner extends Controller
         'scanFileTableAction',
         'finishAction',
     ];
+
+    protected function processBeforeAction(Action $action): bool
+    {
+        global $APPLICATION;
+        if ($APPLICATION->GetGroupRight('sprint.editor') < 'W') {
+            $this->addError(new Error('Access denied'));
+            return false;
+        }
+        return parent::processBeforeAction($action);
+    }
 
     /**
      * @throws SqlQueryException

@@ -31,7 +31,8 @@ sprint_editor.registerBlock('instagram', function ($, $el, data) {
             $.ajax({
                 url: sprint_editor.getBlockWebPath('instagram') + '/ajax.php',
                 data: {
-                    url: inputUrl
+                    url: inputUrl,
+                    sessid: BX.bitrix_sessid()
                 },
                 dataType: "html",
                 success: function (result) {

@@ -5,7 +5,7 @@
 <div class="sp-accordion">
     <?php foreach ($block['items'] as $item) { ?>
         <div class="sp-accordion-title">
-            <?= $item['title'] ?>
+            <?= htmlspecialcharsbx($item['title']) ?>
         </div>
         <div class="sp-accordion-container">
             <?php foreach ($item['blocks'] as $itemblock) { ?>

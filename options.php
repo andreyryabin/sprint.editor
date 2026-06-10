@@ -123,16 +123,16 @@ if (CModule::IncludeModule('iblock')) {
                 <label>
                     <input <?php if ($value == 'yes'){ ?>checked="checked"<?php } ?>
                            type="checkbox"
-                           name="<?= $name ?>"
-                           value="<?= $aOption['DEFAULT'] ?>">
+                           name="<?= htmlspecialcharsbx($name) ?>"
+                           value="<?= htmlspecialcharsbx($aOption['DEFAULT']) ?>">
                     <?= $aOption['TITLE'] ?>
                 </label>
             <?php } elseif ($aOption['TYPE'] == 'select') { ?>
-                <label title="<?= $value ?>">
+                <label title="<?= htmlspecialcharsbx($value) ?>">
                     <?= $aOption['TITLE'] ?>
-                    <select name="<?= $name ?>">
+                    <select name="<?= htmlspecialcharsbx($name) ?>">
                         <?php foreach ($aOption['ITEMS'] as $sVal => $sTitle) { ?>
-                            <option <?php if ($value == $sVal){ ?>selected="selected"<?php } ?> value="<?= $sVal ?>">
+                            <option <?php if ($value == $sVal){ ?>selected="selected"<?php } ?> value="<?= htmlspecialcharsbx($sVal) ?>">
                                 <?= $sTitle ?>
                             </option>
                         <?php } ?>
@@ -140,7 +140,7 @@ if (CModule::IncludeModule('iblock')) {
                 </label>
             <?php } elseif ($aOption['TYPE'] == 'text') { ?>
                 <label>
-                    <input type="text" name="<?= $name ?>" value="<?= $value ?>"/>
+                    <input type="text" name="<?= htmlspecialcharsbx($name) ?>" value="<?= htmlspecialcharsbx($value) ?>"/>
                     <?= $aOption['TITLE'] ?>
                 </label>
             <?php } ?>

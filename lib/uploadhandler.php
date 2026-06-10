@@ -40,7 +40,7 @@ class UploadHandler
         'abort'               => 'File upload aborted',
 
     ];
-    protected $bitrix_errors  = [];
+    protected $bitrix_errors = [];
 
     function __construct($options = null, $initialize = true, $error_messages = null)
     {
@@ -127,15 +127,15 @@ class UploadHandler
     protected function get_full_url()
     {
         $https = !empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'on') === 0
-                 || !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
-                    && strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0;
+            || !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
+            && strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0;
         return
             ($https ? 'https://' : 'http://') .
             (!empty($_SERVER['REMOTE_USER']) ? $_SERVER['REMOTE_USER'] . '@' : '') .
             (isset($_SERVER['HTTP_HOST'])
                 ? $_SERVER['HTTP_HOST']
                 : ($_SERVER['SERVER_NAME'] .
-                   ($https && $_SERVER['SERVER_PORT'] === 443
+                    ($https && $_SERVER['SERVER_PORT'] === 443
                     || $_SERVER['SERVER_PORT'] === 80 ? '' : ':' . $_SERVER['SERVER_PORT']))) .
             substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/'));
     }
@@ -325,6 +325,8 @@ class UploadHandler
 
     protected function get_file_name($name, $content_range)
     {
+        $name = preg_replace('#[/\\\\]#', '', basename($name));
+
         // Keep an existing filename if this is part of a chunked upload:
         if ($content_range) {
             $uploaded_bytes = $this->fix_integer_overflow((int)$content_range[1]);
@@ -348,7 +350,8 @@ class UploadHandler
         $error,
         $index = null,
         $content_range = null
-    ) {
+    )
+    {
         $file = new stdClass();
 
         $file->name = $this->get_file_name($name, $content_range);
@@ -365,7 +368,7 @@ class UploadHandler
             $file->path = $file_path;
 
             $append_file = $content_range && is_file($file_path)
-                           && $file->size > $this->get_file_size($file_path);
+                && $file->size > $this->get_file_size($file_path);
             if ($uploaded_file && is_uploaded_file($uploaded_file)) {
                 // multipart/formdata uploads (POST method uploads)
                 if ($append_file) {
@@ -574,11 +577,16 @@ class UploadHandler
             $aFile['MODULE_ID'] = 'sprint.editor';
             if (!empty($this->options['bitrix_resize'])) {
                 if ($aFile['type'] == 'image/svg+xml' || $aFile['type'] == 'image/svg') {
-                    $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
-                    if ($bitrixId) {
-                        $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+                    $checkErr = CFile::CheckImageFile($aFile);
+                    if (empty($checkErr)) {
+                        $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
+                        if ($bitrixId) {
+                            $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
+                        } else {
+                            $this->bitrix_errors[] = 'Ошибка загрузки svg-изображения';
+                        }
                     } else {
-                        $this->bitrix_errors[] = 'Ошибка загрузки svg-изображения';
+                        $this->bitrix_errors[] = $checkErr;
                     }
                 } else {
                     $checkErr = CFile::CheckImageFile($aFile);
@@ -614,6 +622,22 @@ class UploadHandler
 
     public function saveResource($url)
     {
+        // 1. Только HTTPS
+        if (parse_url($url, PHP_URL_SCHEME) !== 'https') {
+            http_response_code(400);
+            die('Only HTTPS allowed');
+        }
+
+        // 2. Получаем IP и проверяем, что он публичный
+        $host = parse_url($url, PHP_URL_HOST);
+
+        $ip = gethostbyname($host);
+
+        if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            http_response_code(400);
+            die('Access to internal resources denied');
+        }
+
         if (!empty($this->options['bitrix_resize'])) {
             $imgurl = Youtube::getPreviewImg($url);
             if ($imgurl) {
@@ -648,4 +672,5 @@ class UploadHandler
             }
         }
     }
+
 }

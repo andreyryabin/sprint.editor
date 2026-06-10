@@ -138,7 +138,9 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data, settings)
         $.ajax({
             url: sprint_editor.getBlockWebPath('iblock_elements') + '/ajax.php',
             type: 'post',
-            data: requestParams,
+            data: Object.assign({
+                sessid: BX.bitrix_sessid()
+            }, requestParams),
             dataType: 'json',
             success: function (result) {
 

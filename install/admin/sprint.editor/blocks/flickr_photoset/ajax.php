@@ -20,6 +20,11 @@ global $DB;
 
 $res = [];
 
+if (!check_bitrix_sessid() || !$USER->IsAuthorized()) {
+    http_response_code(403);
+    die('Forbidden');
+}
+
 if (CModule::IncludeModule('sprint.editor')) {
     if (isset($_REQUEST['photoset_id'])) {
         $res = FlickrPhotoset::getInfoWithPreviews(htmlspecialchars($_REQUEST['photoset_id']));

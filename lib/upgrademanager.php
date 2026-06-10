@@ -15,7 +15,6 @@ class UpgradeManager
     {
         if (isset(self::$executeMessages[$name])) {
             foreach (self::$executeMessages[$name] as $msg) {
-                /** @noinspection PhpDynamicAsStaticMethodCallInspection */
                 CAdminMessage::ShowMessage(
                     [
                         "MESSAGE" => Locale::convertToWin1251IfNeed($msg['msg']),
@@ -45,15 +44,22 @@ class UpgradeManager
         return self::findClasses('task');
     }
 
-    protected static function initClass($name)
+    protected static function initClass($name): bool|Upgrade
     {
-        $file = Module::getModuleDir() . '/upgrades/' . $name . '.php';
+        //проверка на валидное имя класса
+        if (!$name || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $name)) {
+            return false;
+        }
+
+        $file = Module::getModuleFile(
+            Module::getModuleDir() . '/upgrades/',
+            $name . '.php'
+        );
 
         if (!is_file($file)) {
             return false;
         }
 
-        /** @noinspection PhpIncludeInspection */
         require_once($file);
 
         $class = 'Sprint\Editor\\' . $name;

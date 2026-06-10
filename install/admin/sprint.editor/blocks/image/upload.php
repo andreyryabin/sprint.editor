@@ -19,13 +19,18 @@ global $APPLICATION;
 global $USER;
 global $DB;
 
+if (!check_bitrix_sessid() || !$USER->IsAuthorized()) {
+    http_response_code(403);
+    die('Forbidden');
+}
+
 if (CModule::IncludeModule('sprint.editor')) {
     $handler = new UploadHandler(
         [
             'bitrix_resize' => [
-                'width' => ImageAdminBlock::PREVIEW_WIDTH,
+                'width'  => ImageAdminBlock::PREVIEW_WIDTH,
                 'height' => ImageAdminBlock::PREVIEW_HEIGHT,
-                'exact' => ImageAdminBlock::PREVIEW_EXACT,
+                'exact'  => ImageAdminBlock::PREVIEW_EXACT,
             ],
         ]
     );

@@ -13,6 +13,10 @@ class Instagram
             return '';
         }
 
+        if (preg_match('#^https://(www\.)?instagram\.com/#i', $block['url'])) {
+            return '';
+        }
+
         $ttl = 3600 * 24 * 7;
 
         $initdir = 'sprint_editor';

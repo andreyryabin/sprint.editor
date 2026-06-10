@@ -12,8 +12,8 @@ $images = FlickrPhotoset::getPhotos($block['photoset_id']);
         <div class="sp-gallery-items">
             <?php foreach ($images as $image) { ?>
                 <div class="sp-gallery-item">
-                    <a data-fancybox="gallery" class="sp-gallery-item-img-wrapper fancy" rel="media-gallery" href="<?= $image['DETAIL_SRC'] ?>">
-                        <img alt="<?= $image['DESCRIPTION'] ?>" src="<?= $image['SRC'] ?>">
+                    <a data-fancybox="gallery" class="sp-gallery-item-img-wrapper fancy" rel="media-gallery" href="<?= htmlspecialcharsbx($image['DETAIL_SRC']) ?>">
+                        <img alt="<?= htmlspecialcharsbx($image['DESCRIPTION']) ?>" src="<?= htmlspecialcharsbx($image['SRC']) ?>">
                     </a>
                 </div>
             <?php } ?>

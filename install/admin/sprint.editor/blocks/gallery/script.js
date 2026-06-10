@@ -50,7 +50,9 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
                     $.ajax({
                         url: sprint_editor.getBlockWebPath('gallery') + '/desc.php',
                         type: 'post',
-                        data: itemsCollection[globalUid].file,
+                        data: Object.assign({
+                            sessid: BX.bitrix_sessid()
+                        }, itemsCollection[globalUid].file),
                     });
                 }
             }
@@ -118,7 +120,8 @@ sprint_editor.registerBlock('gallery', function ($, $el, data) {
                 url: sprint_editor.getBlockWebPath('gallery') + '/download.php',
                 type: 'post',
                 data: {
-                    url: urlvalue
+                    url: urlvalue,
+                    sessid: BX.bitrix_sessid()
                 },
                 dataType: 'json',
                 success: function (result) {

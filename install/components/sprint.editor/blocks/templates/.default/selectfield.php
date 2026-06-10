@@ -1,3 +1,3 @@
 <?php /** @var $block array */
 
-echo $block['value'];
+echo htmlspecialcharsbx((string)$block['value']);

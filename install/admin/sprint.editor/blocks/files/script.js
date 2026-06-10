@@ -55,7 +55,9 @@ sprint_editor.registerBlock('files', function ($, $el, data, settings) {
                     $.ajax({
                         url: sprint_editor.getBlockWebPath('files') + '/desc.php',
                         type: 'post',
-                        data: itemsCollection[globalUid].file,
+                        data: Object.assign({
+                            sessid: BX.bitrix_sessid()
+                        }, itemsCollection[globalUid].file),
                     });
                 }
             }
@@ -122,7 +124,8 @@ sprint_editor.registerBlock('files', function ($, $el, data, settings) {
                 url: sprint_editor.getBlockWebPath('files') + '/download.php',
                 type: 'post',
                 data: {
-                    url: urlvalue
+                    url: urlvalue,
+                    sessid: BX.bitrix_sessid()
                 },
                 dataType: 'json',
                 success: function (result) {

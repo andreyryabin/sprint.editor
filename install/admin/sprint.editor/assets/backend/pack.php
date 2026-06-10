@@ -15,20 +15,29 @@ global $APPLICATION;
 global $USER;
 global $DB;
 
+if (!check_bitrix_sessid() || !$USER->IsAuthorized()) {
+    http_response_code(403);
+    die('Forbidden');
+}
+
 $request = Bitrix\Main\Context::getCurrent()->getRequest();
 
 $result = [];
+
 
 if (CModule::IncludeModule('sprint.editor')) {
     $userSettingsName = (string)$request->get('userSettingsName');
 
     if ($request->get('load')) {
-        $packid = $request->get('load');
-        $dir = Sprint\Editor\Module::getPacksDir();
-        $file = $dir . $packid . '.json';
-        if (is_file($file)) {
-            $result = file_get_contents($dir . $packid . '.json');
-            $result = json_decode($result, true);
+        $packid = preg_replace('#[^A-Za-z0-9_-]#', '', (string)$request->get('load'));
+
+        $packFile = Sprint\Editor\Module::getModuleFile(
+            Sprint\Editor\Module::getPacksDir(),
+            $packid . '.json'
+        );
+
+        if (is_file($packFile)) {
+            $result = json_decode(file_get_contents($packFile), true);
         }
     }
 }

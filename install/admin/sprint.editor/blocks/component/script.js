@@ -106,7 +106,8 @@ sprint_editor.registerBlock('component', function ($, $el, data) {
                     filter_site: data.filter_site,
                     filter_include: data.filter_include,
                     filter_exclude: data.filter_exclude,
-                    clear_cache: clearCache
+                    clear_cache: clearCache,
+                    sessid: BX.bitrix_sessid()
                 },
                 success: function (result) {
                     $elFilter.html(

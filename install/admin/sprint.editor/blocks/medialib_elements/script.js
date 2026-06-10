@@ -109,7 +109,9 @@ sprint_editor.registerBlock('medialib_elements', function ($, $el, data) {
         $.ajax({
             url: sprint_editor.getBlockWebPath('medialib_elements') + '/ajax.php',
             type: 'post',
-            data: requestParams,
+            data: Object.assign({
+                sessid: BX.bitrix_sessid()
+            }, requestParams),
             dataType: 'json',
             success: function (result) {
                 result.page_num = intval(result.page_num);

@@ -29,7 +29,8 @@ sprint_editor.registerBlock('medialib_collections', function ($, $el, data) {
             url: sprint_editor.getBlockWebPath('medialib_collections') + '/ajax.php',
             type: 'post',
             data: {
-                collections: data.collections
+                collections: data.collections,
+                sessid: BX.bitrix_sessid()
             },
             dataType: 'json',
             success: function (result) {

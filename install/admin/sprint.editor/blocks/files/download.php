@@ -1,6 +1,7 @@
 <?php
 
 use Sprint\Editor\UploadHandler;
+
 define("PUBLIC_AJAX_MODE", true);
 define("NO_KEEP_STATISTIC", true);
 define("NO_AGENT_STATISTIC", true);
@@ -17,11 +18,16 @@ global $APPLICATION;
 global $USER;
 global $DB;
 
+if (!check_bitrix_sessid() || !$USER->IsAuthorized()) {
+    http_response_code(403);
+    die('Forbidden');
+}
+
 if (CModule::IncludeModule('sprint.editor')) {
     if (!empty($_REQUEST['url'])) {
         $handler = new UploadHandler(
             [
-                'max_file_size'    => 0,
+                'max_file_size' => 0,
             ], false
         );
         $handler->saveResource($_REQUEST['url']);

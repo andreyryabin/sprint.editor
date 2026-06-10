@@ -17,19 +17,11 @@ class Table
             }
         }
 
-        $col['colspan'] = isset($col['colspan']) ? intval($col['colspan']) : 0;
-        if ($col['colspan'] <= 1) {
-            $col['colspan'] = 0;
-        }
-
-        $col['rowspan'] = isset($col['rowspan']) ? intval($col['rowspan']) : 0;
-        if ($col['rowspan'] <= 1) {
-            $col['rowspan'] = 0;
-        }
-
-        $col['text'] = isset($col['text']) ? trim($col['text']) : '';
-
-        $col['class'] = (string)($col['class'] ?? '');
+        $col['colspan'] = max(0, (int)($col['colspan'] ?? 0));
+        $col['rowspan'] = max(0, (int)($col['rowspan'] ?? 0));
+        $col['text'] = htmlspecialcharsbx((string)($col['text'] ?? ''));
+        $col['class'] = htmlspecialcharsbx((string)($col['class'] ?? ''));
+        $col['style'] = htmlspecialcharsbx($col['style']);
 
         return $col;
     }

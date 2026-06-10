@@ -18,12 +18,17 @@ global $APPLICATION;
 global $USER;
 global $DB;
 
+if (!check_bitrix_sessid() || !$USER->IsAuthorized()) {
+    http_response_code(403);
+    die('Forbidden');
+}
+
 if (CModule::IncludeModule('sprint.editor')) {
     $handler = new UploadHandler([], false);
 
     $handler->updateDesc(
         intval($_REQUEST['ID'] ?? 0),
-        htmlspecialchars($_REQUEST['DESCRIPTION'] ?? ''),
+        htmlspecialcharsbx($_REQUEST['DESCRIPTION'] ?? ''),
     );
 }
 

@@ -65,7 +65,10 @@ sprint_editor.registerBlock('flickr_photoset', function ($, $el, data, settings)
         $.ajax({
             url: sprint_editor.getBlockWebPath('flickr_photoset') + '/ajax.php',
             type: 'post',
-            data: {page: page},
+            data: {
+                page: page,
+                sessid: BX.bitrix_sessid()
+            },
             dataType: 'json',
             success: function (result) {
                 if (result.stat && result.stat === 'ok' && result.photosets && result.photosets.photoset) {
@@ -107,7 +110,10 @@ sprint_editor.registerBlock('flickr_photoset', function ($, $el, data, settings)
         $.ajax({
             url: sprint_editor.getBlockWebPath('flickr_photoset') + '/ajax.php',
             type: 'post',
-            data: {photoset_id: photoset_id},
+            data: {
+                photoset_id: photoset_id,
+                sessid: BX.bitrix_sessid()
+            },
             dataType: 'json',
             success: function (result) {
                 if (result.stat && result.stat === 'ok' && result.photoset) {

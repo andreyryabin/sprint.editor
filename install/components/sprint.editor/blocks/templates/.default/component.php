@@ -3,13 +3,12 @@
  * @var $this  SprintEditorBlocksComponent
  */
 global $APPLICATION;
-if (!empty($block['component_name'])) {
-    $block = Sprint\Editor\Blocks\Component::initializeParams($block);
 
+if ($comp = Sprint\Editor\Blocks\Component::initialize($block)) {
     $APPLICATION->IncludeComponent(
-        $block['component_name'],
-        $block['component_template'],
-        $block['component_params'],
+        $comp['component_name'],
+        $comp['component_template'],
+        $comp['component_params'],
         $this->getParent(),
         [
             'HIDE_ICONS' => 'Y',

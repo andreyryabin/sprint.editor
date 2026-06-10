@@ -56,6 +56,26 @@ class Module
         return self::getAdminSubDir('snippets');
     }
 
+
+    public static function getModuleFile(string $moduleDir, string $fileName): string|false
+    {
+        if ($moduleDir && $fileName) {
+            $real = realpath($moduleDir . $fileName);
+            if ($real !== false && str_starts_with($real, realpath($moduleDir) . DIRECTORY_SEPARATOR)) {
+                return $real;
+            }
+        }
+        return false;
+    }
+
+    public static function includeModuleFile(string $moduleDir, string $fileName)
+    {
+        $file = static::getModuleFile($moduleDir, $fileName);
+        if ($file) {
+            include $file;
+        }
+    }
+
     public static function getVersion()
     {
         $arModuleVersion = [];

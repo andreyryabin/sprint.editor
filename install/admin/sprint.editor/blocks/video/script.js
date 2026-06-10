@@ -64,7 +64,10 @@ sprint_editor.registerBlock('video', function ($, $el, data) {
         $.ajax({
             url: sprint_editor.getBlockWebPath('video') + '/ajax.php',
             type: 'post',
-            data: {url: someUrl},
+            data: {
+                url: someUrl,
+                sessid: BX.bitrix_sessid()
+            },
             dataType: 'json',
             success: function (result) {
                 $el.find('.sp-preview').html(result.html);

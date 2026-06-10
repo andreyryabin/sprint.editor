@@ -4,6 +4,24 @@ namespace Sprint\Editor\Blocks;
 
 class Component
 {
+
+    public static function initialize(array $block): array|false
+    {
+        if (empty($block['component_name'])) {
+            return false;
+        }
+
+        if (!preg_match('#^[a-z0-9_.:-]+$#i', (string)$block['component_name'])) {
+            return false;
+        }
+
+        if (empty($block['component_params']) || !is_array($block['component_params'])) {
+            return false;
+        }
+
+        return static::initializeParams($block);
+    }
+
     static public function initializeParams($block)
     {
         foreach ($block['component_params'] as $paramKey => $paramVal) {
@@ -12,8 +30,10 @@ class Component
                     $paramVal = self::calcArrayExpression($paramVal);
                 } elseif (self::hasRequestExpression($paramVal)) {
                     $paramVal = self::calcRequestExpression($paramVal);
+                } elseif (self::hasGetExpression($paramVal)) {
+                    $paramVal = self::calcGetExpression($paramVal);
                 } else {
-                    $paramVal = self::calcExpression($paramVal);
+                    $paramVal = '';
                 }
                 $block['component_params'][$paramKey] = $paramVal;
             }
@@ -24,22 +44,22 @@ class Component
 
     static protected function hasArrayExpression($str)
     {
-        return strpos($str, '={array(') === 0 && substr($str, -2, 2) == ')}';
+        return str_starts_with($str, '={array(') && str_ends_with($str, ')}');
     }
 
     static protected function hasRequestExpression($str)
     {
-        return strpos($str, '={$_REQUEST[') === 0 && substr($str, -2, 2) == ']}';
+        return str_starts_with($str, '={$_REQUEST[') && str_ends_with($str, ']}');
     }
 
-    static protected function hasRequestGetExpression($str)
+    static protected function hasGetExpression($str)
     {
-        return strpos($str, '={$_GET[') === 0 && substr($str, -2, 2) == ']}';
+        return str_starts_with($str, '={$_GET[') && str_ends_with($str, ']}');
     }
 
     static protected function hasExpression($str)
     {
-        return (substr($str, 0, 2) == "={" && substr($str, -1, 1) == "}" && strlen($str) > 3);
+        return (str_starts_with($str, "={") && str_ends_with($str, "}") && strlen($str) > 3);
     }
 
     static protected function calcArrayExpression($str)
@@ -61,7 +81,7 @@ class Component
         return $str;
     }
 
-    static protected function calcRequestGetExpression($str)
+    static protected function calcGetExpression($str)
     {
         $str = substr($str, 8, -2);
         $str = trim($str, ' \'"');
@@ -69,10 +89,5 @@ class Component
         return $str;
     }
 
-    static protected function calcExpression($str)
-    {
-        $str = substr($str, 2, -1);
-        $str = eval('return ' . $str . ';');
-        return $str;
-    }
+
 }

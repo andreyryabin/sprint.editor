@@ -117,7 +117,8 @@ sprint_editor.registerBlock('video_gallery', function ($, $el, data) {
                     url: sprint_editor.getBlockWebPath('video_gallery') + '/download.php',
                     type: 'post',
                     data: {
-                        url: val
+                        url: val,
+                        sessid: BX.bitrix_sessid()
                     },
                     dataType: 'json',
                     success: function (result) {
