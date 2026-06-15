@@ -8,9 +8,9 @@ class PackBuilder
 {
     public static function getPackJson($packId)
     {
-        if ($packId) {
-            $file = self::getPackFile($packId);
 
+        if ($packId && preg_match('/^[a-zA-Z0-9_-]+$/', $packId)) {
+            $file = self::getPackFile($packId);
             if (is_file($file)) {
                 return file_get_contents($file);
             }
@@ -35,6 +35,10 @@ class PackBuilder
      */
     public static function createPack($packId, $packJson, $packTitle, $settingsName)
     {
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $packId)) {
+            throw new AdminPageException('Invalid pack ID');
+        }
+
         if (is_file(self::getPackFile($packId))) {
             throw new AdminPageException(GetMessage('SPRINT_EDITOR_pack_err_exists'));
         }
@@ -57,6 +61,10 @@ class PackBuilder
     {
         if (empty($packId)) {
             throw new AdminPageException(GetMessage('SPRINT_EDITOR_pack_err_name'));
+        }
+
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $packId)) {
+            throw new AdminPageException('Invalid pack ID');
         }
 
         if (empty($packTitle)) {
@@ -86,6 +94,9 @@ class PackBuilder
 
     protected static function getPackFile($packId)
     {
-        return Module::getPacksDir() . $packId . '.json';
+        return Module::getModuleFile(
+            Module::getPacksDir(),
+            $packId . '.json'
+        );
     }
 }

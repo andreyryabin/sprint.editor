@@ -77,7 +77,14 @@ class Component
     {
         $str = substr($str, 12, -2);
         $str = trim($str, ' \'"');
-        $str = isset($_REQUEST[$str]) ? $_REQUEST[$str] : '';
+        $str = $_REQUEST[$str] ?? '';
+
+        if (is_array($str)) {
+            $str = array_map('htmlspecialcharsbx', $str);
+        } else {
+            $str = htmlspecialcharsbx((string)$str);
+        }
+
         return $str;
     }
 
@@ -85,7 +92,14 @@ class Component
     {
         $str = substr($str, 8, -2);
         $str = trim($str, ' \'"');
-        $str = isset($_GET[$str]) ? $_GET[$str] : '';
+        $str = $_GET[$str] ?? '';
+
+        if (is_array($str)) {
+            $str = array_map('htmlspecialcharsbx', $str);
+        } else {
+            $str = htmlspecialcharsbx((string)$str);
+        }
+
         return $str;
     }
 

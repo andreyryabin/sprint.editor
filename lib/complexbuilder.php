@@ -174,8 +174,12 @@ class ComplexBuilder
      */
     public static function createBlock($blockId, string $buildJson)
     {
-        if (strpos($blockId, 'complex_') !== 0) {
+        if (!str_starts_with($blockId, 'complex_')) {
             $blockId = 'complex_' . $blockId;
+        }
+
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $blockId)) {
+            throw new AdminPageException('Invalid block ID');
         }
 
         if (is_file(self::getAdminBlockPath($blockId) . 'script.js')) {
@@ -204,6 +208,10 @@ class ComplexBuilder
     {
         if (empty($blockId)) {
             throw new AdminPageException(GetMessage('SPRINT_EDITOR_complex_err_name'));
+        }
+
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $blockId)) {
+            throw new AdminPageException('Invalid block ID');
         }
 
         $buildJson = json_decode($buildJson, true);

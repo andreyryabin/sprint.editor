@@ -35,7 +35,7 @@ class Locale
     protected static function detectUtf8($msg)
     {
         $msg = is_array($msg) ? serialize($msg) : $msg;
-        return (md5($msg) == md5(iconv('utf-8', 'utf-8', $msg))) ? 1 : 0;
+        return mb_check_encoding($msg, 'UTF-8') ? 1 : 0;
     }
 
     public static function loadLocale($loc)

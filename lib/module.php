@@ -2,6 +2,7 @@
 
 namespace Sprint\Editor;
 
+use Bitrix\Main\IO\Path;
 use COption;
 
 class Module
@@ -60,8 +61,8 @@ class Module
     public static function getModuleFile(string $moduleDir, string $fileName): string|false
     {
         if ($moduleDir && $fileName) {
-            $real = realpath($moduleDir . $fileName);
-            if ($real !== false && str_starts_with($real, realpath($moduleDir) . DIRECTORY_SEPARATOR)) {
+            $real = Path::normalize($moduleDir . $fileName);
+            if ($real && str_starts_with($real, realpath($moduleDir) . DIRECTORY_SEPARATOR)) {
                 return $real;
             }
         }
