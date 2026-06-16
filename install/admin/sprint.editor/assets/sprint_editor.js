@@ -1358,10 +1358,17 @@ var sprint_editor = {
         }
 
         function packLoadByName(packname) {
-            $.get('/bitrix/admin/sprint.editor/assets/backend/pack.php', {
-                load: packname, userSettingsName: currentEditorParams.userSettingsName
-            }, function (packData) {
-                packLoad(packData);
+            $.ajax({
+                url: '/bitrix/admin/sprint.editor/assets/backend/pack.php',
+                type: 'get',
+                data: {
+                    sessid: BX.bitrix_sessid(),
+                    load: packname,
+                    userSettingsName: currentEditorParams.userSettingsName
+                },
+                success: function (packData) {
+                    packLoad(packData);
+                }
             });
         }
 

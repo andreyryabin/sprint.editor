@@ -72,7 +72,7 @@ class Module
     public static function includeModuleFile(string $moduleDir, string $fileName)
     {
         $file = static::getModuleFile($moduleDir, $fileName);
-        if ($file) {
+        if (is_file($file)) {
             include $file;
         }
     }

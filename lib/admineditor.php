@@ -157,12 +157,19 @@ class AdminEditor
 
     protected static function loadSettings($settingsName): array
     {
-        $settingsFile = Module::getSettingsDir() . $settingsName . '.php';
 
         $settings = [];
-        if ($settingsName && is_file($settingsFile)) {
-            include $settingsFile;
+
+        if ($settingsName && preg_match('/^[a-zA-Z0-9_-]+$/', $settingsName)) {
+            $settingsFile = Module::getModuleFile(
+                Module::getSettingsDir(),
+                $settingsName . '.php'
+            );
+            if (is_file($settingsFile)) {
+                include $settingsFile;
+            }
         }
+
 
         $settings = array_merge(
             [
