@@ -61,9 +61,10 @@ class Module
     public static function getModuleFile(string $moduleDir, string $fileName): string|false
     {
         if ($moduleDir && $fileName) {
-            $real = Path::normalize($moduleDir . $fileName);
-            if ($real && str_starts_with($real, realpath($moduleDir) . DIRECTORY_SEPARATOR)) {
-                return $real;
+            $moduleDir = Path::normalize(realpath($moduleDir)) . '/' ;
+            $filePath = Path::normalize($moduleDir . $fileName);
+            if ($filePath && str_starts_with($filePath, $moduleDir)) {
+                return $filePath;
             }
         }
         return false;
