@@ -8,12 +8,18 @@ class Text
 {
     static public function getValue($block): string
     {
-        if (empty($block['value'])) {
+        $value = trim($block['value'] ?? '');
+
+        if (empty($value)) {
             return '';
         }
 
+
         $san = new CBXSanitizer();
-        $san->SetLevel(CBXSanitizer::SECURE_LEVEL_MIDDLE);
-        return $san->SanitizeHtml((string)$block['value']);
+        $san->SetLevel(CBXSanitizer::SECURE_LEVEL_LOW);
+
+        $value = $san->SanitizeHtml($value);
+
+        return str_replace(htmlspecialchars('&nbsp;'), '&nbsp;', $value);
     }
 }
