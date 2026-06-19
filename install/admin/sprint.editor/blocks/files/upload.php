@@ -24,11 +24,7 @@ if (!check_bitrix_sessid() || !$USER->IsAuthorized()) {
 }
 
 if (CModule::IncludeModule('sprint.editor')) {
-    $handler = new UploadHandler(
-        [
-            'accept_file_types' => '/\.(jpe?g|png|gif|webp|svg|pdf|docx?|xlsx?|zip|txt)$/i',
-        ]
-    );
+    $handler = new UploadHandler([]);
 }
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_after.php");
