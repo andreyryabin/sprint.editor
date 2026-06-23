@@ -283,7 +283,15 @@ $settings = [
                 'type'  => 'hidden',
                 'value' => false,
             ]
-        ],*/
+        ],
+        */
+        'files' => [
+            //множественная загрузка true|false, по умолчанию true
+            'multiple' => [
+                'type'  => 'hidden',
+                'value' => true,
+            ]
+        ],
     ],
 
     //Настройки блоков внутри составных

@@ -575,50 +575,47 @@ class UploadHandler
         foreach ($files as $file) {
             $aFile = CFile::MakeFileArray($file->path);
             $aFile['MODULE_ID'] = 'sprint.editor';
+
+            $checkErr = $this->checkFileAndReturnError($aFile);
+            if ($checkErr) {
+                $this->bitrix_errors[] = $checkErr;
+                continue;
+            }
+
+            $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
+            if (!$bitrixId) {
+                $this->bitrix_errors[] = 'Ошибка загрузки файла';
+                continue;
+            }
+
             if (!empty($this->options['bitrix_resize'])) {
-                if ($aFile['type'] == 'image/svg+xml' || $aFile['type'] == 'image/svg') {
-                    $checkErr = CFile::CheckImageFile($aFile);
-                    if (empty($checkErr)) {
-                        $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
-                        if ($bitrixId) {
-                            $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
-                        } else {
-                            $this->bitrix_errors[] = 'Ошибка загрузки svg-изображения';
-                        }
-                    } else {
-                        $this->bitrix_errors[] = $checkErr;
-                    }
-                } else {
-                    $checkErr = CFile::CheckImageFile($aFile);
-                    if (empty($checkErr)) {
-                        $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
-                        if ($bitrixId) {
-                            $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
-                        } else {
-                            $this->bitrix_errors[] = 'Ошибка загрузки изображения';
-                        }
-                    } else {
-                        $this->bitrix_errors[] = $checkErr;
-                    }
-                }
+                $res[] = Image::resizeImage2($bitrixId, $this->options['bitrix_resize']);
             } else {
-                $checkErr = CFile::CheckFile($aFile);
-                if (empty($checkErr)) {
-                    $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
-                    if ($bitrixId) {
-                        $res[] = CFile::GetFileArray($bitrixId);
-                    } else {
-                        $this->bitrix_errors[] = 'Ошибка загрузки файла';
-                    }
-                } else {
-                    $this->bitrix_errors[] = $checkErr;
-                }
+                $res[] = CFile::GetFileArray($bitrixId);
             }
 
             unlink($file->path);
         }
         return $res;
     }
+
+
+    public function checkFileAndReturnError(array $aFile): string
+    {
+        if ($aFile['type'] == 'image/svg+xml' || $aFile['type'] == 'image/svg') {
+            $file = new \Bitrix\Main\IO\File($aFile['tmp_name']);
+            $ok = $this->checkSvgFile($file->getContents());
+
+            return $ok ? '' : 'SVG-файл содержит опасное содержимое';
+        }
+
+        if (\Bitrix\Main\Web\MimeType::isImage($aFile['type'])) {
+            return (string)CFile::CheckImageFile($aFile);
+        }
+
+        return (string)CFile::CheckFile($aFile);
+    }
+
 
     public function saveResource($url)
     {
@@ -671,6 +668,71 @@ class UploadHandler
                 CFile::UpdateDesc($id, $desc);
             }
         }
+    }
+
+    private function checkSvgFile(string $content): bool
+    {
+
+        // 3. Проверка на <script> теги (с учетом пробелов и атрибутов)
+        if (preg_match('/<\s*script/i', $content)) {
+            return false;
+        }
+
+        // 4. Проверка on* событий (с учетом пробелов)
+        if (preg_match('/on\w+\s*=\s*["\']/i', $content)) {
+            return false;
+        }
+
+        // 5. Проверка javascript: в ссылках
+        if (preg_match('/javascript\s*:/i', $content)) {
+            return false;
+        }
+
+        // 6. Проверка CDATA с потенциальным кодом
+        if (preg_match('/<!\[CDATA\[.*?function.*?\]\]>/is', $content) ||
+            preg_match('/<!\[CDATA\[.*?eval.*?\]\]>/is', $content)) {
+            return false;
+        }
+
+        // 7. Проверка data: URI (может содержать XSS)
+        if (preg_match('/data\s*:\s*text\/html/i', $content) ||
+            preg_match('/data\s*:\s*application\/x-javascript/i', $content)) {
+            return false;
+        }
+
+        // 8. Проверка опасных тегов
+        $dangerousTags = ['iframe', 'object', 'embed', 'form', 'input', 'button'];
+        foreach ($dangerousTags as $tag) {
+            if (preg_match('/<\s*' . $tag . '/i', $content)) {
+                return false;
+            }
+        }
+
+        // 9. Проверка внешних ресурсов
+        if (preg_match('/xlink:href\s*=\s*["\']https?:\/\//i', $content)) {
+            return false;
+        }
+
+        // 10. Проверка обфускации через числовые коды
+        if (preg_match('/&#\d+;/', $content)) {
+            // Декодируем и проверяем
+            $decoded = html_entity_decode($content, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            if (preg_match('/script|javascript|on\w+=/i', $decoded)) {
+                return false;
+            }
+        }
+
+        // 11. Проверка стилей с expression (для IE)
+        if (preg_match('/expression\s*\(/i', $content)) {
+            return false;
+        }
+
+        // 12. Проверка на пустоту (маленькие вредоносные файлы)
+        if (strlen($content) < 50) {
+            return false;
+        }
+
+        return true;
     }
 
 }
