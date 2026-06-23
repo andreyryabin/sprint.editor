@@ -68,6 +68,8 @@ sprint_editor.registerBlock('files', function ($, $el, data, settings) {
             url: sprint_editor.getBlockWebPath('files') + '/upload.php',
             dataType: 'json',
             done: function (e, result) {
+                rendererrors(result.result.errors);
+
                 if (!data.multiple) {
                     globalUid = false;
                     itemsCollection = {};
@@ -129,6 +131,8 @@ sprint_editor.registerBlock('files', function ($, $el, data, settings) {
                 },
                 dataType: 'json',
                 success: function (result) {
+                    rendererrors(result.errors);
+
                     if (result.file) {
                         if (!data.multiple) {
                             globalUid = false;
@@ -175,6 +179,10 @@ sprint_editor.registerBlock('files', function ($, $el, data, settings) {
             }
         });
 
+    }
+
+    var rendererrors = function (err) {
+        $el.find('.sp-errors').html(err);
     }
 
     var closeedit = function () {

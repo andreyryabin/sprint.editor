@@ -1,4 +1,4 @@
-<b> 5.0.12</b><br/>
+<b> 5.0.14</b><br/>
 <ul>
     <li>Исправление замечаний после аудита безопасности -
         https://dev.1c-bitrix.ru/community/webdev/user/39653/blog/46236/
