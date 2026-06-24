@@ -2,7 +2,7 @@
  * @var $block array
  * @var $this  SprintEditorBlocksComponent
  */ ?><?php
-$images = Sprint\Editor\Blocks\Snippet::getImages(
+$images = Sprint\Editor\Blocks\Gallery::getImages(
     $block, [
     'width'  => 300,
     'height' => 300,
