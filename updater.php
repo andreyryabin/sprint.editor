@@ -44,6 +44,6 @@ if ($updater && $updater instanceof CUpdater) {
         $updater->CopyFiles("install/admin/", "admin/");
     }
 
-    //4.30.0
+    //5.1.0
 
 }

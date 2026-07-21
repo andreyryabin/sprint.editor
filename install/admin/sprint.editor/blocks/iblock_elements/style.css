@@ -55,7 +55,8 @@
 }
 
 .sp-block-iblock_elements .sp-select-iblock {
-    width: 180px;
+    max-width: 360px;
+    min-width: 180px;
 }
 
 .sp-block-iblock_elements .sp-filter {

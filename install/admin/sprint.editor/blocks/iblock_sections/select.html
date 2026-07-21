@@ -2,7 +2,7 @@
     <select class="sp-select-iblock">
         <option value="">нет</option>
         {{~it.iblocks :item:index}}
-        <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}</option>
+        <option {{?item.id== it.iblock_id}}selected="selected" {{?}} value="{{!item.id}}">[{{!item.id}}] {{!item.title}}</option>
         {{~}}
     </select>
     {{?it.iblock_id}}
@@ -12,9 +12,6 @@
 
 <div class="sp-elements">
     {{~it.elements :item:index}}
-    <div data-id="{{!item.id}}" class="sp-item">
-        {{!item.id}} - {{!item.title}}
-        <span class="sp-item-del sp-x-btn">x</span>
-    </div>
+    <div data-id="{{!item.id}}" class="sp-item">[{{!item.id}}] {{!item.title}} <span class="sp-item-del sp-x-btn">x</span></div>
     {{~}}
 </div>

@@ -5,6 +5,7 @@ namespace Sprint\Editor;
 use Bitrix\Main\Page\Asset;
 use CJSCore;
 use DirectoryIterator;
+use SplFileInfo;
 
 class AdminEditor
 {
@@ -14,6 +15,7 @@ class AdminEditor
     protected static array $allblocks = [];
     protected static array $templates = [];
     protected static array $baseBlockSettings = [];
+    protected static array $baseBlockDefaults = [];
     protected static array $baseComplexSettings = [];
 
     public static function init($params)
@@ -66,6 +68,11 @@ class AdminEditor
         $userSettings['block_settings'] = array_merge(
             self::$baseBlockSettings,
             $userSettings['block_settings']
+        );
+
+        $userSettings['block_defaults'] = array_merge(
+            self::$baseBlockDefaults,
+            $userSettings['block_defaults']
         );
 
         $userSettings['complex_settings'] = array_merge(
@@ -217,11 +224,11 @@ class AdminEditor
         $dir = Module::getSettingsDir();
 
         $directory = new DirectoryIterator($dir);
+        /* @var $item SplFileInfo */
         foreach ($directory as $item) {
             if ($item->isFile() && $item->getExtension() == 'php') {
                 $settingsName = $item->getBasename('.php');
-                $settings = self::loadSettings($settingsName);
-                $result[$settingsName] = Locale::convertToWin1251IfNeed($settings['title']);
+                $result[$settingsName] = $item->getFilename();
             }
         }
         return $result;
@@ -429,6 +436,11 @@ class AdminEditor
             if (!empty($param['settings']) && is_array($param['settings'])) {
                 self::$baseBlockSettings[$blockName] = $param['settings'];
             }
+
+            if (!empty($param['defaults']) && is_array($param['defaults'])) {
+                self::$baseBlockDefaults[$blockName] = $param['defaults'];
+            }
+
 
             if (!empty($param['complex_settings']) && is_array($param['complex_settings'])) {
                 self::$baseComplexSettings[$blockName] = $param['complex_settings'];

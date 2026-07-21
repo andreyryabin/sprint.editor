@@ -58,7 +58,11 @@ class Module
     }
 
 
-    public static function getModuleFile(string $moduleDir, string $fileName): string|false
+    /**
+     * Сохраняем совместимость с php7.4
+     * @return string|false
+     */
+    public static function getModuleFile(string $moduleDir, string $fileName)
     {
         if ($moduleDir && $fileName) {
             $moduleDir = Path::normalize(realpath($moduleDir)) . '/' ;
@@ -142,6 +146,7 @@ class Module
 
         return ob_get_clean();
     }
+
 }
 
 

@@ -5,7 +5,11 @@ namespace Sprint\Editor\Blocks;
 class Component
 {
 
-    public static function initialize(array $block): array|false
+    /**
+     * Сохраняем совместимость с php7.4
+     * @return array|false
+     */
+    public static function initialize(array $block)
     {
         if (empty($block['component_name'])) {
             return false;

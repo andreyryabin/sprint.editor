@@ -164,6 +164,7 @@ var sprint_editor = {
                     );
                     if (area.hasOwnProperty('blockSettings')) {
                         complexSettings = Object.assign(
+                            {},
                             area.blockSettings,
                             complexSettings
                         )
@@ -547,6 +548,16 @@ var sprint_editor = {
         return {};
     },
 
+    getBlockDefaults: function (blockName, currentEditorParams) {
+        if (currentEditorParams &&
+            currentEditorParams.hasOwnProperty('userSettings') &&
+            currentEditorParams.userSettings.hasOwnProperty('block_defaults') &&
+            currentEditorParams.userSettings.block_defaults.hasOwnProperty(blockName)
+        ) {
+            return currentEditorParams.userSettings.block_defaults[blockName];
+        }
+        return {};
+    },
 
     getColumnClasses: function (name, currentEditorParams) {
         if (currentEditorParams &&
@@ -582,7 +593,7 @@ var sprint_editor = {
     },
 
     safeStringify: function (data) {
-        return JSON.stringify(data).replace(/[\uE000-\uF8FF]/g, "");
+        return JSON.stringify(data);
     },
 
     createInstance: function ($, currentEditorParams, currentEditorValue) {
@@ -1305,8 +1316,11 @@ var sprint_editor = {
             let uid = sprint_editor.makeUid();
             let blockSettings = sprint_editor.getBlockSettings(blockData.name, currentEditorParams);
             let blockConfig = sprint_editor.getBlockConfig(blockData.name, currentEditorParams);
+            let blockDefaults = sprint_editor.getBlockDefaults(blockData.name, currentEditorParams)
 
-            let $box = $(sprint_editor.renderTemplate('box', Object.assign(blockConfig, {
+            blockData = Object.assign({}, blockDefaults, blockData);
+
+            let $box = $(sprint_editor.renderTemplate('box', Object.assign({}, blockConfig, {
                 uid: uid,
                 blockName: blockData['name'],
                 enableChange: currentEditorParams.enableChange,

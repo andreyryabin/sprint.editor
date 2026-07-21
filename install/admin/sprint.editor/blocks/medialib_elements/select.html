@@ -3,13 +3,13 @@
         <select class="sp-select-types">
             <option value="">нет</option>
             {{~it.medialib_types :item}}
-            <option {{?item.code== it.medialib_type}}selected="selected" {{?}} value="{{!item.code}}">{{!item.name}}</option>
+            <option {{?item.code== it.medialib_type}}selected="selected" {{?}} value="{{!item.code}}">[{{!item.code}}] {{!item.name}}</option>
             {{~}}
         </select>
         <select class="sp-select-collection">
             <option value="">нет</option>
             {{~it.collections :item}}
-            <option {{?item.id== it.collection_id}}selected="selected" {{?}} value="{{!item.id}}">{{!item.title}}</option>
+            <option {{?item.id== it.collection_id}}selected="selected" {{?}} value="{{!item.id}}">[{{!item.id}}] {{!item.title}}</option>
             {{~}}
         </select>
 

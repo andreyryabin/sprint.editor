@@ -5,8 +5,6 @@
  */
 
 $settings = [
-    'title'            => 'Редактор с колонками',
-
     //Разрешить изменение структуры материала, перекрывает настройку "Отключить добавление блоков"
     //'enable_change' => true,
 
@@ -285,7 +283,7 @@ $settings = [
             ]
         ],
         */
-        'files' => [
+        'files'     => [
             //множественная загрузка true|false, по умолчанию true
             'multiple' => [
                 'type'  => 'hidden',
@@ -324,13 +322,17 @@ $settings = [
         ],
     ],
 
+    'block_defaults' => [
+        'text' => ['value' => 'Подробный текст']
+    ],
+
     //Отключить указанные блоки (если используется, то block_enabled уже не обрабатывается)
-    'block_disabled'   => [
+    'block_disabled' => [
         //'slideshare'
     ],
 
     //Разрешить добавление указанных блоков
-    'block_enabled'    => [
+    'block_enabled'  => [
         //        'htag',
         //        'text',
         //        'gallery'
@@ -339,7 +341,7 @@ $settings = [
     //Сниппеты для блока "Сниппет"
     //Файлы сниппетов хранятся в папке /local/admin/sprint.editor/snippets или в /bitrix/admin/sprint.editor/snippets
     //Данный путь можно переопределить в шаблоне блока snippet.php
-    'snippets'         => [
+    'snippets'       => [
         [
             'file'        => 'example.php',
             'title'       => 'example',
