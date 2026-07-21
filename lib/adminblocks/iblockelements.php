@@ -58,7 +58,6 @@ class IblockElements
                 ],
                 [
                     'IBLOCK_ID' => $this->iblockId,
-                    'ACTIVE'    => 'Y',
                     'ID'        => $this->selectedElements,
                 ],
                 false,

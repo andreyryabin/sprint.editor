@@ -579,12 +579,14 @@ class UploadHandler
             $checkErr = $this->checkFileAndReturnError($aFile);
             if ($checkErr) {
                 $this->bitrix_errors[] = $checkErr;
+                unlink($file->path);
                 continue;
             }
 
             $bitrixId = CFile::SaveFile($aFile, 'sprint.editor');
             if (!$bitrixId) {
                 $this->bitrix_errors[] = 'Ошибка загрузки файла';
+                unlink($file->path);
                 continue;
             }
 

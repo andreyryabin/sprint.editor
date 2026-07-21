@@ -58,7 +58,6 @@ class IblockSections
                 ],
                 [
                     'IBLOCK_ID' => $this->iblockId,
-                    'ACTIVE'    => 'Y',
                     'ID'        => $this->selectedSections,
                 ],
                 false,
