@@ -59,6 +59,7 @@ class AdminEditor
             //default setings (simple editor)
             $userSettings = [
                 'layout_enabled'   => [],
+                'block_defaults'   => [],
                 'block_settings'   => [],
                 'complex_settings' => [],
             ];
@@ -185,6 +186,7 @@ class AdminEditor
                 'layout_titles'    => [],
                 'classes_titles'   => [],
                 'block_settings'   => [],
+                'block_defaults'   => [],
                 'complex_settings' => [],
             ], $settings
         );
