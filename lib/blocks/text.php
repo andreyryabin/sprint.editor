@@ -17,7 +17,7 @@ class Text
 
         $san = new CBXSanitizer();
         $san->SetLevel(CBXSanitizer::SECURE_LEVEL_LOW);
-
+        $san->AddTags(['em' => []]);
         $value = $san->SanitizeHtml($value);
 
         return str_replace(htmlspecialchars('&nbsp;'), '&nbsp;', $value);

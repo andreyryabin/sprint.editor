@@ -11,7 +11,7 @@ sprint_editor.registerBlock('iblock_elements', function ($, $el, data, settings)
     if (settings.hasOwnProperty('multiple') && settings.multiple.hasOwnProperty('value')) {
         multiple = !!settings.multiple.value;
     }
-console.log(data);
+
     data = $.extend({
         iblock_id: 0,
         element_ids: []
@@ -80,7 +80,7 @@ console.log(data);
 
                 var popup = window.open(url, '', sizes);
 
-                popup.addEventListener('unload', () => window[uid].Complete());
+                popup.addEventListener('beforeunload', () => window[uid].Complete());
             }
         });
 

@@ -5,6 +5,11 @@ AddEventHandler(
     'OnGetSearchIndex',
     function ($value, $search) {
         foreach ($value['blocks'] as $block) {
+            $hidden = $block['meta']['hidden'] ?? false;
+            if ($hidden) {
+                continue;
+            }
+
             if ($block['name'] == 'text' && !empty($block['value'])) {
                 $search .= ' ' . $block['value'];
             }

@@ -1,5 +1,5 @@
 sprint_editor.registerBlock('yandex_map', function ($, $el, data, settings, currentEditorParams) {
-    console.log(currentEditorParams);
+
     var myPlacemark = null;
     var myMap = null;
 
