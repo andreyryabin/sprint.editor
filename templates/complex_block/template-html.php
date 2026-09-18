@@ -8,7 +8,7 @@ $strings = [];
 
 foreach ($layouts as $lindex => $layout) {
     if (!empty($layout['title'])) {
-        $strings[] = '<div class="sp-x-box-caption">' . $layout['title'] . '</div>';
+        $strings[] = '<div class="sp-x-box-caption">' . htmlspecialcharsbx($layout['title']) . '</div>';
     }
     $strings[] = '<div class="sp-table sp-table-fixed">';
     $strings[] = '<div class="sp-row">';

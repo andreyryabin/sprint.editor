@@ -6,10 +6,8 @@ class UploadMp4
 {
     static public function getVideoCode($url, $default = '')
     {
-        if (preg_match(
-            '%^(/upload/.+\.mp4)$%i',
-            $url
-        )) {
+        //путь только внутри /upload/, без символов, ломающих HTML-атрибут
+        if (preg_match('%^/upload/[^"\'`<>]+\.mp4$%i', (string)$url)) {
             return $url;
         }
         return $default;
@@ -31,9 +29,9 @@ class UploadMp4
 
             return sprintf(
                 $html,
-                $width,
-                $height,
-                $code
+                htmlspecialcharsbx((string)$width),
+                htmlspecialcharsbx((string)$height),
+                htmlspecialcharsbx($code)
             );
         }
         return '';

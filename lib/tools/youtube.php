@@ -21,7 +21,7 @@ class Youtube
     {
         $code = self::getVideoCode($url);
         if ($code) {
-            return sprintf('http://img.youtube.com/vi/%s/0.jpg', $code);
+            return sprintf('https://img.youtube.com/vi/%s/0.jpg', $code);
         }
         return '';
     }

@@ -11,7 +11,7 @@ $elements = Sprint\Editor\Blocks\MedialibElements::getElements($block);
 <div class="sp-medialib-elements">
     <ul>
         <?php foreach ($elements as $aItem) { ?>
-            <li><a href="<?= $aItem['SRC'] ?>"><?= $aItem['NAME'] ?></a></li>
+            <li><a href="<?= htmlspecialcharsbx($aItem['SRC']) ?>"><?= htmlspecialcharsbx($aItem['NAME']) ?></a></li>
         <?php } ?>
     </ul>
 </div>

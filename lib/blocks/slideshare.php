@@ -10,6 +10,13 @@ class Slideshare
             return '';
         }
 
+        $embedUrl = (string)$block['embed_url'];
+
+        //разрешаем только ссылки slideshare, без символов, ломающих HTML-атрибут
+        if (!preg_match('#^https://(www\.)?slideshare\.net/[^"\'<>]*$#i', $embedUrl)) {
+            return '';
+        }
+
         $block = array_merge(
             [
                 'width'  => '510',
@@ -18,10 +25,10 @@ class Slideshare
         );
 
         return sprintf(
-            '<iframe src="%s" width="%s" height="%s" allowfullscreen> </iframe>',
-            $block['embed_url'],
-            $block['width'],
-            $block['height']
+            '<iframe src="%s" width="%d" height="%d" allowfullscreen> </iframe>',
+            htmlspecialcharsbx($embedUrl),
+            (int)$block['width'],
+            (int)$block['height']
         );
     }
 }

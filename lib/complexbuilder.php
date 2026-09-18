@@ -232,6 +232,18 @@ class ComplexBuilder
         $layouts = self::convertBuild((array)($buildJson['layouts'] ?? []));
         $areas = self::extractAreas($layouts);
 
+        //имена блоков встраиваются в генерируемые PHP/JS файлы,
+        //проверяем их так же строго, как blockId
+        foreach ($layouts as $layout) {
+            foreach ($layout['columns'] as $column) {
+                foreach ($column['blocks'] as $block) {
+                    if (!preg_match('/^[a-zA-Z0-9_-]+$/', (string)$block['blockName'])) {
+                        throw new AdminPageException('Invalid block name');
+                    }
+                }
+            }
+        }
+
         file_put_contents(
             $adminBlockPath . 'build.json',
             json_encode(

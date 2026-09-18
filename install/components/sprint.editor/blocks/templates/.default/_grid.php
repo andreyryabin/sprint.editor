@@ -18,7 +18,7 @@ $isSimpleGrid = (count($layout['columns']) == 1 && empty($layout['columns'][0]['
     <div class="sp-container">
         <div class="row">
             <?php foreach ($layout['columns'] as $column) { ?>
-                <div<?php if (!empty($column['css'])) { ?> class="<?= $column['css'] ?>"<?php } ?>>
+                <div<?php if (!empty($column['css'])) { ?> class="<?= htmlspecialcharsbx($column['css']) ?>"<?php } ?>>
                     <?php foreach ($column['blocks'] as $block) { ?>
                         <?php $this->includeBlock($block) ?>
                     <?php } ?>

@@ -26,7 +26,8 @@ foreach ($layouts as $lindex => $layout) {
         }
 
         foreach ($column['blocks'] as $cblock) {
-            $strings[] = '<?php $this->includeBlock($block[\'' . $cblock['dataKey'] . '\']);?>';
+            $dataKey = addcslashes((string)$cblock['dataKey'], "'\\");
+            $strings[] = '<?php $this->includeBlock($block[\'' . $dataKey . '\']);?>';
         }
 
         if ($cnt > 1) {
